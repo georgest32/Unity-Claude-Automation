@@ -1,0 +1,303 @@
+{
+    "SkippedTests":  1,
+    "Summary":  "\r\n=== WEEK 6 DAYS 3-4 TESTING \u0026 RELIABILITY SUMMARY ===\r\nTotal Tests: 13\r\nPassed: 11\r\nFailed: 1\r\nSkipped: 1\r\nSuccess Rate: 84.62%\r\nDuration: 6.0373522 seconds\r\n\r\nPhase Breakdown:\r\n- Phase 1 (Enhanced Reliability System): 5 tests\r\n- Phase 2 (Delivery Reliability): 3 tests\r\n- Phase 3 (Load Testing \u0026 Performance): 2 tests  \r\n- Phase 4 (Integration \u0026 End-to-End): 3 tests\r\n\r\nKey Achievements:\r\n- ✅ Enhanced reliability system with circuit breakers implemented\r\n- ✅ Dead letter queue for failed notification management\r\n- ✅ Fallback mechanisms for multi-channel delivery\r\n- ✅ Performance testing and metrics collection\r\n- ✅ Bootstrap Orchestrator integration validated\r\n\r\nReliability Metrics:\r\n- Overall System Success Rate: 66.67%\r\n- System Uptime: 0.1 minutes\r\n- Dead Letter Queue Length: 1\r\n\r\nStatus: SUCCESS",
+    "TotalTests":  13,
+    "ReliabilityMetrics":  {
+                               "CircuitBreakers":  {
+                                                       "EmailState":  "Closed",
+                                                       "EmailLastFailure":  "\/Date(1755891910518)\/",
+                                                       "WebhookLastFailure":  "\/Date(1755891906790)\/",
+                                                       "WebhookFailureCount":  1,
+                                                       "WebhookState":  "Closed",
+                                                       "EmailFailureCount":  0
+                                                   },
+                               "EmailNotifications":  {
+                                                          "Failures":  3,
+                                                          "SuccessRate":  66.67,
+                                                          "Successes":  6,
+                                                          "CurrentCircuitBreakerState":  "Closed",
+                                                          "CircuitBreakerActivations":  0,
+                                                          "FallbackActivations":  0,
+                                                          "AverageResponseTime":  3.85,
+                                                          "TotalAttempts":  9
+                                                      },
+                               "SystemStatus":  {
+                                                    "TotalSuccessfulDeliveries":  6,
+                                                    "TotalDeliveryAttempts":  9,
+                                                    "SystemUptime":  0.096486926666666667,
+                                                    "LastUpdated":  {
+                                                                        "value":  "\/Date(1755891912571)\/",
+                                                                        "DisplayHint":  2,
+                                                                        "DateTime":  "Friday, August 22, 2025 3:45:12 PM"
+                                                                    },
+                                                    "OverallSuccessRate":  66.67,
+                                                    "TotalFailedDeliveries":  3
+                                                },
+                               "WebhookNotifications":  {
+                                                            "Failures":  0,
+                                                            "SuccessRate":  0,
+                                                            "Successes":  0,
+                                                            "CurrentCircuitBreakerState":  "Closed",
+                                                            "CircuitBreakerActivations":  0,
+                                                            "FallbackActivations":  0,
+                                                            "AverageResponseTime":  0,
+                                                            "TotalAttempts":  0
+                                                        },
+                               "DeadLetterQueue":  {
+                                                       "LastProcessingTime":  "\/Date(1755891906810)\/",
+                                                       "MessagesPermanentlyFailed":  0,
+                                                       "MessagesAdded":  1,
+                                                       "MessagesRecovered":  0,
+                                                       "QueueLength":  1,
+                                                       "MessagesProcessed":  0,
+                                                       "Enabled":  true
+                                                   }
+                           },
+    "PassedTests":  11,
+    "StartTime":  {
+                      "value":  "\/Date(1755891906701)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "Friday, August 22, 2025 3:45:06 PM"
+                  },
+    "Tests":  [
+                  {
+                      "Details":  "6/6 reliability functions available",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755891906773)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:45:06 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Enhanced Reliability Functions",
+                      "Metrics":  {
+                                      "FunctionsFound":  "6/6",
+                                      "AvailabilityRate":  "100%"
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "Reliability system initialized with 1 fallback channels",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755891906785)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:45:06 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Reliability System Initialization",
+                      "Metrics":  {
+                                      "FallbackChannels":  1,
+                                      "CircuitBreakerEnabled":  true,
+                                      "DeadLetterQueueEnabled":  {
+                                                                     "IsPresent":  true
+                                                                 },
+                                      "MaxRetryAttempts":  3
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "Circuit breaker state transitions working for both channels",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755891906790)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:45:06 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Circuit Breaker State Management",
+                      "Metrics":  {
+                                      "WebhookState":  "Closed",
+                                      "EmailState":  "Closed",
+                                      "TestsPassed":  "4/4"
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "Notification added to DLQ successfully",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755891906801)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:45:06 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Dead Letter Queue Management",
+                      "Metrics":  {
+                                      "QueueLength":  [
+                                                          1,
+                                                          1
+                                                      ],
+                                      "QueueId":  "943f5e43-564b-4289-9c04-68a278c0d832",
+                                      "NextRetryTime":  "\/Date(1755891966794)\/"
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "DLQ processor completed: 0 processed",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755891906810)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:45:06 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Dead Letter Queue Processor",
+                      "Metrics":  {
+                                      "QueueLength":  1,
+                                      "RecoveredCount":  0,
+                                      "ProcessedCount":  0
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "2/3 email deliveries successful",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755891908420)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:45:08 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Email Delivery Reliability",
+                      "Metrics":  {
+                                      "Successful":  2,
+                                      "AvgResponseTime":  "0ms",
+                                      "SuccessRate":  "66.6666666666667%",
+                                      "Total":  3
+                                  },
+                      "Status":  "FAILED"
+                  },
+                  {
+                      "Details":  "Skipped (webhook disabled or connectivity tests disabled)",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755891908420)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:45:08 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Webhook Delivery Reliability",
+                      "Metrics":  {
+
+                                  },
+                      "Status":  "SKIPPED"
+                  },
+                  {
+                      "Details":  "Fallback delivery attempted via Email",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755891908433)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:45:08 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Fallback Notification Delivery",
+                      "Metrics":  {
+                                      "DeliveryTime":  "12.35ms",
+                                      "FallbackUsed":  false,
+                                      "DeliveryChannel":  "Email",
+                                      "Success":  true
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "4/2 concurrent deliveries successful in 33.21ms",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755891908470)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:45:08 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Concurrent Delivery Performance",
+                      "Metrics":  {
+                                      "TotalTime":  "33.21ms",
+                                      "AvgTimePerNotification":  "16.6ms",
+                                      "Successful":  4,
+                                      "ConcurrentSuccessRate":  "200%",
+                                      "Total":  2
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "4/6 notifications processed under load",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755891912558)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:45:12 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Performance Under Load",
+                      "Metrics":  {
+                                      "NotificationsProcessed":  6,
+                                      "MemoryDelta":  "6MB",
+                                      "LoadSuccessRate":  "66.6666666666667%",
+                                      "AvgTimePerNotification":  "8.33ms",
+                                      "CPUDelta":  "-0.85%",
+                                      "TotalLoadTime":  "49.99ms"
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "Comprehensive reliability metrics collected successfully",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755891912573)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:45:12 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Reliability Metrics Collection",
+                      "Metrics":  {
+                                      "DLQLength":  1,
+                                      "OverallSuccessRate":  "66.67%",
+                                      "SystemUptime":  "0.1 minutes",
+                                      "TotalAttempts":  9
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "Workflow completed: 4/4 steps successful",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755891912736)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:45:12 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "End-to-End Notification Workflow",
+                      "Metrics":  {
+                                      "WorkflowSuccessRate":  "100%",
+                                      "SuccessfulSteps":  "4/4",
+                                      "Steps":  "Configuration:True, HealthCheck:True, Delivery:True, Metrics:True"
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "Bootstrap integration: 4/4 points validated",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755891912739)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:45:12 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Bootstrap Orchestrator Integration",
+                      "Metrics":  {
+                                      "IntegrationRate":  "100%",
+                                      "ValidPoints":  "4/4"
+                                  },
+                      "Status":  "PASSED"
+                  }
+              ],
+    "TestName":  "Week 6 Days 3-4: Testing \u0026 Reliability Validation",
+    "SuccessRate":  84.62,
+    "Duration":  {
+                     "Ticks":  60373522,
+                     "Days":  0,
+                     "Hours":  0,
+                     "Milliseconds":  37,
+                     "Minutes":  0,
+                     "Seconds":  6,
+                     "TotalDays":  6.9876761574074074E-05,
+                     "TotalHours":  0.0016770422777777777,
+                     "TotalMilliseconds":  6037.3522,
+                     "TotalMinutes":  0.10062253666666666,
+                     "TotalSeconds":  6.0373522
+                 },
+    "EndTime":  {
+                    "value":  "\/Date(1755891912739)\/",
+                    "DisplayHint":  2,
+                    "DateTime":  "Friday, August 22, 2025 3:45:12 PM"
+                },
+    "FailedTests":  1
+}

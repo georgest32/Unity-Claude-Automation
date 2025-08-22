@@ -1,0 +1,47 @@
+{
+    "Total":  8,
+    "Details":  [
+                    {
+                        "Status":  "ERROR",
+                        "Error":  "Cannot find type [System.Data.SQLite.SQLiteConnection]: verify that the assembly containing this type is loaded.",
+                        "Test":  "Database Initialization"
+                    },
+                    {
+                        "Status":  "PASS",
+                        "Result":  "3 patterns added successfully",
+                        "Test":  "Add Sample Error Patterns"
+                    },
+                    {
+                        "Status":  "PASS",
+                        "Result":  "Found 0 similar patterns",
+                        "Test":  "Find Similar Patterns (Fresh Calculation)"
+                    },
+                    {
+                        "Status":  "PASS",
+                        "Result":  "Found 0 patterns (0 cached, 0 calculated)",
+                        "Test":  "Find Similar Patterns (Cached)"
+                    },
+                    {
+                        "Status":  "PASS",
+                        "Result":  "Calculated confidence for 0 patterns: ",
+                        "Test":  "Calculate Confidence Scores"
+                    },
+                    {
+                        "Status":  "PASS",
+                        "Result":  "First run: 84ms, Cached run: 70ms (1.20859579583017x speedup)",
+                        "Test":  "Similarity Caching Performance"
+                    },
+                    {
+                        "Status":  "ERROR",
+                        "Error":  "Database file not found",
+                        "Test":  "Verify PatternSimilarity Table"
+                    },
+                    {
+                        "Status":  "ERROR",
+                        "Error":  "Cannot find type [System.Data.SQLite.SQLiteConnection]: verify that the assembly containing this type is loaded.",
+                        "Test":  "Verify ConfidenceScores Table"
+                    }
+                ],
+    "Failed":  3,
+    "Passed":  5
+}

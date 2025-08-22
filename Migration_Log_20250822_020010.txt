@@ -1,0 +1,94 @@
+[2025-08-22 02:00:10.432] [INFO] =================================================
+[2025-08-22 02:00:10.436] [INFO] Unity-Claude-Automation Manifest Migration
+[2025-08-22 02:00:10.440] [INFO] =================================================
+[2025-08-22 02:00:10.444] [INFO] Starting migration at: 08/22/2025 02:00:10
+[2025-08-22 02:00:10.448] [INFO] WhatIf Mode: False
+[2025-08-22 02:00:10.449] [INFO] Force Overwrite: False
+[2025-08-22 02:00:10.450] [INFO] Create Backup: True
+[2025-08-22 02:00:10.454] [INFO] Created backup directory: .\Backups\Migration_20250822_020010
+[2025-08-22 02:00:10.465] [INFO] Creating backup of existing configuration...
+[2025-08-22 02:00:10.467] [INFO] Backed up: Start-SystemStatusMonitoring-Enhanced.ps1
+[2025-08-22 02:00:10.470] [INFO] Backed up: Start-UnifiedSystem-Complete.ps1
+[2025-08-22 02:00:10.475] [INFO] Backed up: Start-AutonomousMonitoring-Fixed.ps1
+[2025-08-22 02:00:10.477] [INFO] Backed up: Unity-Claude-Configuration.psm1
+[2025-08-22 02:00:10.480] [INFO] Backed up: system_status.json
+[2025-08-22 02:00:10.482] [INFO] Backed up existing manifests
+[2025-08-22 02:00:10.483] [INFO] Migrating AutonomousAgent subsystem...
+[2025-08-22 02:00:10.485] [INFO] Analyzing AutonomousAgent configuration...
+[2025-08-22 02:00:10.496] [INFO] Found existing AutonomousAgent configuration in system_status.json
+[2025-08-22 02:00:10.501] [WARN] Manifest already exists: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Manifests\AutonomousAgent.manifest.psd1 (use -Force to overwrite)
+[2025-08-22 02:00:10.503] [INFO] Migrating CLISubmission subsystem...
+[2025-08-22 02:00:10.506] [INFO] Analyzing CLISubmission configuration...
+[2025-08-22 02:00:10.507] [INFO] Using API integration for CLISubmission
+[2025-08-22 02:00:10.530] [SUCCESS] Created manifest: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Manifests\CLISubmission.manifest.psd1
+[2025-08-22 02:00:10.536] [ERROR] Manifest validation failed: Exception calling "SafeGetValue" with "0" argument(s): "Cannot generate a Windows PowerShell object for a ScriptBlock evaluating dynamic expressions. Dynamic expression: @{
+    # Required fields
+    Name = "CLISubmission"
+    Version = "1.0.0"
+    StartScript = ".\API-Integration\Submit-ErrorsToClaude-API.ps1"
+    
+    # Dependencies
+    Dependencies = @("SystemStatus" -join ', ')
+    
+    # Health monitoring
+    HealthCheckFunction = $null
+    HealthCheckInterval = 60  # seconds
+    
+    # Recovery policy
+    RestartPolicy = "OnFailure"  # OnFailure, Always, Never
+    MaxRestarts = 5
+    RestartDelay = 2  # seconds
+    
+    # Resource limits
+    MaxMemoryMB = 200
+    MaxCpuPercent = 15
+    
+    # Mutex for singleton enforcement
+    MutexName = "Global\UnityClaudeCLISubmission"
+    
+    # Migration metadata
+    MigratedFrom = "Legacy configuration"
+    MigrationDate = "2025-08-22 02:00:10"
+    GeneratedBy = "Migrate-ToManifestSystem.ps1"
+}."
+[2025-08-22 02:00:10.543] [INFO] Migrating SystemMonitoring subsystem...
+[2025-08-22 02:00:10.545] [INFO] Analyzing SystemMonitoring configuration...
+[2025-08-22 02:00:10.548] [SUCCESS] Created manifest: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Manifests\SystemMonitoring.manifest.psd1
+[2025-08-22 02:00:10.550] [ERROR] Manifest validation failed: Exception calling "SafeGetValue" with "0" argument(s): "Cannot generate a Windows PowerShell object for a ScriptBlock evaluating dynamic expressions. Dynamic expression: @{
+    # Required fields
+    Name = "SystemMonitoring"
+    Version = "1.0.0"
+    StartScript = ".\Start-SystemStatusMonitoring-Enhanced.ps1"
+    
+    # Dependencies
+    Dependencies = @( -join ', ')
+    
+    # Health monitoring
+    HealthCheckFunction = "Test-SystemStatusHealth"
+    HealthCheckInterval = 15  # seconds
+    
+    # Recovery policy
+    RestartPolicy = "Always"  # OnFailure, Always, Never
+    MaxRestarts = 10
+    RestartDelay = 3  # seconds
+    
+    # Resource limits
+    MaxMemoryMB = 300
+    MaxCpuPercent = 20
+    
+    # Mutex for singleton enforcement
+    MutexName = "Global\UnityClaudeSystemMonitoring"
+    
+    # Migration metadata
+    MigratedFrom = "Legacy configuration"
+    MigrationDate = "2025-08-22 02:00:10"
+    GeneratedBy = "Migrate-ToManifestSystem.ps1"
+}."
+[2025-08-22 02:00:10.658] [SUCCESS] Generated migration report: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Migration_Report_20250822_020010.md
+[2025-08-22 02:00:10.674] [INFO] =================================================
+[2025-08-22 02:00:10.677] [INFO] Migration Complete!
+[2025-08-22 02:00:10.678] [INFO] Success Rate: 0/3 subsystems migrated
+[2025-08-22 02:00:10.680] [INFO] Migration Log: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Migration_Log_20250822_020010.txt
+[2025-08-22 02:00:10.681] [INFO] Migration Report: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Migration_Report_20250822_020010.md
+[2025-08-22 02:00:10.682] [INFO] Backup Location: .\Backups\Migration_20250822_020010
+[2025-08-22 02:00:10.683] [INFO] =================================================

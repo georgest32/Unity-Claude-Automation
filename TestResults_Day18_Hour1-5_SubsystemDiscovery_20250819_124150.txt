@@ -1,0 +1,77 @@
+[2025-08-19 12:41:50.424] [INFO] Starting Day 18 Hour 1.5 comprehensive test suite...
+[2025-08-19 12:41:50.424] [INFO] 
+=== Test Group 1: Module Loading and Import ===
+[2025-08-19 12:41:50.429] [PASS] Module file exists - Unity-Claude-SystemStatus.psm1 should exist at correct path
+[2025-08-19 12:41:50.429] [INFO]   Expected: File exists
+[2025-08-19 12:41:50.429] [INFO]   Actual: File exists: True
+[2025-08-19 12:41:50.434] [PASS] Module manifest exists - Unity-Claude-SystemStatus.psd1 should exist
+[2025-08-19 12:41:50.444] [INFO]   Expected: File exists
+[2025-08-19 12:41:50.445] [INFO]   Actual: File exists: True
+[2025-08-19 12:41:50.486] [PASS] Module import successful - Module should import without errors
+[2025-08-19 12:41:50.486] [PASS] Function Initialize-SystemStatusMonitoring available - Function should be exported and available
+[2025-08-19 12:41:50.490] [PASS] Function Get-SubsystemProcessId available - Function should be exported and available
+[2025-08-19 12:41:50.494] [PASS] Function Update-SubsystemProcessInfo available - Function should be exported and available
+[2025-08-19 12:41:50.498] [PASS] Function Register-Subsystem available - Function should be exported and available
+[2025-08-19 12:41:50.498] [PASS] Function Unregister-Subsystem available - Function should be exported and available
+[2025-08-19 12:41:50.502] [PASS] Function Get-RegisteredSubsystems available - Function should be exported and available
+[2025-08-19 12:41:50.504] [PASS] Function Send-Heartbeat available - Function should be exported and available
+[2025-08-19 12:41:50.504] [PASS] Function Test-HeartbeatResponse available - Function should be exported and available
+[2025-08-19 12:41:50.507] [PASS] Function Test-AllSubsystemHeartbeats available - Function should be exported and available
+[2025-08-19 12:41:50.507] [INFO] 
+=== Test Group 2: Integration Point 4 - Process ID Detection ===
+[2025-08-19 12:41:50.518] [PASS] Get-SubsystemProcessId returns valid result - Should return integer PID or null
+[2025-08-19 12:41:50.520] [INFO]   Expected: Integer or null
+[2025-08-19 12:41:50.522] [INFO]   Actual: Returned: 68560 (Type: Int32)
+[2025-08-19 12:41:51.043] [PASS] Initialize-SystemStatusMonitoring - Initialization should succeed
+[2025-08-19 12:41:51.081] [PASS] Test subsystem registration - Should register test subsystem successfully
+[2025-08-19 12:41:51.113] [PASS] Update-SubsystemProcessInfo - Should update process information successfully
+[2025-08-19 12:41:51.116] [INFO] 
+=== Test Group 3: Integration Point 5 - Subsystem Registration ===
+[2025-08-19 12:41:51.149] [PASS] Register-Subsystem with valid module - Should register subsystem successfully with valid module path
+[2025-08-19 12:41:51.161] [PASS] Get-RegisteredSubsystems finds registered subsystem - Registered subsystem should appear in subsystem list
+[2025-08-19 12:41:51.166] [PASS] Unregister-Subsystem - Should unregister subsystem successfully
+[2025-08-19 12:41:51.167] [PASS] Subsystem removal verification - Unregistered subsystem should not appear in subsystem list
+[2025-08-19 12:41:51.173] [PASS] Register-Subsystem with invalid module path - Should fail gracefully with invalid module path
+[2025-08-19 12:41:51.174] [INFO] 
+=== Test Group 4: Integration Point 6 - Heartbeat Detection ===
+[2025-08-19 12:41:51.251] [PASS] Send-Heartbeat - Should send heartbeat successfully for registered subsystem
+[2025-08-19 12:41:51.263] [PASS] Test-HeartbeatResponse after recent heartbeat - Should report healthy status immediately after heartbeat
+[2025-08-19 12:41:51.263] [INFO]   Expected: Healthy (true)
+[2025-08-19 12:41:51.266] [INFO]   Actual: Healthy: True
+[2025-08-19 12:41:51.268] [PASS] Heartbeat response timing - Time since last heartbeat should be very recent
+[2025-08-19 12:41:51.269] [INFO]   Expected: < 10 seconds
+[2025-08-19 12:41:51.270] [INFO]   Actual: 0 seconds
+[2025-08-19 12:41:51.284] [PASS] Test-AllSubsystemHeartbeats execution - Should test heartbeats for all registered subsystems
+[2025-08-19 12:41:51.284] [INFO]   Expected: > 0 subsystems
+[2025-08-19 12:41:51.290] [INFO]   Actual: 6 subsystems, 6 healthy
+[2025-08-19 12:41:51.292] [PASS] Invalid subsystem heartbeat test - Should report unhealthy for non-existent subsystem
+[2025-08-19 12:41:51.333] [PASS] Low health score status determination - Health score 0.3 should result in Critical status
+[2025-08-19 12:41:51.335] [INFO]   Expected: Critical
+[2025-08-19 12:41:51.336] [INFO]   Actual: Status: Critical
+[2025-08-19 12:41:51.339] [INFO] 
+=== Test Group 5: System Status File Operations ===
+[2025-08-19 12:41:51.351] [PASS] Read-SystemStatus - Should successfully read system status data
+[2025-08-19 12:41:51.351] [INFO]   Expected: Hashtable
+[2025-08-19 12:41:51.353] [INFO]   Actual: Type: Hashtable
+[2025-08-19 12:41:51.362] [PASS] Write-SystemStatus - Should successfully write system status data to file
+[2025-08-19 12:41:51.362] [PASS] System status file updated recently - System status file should have been updated within last minute
+[2025-08-19 12:41:51.369] [PASS] JSON schema validation (PS5.1 compatible) - System status data should pass structural validation
+[2025-08-19 12:41:51.370] [INFO] 
+=== Test Summary ===
+[2025-08-19 12:41:51.383] [INFO] Test execution completed at: 08/19/2025 12:41:51
+[2025-08-19 12:41:51.385] [INFO] Total test duration: 0.97 seconds
+[2025-08-19 12:41:51.387] [INFO] Total tests executed: 31
+[2025-08-19 12:41:51.388] [PASS] Tests passed: 31
+[2025-08-19 12:41:51.388] [FAIL] Tests failed: 0
+[2025-08-19 12:41:51.391] [INFO] Success rate: 100%
+[2025-08-19 12:41:51.391] [INFO] 
+=== Day 18 Hour 1.5 Completion Assessment ===
+[2025-08-19 12:41:51.395] [PASS] ✅ Hour 1.5 COMPLETED SUCCESSFULLY
+[2025-08-19 12:41:51.395] [PASS] ✅ Integration Point 4 (Process ID Detection): OPERATIONAL
+[2025-08-19 12:41:51.395] [PASS] ✅ Integration Point 5 (Subsystem Registration): OPERATIONAL
+[2025-08-19 12:41:51.400] [PASS] ✅ Integration Point 6 (Heartbeat Detection): OPERATIONAL
+[2025-08-19 12:41:51.400] [PASS] ✅ Ready to proceed to Hour 2.5: Cross-Subsystem Communication Protocol
+[2025-08-19 12:41:51.404] [INFO] Resources cleaned up successfully
+[2025-08-19 12:41:51.408] [INFO] 
+Test results saved to: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\TestResults_Day18_Hour1-5_SubsystemDiscovery_20250819_124150.txt
+[2025-08-19 12:41:51.408] [INFO] Day 18 Hour 1.5 Subsystem Discovery and Registration test completed.

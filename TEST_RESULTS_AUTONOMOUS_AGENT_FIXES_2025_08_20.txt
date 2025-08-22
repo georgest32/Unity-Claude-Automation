@@ -1,0 +1,78 @@
+[2025-08-20 12:17:56.676] === Autonomous Agent Fixes Validation Test ===
+[2025-08-20 12:17:56.676] Testing fixes implemented for window detection, DLL locations, and JSON persistence
+[2025-08-20 12:17:56.676] 
+Test 1: TerminalWindowHandle Persistence
+[2025-08-20 12:17:56.676] ✅ PASS - TerminalWindowHandle Persistence: WindowHandle: 15865286, PID: 54492
+[2025-08-20 12:17:56.676] 
+Test 2: PID Marker File Update
+[2025-08-20 12:17:56.676] ✅ PASS - PID Marker File Update: Marker PID 54492 matches expected PID 54492
+[2025-08-20 12:17:56.676] 
+Test 3: Window Title Consistency
+[2025-08-20 12:17:56.676] ❌ FAIL - Window Title Consistency: Window title 'C:\Program Files\Git\bin\..\usr\bin\bash.exe' does not match expected 'Claude Code CLI environment'
+[2025-08-20 12:17:56.676] 
+Test 4: CLISubmission Type Loading
+[2025-08-20 12:17:56.676] ✅ PASS - CLISubmission Type Loading: Win32 type loaded successfully, GetCurrentThreadId in kernel32.dll
+[2025-08-20 12:17:56.676] 
+Test 5: Window Handle Validation
+[2025-08-20 12:17:56.676] ❌ FAIL - Window Handle Validation: Error validating window handle: Cannot convert the "15865286" value of type "System.String" to type "System.IntPtr".
+[2025-08-20 12:17:56.676] 
+Test 6: JSON Round-Trip Property Preservation
+[2025-08-20 12:17:56.676] ✅ PASS - JSON Round-Trip Preservation: TerminalWindowHandle preserved through JSON conversion: 15865286
+[2025-08-20 12:17:56.676] 
+=== Test Summary ===
+[2025-08-20 12:17:56.676] Tests Passed: 4/6 (66.7%)
+[2025-08-20 12:17:56.676] ❌ CRITICAL ISSUES REMAIN - FURTHER DEBUGGING REQUIRED
+[2025-08-20 12:17:56.676] 
+Detailed Results:
+[2025-08-20 12:17:56.676]   TerminalWindowHandle: PASS
+[2025-08-20 12:17:56.676]   PIDMarker: PASS
+[2025-08-20 12:17:56.676]   WindowTitle: FAIL
+[2025-08-20 12:17:56.676]   TypeLoading: PASS
+[2025-08-20 12:17:56.676]   WindowValidation: FAIL
+[2025-08-20 12:17:56.676]   JSONPreservation: PASS
+[2025-08-20 12:17:56.676] 
+=== Next Steps ===
+[2025-08-20 12:17:56.676] 1. Review failed tests above
+[2025-08-20 12:17:56.676] 2. Fix remaining issues
+[2025-08-20 12:17:56.676] 3. Re-run this test
+[2025-08-20 12:17:56.676] 
+Test completed at 2025-08-20 12:17:56
+[2025-08-20 12:18:31.964] === Autonomous Agent Fixes Validation Test ===
+[2025-08-20 12:18:31.964] Testing fixes implemented for window detection, DLL locations, and JSON persistence
+[2025-08-20 12:18:31.964] 
+Test 1: TerminalWindowHandle Persistence
+[2025-08-20 12:18:31.964] ✅ PASS - TerminalWindowHandle Persistence: WindowHandle: 15865286, PID: 54492
+[2025-08-20 12:18:31.964] 
+Test 2: PID Marker File Update
+[2025-08-20 12:18:31.964] ✅ PASS - PID Marker File Update: Marker PID 54492 matches expected PID 54492
+[2025-08-20 12:18:31.964] 
+Test 3: Window Title Consistency
+[2025-08-20 12:18:31.964] ❌ FAIL - Window Title Consistency: Window title 'C:\Program Files\Git\bin\..\usr\bin\bash.exe' does not match expected 'Claude Code CLI environment'
+[2025-08-20 12:18:31.964] 
+Test 4: CLISubmission Type Loading
+[2025-08-20 12:18:31.964] ✅ PASS - CLISubmission Type Loading: Win32 type loaded successfully, GetCurrentThreadId in kernel32.dll
+[2025-08-20 12:18:31.964] 
+Test 5: Window Handle Validation
+[2025-08-20 12:18:31.964] ✅ PASS - Window Handle Validation: Window handle 15865286 is valid
+[2025-08-20 12:18:31.964] 
+Test 6: JSON Round-Trip Property Preservation
+[2025-08-20 12:18:31.964] ✅ PASS - JSON Round-Trip Preservation: TerminalWindowHandle preserved through JSON conversion: 15865286
+[2025-08-20 12:18:31.964] 
+=== Test Summary ===
+[2025-08-20 12:18:31.964] Tests Passed: 5/6 (83.3%)
+[2025-08-20 12:18:31.964] ⚠️ PARTIAL SUCCESS - SOME FIXES NEED ATTENTION
+[2025-08-20 12:18:31.964] 
+Detailed Results:
+[2025-08-20 12:18:31.964]   TerminalWindowHandle: PASS
+[2025-08-20 12:18:31.964]   PIDMarker: PASS
+[2025-08-20 12:18:31.964]   WindowTitle: FAIL
+[2025-08-20 12:18:31.964]   TypeLoading: PASS
+[2025-08-20 12:18:31.964]   WindowValidation: PASS
+[2025-08-20 12:18:31.964]   JSONPreservation: PASS
+[2025-08-20 12:18:31.964] 
+=== Next Steps ===
+[2025-08-20 12:18:31.964] 1. Review failed tests above
+[2025-08-20 12:18:31.964] 2. Fix remaining issues
+[2025-08-20 12:18:31.964] 3. Re-run this test
+[2025-08-20 12:18:31.964] 
+Test completed at 2025-08-20 12:18:32

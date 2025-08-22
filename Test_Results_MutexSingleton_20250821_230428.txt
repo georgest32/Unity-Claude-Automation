@@ -1,0 +1,44 @@
+[2025-08-21 23:04:28.987] [INFO] ========================================
+[2025-08-21 23:04:28.987] [INFO] MUTEX SINGLETON ENFORCEMENT TEST SUITE
+[2025-08-21 23:04:28.987] [INFO] ========================================
+[2025-08-21 23:04:28.987] [INFO] Test started at: 08/21/2025 23:04:28
+[2025-08-21 23:04:28.987] [INFO] Output file: .\Test_Results_MutexSingleton_20250821_230428.txt
+[2025-08-21 23:04:28.987] [INFO] 
+[2025-08-21 23:04:28.987] [INFO] Importing Unity-Claude-SystemStatus module...
+[2025-08-21 23:04:29.366] [OK] Module imported successfully
+[2025-08-21 23:04:29.366] [INFO] 
+[2025-08-21 23:04:29.381] [INFO] TEST 1: Single Instance Acquisition
+[2025-08-21 23:04:29.381] [INFO] ======================================
+[2025-08-21 23:04:29.381] [ERROR] EXCEPTION in Test 1: The term 'New-SubsystemMutex' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-21 23:04:29.381] [INFO] 
+[2025-08-21 23:04:29.397] [INFO] TEST 2: Duplicate Prevention (Same Process)
+[2025-08-21 23:04:29.397] [INFO] ===========================================
+[2025-08-21 23:04:29.397] [ERROR] EXCEPTION in Test 2: The term 'New-SubsystemMutex' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-21 23:04:29.397] [INFO] 
+[2025-08-21 23:04:29.413] [INFO] TEST 3: Abandoned Mutex Recovery
+[2025-08-21 23:04:29.413] [INFO] =================================
+[2025-08-21 23:04:29.413] [INFO] Starting process that will abandon mutex...
+[2025-08-21 23:04:31.510] [INFO] Process terminated, mutex should be abandoned
+[2025-08-21 23:04:31.512] [ERROR] EXCEPTION in Test 3: The term 'New-SubsystemMutex' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-21 23:04:31.527] [INFO] 
+[2025-08-21 23:04:31.532] [INFO] TEST 4: Cross-Session Blocking
+[2025-08-21 23:04:31.535] [INFO] ===============================
+[2025-08-21 23:04:31.535] [INFO] Starting process to hold mutex...
+[2025-08-21 23:04:32.633] [INFO] Attempting to acquire mutex from current session...
+[2025-08-21 23:04:32.634] [ERROR] EXCEPTION in Test 4: The term 'New-SubsystemMutex' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-21 23:04:32.651] [INFO] 
+[2025-08-21 23:04:32.651] [INFO] TEST 5: Test-SubsystemMutex Function
+[2025-08-21 23:04:32.651] [INFO] =====================================
+[2025-08-21 23:04:32.665] [ERROR] EXCEPTION in Test 5: The term 'Test-SubsystemMutex' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-21 23:04:32.665] [INFO] 
+[2025-08-21 23:04:32.665] [INFO] ========================================
+[2025-08-21 23:04:32.665] [INFO] TEST SUITE COMPLETED
+[2025-08-21 23:04:32.665] [INFO] ========================================
+[2025-08-21 23:04:32.665] [INFO] End time: 08/21/2025 23:04:32
+[2025-08-21 23:04:32.665] [INFO] Duration: 3.6787334 seconds
+[2025-08-21 23:04:32.665] [INFO] 
+[2025-08-21 23:04:32.665] [INFO] Results Summary:
+[2025-08-21 23:04:32.665] [WARN]   Successes: 0
+[2025-08-21 23:04:32.665] [ERROR]   Errors: 5
+[2025-08-21 23:04:32.665] [INFO] 
+[2025-08-21 23:04:32.665] [INFO] Saving results to: .\Test_Results_MutexSingleton_20250821_230428.txt

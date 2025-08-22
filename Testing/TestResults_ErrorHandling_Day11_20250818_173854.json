@@ -1,0 +1,526 @@
+{
+    "SkippedTests":  0,
+    "FailedTests":  2,
+    "PassedTests":  18,
+    "ModuleName":  "ErrorHandling-Day11",
+    "TestDetails":  [
+                        {
+                            "Category":  "Retry Logic",
+                            "TestName":  "Exponential Backoff Delay Calculation",
+                            "Output":  {
+                                           "Attempt1":  756,
+                                           "Attempt2":  2318,
+                                           "Attempt5":  13915
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553130888)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:50 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  26.3061
+                        },
+                        {
+                            "Category":  "Error Classification",
+                            "TestName":  "Error Classification - Transient Errors",
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553130919)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:50 PM"
+                                          },
+                            "Duration":  24.463700000000003,
+                            "Status":  "Failed",
+                            "Error":  "Timeout error should be retryable"
+                        },
+                        {
+                            "Category":  "Error Classification",
+                            "TestName":  "Error Classification - Permanent Errors",
+                            "Output":  {
+                                           "NotFoundRetryable":  false,
+                                           "ForbiddenRetryable":  false,
+                                           "AuthRetryable":  false
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553130943)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:50 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  7.2289
+                        },
+                        {
+                            "Category":  "Retry Logic",
+                            "TestName":  "Exponential Backoff Retry - Success on Second Attempt",
+                            "Output":  {
+                                           "AttemptCount":  1,
+                                           "Result":  "Success on attempt 2",
+                                           "Success":  true
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553130951)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:50 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  136.0869
+                        },
+                        {
+                            "Category":  "Retry Logic",
+                            "TestName":  "Exponential Backoff Retry - All Attempts Fail",
+                            "Output":  {
+                                           "Error":  {
+                                                         "Exception":  {
+                                                                           "ErrorRecord":  {
+                                                                                               "Exception":  {
+                                                                                                                 "Message":  "Persistent error",
+                                                                                                                 "Data":  {
+
+                                                                                                                          },
+                                                                                                                 "InnerException":  null,
+                                                                                                                 "TargetSite":  null,
+                                                                                                                 "StackTrace":  null,
+                                                                                                                 "HelpLink":  null,
+                                                                                                                 "Source":  null,
+                                                                                                                 "HResult":  -2146233087
+                                                                                                             },
+                                                                                               "TargetObject":  null,
+                                                                                               "CategoryInfo":  {
+                                                                                                                    "Category":  0,
+                                                                                                                    "Activity":  "",
+                                                                                                                    "Reason":  "ParentContainsErrorRecordException",
+                                                                                                                    "TargetName":  "",
+                                                                                                                    "TargetType":  ""
+                                                                                                                },
+                                                                                               "FullyQualifiedErrorId":  "RuntimeException",
+                                                                                               "ErrorDetails":  null,
+                                                                                               "InvocationInfo":  null,
+                                                                                               "ScriptStackTrace":  null,
+                                                                                               "PipelineIterationInfo":  [
+
+                                                                                                                         ]
+                                                                                           },
+                                                                           "WasThrownFromThrowStatement":  true,
+                                                                           "Message":  "Persistent error",
+                                                                           "Data":  {
+
+                                                                                    },
+                                                                           "InnerException":  null,
+                                                                           "TargetSite":  null,
+                                                                           "StackTrace":  null,
+                                                                           "HelpLink":  null,
+                                                                           "Source":  null,
+                                                                           "HResult":  -2146233087
+                                                                       },
+                                                         "TargetObject":  "Persistent error",
+                                                         "CategoryInfo":  {
+                                                                              "Category":  14,
+                                                                              "Activity":  "",
+                                                                              "Reason":  "RuntimeException",
+                                                                              "TargetName":  "Persistent error",
+                                                                              "TargetType":  "String"
+                                                                          },
+                                                         "FullyQualifiedErrorId":  "Persistent error",
+                                                         "ErrorDetails":  null,
+                                                         "InvocationInfo":  {
+                                                                                "MyCommand":  null,
+                                                                                "BoundParameters":  {
+
+                                                                                                    },
+                                                                                "UnboundArguments":  [
+
+                                                                                                     ],
+                                                                                "ScriptLineNumber":  189,
+                                                                                "OffsetInLine":  9,
+                                                                                "HistoryId":  -1,
+                                                                                "ScriptName":  "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Testing\\Test-ErrorHandling-Day11.ps1",
+                                                                                "Line":  "        throw \"Persistent error\"\r\n",
+                                                                                "PositionMessage":  "At C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Testing\\Test-ErrorHandling-Day11.ps1:189 char:9\r\n+         throw \"Persistent error\"\r\n+         ~~~~~~~~~~~~~~~~~~~~~~~~",
+                                                                                "PSScriptRoot":  "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Testing",
+                                                                                "PSCommandPath":  "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Testing\\Test-ErrorHandling-Day11.ps1",
+                                                                                "InvocationName":  "",
+                                                                                "PipelineLength":  0,
+                                                                                "PipelinePosition":  0,
+                                                                                "ExpectingInput":  false,
+                                                                                "CommandOrigin":  1,
+                                                                                "DisplayScriptPosition":  null
+                                                                            },
+                                                         "ScriptStackTrace":  "at \u003cScriptBlock\u003e, C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Testing\\Test-ErrorHandling-Day11.ps1: line 189\r\nat Invoke-ExponentialBackoffRetry, C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AutonomousAgent\\Execution\\ErrorHandling.psm1: line 114\r\nat \u003cScriptBlock\u003e, C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Testing\\Test-ErrorHandling-Day11.ps1: line 188\r\nat Test-ModuleFunction, C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Testing\\Test-ErrorHandling-Day11.ps1: line 57\r\nat \u003cScriptBlock\u003e, C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Testing\\Test-ErrorHandling-Day11.ps1: line 187",
+                                                         "PipelineIterationInfo":  [
+
+                                                                                   ]
+                                                     },
+                                           "AttemptCount":  3,
+                                           "Success":  false
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553131088)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:51 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  255.00850000000003
+                        },
+                        {
+                            "Category":  "Circuit Breaker",
+                            "TestName":  "Circuit Breaker - State Transitions",
+                            "Output":  {
+                                           "FinalState":  "Closed",
+                                           "InitialState":  "Closed",
+                                           "OpenState":  "Closed",
+                                           "HalfOpenState":  "Closed"
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553131343)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:51 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  15.9519
+                        },
+                        {
+                            "Category":  "Circuit Breaker",
+                            "TestName":  "Circuit Breaker - Operation Blocking",
+                            "Output":  {
+                                           "ClosedAllows":  true,
+                                           "HalfOpenAllows":  true,
+                                           "OpenBlocks":  true
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553131358)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:51 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  17.303900000000002
+                        },
+                        {
+                            "Category":  "Circuit Breaker",
+                            "TestName":  "Circuit Breaker - Metrics Update",
+                            "Output":  {
+                                           "FailureCount":  2,
+                                           "SuccessCount":  1
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553131377)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:51 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  24.8439
+                        },
+                        {
+                            "Category":  "Timeout",
+                            "TestName":  "Timeout Operation - Success Within Timeout",
+                            "Output":  {
+                                           "TimedOut":  false,
+                                           "Result":  {
+                                                          "value":  "Quick operation completed",
+                                                          "PSComputerName":  "localhost",
+                                                          "RunspaceId":  "f1cd224a-6537-4b18-a58e-4f5e3f415521",
+                                                          "PSShowComputerName":  false
+                                                      },
+                                           "Success":  true,
+                                           "ElapsedMs":  971
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553131402)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:51 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  1006.0531000000001
+                        },
+                        {
+                            "Category":  "Timeout",
+                            "TestName":  "Timeout Operation - Timeout Exceeded",
+                            "Output":  {
+                                           "TimedOut":  true,
+                                           "Error":  "Operation timed out",
+                                           "Success":  false,
+                                           "ElapsedMs":  267
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553132408)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:52 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  634.5623
+                        },
+                        {
+                            "Category":  "Escalation",
+                            "TestName":  "Escalation Trigger - SLA Violation",
+                            "Output":  {
+                                           "EscalationLevels":  [
+                                                                    {
+                                                                        "Description":  "Automated Recovery",
+                                                                        "Level":  1,
+                                                                        "TimeoutMs":  60000
+                                                                    },
+                                                                    {
+                                                                        "Description":  "System Administrator",
+                                                                        "Level":  2,
+                                                                        "TimeoutMs":  300000
+                                                                    },
+                                                                    {
+                                                                        "Description":  "Emergency Response",
+                                                                        "Level":  3,
+                                                                        "TimeoutMs":  900000
+                                                                    }
+                                                                ],
+                                           "Reasons":  [
+                                                           "SLA violation: 400000 ms \u003e 300000 ms"
+                                                       ],
+                                           "RecommendedLevel":  2,
+                                           "EscalationRequired":  true
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553133043)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:53 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  36.3097
+                        },
+                        {
+                            "Category":  "Escalation",
+                            "TestName":  "Escalation Trigger - Critical Failure",
+                            "Output":  {
+                                           "EscalationLevels":  [
+                                                                    {
+                                                                        "Description":  "Automated Recovery",
+                                                                        "Level":  1,
+                                                                        "TimeoutMs":  60000
+                                                                    },
+                                                                    {
+                                                                        "Description":  "System Administrator",
+                                                                        "Level":  2,
+                                                                        "TimeoutMs":  300000
+                                                                    },
+                                                                    {
+                                                                        "Description":  "Emergency Response",
+                                                                        "Level":  3,
+                                                                        "TimeoutMs":  900000
+                                                                    }
+                                                                ],
+                                           "Reasons":  [
+                                                           "Critical failure detected"
+                                                       ],
+                                           "RecommendedLevel":  3,
+                                           "EscalationRequired":  true
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553133080)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:53 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  25.8255
+                        },
+                        {
+                            "Category":  "Escalation",
+                            "TestName":  "Escalation Trigger - Consecutive Failures",
+                            "Output":  {
+                                           "EscalationLevels":  [
+                                                                    {
+                                                                        "Description":  "Automated Recovery",
+                                                                        "Level":  1,
+                                                                        "TimeoutMs":  60000
+                                                                    },
+                                                                    {
+                                                                        "Description":  "System Administrator",
+                                                                        "Level":  2,
+                                                                        "TimeoutMs":  300000
+                                                                    },
+                                                                    {
+                                                                        "Description":  "Emergency Response",
+                                                                        "Level":  3,
+                                                                        "TimeoutMs":  900000
+                                                                    }
+                                                                ],
+                                           "Reasons":  [
+                                                           "Consecutive failure threshold exceeded: 5"
+                                                       ],
+                                           "RecommendedLevel":  2,
+                                           "EscalationRequired":  true
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553133106)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:53 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  32.9495
+                        },
+                        {
+                            "Category":  "Escalation",
+                            "TestName":  "Human Escalation - Create Notification",
+                            "Output":  {
+                                           "EscalationFile":  "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Escalations\\ESC_20250818_173853_L2.json",
+                                           "Level":  2,
+                                           "Success":  true,
+                                           "EscalationId":  "ESC_20250818_173853_L2"
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553133138)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:53 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  205.1802
+                        },
+                        {
+                            "Category":  "Safe Mode",
+                            "TestName":  "Safe Mode - Enable and Disable",
+                            "Output":  {
+                                           "BlockedInSafeMode":  true,
+                                           "AllowedInSafeMode":  true,
+                                           "AllowedAfterDisable":  true,
+                                           "EnableSuccess":  [
+                                                                 true,
+                                                                 true
+                                                             ],
+                                           "DisableSuccess":  true
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553133344)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:53 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  166.985
+                        },
+                        {
+                            "Category":  "Recovery",
+                            "TestName":  "Recovery Checkpoint - Create and Restore",
+                            "Output":  {
+                                           "CreateSuccess":  true,
+                                           "RestoreSuccess":  true,
+                                           "DataIntegrity":  true
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553133511)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:53 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  244.19670000000002
+                        },
+                        {
+                            "Category":  "Diagnostics",
+                            "TestName":  "Diagnostic Data Collection",
+                            "Output":  {
+                                           "SystemState":  {
+                                                               "SafeModeActive":  false,
+                                                               "CircuitBreakers":  null,
+                                                               "ModuleVersion":  "3.0.0"
+                                                           },
+                                           "CollectedAt":  {
+                                                               "value":  "\/Date(1755553133775)\/",
+                                                               "DisplayHint":  2,
+                                                               "DateTime":  "Monday, August 18, 2025 5:38:53 PM"
+                                                           },
+                                           "ErrorHistory":  {
+                                                                "Timestamp":  {
+                                                                                  "value":  "\/Date(1755553133770)\/",
+                                                                                  "DisplayHint":  2,
+                                                                                  "DateTime":  "Monday, August 18, 2025 5:38:53 PM"
+                                                                              },
+                                                                "Data":  {
+                                                                             "Message":  "Test error for diagnostics",
+                                                                             "ErrorCode":  "TEST001"
+                                                                         },
+                                                                "Type":  "Error"
+                                                            },
+                                           "ProcessInfo":  {
+                                                               "ProcessId":  12216,
+                                                               "Threads":  34,
+                                                               "ProcessName":  "powershell",
+                                                               "StartTime":  "\/Date(1755553124763)\/"
+                                                           },
+                                           "PerformanceMetrics":  {
+                                                                      "Timestamp":  {
+                                                                                        "value":  "\/Date(1755553133772)\/",
+                                                                                        "DisplayHint":  2,
+                                                                                        "DateTime":  "Monday, August 18, 2025 5:38:53 PM"
+                                                                                    },
+                                                                      "Data":  {
+                                                                                   "Duration":  1500,
+                                                                                   "OperationName":  "TestOperation"
+                                                                               },
+                                                                      "Type":  "Performance"
+                                                                  },
+                                           "MemoryUsage":  {
+                                                               "WorkingSetMB":  158.1,
+                                                               "VirtualMemoryMB":  2102006.84,
+                                                               "HandleCount":  791
+                                                           }
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553133755)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:53 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  164.9143
+                        },
+                        {
+                            "Category":  "Diagnostics",
+                            "TestName":  "System Metrics Collection",
+                            "Output":  {
+                                           "ProcessId":  12216,
+                                           "WorkingSet":  165801984,
+                                           "Timestamp":  {
+                                                             "value":  "\/Date(1755553133939)\/",
+                                                             "DisplayHint":  2,
+                                                             "DateTime":  "Monday, August 18, 2025 5:38:53 PM"
+                                                         },
+                                           "HandleCount":  792,
+                                           "VirtualMemory":  2204113920000
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553133920)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:53 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  112.6479
+                        },
+                        {
+                            "Category":  "Configuration",
+                            "TestName":  "Error Classification Configuration",
+                            "Output":  [
+                                           true,
+                                           {
+                                               "CustomAdded":  true,
+                                               "ConfigUpdated":  true
+                                           }
+                                       ],
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553134032)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:54 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  30.0776
+                        },
+                        {
+                            "Category":  "Integration",
+                            "TestName":  "Integration - Retry with Circuit Breaker",
+                            "StartTime":  {
+                                              "value":  "\/Date(1755553134062)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 5:38:54 PM"
+                                          },
+                            "Duration":  160.95350000000002,
+                            "Status":  "Failed",
+                            "Error":  "Should fail due to circuit breaker"
+                        }
+                    ],
+    "TestDate":  {
+                     "value":  "\/Date(1755553130832)\/",
+                     "DisplayHint":  2,
+                     "DateTime":  "Monday, August 18, 2025 5:38:50 PM"
+                 },
+    "TotalTests":  20
+}

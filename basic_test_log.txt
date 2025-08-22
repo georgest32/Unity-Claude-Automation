@@ -1,0 +1,28 @@
+[2025-08-19 13:19:48.483] [INFO] ========================================
+[2025-08-19 13:19:48.488] [INFO] Day 18 Hour 2.5: Basic Module Loading Test
+[2025-08-19 13:19:48.491] [INFO] Purpose: Identify source of PowerShell window crash
+[2025-08-19 13:19:48.504] [INFO] ========================================
+[2025-08-19 13:19:48.508] [INFO] Test 1: Checking if Unity-Claude-SystemStatus module file exists
+[2025-08-19 13:19:48.511] [OK] Module file found: .\Modules\Unity-Claude-SystemStatus\Unity-Claude-SystemStatus.psm1
+[2025-08-19 13:19:48.511] [INFO] Test 2: Reading module content to check for syntax issues
+[2025-08-19 13:19:48.516] [OK] Module content read successfully: 66682 characters
+[2025-08-19 13:19:48.518] [INFO] Test 3: Checking PowerShell syntax validation
+[2025-08-19 13:19:49.540] [OK] PowerShell syntax validation passed: No syntax errors found
+[2025-08-19 13:19:49.540] [INFO] Test 4: Testing System.Core assembly loading
+[2025-08-19 13:19:49.546] [OK] System.Core assembly loaded successfully
+[2025-08-19 13:19:49.546] [INFO] Test 5: Testing concurrent collections creation
+[2025-08-19 13:19:49.549] [OK] Concurrent collections created successfully
+[2025-08-19 13:19:49.550] [INFO] Test 6: Attempting to import Unity-Claude-SystemStatus module
+[2025-08-19 13:19:49.550] [DEBUG] Starting module import...
+[2025-08-19 13:19:49.570] [OK] Module imported successfully
+[2025-08-19 13:19:49.578] [INFO] Module functions available: 30
+[2025-08-19 13:19:49.578] [INFO] Test 7: Testing basic module function execution
+[2025-08-19 13:19:49.586] [OK] Basic module function executed successfully
+[2025-08-19 13:19:49.586] [INFO] Test 8: Testing module cleanup
+[2025-08-19 13:19:49.592] [OK] Module removed successfully
+[2025-08-19 13:19:49.592] [INFO] ========================================
+[2025-08-19 13:19:49.592] [INFO] Basic Module Loading Test Complete
+[2025-08-19 13:19:49.595] [INFO] If this test completed without crashing, the issue is in specific module functions
+[2025-08-19 13:19:49.595] [INFO] ========================================
+[2025-08-19 13:19:49.599] [OK] Results saved to: basic_module_test_results.txt
+[2025-08-19 13:19:49.599] [INFO] Basic test complete - Press Enter to continue or Ctrl+C to exit

@@ -1,0 +1,116 @@
+# Unity-Claude-Automation .gitignore
+
+# PowerShell Module Development
+*.psd1.backup
+*.psm1.backup
+*.ps1.backup
+*.ps5backup
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+unity_claude_automation.log
+autonomous_submissions.log
+system_status.json
+SystemStatusMonitoring_*.log
+
+# Test Results
+Test-*-Results_*.txt
+Test-*-Results_*.json
+*_test_results.txt
+*_test_results.json
+
+# Export files
+Export-Tools/ErrorExport_*.md
+Export-Tools/ErrorExport_*.txt
+Export-Tools/ErrorExport_*.json
+
+# Claude Responses (keep structure but ignore timestamped files)
+ClaudeResponses/**/*_????????_??????.json
+ClaudeResponses/**/*_????????_??????.txt
+!ClaudeResponses/.gitkeep
+
+# Backup directories
+Backups/
+backup/
+*.backup/
+
+# Configuration files with sensitive data
+*.credential
+*.token
+github.credential
+config.local.json
+settings.local.json
+
+# Windows specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# PowerShell specific
+*.pssc
+*.psproj
+*.psprojs
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# IDE directories
+.idea/
+*.iml
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Temporary PowerShell sessions
+PSSession_*
+*.runspace
+
+# Unity Editor logs (when testing Unity integration)
+Editor.log
+Editor-prev.log
+
+# Local environment variables
+.env
+.env.local
+.env.*.local
+
+# Process tracking files
+.claude_code_cli_pid
+*_pid.txt
+*.pid
+
+# Module package output
+Output/
+bin/
+obj/
+
+# NuGet packages
+*.nupkg
+packages/
+
+# Temporary migration files
+PS7Migration_*/
+*Migration_*/
+
+# Keep important directories
+!Modules/
+!Documentation/
+!Testing/
+!Research/
+!API-Integration/
+!CLI-Automation/

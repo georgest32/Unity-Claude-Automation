@@ -1,0 +1,45 @@
+{
+  "environment": "production",
+  "autonomous_operation": {
+    "safety_mode": true,
+    "debug_mode": false,
+    "retry_attempts": 3,
+    "response_timeout_ms": 300000
+  },
+  "monitoring_thresholds": {
+    "memory_warning_mb": 600,
+    "memory_critical_mb": 1200,
+    "cpu_warning_percentage": 80,
+    "cpu_critical_percentage": 90,
+    "heartbeat_interval_seconds": 60,
+    "health_check_interval_seconds": 30
+  },
+  "user_preferences": {
+    "detailed_logging": false,
+    "debug_mode": false,
+    "window_focus_enabled": true,
+    "mouse_keyboard_lock": true
+  },
+  "dashboard_settings": {
+    "refresh_interval_seconds": 60,
+    "metrics_retention_hours": 48,
+    "real_time_updates": true
+  },
+  "notification_settings": {
+    "console_notifications": false,
+    "file_notifications": true,
+    "dashboard_notifications": true,
+    "severity_levels": {
+      "info": false,
+      "warning": true,
+      "error": true,
+      "critical": true
+    }
+  },
+  "performance_settings": {
+    "max_concurrent_operations": 3,
+    "memory_limit_mb": 3072,
+    "cleanup_interval_minutes": 60,
+    "log_rotation_size_mb": 200
+  }
+}

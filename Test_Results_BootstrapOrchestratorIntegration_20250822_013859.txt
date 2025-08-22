@@ -1,0 +1,62 @@
+[2025-08-22 01:38:59.725] [INFO] [Integration] =====================================================
+[2025-08-22 01:38:59.740] [INFO] [Integration] BOOTSTRAP ORCHESTRATOR INTEGRATION TESTS
+[2025-08-22 01:38:59.742] [INFO] [Integration] Phase 3 Day 1 - Hour 3-4: End-to-End Testing
+[2025-08-22 01:38:59.745] [INFO] [Integration] =====================================================
+[2025-08-22 01:38:59.748] [INFO] [Integration] Integration tests started at: 08/22/2025 01:38:59
+[2025-08-22 01:38:59.750] [INFO] [Integration] Output file: .\Test_Results_BootstrapOrchestratorIntegration_20250822_013859.txt
+[2025-08-22 01:38:59.764] [INFO] [Integration] 
+[2025-08-22 01:38:59.766] [INFO] [Integration] Importing Unity-Claude-SystemStatus module...
+[2025-08-22 01:39:00.007] [OK] [Integration] Module imported successfully
+[2025-08-22 01:39:00.013] [OK] [Integration] All required Bootstrap Orchestrator functions verified
+[2025-08-22 01:39:00.015] [INFO] [Integration] 
+[2025-08-22 01:39:00.018] [INFO] [Integration] INTEGRATION TEST 1: End-to-End Workflow
+[2025-08-22 01:39:00.020] [INFO] [Integration] =========================================
+[2025-08-22 01:39:00.021] [INFO] [EndToEndWorkflow] Testing complete Bootstrap Orchestrator workflow...
+[2025-08-22 01:39:00.027] [OK] [EndToEndWorkflow] Created test manifests
+[2025-08-22 01:39:00.028] [DEBUG] [EndToEndWorkflow] Testing manifest discovery...
+[2025-08-22 01:39:00.041] [ERROR] [EndToEndWorkflow] Exception in End-to-End Workflow test: A parameter cannot be found that matches parameter name 'SearchPath'.
+[2025-08-22 01:39:00.045] [INFO] [Integration] 
+[2025-08-22 01:39:00.046] [INFO] [Integration] INTEGRATION TEST 2: Cross-Process Mutex Testing
+[2025-08-22 01:39:00.048] [INFO] [Integration] ===============================================
+[2025-08-22 01:39:00.050] [INFO] [CrossProcessMutex] Testing mutex coordination across PowerShell sessions...
+[2025-08-22 01:39:00.051] [DEBUG] [CrossProcessMutex] Starting external process to hold mutex...
+[2025-08-22 01:39:01.187] [DEBUG] [CrossProcessMutex] Attempting to acquire mutex from current session...
+[2025-08-22 01:39:01.224] [ERROR] [CrossProcessMutex] Cross-process mutex blocking failed - acquired when should be blocked
+[2025-08-22 01:39:01.254] [DEBUG] [CrossProcessMutex] Waiting for external process to release mutex...
+[2025-08-22 01:39:08.510] [OK] [CrossProcessMutex] Mutex acquisition after external release successful
+[2025-08-22 01:39:08.520] [INFO] [CrossProcessMutex] Cross-Process Mutex test completed
+[2025-08-22 01:39:08.524] [INFO] [Integration] 
+[2025-08-22 01:39:08.525] [INFO] [Integration] INTEGRATION TEST 3: Configuration System Integration
+[2025-08-22 01:39:08.528] [INFO] [Integration] ====================================================
+[2025-08-22 01:39:08.529] [INFO] [ConfigurationIntegration] Testing configuration loading and integration...
+[2025-08-22 01:39:08.529] [OK] [ConfigurationIntegration] Configuration system functions available
+[2025-08-22 01:39:08.604] [OK] [ConfigurationIntegration] Configuration loading successful
+[2025-08-22 01:39:08.608] [WARN] [ConfigurationIntegration] Configuration missing required keys
+[2025-08-22 01:39:08.610] [INFO] [ConfigurationIntegration] Configuration System Integration test completed
+[2025-08-22 01:39:08.612] [INFO] [Integration] 
+[2025-08-22 01:39:08.612] [INFO] [Integration] INTEGRATION TEST 4: Startup Sequence Validation
+[2025-08-22 01:39:08.613] [INFO] [Integration] ================================================
+[2025-08-22 01:39:08.614] [INFO] [StartupSequence] Testing complete startup sequence with multiple subsystems...
+[2025-08-22 01:39:08.926] [OK] [StartupSequence] Complex startup sequence validation passed
+[2025-08-22 01:39:08.932] [ERROR] [StartupSequence] Exception in Startup Sequence test: Exception calling "IndexOf" with "2" argument(s): "Value cannot be null.
+Parameter name: array"
+[2025-08-22 01:39:08.937] [INFO] [Integration] 
+[2025-08-22 01:39:08.939] [INFO] [Integration] =====================================================
+[2025-08-22 01:39:08.942] [INFO] [Integration] BOOTSTRAP ORCHESTRATOR INTEGRATION TESTS COMPLETED
+[2025-08-22 01:39:08.943] [INFO] [Integration] =====================================================
+[2025-08-22 01:39:08.946] [INFO] [Integration] End time: 08/22/2025 01:39:08
+[2025-08-22 01:39:08.949] [INFO] [Integration] Total duration: 9.2104982 seconds
+[2025-08-22 01:39:08.950] [INFO] [Integration] 
+[2025-08-22 01:39:08.950] [INFO] [Integration] Integration Test Summary:
+[2025-08-22 01:39:08.951] [OK] [Integration]   Successful Tests: 3
+[2025-08-22 01:39:08.952] [ERROR] [Integration]   Failed Tests: 3
+[2025-08-22 01:39:08.957] [ERROR] [Integration]   Success Rate: 50%
+[2025-08-22 01:39:08.959] [INFO] [Integration] 
+[2025-08-22 01:39:08.960] [INFO] [Integration] Key Integration Achievements:
+[2025-08-22 01:39:08.962] [INFO] [Integration]   ??? End-to-End workflow validation
+[2025-08-22 01:39:08.963] [INFO] [Integration]   ??? Cross-process mutex coordination testing
+[2025-08-22 01:39:08.964] [INFO] [Integration]   ??? Manifest discovery and validation integration
+[2025-08-22 01:39:08.965] [INFO] [Integration]   ??? Dependency resolution with parallel execution
+[2025-08-22 01:39:08.965] [INFO] [Integration]   ??? Complex startup sequence validation
+[2025-08-22 01:39:08.966] [INFO] [Integration] 
+[2025-08-22 01:39:08.966] [INFO] [Integration] Saving integration test results to: .\Test_Results_BootstrapOrchestratorIntegration_20250822_013859.txt

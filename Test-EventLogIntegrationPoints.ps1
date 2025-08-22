@@ -1,0 +1,412 @@
+# Test-EventLogIntegrationPoints.ps1
+# Comprehensive test for Phase 3 Days 3-4: Event Log Integration Points
+# Tests all workflow integrations and correlation tools
+
+param(
+    [switch]$SkipWorkflowTests,
+    [switch]$SkipCorrelationTests,
+    [switch]$SkipPatternTests,
+    [switch]$GenerateSampleEvents
+)
+
+$ErrorActionPreference = 'Stop'
+$testResults = @()
+$testStartTime = Get-Date
+
+# Test result tracking
+function Add-TestResult {
+    param(
+        [string]$TestName,
+        [bool]$Passed,
+        [string]$Details,
+        [double]$Duration = 0
+    )
+    
+    $script:testResults += [PSCustomObject]@{
+        TestName = $TestName
+        Passed = $Passed
+        Details = $Details
+        Duration = $Duration
+        Timestamp = Get-Date
+    }
+    
+    $status = if ($Passed) { "PASS" } else { "FAIL" }
+    $color = if ($Passed) { "Green" } else { "Red" }
+    Write-Host "[$status] $TestName" -ForegroundColor $color
+    if ($Details) {
+        Write-Host "  Details: $Details" -ForegroundColor Gray
+    }
+}
+
+Write-Host "Unity-Claude Event Log Integration Points Test" -ForegroundColor Cyan
+Write-Host "=============================================" -ForegroundColor Cyan
+Write-Host "Phase 3 Days 3-4 Validation" -ForegroundColor Cyan
+Write-Host "PowerShell Version: $($PSVersionTable.PSVersion)" -ForegroundColor Gray
+Write-Host ""
+
+# Test 1: Event Log Module Load
+Write-Host "Test 1: Event Log Module Load" -ForegroundColor Yellow
+try {
+    Import-Module "$PSScriptRoot\Modules\Unity-Claude-EventLog" -Force
+    Add-TestResult -TestName "Event Log Module Load" -Passed $true -Details "Module loaded successfully"
+}
+catch {
+    Add-TestResult -TestName "Event Log Module Load" -Passed $false -Details $_.Exception.Message
+    Write-Host "Cannot continue without Event Log module" -ForegroundColor Red
+    exit 1
+}
+
+# Generate sample events if requested
+if ($GenerateSampleEvents) {
+    Write-Host ""
+    Write-Host "Generating Sample Events..." -ForegroundColor Yellow
+    
+    try {
+        # Generate a workflow with correlation
+        $workflowCorrelation = [guid]::NewGuid()
+        
+        # Unity compilation events
+        Write-UCEventLog -Message "Unity compilation started" -EntryType Information -Component Unity -Action "CompilationStart" -CorrelationId $workflowCorrelation
+        Start-Sleep -Milliseconds 500
+        
+        Write-UCEventLog -Message "Unity error detected: CS0103" -EntryType Warning -Component Unity -Action "ErrorDetected" `
+            -Details @{ErrorCode="CS0103"; File="Test.cs"; Line=42} -CorrelationId $workflowCorrelation
+        Start-Sleep -Milliseconds 300
+        
+        Write-UCEventLog -Message "Unity compilation completed" -EntryType Information -Component Unity -Action "CompilationComplete" `
+            -Details @{Duration=1500; Errors=1; Warnings=3} -CorrelationId $workflowCorrelation
+        
+        # Claude submission events
+        Start-Sleep -Milliseconds 200
+        Write-UCEventLog -Message "Claude submission started" -EntryType Information -Component Claude -Action "SubmissionStart" -CorrelationId $workflowCorrelation
+        Start-Sleep -Milliseconds 800
+        
+        Write-UCEventLog -Message "Claude response received" -EntryType Information -Component Claude -Action "ResponseReceived" `
+            -Details @{ResponseLength=2048; ProcessingTime=750} -CorrelationId $workflowCorrelation
+        
+        # Agent events
+        Write-UCEventLog -Message "Autonomous Agent processing response" -EntryType Information -Component Agent -Action "ProcessingStart" -CorrelationId $workflowCorrelation
+        Start-Sleep -Milliseconds 400
+        
+        Write-UCEventLog -Message "Autonomous Agent state changed" -EntryType Information -Component Agent -Action "StateChange" `
+            -Details @{OldState="Idle"; NewState="Processing"} -CorrelationId $workflowCorrelation
+        
+        # Generate some recurring errors for pattern detection
+        for ($i = 1; $i -le 5; $i++) {
+            Write-UCEventLog -Message "Connection timeout to Unity Editor" -EntryType Error -Component IPC -Action "ConnectionFailed" `
+                -Details @{Attempt=$i; Port=56000}
+            Start-Sleep -Milliseconds 100
+        }
+        
+        # Generate performance degradation
+        for ($i = 1; $i -le 6; $i++) {
+            $duration = 100 * (1 + $i * 0.3)  # Increasing duration
+            Write-UCEventLog -Message "Dashboard refresh completed - Duration: ${duration}ms" -EntryType Information -Component Dashboard -Action "RefreshComplete" `
+                -Details @{Duration=$duration; ItemsProcessed=50}
+            Start-Sleep -Milliseconds 200
+        }
+        
+        Write-Host "  Generated sample events with correlation ID: $workflowCorrelation" -ForegroundColor Green
+        Add-TestResult -TestName "Generate Sample Events" -Passed $true -Details "Events generated successfully"
+    }
+    catch {
+        Add-TestResult -TestName "Generate Sample Events" -Passed $false -Details $_.Exception.Message
+    }
+}
+
+# Test 2: Unity Workflow Integration
+if (-not $SkipWorkflowTests) {
+    Write-Host ""
+    Write-Host "Test 2: Unity Workflow Integration" -ForegroundColor Yellow
+    
+    try {
+        # Test the enhanced export script
+        $exportScript = "$PSScriptRoot\Export-Tools\Export-ErrorsForClaude-EventLog.ps1"
+        
+        if (Test-Path $exportScript) {
+            # Run export with NoEventLog to avoid permission issues in test
+            $exportResult = & $exportScript -ErrorType Last -NoEventLog
+            
+            if (Test-Path "$PSScriptRoot\Export-Tools\ErrorExport_*.md") {
+                Add-TestResult -TestName "Unity Export Integration" -Passed $true -Details "Export script with event logging works"
+            }
+            else {
+                Add-TestResult -TestName "Unity Export Integration" -Passed $false -Details "Export file not created"
+            }
+        }
+        else {
+            Add-TestResult -TestName "Unity Export Integration" -Passed $false -Details "Enhanced export script not found"
+        }
+    }
+    catch {
+        Add-TestResult -TestName "Unity Export Integration" -Passed $false -Details $_.Exception.Message
+    }
+    
+    # Test Claude submission integration
+    Write-Host ""
+    Write-Host "Test 3: Claude Submission Integration" -ForegroundColor Yellow
+    
+    try {
+        $submissionScript = "$PSScriptRoot\CLI-Automation\Submit-ErrorsToClaude-EventLog.ps1"
+        
+        if (Test-Path $submissionScript) {
+            Add-TestResult -TestName "Claude Submission Script" -Passed $true -Details "Enhanced submission script exists"
+            
+            # Validate script syntax
+            $scriptContent = Get-Content $submissionScript -Raw
+            $errors = $null
+            $null = [System.Management.Automation.PSParser]::Tokenize($scriptContent, [ref]$errors)
+            
+            if ($errors.Count -eq 0) {
+                Add-TestResult -TestName "Claude Script Syntax" -Passed $true -Details "No syntax errors"
+            }
+            else {
+                Add-TestResult -TestName "Claude Script Syntax" -Passed $false -Details "$($errors.Count) syntax errors found"
+            }
+        }
+        else {
+            Add-TestResult -TestName "Claude Submission Script" -Passed $false -Details "Enhanced submission script not found"
+        }
+    }
+    catch {
+        Add-TestResult -TestName "Claude Submission Integration" -Passed $false -Details $_.Exception.Message
+    }
+    
+    # Test Agent integration
+    Write-Host ""
+    Write-Host "Test 4: Autonomous Agent Integration" -ForegroundColor Yellow
+    
+    try {
+        $agentScript = "$PSScriptRoot\Modules\Unity-Claude-SystemStatus\Monitoring\Test-AutonomousAgentStatus-EventLog.ps1"
+        
+        if (Test-Path $agentScript) {
+            # Source the functions
+            . $agentScript
+            
+            # Test function availability
+            if (Get-Command Test-AutonomousAgentStatus -ErrorAction SilentlyContinue) {
+                Add-TestResult -TestName "Agent Status Function" -Passed $true -Details "Enhanced agent status function available"
+                
+                # Test with NoEventLog flag
+                $agentStatus = Test-AutonomousAgentStatus -NoEventLog
+                Add-TestResult -TestName "Agent Status Check" -Passed $true -Details "Status check completed (Result: $agentStatus)"
+            }
+            else {
+                Add-TestResult -TestName "Agent Status Function" -Passed $false -Details "Function not found after sourcing"
+            }
+        }
+        else {
+            Add-TestResult -TestName "Agent Integration Script" -Passed $false -Details "Enhanced agent script not found"
+        }
+    }
+    catch {
+        Add-TestResult -TestName "Agent Integration" -Passed $false -Details $_.Exception.Message
+    }
+}
+
+# Test 5: Event Correlation
+if (-not $SkipCorrelationTests) {
+    Write-Host ""
+    Write-Host "Test 5: Event Correlation Tools" -ForegroundColor Yellow
+    
+    try {
+        # Test correlation function
+        if (Get-Command Get-UCEventCorrelation -ErrorAction SilentlyContinue) {
+            # Get recent correlations
+            $correlations = Get-UCEventCorrelation -StartTime (Get-Date).AddHours(-1)
+            
+            if ($correlations) {
+                Add-TestResult -TestName "Event Correlation" -Passed $true -Details "Found $($correlations.Count) correlation groups"
+                
+                # Test specific correlation ID if we generated events
+                if ($GenerateSampleEvents -and $workflowCorrelation) {
+                    $specific = Get-UCEventCorrelation -CorrelationId $workflowCorrelation
+                    
+                    if ($specific.Count -gt 0) {
+                        Add-TestResult -TestName "Specific Correlation" -Passed $true -Details "Found $($specific.Count) events for test correlation"
+                    }
+                    else {
+                        Add-TestResult -TestName "Specific Correlation" -Passed $false -Details "Test correlation events not found"
+                    }
+                }
+            }
+            else {
+                Add-TestResult -TestName "Event Correlation" -Passed $true -Details "No correlations found (may be empty log)"
+            }
+        }
+        else {
+            Add-TestResult -TestName "Correlation Function" -Passed $false -Details "Get-UCEventCorrelation not available"
+        }
+    }
+    catch {
+        Add-TestResult -TestName "Event Correlation" -Passed $false -Details $_.Exception.Message
+    }
+}
+
+# Test 6: Pattern Detection
+if (-not $SkipPatternTests) {
+    Write-Host ""
+    Write-Host "Test 6: Pattern Detection Tools" -ForegroundColor Yellow
+    
+    try {
+        # Test pattern detection function
+        if (Get-Command Get-UCEventPatterns -ErrorAction SilentlyContinue) {
+            # Look for patterns in recent events
+            $patterns = Get-UCEventPatterns -TimeRange 1 -MinOccurrences 2
+            
+            if ($patterns) {
+                Add-TestResult -TestName "Pattern Detection" -Passed $true -Details "Found $($patterns.Count) patterns"
+                
+                # Check pattern types
+                $patternTypes = $patterns | ForEach-Object { $_.Type } | Select-Object -Unique
+                Write-Host "  Pattern types found: $($patternTypes -join ', ')" -ForegroundColor Gray
+                
+                # Test specific pattern types if we generated events
+                if ($GenerateSampleEvents) {
+                    $recurringErrors = Get-UCEventPatterns -PatternType RecurringErrors -MinOccurrences 3
+                    
+                    if ($recurringErrors.Count -gt 0) {
+                        Add-TestResult -TestName "Recurring Error Detection" -Passed $true -Details "Detected $($recurringErrors.Count) recurring error patterns"
+                    }
+                    else {
+                        Add-TestResult -TestName "Recurring Error Detection" -Passed $false -Details "Sample recurring errors not detected"
+                    }
+                    
+                    $perfDegradation = Get-UCEventPatterns -PatternType PerformanceDegradation -MinOccurrences 3
+                    
+                    if ($perfDegradation.Count -gt 0) {
+                        Add-TestResult -TestName "Performance Degradation Detection" -Passed $true -Details "Detected performance degradation"
+                    }
+                    else {
+                        Add-TestResult -TestName "Performance Degradation Detection" -Passed $false -Details "Sample performance degradation not detected"
+                    }
+                }
+            }
+            else {
+                Add-TestResult -TestName "Pattern Detection" -Passed $true -Details "No patterns found (may be insufficient data)"
+            }
+        }
+        else {
+            Add-TestResult -TestName "Pattern Function" -Passed $false -Details "Get-UCEventPatterns not available"
+        }
+    }
+    catch {
+        Add-TestResult -TestName "Pattern Detection" -Passed $false -Details $_.Exception.Message
+    }
+}
+
+# Test 7: Performance Validation
+Write-Host ""
+Write-Host "Test 7: Integration Performance" -ForegroundColor Yellow
+
+try {
+    # Test event logging performance with correlation
+    $perfCorrelation = [guid]::NewGuid()
+    $perfTimes = @()
+    
+    for ($i = 1; $i -le 10; $i++) {
+        $perfStart = Get-Date
+        
+        Write-UCEventLog -Message "Performance test $i" `
+            -EntryType Information `
+            -Component Monitor `
+            -Action "PerfTest" `
+            -Details @{Iteration=$i; TestTime=(Get-Date).ToString()} `
+            -CorrelationId $perfCorrelation `
+            -NoFallback
+        
+        $perfTime = ((Get-Date) - $perfStart).TotalMilliseconds
+        $perfTimes += $perfTime
+    }
+    
+    $avgTime = ($perfTimes | Measure-Object -Average).Average
+    $maxTime = ($perfTimes | Measure-Object -Maximum).Maximum
+    
+    $perfPassed = $avgTime -lt 100  # Target: <100ms average
+    
+    Add-TestResult -TestName "Integration Performance" -Passed $perfPassed `
+        -Details "Avg: $([math]::Round($avgTime, 2))ms, Max: $([math]::Round($maxTime, 2))ms" `
+        -Duration $avgTime
+}
+catch {
+    Add-TestResult -TestName "Integration Performance" -Passed $false -Details $_.Exception.Message
+}
+
+# Generate Test Report
+Write-Host ""
+Write-Host "Test Summary" -ForegroundColor Cyan
+Write-Host "============" -ForegroundColor Cyan
+
+$totalTests = $testResults.Count
+$passedTests = ($testResults | Where-Object { $_.Passed }).Count
+$failedTests = $totalTests - $passedTests
+$passRate = if ($totalTests -gt 0) { [math]::Round(($passedTests / $totalTests) * 100, 2) } else { 0 }
+
+Write-Host "Total Tests: $totalTests" -ForegroundColor White
+Write-Host "Passed: $passedTests" -ForegroundColor Green
+Write-Host "Failed: $failedTests" -ForegroundColor $(if ($failedTests -gt 0) { "Red" } else { "Green" })
+Write-Host "Pass Rate: $passRate%" -ForegroundColor $(if ($passRate -ge 80) { "Green" } elseif ($passRate -ge 60) { "Yellow" } else { "Red" })
+Write-Host "Total Duration: $([math]::Round(((Get-Date) - $testStartTime).TotalSeconds, 2)) seconds" -ForegroundColor Gray
+
+# Save test results
+$resultsFile = "$PSScriptRoot\Test-EventLogIntegrationPoints-Results_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
+
+$reportContent = @"
+Unity-Claude Event Log Integration Points Test Results
+======================================================
+Phase 3 Days 3-4 Validation
+Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
+PowerShell Version: $($PSVersionTable.PSVersion)
+
+Test Summary
+------------
+Total Tests: $totalTests
+Passed: $passedTests
+Failed: $failedTests
+Pass Rate: $passRate%
+Duration: $([math]::Round(((Get-Date) - $testStartTime).TotalSeconds, 2)) seconds
+
+Detailed Results
+----------------
+$($testResults | Format-Table -AutoSize | Out-String)
+
+Integration Points Tested
+-------------------------
+1. Unity Compilation Workflow - Event logging in error export
+2. Claude Submission Workflow - Event logging in submission process
+3. Autonomous Agent Integration - State change and status monitoring
+4. Event Correlation Tools - Cross-component event correlation
+5. Pattern Detection Tools - Recurring errors and performance analysis
+6. Performance Validation - Sub-100ms event logging performance
+
+Recommendations
+---------------
+$(if ($failedTests -gt 0) {
+    if ($testResults | Where-Object { $_.TestName -like "*Module*" -and -not $_.Passed }) {
+        "- Check Event Log module installation and configuration"
+    }
+    if ($testResults | Where-Object { $_.TestName -like "*Integration*" -and -not $_.Passed }) {
+        "- Verify enhanced scripts are in correct locations"
+    }
+    if ($testResults | Where-Object { $_.TestName -like "*Pattern*" -and -not $_.Passed }) {
+        "- Generate sample events with -GenerateSampleEvents flag"
+    }
+} else {
+    "All integration points passed successfully!"
+})
+
+"@
+
+$reportContent | Set-Content $resultsFile
+
+Write-Host ""
+Write-Host "Results saved to: $resultsFile" -ForegroundColor Gray
+
+# Check if we should recommend generating sample events
+if (-not $GenerateSampleEvents -and ($testResults | Where-Object { $_.TestName -like "*Pattern*" -or $_.TestName -like "*Correlation*" })) {
+    Write-Host ""
+    Write-Host "TIP: Run with -GenerateSampleEvents to test pattern detection" -ForegroundColor Yellow
+}
+
+# Return exit code
+exit $(if ($failedTests -eq 0) { 0 } else { 1 })

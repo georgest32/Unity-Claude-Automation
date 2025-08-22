@@ -1,0 +1,469 @@
+{
+    "SkippedTests":  1,
+    "Summary":  "\r\n=== WEEK 6 DAYS 3-4 TESTING \u0026 RELIABILITY SUMMARY ===\r\nTotal Tests: 25\r\nPassed: 11\r\nFailed: 13\r\nSkipped: 1\r\nSuccess Rate: 44%\r\nDuration: 6.1681211 seconds\r\n\r\nPhase Breakdown:\r\n- Phase 1 (Enhanced Reliability System): 5 tests\r\n- Phase 2 (Delivery Reliability): 3 tests\r\n- Phase 3 (Load Testing \u0026 Performance): 2 tests  \r\n- Phase 4 (Integration \u0026 End-to-End): 3 tests\r\n\r\nKey Achievements:\r\n- ✅ Enhanced reliability system with circuit breakers implemented\r\n- ✅ Dead letter queue for failed notification management\r\n- ✅ Fallback mechanisms for multi-channel delivery\r\n- ✅ Performance testing and metrics collection\r\n- ✅ Bootstrap Orchestrator integration validated\r\n\r\nReliability Metrics:\r\n- Overall System Success Rate: 77.78%\r\n- System Uptime: 0.1 minutes\r\n- Dead Letter Queue Length: 1\r\n\r\nStatus: NEEDS ATTENTION",
+    "TotalTests":  25,
+    "ReliabilityMetrics":  {
+                               "CircuitBreakers":  {
+                                                       "EmailState":  "Closed",
+                                                       "EmailLastFailure":  "\/Date(1755888123653)\/",
+                                                       "WebhookLastFailure":  "\/Date(1755888119866)\/",
+                                                       "WebhookFailureCount":  1,
+                                                       "WebhookState":  "Closed",
+                                                       "EmailFailureCount":  0
+                                                   },
+                               "EmailNotifications":  {
+                                                          "Failures":  2,
+                                                          "SuccessRate":  77.78,
+                                                          "Successes":  7,
+                                                          "CurrentCircuitBreakerState":  "Closed",
+                                                          "CircuitBreakerActivations":  0,
+                                                          "FallbackActivations":  0,
+                                                          "AverageResponseTime":  2.9,
+                                                          "TotalAttempts":  9
+                                                      },
+                               "SystemStatus":  {
+                                                    "TotalSuccessfulDeliveries":  7,
+                                                    "TotalDeliveryAttempts":  9,
+                                                    "SystemUptime":  0.09754906,
+                                                    "LastUpdated":  {
+                                                                        "value":  "\/Date(1755888125703)\/",
+                                                                        "DisplayHint":  2,
+                                                                        "DateTime":  "Friday, August 22, 2025 2:42:05 PM"
+                                                                    },
+                                                    "OverallSuccessRate":  77.78,
+                                                    "TotalFailedDeliveries":  2
+                                                },
+                               "WebhookNotifications":  {
+                                                            "Failures":  0,
+                                                            "SuccessRate":  0,
+                                                            "Successes":  0,
+                                                            "CurrentCircuitBreakerState":  "Closed",
+                                                            "CircuitBreakerActivations":  0,
+                                                            "FallbackActivations":  0,
+                                                            "AverageResponseTime":  0,
+                                                            "TotalAttempts":  0
+                                                        },
+                               "DeadLetterQueue":  {
+                                                       "LastProcessingTime":  "\/Date(1755888119911)\/",
+                                                       "MessagesPermanentlyFailed":  0,
+                                                       "MessagesAdded":  1,
+                                                       "MessagesRecovered":  0,
+                                                       "QueueLength":  1,
+                                                       "MessagesProcessed":  0,
+                                                       "Enabled":  true
+                                                   }
+                           },
+    "PassedTests":  11,
+    "StartTime":  {
+                      "value":  "\/Date(1755888119754)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "Friday, August 22, 2025 2:41:59 PM"
+                  },
+    "Tests":  [
+                  {
+                      "Details":  "6/6 reliability functions available",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888119817)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:41:59 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Enhanced Reliability Functions",
+                      "Metrics":  {
+                                      "FunctionsFound":  "6/6",
+                                      "AvailabilityRate":  "100%"
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888119832)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:41:59 PM"
+                                    },
+                      "Error":  "The term \u0027Join-String\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "TestName":  "Enhanced Reliability Functions",
+                      "Metrics":  {
+
+                                  },
+                      "Status":  "FAILED"
+                  },
+                  {
+                      "Details":  "Reliability system initialized with 1 fallback channels",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888119850)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:41:59 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Reliability System Initialization",
+                      "Metrics":  {
+                                      "FallbackChannels":  1,
+                                      "CircuitBreakerEnabled":  true,
+                                      "DeadLetterQueueEnabled":  {
+                                                                     "IsPresent":  true
+                                                                 },
+                                      "MaxRetryAttempts":  3
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888119866)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:41:59 PM"
+                                    },
+                      "Error":  "The term \u0027Join-String\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "TestName":  "Reliability System Initialization",
+                      "Metrics":  {
+
+                                  },
+                      "Status":  "FAILED"
+                  },
+                  {
+                      "Details":  "Circuit breaker state transitions working for both channels",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888119866)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:41:59 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Circuit Breaker State Management",
+                      "Metrics":  {
+                                      "WebhookState":  "Closed",
+                                      "EmailState":  "Closed",
+                                      "TestsPassed":  "4/4"
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888119881)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:41:59 PM"
+                                    },
+                      "Error":  "The term \u0027Join-String\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "TestName":  "Circuit Breaker State Management",
+                      "Metrics":  {
+
+                                  },
+                      "Status":  "FAILED"
+                  },
+                  {
+                      "Details":  "Notification added to DLQ successfully",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888119881)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:41:59 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Dead Letter Queue Management",
+                      "Metrics":  {
+                                      "QueueLength":  [
+                                                          1,
+                                                          1
+                                                      ],
+                                      "QueueId":  "74e4f85a-4846-40d3-92de-80613b6ea5d4",
+                                      "NextRetryTime":  "\/Date(1755888179881)\/"
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888119896)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:41:59 PM"
+                                    },
+                      "Error":  "The term \u0027Join-String\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "TestName":  "Dead Letter Queue Management",
+                      "Metrics":  {
+
+                                  },
+                      "Status":  "FAILED"
+                  },
+                  {
+                      "Details":  "DLQ processor completed: 0 processed",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888119911)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:41:59 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Dead Letter Queue Processor",
+                      "Metrics":  {
+                                      "QueueLength":  1,
+                                      "RecoveredCount":  0,
+                                      "ProcessedCount":  0
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888119928)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:41:59 PM"
+                                    },
+                      "Error":  "The term \u0027Join-String\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "TestName":  "Dead Letter Queue Processor",
+                      "Metrics":  {
+
+                                  },
+                      "Status":  "FAILED"
+                  },
+                  {
+                      "Details":  "2/3 email deliveries successful",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888121524)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:42:01 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Email Delivery Reliability",
+                      "Metrics":  {
+                                      "Successful":  2,
+                                      "AvgResponseTime":  "0ms",
+                                      "SuccessRate":  "66.6666666666667%",
+                                      "Total":  3
+                                  },
+                      "Status":  "FAILED"
+                  },
+                  {
+                      "Details":  "",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888121540)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:42:01 PM"
+                                    },
+                      "Error":  "The term \u0027Join-String\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "TestName":  "Email Delivery Reliability",
+                      "Metrics":  {
+
+                                  },
+                      "Status":  "FAILED"
+                  },
+                  {
+                      "Details":  "Skipped (webhook disabled or connectivity tests disabled)",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888121548)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:42:01 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Webhook Delivery Reliability",
+                      "Metrics":  {
+
+                                  },
+                      "Status":  "SKIPPED"
+                  },
+                  {
+                      "Details":  "Fallback delivery attempted via Email",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888121558)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:42:01 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Fallback Notification Delivery",
+                      "Metrics":  {
+                                      "DeliveryTime":  "0.84ms",
+                                      "FallbackUsed":  false,
+                                      "DeliveryChannel":  "Email",
+                                      "Success":  true
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888121559)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:42:01 PM"
+                                    },
+                      "Error":  "The term \u0027Join-String\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "TestName":  "Fallback Notification Delivery",
+                      "Metrics":  {
+
+                                  },
+                      "Status":  "FAILED"
+                  },
+                  {
+                      "Details":  "4/2 concurrent deliveries successful in 33.74ms",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888121605)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:42:01 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Concurrent Delivery Performance",
+                      "Metrics":  {
+                                      "TotalTime":  "33.74ms",
+                                      "AvgTimePerNotification":  "16.87ms",
+                                      "Successful":  4,
+                                      "ConcurrentSuccessRate":  "200%",
+                                      "Total":  2
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888121620)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:42:01 PM"
+                                    },
+                      "Error":  "The term \u0027Join-String\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "TestName":  "Concurrent Delivery Performance",
+                      "Metrics":  {
+
+                                  },
+                      "Status":  "FAILED"
+                  },
+                  {
+                      "Details":  "5/6 notifications processed under load",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888125688)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:42:05 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Performance Under Load",
+                      "Metrics":  {
+                                      "AvgTimePerNotification":  "10.41ms",
+                                      "NotificationsProcessed":  6,
+                                      "LoadSuccessRate":  "83.3333333333333%",
+                                      "TotalLoadTime":  "62.45ms"
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888125703)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:42:05 PM"
+                                    },
+                      "Error":  "The term \u0027Join-String\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "TestName":  "Performance Under Load",
+                      "Metrics":  {
+
+                                  },
+                      "Status":  "FAILED"
+                  },
+                  {
+                      "Details":  "Comprehensive reliability metrics collected successfully",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888125703)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:42:05 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Reliability Metrics Collection",
+                      "Metrics":  {
+                                      "DLQLength":  1,
+                                      "OverallSuccessRate":  "77.78%",
+                                      "SystemUptime":  "0.1 minutes",
+                                      "TotalAttempts":  9
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888125719)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:42:05 PM"
+                                    },
+                      "Error":  "The term \u0027Join-String\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "TestName":  "Reliability Metrics Collection",
+                      "Metrics":  {
+
+                                  },
+                      "Status":  "FAILED"
+                  },
+                  {
+                      "Details":  "Workflow completed: 4/4 steps successful",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888125891)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:42:05 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "End-to-End Notification Workflow",
+                      "Metrics":  {
+                                      "WorkflowSuccessRate":  "100%",
+                                      "SuccessfulSteps":  "4/4",
+                                      "Steps":  "Configuration:True, HealthCheck:True, Delivery:True, Metrics:True"
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888125906)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:42:05 PM"
+                                    },
+                      "Error":  "The term \u0027Join-String\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "TestName":  "End-to-End Notification Workflow",
+                      "Metrics":  {
+
+                                  },
+                      "Status":  "FAILED"
+                  },
+                  {
+                      "Details":  "Bootstrap integration: 4/4 points validated",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888125906)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:42:05 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Bootstrap Orchestrator Integration",
+                      "Metrics":  {
+                                      "IntegrationRate":  "100%",
+                                      "ValidPoints":  "4/4"
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755888125922)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 2:42:05 PM"
+                                    },
+                      "Error":  "The term \u0027Join-String\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "TestName":  "Bootstrap Orchestrator Integration",
+                      "Metrics":  {
+
+                                  },
+                      "Status":  "FAILED"
+                  }
+              ],
+    "TestName":  "Week 6 Days 3-4: Testing \u0026 Reliability Validation",
+    "SuccessRate":  44,
+    "Duration":  {
+                     "Ticks":  61681211,
+                     "Days":  0,
+                     "Hours":  0,
+                     "Milliseconds":  168,
+                     "Minutes":  0,
+                     "Seconds":  6,
+                     "TotalDays":  7.139029050925926E-05,
+                     "TotalHours":  0.0017133669722222222,
+                     "TotalMilliseconds":  6168.1211,
+                     "TotalMinutes":  0.10280201833333334,
+                     "TotalSeconds":  6.1681211
+                 },
+    "EndTime":  {
+                    "value":  "\/Date(1755888125922)\/",
+                    "DisplayHint":  2,
+                    "DateTime":  "Friday, August 22, 2025 2:42:05 PM"
+                },
+    "FailedTests":  13
+}

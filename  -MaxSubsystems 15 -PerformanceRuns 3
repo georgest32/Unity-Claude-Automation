@@ -1,0 +1,99 @@
+[2025-08-22 01:40:04.300] [INFO] [Performance] ========================================================
+[2025-08-22 01:40:04.314] [INFO] [Performance] BOOTSTRAP ORCHESTRATOR PERFORMANCE TESTS
+[2025-08-22 01:40:04.317] [INFO] [Performance] Phase 3 Day 1 - Hour 5-6: Performance Measurement
+[2025-08-22 01:40:04.318] [INFO] [Performance] ========================================================
+[2025-08-22 01:40:04.319] [INFO] [Performance] Performance tests started at: 08/22/2025 01:40:04
+[2025-08-22 01:40:04.320] [INFO] [Performance] Output file:  -MaxSubsystems 15 -PerformanceRuns 3
+[2025-08-22 01:40:04.321] [INFO] [Performance] Max subsystems to test: 15
+[2025-08-22 01:40:04.322] [INFO] [Performance] Performance runs per test: 3
+[2025-08-22 01:40:04.324] [INFO] [Performance] 
+[2025-08-22 01:40:04.325] [INFO] [Performance] Performance Targets:
+[2025-08-22 01:40:04.343] [INFO] [Performance]   Startup Time: <5000ms for 10 subsystems
+[2025-08-22 01:40:04.347] [INFO] [Performance]   Memory Usage: <100MB base overhead
+[2025-08-22 01:40:04.350] [INFO] [Performance]   CPU Usage: <5% during monitoring
+[2025-08-22 01:40:04.352] [INFO] [Performance]   Health Check: <100ms per subsystem
+[2025-08-22 01:40:04.353] [INFO] [Performance] 
+[2025-08-22 01:40:04.354] [INFO] [Performance] Importing Unity-Claude-SystemStatus module...
+[2025-08-22 01:40:04.582] [OK] [Performance] Module imported successfully
+[2025-08-22 01:40:04.584] [INFO] [Performance] 
+[2025-08-22 01:40:04.587] [INFO] [Performance] PERFORMANCE TEST 1: Mutex Operations
+[2025-08-22 01:40:04.587] [INFO] [Performance] ====================================
+[2025-08-22 01:40:04.588] [DEBUG] [MutexPerformance] Mutex performance run 1/3
+[2025-08-22 01:40:04.744] [PERF] [MutexPerformance] Mutex creation (10 mutexes): 132ms
+[2025-08-22 01:40:05.238] [PERF] [MutexPerformance] Mutex status checks (100 calls): 417ms
+[2025-08-22 01:40:05.247] [DEBUG] [MutexPerformance] Mutex performance run 2/3
+[2025-08-22 01:40:05.346] [PERF] [MutexPerformance] Mutex creation (10 mutexes): 81ms
+[2025-08-22 01:40:05.770] [PERF] [MutexPerformance] Mutex status checks (100 calls): 362ms
+[2025-08-22 01:40:05.774] [DEBUG] [MutexPerformance] Mutex performance run 3/3
+[2025-08-22 01:40:05.871] [PERF] [MutexPerformance] Mutex creation (10 mutexes): 78ms
+[2025-08-22 01:40:06.343] [PERF] [MutexPerformance] Mutex status checks (100 calls): 408ms
+[2025-08-22 01:40:06.400] [INFO] [Performance] 
+[2025-08-22 01:40:06.400] [PERF] [MutexPerformance] Mutex Performance Summary:
+[2025-08-22 01:40:06.403] [PERF] [MutexPerformance]   Average Creation Time (10 mutexes): 0ms
+[2025-08-22 01:40:06.403] [PERF] [MutexPerformance]   Average Status Check Time (100 calls): 0ms
+[2025-08-22 01:40:06.405] [INFO] [Performance] 
+[2025-08-22 01:40:06.405] [INFO] [Performance] PERFORMANCE TEST 2: Manifest Operations
+[2025-08-22 01:40:06.406] [INFO] [Performance] =======================================
+[2025-08-22 01:40:06.431] [DEBUG] [ManifestPerformance] Manifest performance run 1/3
+[2025-08-22 01:40:06.467] [DEBUG] [ManifestPerformance] Manifest performance run 2/3
+[2025-08-22 01:40:06.487] [DEBUG] [ManifestPerformance] Manifest performance run 3/3
+[2025-08-22 01:40:06.506] [INFO] [Performance] 
+[2025-08-22 01:40:06.508] [PERF] [ManifestPerformance] Manifest Performance Summary:
+[2025-08-22 01:40:06.509] [PERF] [ManifestPerformance]   Average Discovery Time (15 manifests): 0ms
+[2025-08-22 01:40:06.511] [PERF] [ManifestPerformance]   Average Validation Time (15 manifests): 0ms
+[2025-08-22 01:40:06.513] [INFO] [Performance] 
+[2025-08-22 01:40:06.515] [INFO] [Performance] PERFORMANCE TEST 3: Dependency Resolution
+[2025-08-22 01:40:06.515] [INFO] [Performance] =========================================
+[2025-08-22 01:40:06.524] [DEBUG] [DependencyPerformance] Dependency resolution run 1/3
+[2025-08-22 01:40:06.573] [PERF] [DependencyPerformance] DFS topological sort (0 subsystems): 30ms
+[2025-08-22 01:40:06.619] [PERF] [DependencyPerformance] Kahn topological sort (0 subsystems): 27ms
+[2025-08-22 01:40:06.641] [DEBUG] [DependencyPerformance] Dependency resolution run 2/3
+[2025-08-22 01:40:06.683] [PERF] [DependencyPerformance] DFS topological sort (0 subsystems): 22ms
+[2025-08-22 01:40:06.722] [PERF] [DependencyPerformance] Kahn topological sort (0 subsystems): 19ms
+[2025-08-22 01:40:06.740] [DEBUG] [DependencyPerformance] Dependency resolution run 3/3
+[2025-08-22 01:40:06.783] [PERF] [DependencyPerformance] DFS topological sort (0 subsystems): 22ms
+[2025-08-22 01:40:06.822] [PERF] [DependencyPerformance] Kahn topological sort (0 subsystems): 21ms
+[2025-08-22 01:40:06.857] [INFO] [Performance] 
+[2025-08-22 01:40:06.857] [PERF] [DependencyPerformance] Dependency Resolution Performance Summary:
+[2025-08-22 01:40:06.858] [PERF] [DependencyPerformance]   Average DFS Sort Time (0 subsystems): 0ms
+[2025-08-22 01:40:06.859] [PERF] [DependencyPerformance]   Average Kahn Sort Time (0 subsystems): 0ms
+[2025-08-22 01:40:06.859] [PERF] [DependencyPerformance]   Average Startup Order Time (0 subsystems): 0ms
+[2025-08-22 01:40:06.860] [INFO] [Performance] 
+[2025-08-22 01:40:06.860] [INFO] [Performance] PERFORMANCE TEST 4: Scalability Testing
+[2025-08-22 01:40:06.861] [INFO] [Performance] =======================================
+[2025-08-22 01:40:06.862] [DEBUG] [ScalabilityTest] Testing scalability with 5 subsystems...
+[2025-08-22 01:40:06.889] [DEBUG] [ScalabilityTest] Testing scalability with 10 subsystems...
+[2025-08-22 01:40:06.911] [DEBUG] [ScalabilityTest] Testing scalability with 15 subsystems...
+[2025-08-22 01:40:06.930] [INFO] [Performance] 
+[2025-08-22 01:40:06.932] [PERF] [ScalabilityTest] Scalability Performance Summary:
+[2025-08-22 01:40:06.936] [INFO] [Performance] 
+[2025-08-22 01:40:06.938] [INFO] [Performance] PERFORMANCE TEST 5: Memory and CPU Usage
+[2025-08-22 01:40:06.942] [INFO] [Performance] =========================================
+[2025-08-22 01:40:06.962] [PERF] [ResourceUsage] Baseline memory usage: 100.77MB
+[2025-08-22 01:40:07.033] [PERF] [ResourceUsage] Peak memory usage: 100.81MB
+[2025-08-22 01:40:07.034] [PERF] [ResourceUsage] Memory overhead: 0.0400000000000063MB
+[2025-08-22 01:40:07.035] [DEBUG] [ResourceUsage] Measuring CPU usage during intensive operations...
+[2025-08-22 01:40:10.088] [PERF] [ResourceUsage] CPU usage during intensive operations: 0%
+[2025-08-22 01:40:10.092] [INFO] [Performance] 
+[2025-08-22 01:40:10.095] [INFO] [Performance] ========================================================
+[2025-08-22 01:40:10.098] [INFO] [Performance] BOOTSTRAP ORCHESTRATOR PERFORMANCE TESTS COMPLETED
+[2025-08-22 01:40:10.100] [INFO] [Performance] ========================================================
+[2025-08-22 01:40:10.104] [INFO] [Performance] End time: 08/22/2025 01:40:10
+[2025-08-22 01:40:10.108] [INFO] [Performance] Total duration: 5.7928601 seconds
+[2025-08-22 01:40:10.112] [INFO] [Performance] 
+[2025-08-22 01:40:10.115] [INFO] [Performance] PERFORMANCE VALIDATION AGAINST TARGETS:
+[2025-08-22 01:40:10.118] [INFO] [Performance] ========================================
+[2025-08-22 01:40:10.124] [OK] [Validation]   Startup Time (10 subsystems): PASS
+[2025-08-22 01:40:10.129] [DEBUG] [Validation]     Target: <5000ms, Actual: 0ms
+[2025-08-22 01:40:10.132] [OK] [Validation]   Memory Overhead: PASS
+[2025-08-22 01:40:10.133] [DEBUG] [Validation]     Target: <100MB, Actual: 0.04MB
+[2025-08-22 01:40:10.133] [OK] [Validation]   CPU Usage: PASS
+[2025-08-22 01:40:10.133] [DEBUG] [Validation]     Target: <5%, Actual: 0%
+[2025-08-22 01:40:10.134] [OK] [Validation]   Health Check Latency: PASS
+[2025-08-22 01:40:10.135] [DEBUG] [Validation]     Target: <100ms, Actual: 0ms
+[2025-08-22 01:40:10.137] [INFO] [Performance] 
+[2025-08-22 01:40:10.138] [INFO] [Performance] Performance Validation Summary:
+[2025-08-22 01:40:10.139] [OK] [Performance]   Validations Passed: 4/4
+[2025-08-22 01:40:10.147] [OK] [Performance]   Performance Score: 100%
+[2025-08-22 01:40:10.152] [INFO] [Performance] 
+[2025-08-22 01:40:10.152] [INFO] [Performance] Saving performance test results to:  -MaxSubsystems 15 -PerformanceRuns 3

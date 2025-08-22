@@ -1,0 +1,60 @@
+# Unity-Claude Automation Project Documents Tracker
+# Last Updated: 2025-08-16
+# Project: Unity-Claude Automation System
+
+## Document Tracking
+Current Prompt: TEST_RESULTS_ANALYSIS_PHASE3_DAY15_AUTONOMOUS_STATE_MANAGEMENT_2025_08_19.md
+Last Prompt: BIDIRECTIONAL_COMMUNICATION_IMPLEMENTATION_2025_08_16.md
+
+## Project Documentation Files
+
+### Core Documentation
+1. PROJECT_STRUCTURE.md - Complete folder hierarchy and organization
+2. IMPLEMENTATION_GUIDE.md - Current work, plans, objectives, phases
+3. IMPORTANT_LEARNINGS.md - Critical knowledge specific to Unity-Claude automation
+4. README.md - Quick reference, setup instructions, current focus
+5. API_INTEGRATION_GUIDE.md - Claude API integration specifics
+6. MODULE_ARCHITECTURE.md - PowerShell module system documentation
+7. CLAUDE_PROMPT_DIRECTIVES_COMPLETE_UCA.txt - Prompt Boilerplate
+
+### Research & Analysis
+- Research/RESEARCH-Background-Communication-Workarounds.md
+- Research/RESEARCH-Background-Communication-Workarounds-Part2.md
+- Research/RESEARCH-Final-Recommendations.md
+
+### Implementation Documents
+- Documentation/README-Automation.md - SendKeys automation details
+- Documentation/README-MODULES.md - Module system architecture
+
+### Test Documentation
+- Testing/TEST_RESULTS_LOG.md - Test execution history and results
+- Testing/README-Testing.md - Testing instructions and setup
+- Testing/Test-BidirectionalCommunication-Working.ps1 - Main test suite
+- Testing/Test-SimpleHTTP.ps1 - HTTP server validation tests
+
+### Error & Response Logs
+- Central Unity-Claude-Automation log: "C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\unity_claude_automation.log" - used for all scripts to log; please include detailed date and time labels for precise debugging
+- Logs/ - Historical error exports
+- ClaudeResponses/ - Saved Claude API responses
+
+## Status
+- API Integration: ✅ WORKING
+- CLI Automation: ✅ WORKING (SendKeys fallback)
+- Module System: ✅ PHASE 2 COMPLETE (Bidirectional IPC)
+- Export Tools: ✅ WORKING
+- Named Pipes: ✅ WORKING (2/3 tests passing)
+- HTTP Server: ✅ WORKING (4/4 tests passing - use simple server)
+- Queue Management: ✅ WORKING (6/6 tests passing)
+- Testing: ✅ WORKING (12/13 tests passing)
+
+## Current Working Solution
+- Server: Start-SimpleServer.ps1 (port 5560)
+- Module: Unity-Claude-IPC-Bidirectional.psm1
+- Test Suite: Test-BidirectionalCommunication-Working.ps1
+- Success Rate: 92% (12/13 tests passing)
+
+## Next Steps
+1. Phase 3: Self-Improvement Mechanism (Pattern recognition, self-patching)
+2. Fix pipe status JSON format (minor issue)
+3. Document WebSocket implementation for future
+4. Create production deployment guide

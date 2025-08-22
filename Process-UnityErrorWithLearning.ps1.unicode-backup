@@ -1,0 +1,407 @@
+# Process-UnityErrorWithLearning.ps1
+# Main integration script that connects Phase 1 (Core), Phase 2 (IPC/API), and Phase 3 (Learning)
+# Date: 2025-08-17
+# Purpose: Intelligent error processing with pattern learning and Claude fallback
+
+[CmdletBinding()]
+param(
+    [Parameter()]
+    [string]$ProjectPath = (Get-Location).Path,
+    
+    [Parameter()]
+    [string]$UnityExe = 'C:\Program Files\Unity\Hub\Editor\2021.1.14f1\Editor\Unity.exe',
+    
+    [Parameter()]
+    [switch]$UseAPI,
+    
+    [Parameter()]
+    [string]$APIKey = $env:ANTHROPIC_API_KEY,
+    
+    [Parameter()]
+    [switch]$AutoFix,
+    
+    [Parameter()]
+    [switch]$EnableLearning = $true,
+    
+    [Parameter()]
+    [int]$MinSimilarity = 65,
+    
+    [Parameter()]
+    [switch]$Verbose
+)
+
+# Enable verbose output if requested
+if ($Verbose) {
+    $VerbosePreference = 'Continue'
+}
+
+Write-Host "`n=== Unity-Claude Automation with Learning System ===" -ForegroundColor Cyan
+Write-Host "Version: 3.0 - Full Integration" -ForegroundColor Gray
+Write-Host "Date: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" -ForegroundColor Gray
+
+#region Module Loading
+
+Write-Host "`nInitializing modules..." -ForegroundColor Yellow
+
+# Setup module paths
+$modulePath = Join-Path $PSScriptRoot 'Modules'
+$pathSeparator = [System.IO.Path]::PathSeparator
+$env:PSModulePath = "$modulePath$pathSeparator$env:PSModulePath"
+
+# Load required modules
+$requiredModules = @(
+    'Unity-Claude-Core',
+    'Unity-Claude-Errors',
+    'Unity-Claude-Learning-Simple'
+)
+
+if ($UseAPI) {
+    $requiredModules += 'Unity-Claude-IPC'
+}
+
+$loadedModules = @()
+foreach ($module in $requiredModules) {
+    try {
+        Import-Module $module -Force -ErrorAction Stop
+        $loadedModules += $module
+        Write-Host "  ✓ Loaded: $module" -ForegroundColor Green
+    }
+    catch {
+        Write-Host "  ✗ Failed to load: $module" -ForegroundColor Red
+        Write-Host "    Error: $_" -ForegroundColor DarkGray
+    }
+}
+
+#endregion
+
+#region Initialization
+
+Write-Host "`nInitializing systems..." -ForegroundColor Yellow
+
+# Initialize Core context
+try {
+    $context = Initialize-AutomationContext -ProjectPath $ProjectPath -UnityExe $UnityExe
+    Write-Host "  ✓ Core context initialized" -ForegroundColor Green
+}
+catch {
+    Write-Host "  ✗ Failed to initialize core context" -ForegroundColor Red
+    Write-Host "    Error: $_" -ForegroundColor DarkGray
+    exit 1
+}
+
+# Initialize Error tracking
+try {
+    Initialize-ErrorDatabase
+    Write-Host "  ✓ Error database initialized" -ForegroundColor Green
+}
+catch {
+    Write-Host "  ⚠ Error database initialization failed (continuing without)" -ForegroundColor Yellow
+}
+
+# Initialize Learning system
+if ($EnableLearning) {
+    try {
+        Initialize-LearningStorage | Out-Null
+        $config = Get-LearningConfig
+        $patternCount = 0
+        
+        if (Test-Path $config.PatternsFile) {
+            $jsonContent = Get-Content $config.PatternsFile -Raw | ConvertFrom-Json
+            $patternCount = ($jsonContent | Get-Member -MemberType NoteProperty).Count
+        }
+        
+        Write-Host "  ✓ Learning system initialized ($patternCount patterns)" -ForegroundColor Green
+    }
+    catch {
+        Write-Host "  ⚠ Learning system initialization failed (continuing without)" -ForegroundColor Yellow
+        $EnableLearning = $false
+    }
+}
+
+#endregion
+
+#region Main Processing Function
+
+function Process-UnityError {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$ErrorMessage,
+        
+        [Parameter()]
+        [string]$ErrorType = "",
+        
+        [Parameter()]
+        [string]$FilePath = "",
+        
+        [Parameter()]
+        [int]$LineNumber = 0
+    )
+    
+    Write-Host "`n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
+    Write-Host "Processing Error: $ErrorMessage" -ForegroundColor Yellow
+    
+    $fixApplied = $false
+    $fixSource = "None"
+    $suggestedFix = ""
+    
+    # Step 1: Try Learning System
+    if ($EnableLearning) {
+        Write-Host "  → Checking pattern database..." -ForegroundColor Gray
+        
+        $fixes = Get-SuggestedFixes -ErrorMessage $ErrorMessage -MinSimilarity $MinSimilarity
+        
+        if ($fixes -and $fixes.Count -gt 0) {
+            $bestFix = $fixes | Select-Object -First 1
+            Write-Host "  ✓ Found pattern match!" -ForegroundColor Green
+            Write-Host "    Pattern ID: $($bestFix.PatternId)" -ForegroundColor DarkGray
+            Write-Host "    Similarity: $([Math]::Round($bestFix.Similarity, 2))%" -ForegroundColor DarkGray
+            Write-Host "    Fix: $($bestFix.Fix)" -ForegroundColor Cyan
+            
+            $suggestedFix = $bestFix.Fix
+            $fixSource = "Pattern"
+            
+            if ($AutoFix -and $FilePath) {
+                Write-Host "  → Attempting auto-fix..." -ForegroundColor Gray
+                # Here you would apply the fix to the file
+                # For safety, we'll just log it for now
+                Write-Host "    [DRY RUN] Would apply fix to: $FilePath" -ForegroundColor DarkYellow
+                $fixApplied = $false  # Set to true when actually applying
+            }
+        }
+        else {
+            Write-Host "  ✗ No pattern match found" -ForegroundColor DarkGray
+        }
+    }
+    
+    # Step 2: If no pattern match, try Claude API
+    if (-not $suggestedFix -and $UseAPI -and $APIKey) {
+        Write-Host "  → Consulting Claude API..." -ForegroundColor Gray
+        
+        try {
+            # Prepare the prompt
+            $prompt = @"
+Unity compilation error in C# code:
+Error: $ErrorMessage
+$(if ($ErrorType) { "Type: $ErrorType" })
+$(if ($FilePath) { "File: $FilePath" })
+$(if ($LineNumber) { "Line: $LineNumber" })
+
+Please provide a concise fix for this Unity compilation error. Return only the fix code or instruction, no explanation.
+"@
+            
+            # Call Claude API (simplified for example)
+            $headers = @{
+                'x-api-key' = $APIKey
+                'anthropic-version' = '2023-06-01'
+                'content-type' = 'application/json'
+            }
+            
+            $body = @{
+                model = 'claude-3-haiku-20240307'
+                max_tokens = 200
+                messages = @(
+                    @{
+                        role = 'user'
+                        content = $prompt
+                    }
+                )
+            } | ConvertTo-Json
+            
+            Write-Verbose "Calling Claude API..."
+            $response = Invoke-RestMethod -Uri 'https://api.anthropic.com/v1/messages' `
+                -Method Post -Headers $headers -Body $body
+            
+            if ($response.content) {
+                $suggestedFix = $response.content[0].text
+                Write-Host "  ✓ Claude provided solution!" -ForegroundColor Green
+                Write-Host "    Fix: $suggestedFix" -ForegroundColor Cyan
+                $fixSource = "Claude"
+                
+                # Learn from Claude's response
+                if ($EnableLearning) {
+                    Write-Host "  → Learning from Claude's solution..." -ForegroundColor Gray
+                    $patternId = Add-ErrorPattern -ErrorMessage $ErrorMessage `
+                        -ErrorType $ErrorType -Fix $suggestedFix -Source "Claude"
+                    Write-Host "    ✓ Pattern saved: $patternId" -ForegroundColor Green
+                }
+            }
+        }
+        catch {
+            Write-Host "  ✗ Claude API call failed: $_" -ForegroundColor Red
+        }
+    }
+    
+    # Step 3: Manual fallback
+    if (-not $suggestedFix) {
+        Write-Host "  ⚠ No automatic fix available" -ForegroundColor Yellow
+        Write-Host "    Manual intervention required" -ForegroundColor DarkGray
+        $fixSource = "Manual"
+    }
+    
+    # Step 4: Track the result
+    if (Get-Command Add-ErrorEntry -ErrorAction SilentlyContinue) {
+        $entry = Add-ErrorEntry -ErrorMessage $ErrorMessage -ErrorType $ErrorType `
+            -FixApplied $fixApplied -FixSource $fixSource
+        Write-Verbose "Error tracked in database: $($entry.Id)"
+    }
+    
+    # Step 5: Update success metrics if fix was applied
+    if ($fixApplied -and $EnableLearning -and $bestFix) {
+        Update-FixSuccess -PatternId $bestFix.PatternId -Success $true
+        Write-Host "  ✓ Pattern success rate updated" -ForegroundColor Green
+    }
+    
+    return @{
+        ErrorMessage = $ErrorMessage
+        SuggestedFix = $suggestedFix
+        FixSource = $fixSource
+        FixApplied = $fixApplied
+    }
+}
+
+#endregion
+
+#region Error Detection and Processing
+
+Write-Host "`nStarting error detection..." -ForegroundColor Yellow
+
+# Get Unity compilation errors
+$errors = @()
+
+# Method 1: Check Unity Editor log
+$editorLog = Join-Path $env:LOCALAPPDATA 'Unity\Editor\Editor.log'
+if (Test-Path $editorLog) {
+    Write-Host "  Checking Editor log..." -ForegroundColor Gray
+    
+    $logContent = Get-Content $editorLog -Tail 500
+    $errorPattern = '(CS\d{4}|error CS\d{4}): (.+)'
+    
+    $logContent | Where-Object { $_ -match $errorPattern } | ForEach-Object {
+        if ($_ -match '(.+)\((\d+),(\d+)\): (error )?(CS\d{4}): (.+)') {
+            $errors += @{
+                FilePath = $Matches[1]
+                Line = [int]$Matches[2]
+                Column = [int]$Matches[3]
+                ErrorType = $Matches[5]
+                Message = $Matches[6]
+                FullLine = $_
+            }
+        }
+    }
+}
+
+# Method 2: Check for exported error file
+$errorFile = Join-Path $PSScriptRoot 'Logs\unity_errors_latest.txt'
+if ((Test-Path $errorFile) -and $errors.Count -eq 0) {
+    Write-Host "  Checking exported errors..." -ForegroundColor Gray
+    
+    $exportedErrors = Get-Content $errorFile
+    $exportedErrors | ForEach-Object {
+        if ($_ -match '^(.+): (.+)$') {
+            $errors += @{
+                ErrorType = $Matches[1]
+                Message = $Matches[2]
+                FullLine = $_
+            }
+        }
+    }
+}
+
+Write-Host "  Found $($errors.Count) error(s)" -ForegroundColor $(if ($errors.Count -eq 0) { "Green" } else { "Yellow" })
+
+#endregion
+
+#region Process Errors
+
+if ($errors.Count -gt 0) {
+    Write-Host "`nProcessing errors..." -ForegroundColor Yellow
+    
+    $results = @()
+    $fixedCount = 0
+    $patternCount = 0
+    $claudeCount = 0
+    
+    foreach ($error in $errors) {
+        $result = Process-UnityError `
+            -ErrorMessage $error.Message `
+            -ErrorType $error.ErrorType `
+            -FilePath $error.FilePath `
+            -LineNumber $error.Line
+        
+        $results += $result
+        
+        if ($result.FixApplied) { $fixedCount++ }
+        if ($result.FixSource -eq "Pattern") { $patternCount++ }
+        if ($result.FixSource -eq "Claude") { $claudeCount++ }
+    }
+    
+    # Summary
+    Write-Host "`n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
+    Write-Host "Processing Complete!" -ForegroundColor Green
+    Write-Host "`nSummary:" -ForegroundColor Cyan
+    Write-Host "  Total Errors: $($errors.Count)" -ForegroundColor Gray
+    Write-Host "  Fixed Automatically: $fixedCount" -ForegroundColor $(if ($fixedCount -gt 0) { "Green" } else { "Gray" })
+    Write-Host "  Pattern Matches: $patternCount" -ForegroundColor $(if ($patternCount -gt 0) { "Green" } else { "Gray" })
+    Write-Host "  Claude Solutions: $claudeCount" -ForegroundColor $(if ($claudeCount -gt 0) { "Green" } else { "Gray" })
+    Write-Host "  Manual Required: $($errors.Count - $fixedCount)" -ForegroundColor $(if ($errors.Count - $fixedCount -gt 0) { "Yellow" } else { "Gray" })
+    
+    # Show learning metrics
+    if ($EnableLearning) {
+        $metrics = Get-LearningMetrics
+        if ($metrics) {
+            Write-Host "`nLearning Metrics:" -ForegroundColor Cyan
+            Write-Host "  Total Patterns: $($metrics.TotalPatterns)" -ForegroundColor Gray
+            Write-Host "  Success Rate: $([Math]::Round($metrics.OverallSuccessRate, 2))%" -ForegroundColor Gray
+            Write-Host "  Patterns Used: $($metrics.PatternsUsed)" -ForegroundColor Gray
+        }
+    }
+}
+else {
+    Write-Host "`n✅ No errors detected!" -ForegroundColor Green
+    Write-Host "Your Unity project compiled successfully." -ForegroundColor Gray
+}
+
+#endregion
+
+#region Continuous Monitoring Option
+
+Write-Host "`n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
+Write-Host "Options:" -ForegroundColor Cyan
+Write-Host "  [M] Start continuous monitoring" -ForegroundColor Gray
+Write-Host "  [R] Generate report" -ForegroundColor Gray
+Write-Host "  [L] View learning statistics" -ForegroundColor Gray
+Write-Host "  [Q] Quit" -ForegroundColor Gray
+Write-Host ""
+Write-Host "Press any key to exit..." -ForegroundColor DarkGray
+
+$key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+
+switch ($key.Character) {
+    'M' { 
+        Write-Host "`nStarting continuous monitoring..." -ForegroundColor Yellow
+        Write-Host "Press Ctrl+C to stop" -ForegroundColor DarkGray
+        # Would implement file watcher here
+    }
+    'R' {
+        Write-Host "`nGenerating report..." -ForegroundColor Yellow
+        if (Get-Command Get-ErrorReport -ErrorAction SilentlyContinue) {
+            $report = Get-ErrorReport
+            $reportFile = Join-Path $PSScriptRoot "Logs\report_$(Get-Date -Format 'yyyyMMdd_HHmmss').html"
+            $report | Out-File $reportFile
+            Write-Host "Report saved to: $reportFile" -ForegroundColor Green
+        }
+    }
+    'L' {
+        Write-Host "`nLearning Statistics:" -ForegroundColor Cyan
+        if ($EnableLearning) {
+            $metrics = Get-LearningMetrics
+            $metrics | Format-List
+        }
+    }
+}
+
+#endregion
+
+Write-Host "`n=== Unity-Claude Automation Complete ===" -ForegroundColor Green
+Write-Host ""

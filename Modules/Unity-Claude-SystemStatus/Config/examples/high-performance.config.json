@@ -1,0 +1,50 @@
+{
+    "_comment": "High-performance environment configuration - Optimized for resource-rich environments",
+    "SystemStatus": {
+        "MonitoringInterval": 15,
+        "LogLevel": "INFO",
+        "EnableMutex": true,
+        "MaxRetries": 4,
+        "RetryDelayMs": 750
+    },
+    "CircuitBreaker": {
+        "EnableCircuitBreaker": true,
+        "FailureThreshold": 4,
+        "TimeoutSeconds": 45,
+        "MaxTestRequests": 3,
+        "HalfOpenRetryCount": 2
+    },
+    "HealthMonitoring": {
+        "ParallelHealthChecks": true,
+        "ThrottleLimit": 12,
+        "HealthCheckTimeout": 20,
+        "IncludePerformanceData": true,
+        "DefaultHealthCheckInterval": 20,
+        "MaxParallelHealthChecks": 16
+    },
+    "Logging": {
+        "EnableDetailedLogging": true,
+        "LogRotationSize": "25MB",
+        "MaxLogFiles": 7,
+        "LogFilePath": ".\\logs\\unity_claude_automation_hp.log",
+        "EnableTraceLogging": false
+    },
+    "Performance": {
+        "CacheConfigurationMs": 45000,
+        "EnableConfigurationCaching": true,
+        "MaxConfigurationAge": 180000,
+        "FileWatcherEnabled": true
+    },
+    "Security": {
+        "ValidateManifestSignatures": false,
+        "RequireSecureConfiguration": false,
+        "AllowEnvironmentOverrides": true
+    },
+    "Subsystems": {
+        "DefaultRestartPolicy": "OnFailure",
+        "DefaultMaxRestarts": 4,
+        "DefaultRestartDelay": 3,
+        "DefaultMaxMemoryMB": 1000,
+        "DefaultMaxCpuPercent": 40
+    }
+}

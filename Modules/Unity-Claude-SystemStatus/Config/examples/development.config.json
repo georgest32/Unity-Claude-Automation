@@ -1,0 +1,43 @@
+{
+    "_comment": "Development environment configuration - Optimized for debugging and detailed logging",
+    "SystemStatus": {
+        "MonitoringInterval": 10,
+        "LogLevel": "DEBUG",
+        "EnableMutex": true,
+        "MaxRetries": 5,
+        "RetryDelayMs": 500
+    },
+    "CircuitBreaker": {
+        "EnableCircuitBreaker": true,
+        "FailureThreshold": 2,
+        "TimeoutSeconds": 30,
+        "MaxTestRequests": 2,
+        "HalfOpenRetryCount": 2
+    },
+    "HealthMonitoring": {
+        "ParallelHealthChecks": true,
+        "ThrottleLimit": 2,
+        "HealthCheckTimeout": 15,
+        "IncludePerformanceData": true,
+        "DefaultHealthCheckInterval": 15,
+        "MaxParallelHealthChecks": 4
+    },
+    "Logging": {
+        "EnableDetailedLogging": true,
+        "LogRotationSize": "5MB",
+        "MaxLogFiles": 10,
+        "LogFilePath": ".\\logs\\unity_claude_automation_dev.log",
+        "EnableTraceLogging": true
+    },
+    "Performance": {
+        "CacheConfigurationMs": 10000,
+        "EnableConfigurationCaching": true,
+        "MaxConfigurationAge": 120000,
+        "FileWatcherEnabled": true
+    },
+    "Security": {
+        "ValidateManifestSignatures": false,
+        "RequireSecureConfiguration": false,
+        "AllowEnvironmentOverrides": true
+    }
+}

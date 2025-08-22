@@ -1,0 +1,61 @@
+[2025-08-19 12:24:26.173] [INFO] Starting Day 18 Hour 1.5 comprehensive test suite...
+[2025-08-19 12:24:26.177] [INFO] 
+=== Test Group 1: Module Loading and Import ===
+[2025-08-19 12:24:26.185] [PASS] Module file exists - Unity-Claude-SystemStatus.psm1 should exist at correct path
+[2025-08-19 12:24:26.190] [INFO]   Expected: File exists
+[2025-08-19 12:24:26.193] [INFO]   Actual: File exists: True
+[2025-08-19 12:24:26.194] [PASS] Module manifest exists - Unity-Claude-SystemStatus.psd1 should exist
+[2025-08-19 12:24:26.194] [INFO]   Expected: File exists
+[2025-08-19 12:24:26.197] [INFO]   Actual: File exists: True
+[2025-08-19 12:24:26.214] [PASS] Module import successful - Module should import without errors
+[2025-08-19 12:24:26.218] [PASS] Function Initialize-SystemStatusMonitoring available - Function should be exported and available
+[2025-08-19 12:24:26.222] [PASS] Function Get-SubsystemProcessId available - Function should be exported and available
+[2025-08-19 12:24:26.222] [PASS] Function Update-SubsystemProcessInfo available - Function should be exported and available
+[2025-08-19 12:24:26.222] [PASS] Function Register-Subsystem available - Function should be exported and available
+[2025-08-19 12:24:26.226] [PASS] Function Unregister-Subsystem available - Function should be exported and available
+[2025-08-19 12:24:26.226] [PASS] Function Get-RegisteredSubsystems available - Function should be exported and available
+[2025-08-19 12:24:26.226] [PASS] Function Send-Heartbeat available - Function should be exported and available
+[2025-08-19 12:24:26.231] [PASS] Function Test-HeartbeatResponse available - Function should be exported and available
+[2025-08-19 12:24:26.231] [PASS] Function Test-AllSubsystemHeartbeats available - Function should be exported and available
+[2025-08-19 12:24:26.233] [INFO] 
+=== Test Group 2: Integration Point 4 - Process ID Detection ===
+[2025-08-19 12:24:26.247] [PASS] Get-SubsystemProcessId returns valid result - Should return integer PID or null
+[2025-08-19 12:24:26.251] [INFO]   Expected: Integer or null
+[2025-08-19 12:24:26.251] [INFO]   Actual: Returned: 34896 (Type: Int32)
+[2025-08-19 12:24:26.807] [PASS] Initialize-SystemStatusMonitoring - Initialization should succeed
+[2025-08-19 12:24:26.878] [FAIL] Process ID detection test group - Unexpected error: Cannot process argument transformation on parameter 'Passed'. Cannot convert value "System.Object[]" to type "System.Boolean". Boolean parameters accept only Boolean values and numbers, such as $True, $False, 1 or 0.
+[2025-08-19 12:24:26.881] [INFO] 
+=== Test Group 3: Integration Point 5 - Subsystem Registration ===
+[2025-08-19 12:24:26.914] [FAIL] Subsystem registration test group - Unexpected error: Cannot process argument transformation on parameter 'Passed'. Cannot convert value "System.Object[]" to type "System.Boolean". Boolean parameters accept only Boolean values and numbers, such as $True, $False, 1 or 0.
+[2025-08-19 12:24:26.914] [INFO] 
+=== Test Group 4: Integration Point 6 - Heartbeat Detection ===
+[2025-08-19 12:24:27.016] [FAIL] Heartbeat detection test group - Unexpected error: Cannot process argument transformation on parameter 'Passed'. Cannot convert value "System.Object[]" to type "System.Boolean". Boolean parameters accept only Boolean values and numbers, such as $True, $False, 1 or 0.
+[2025-08-19 12:24:27.017] [INFO] 
+=== Test Group 5: System Status File Operations ===
+[2025-08-19 12:24:27.037] [PASS] Read-SystemStatus - Should successfully read system status data
+[2025-08-19 12:24:27.039] [INFO]   Expected: Hashtable
+[2025-08-19 12:24:27.041] [INFO]   Actual: Type: Hashtable
+[2025-08-19 12:24:27.053] [PASS] Write-SystemStatus - Should successfully write system status data to file
+[2025-08-19 12:24:27.054] [PASS] System status file updated recently - System status file should have been updated within last minute
+[2025-08-19 12:24:27.061] [PASS] JSON schema validation (PS5.1 compatible) - System status data should pass structural validation
+[2025-08-19 12:24:27.061] [INFO] 
+=== Test Summary ===
+[2025-08-19 12:24:27.061] [INFO] Test execution completed at: 08/19/2025 12:24:27
+[2025-08-19 12:24:27.061] [INFO] Total test duration: 0.91 seconds
+[2025-08-19 12:24:27.065] [INFO] Total tests executed: 21
+[2025-08-19 12:24:27.065] [PASS] Tests passed: 18
+[2025-08-19 12:24:27.067] [FAIL] Tests failed: 3
+[2025-08-19 12:24:27.067] [INFO] Success rate: 85.7%
+[2025-08-19 12:24:27.070] [WARN] 
+=== Failed Test Details ===
+[2025-08-19 12:24:27.070] [FAIL] FAILED: Process ID detection test group - Unexpected error: Cannot process argument transformation on parameter 'Passed'. Cannot convert value "System.Object[]" to type "System.Boolean". Boolean parameters accept only Boolean values and numbers, such as $True, $False, 1 or 0.
+[2025-08-19 12:24:27.074] [FAIL] FAILED: Subsystem registration test group - Unexpected error: Cannot process argument transformation on parameter 'Passed'. Cannot convert value "System.Object[]" to type "System.Boolean". Boolean parameters accept only Boolean values and numbers, such as $True, $False, 1 or 0.
+[2025-08-19 12:24:27.075] [FAIL] FAILED: Heartbeat detection test group - Unexpected error: Cannot process argument transformation on parameter 'Passed'. Cannot convert value "System.Object[]" to type "System.Boolean". Boolean parameters accept only Boolean values and numbers, such as $True, $False, 1 or 0.
+[2025-08-19 12:24:27.075] [INFO] 
+=== Day 18 Hour 1.5 Completion Assessment ===
+[2025-08-19 12:24:27.086] [FAIL] ❌ Hour 1.5 INCOMPLETE - Issues detected
+[2025-08-19 12:24:27.088] [WARN] Critical tests passed: 3/4
+[2025-08-19 12:24:27.090] [WARN] Review failed tests before proceeding to Hour 2.5
+[2025-08-19 12:24:27.090] [INFO] 
+Test results saved to: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\TestResults_Day18_Hour1-5_SubsystemDiscovery_20250819_122426.txt
+[2025-08-19 12:24:27.093] [INFO] Day 18 Hour 1.5 Subsystem Discovery and Registration test completed.

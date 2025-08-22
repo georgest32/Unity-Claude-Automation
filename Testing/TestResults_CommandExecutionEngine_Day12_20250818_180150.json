@@ -1,0 +1,427 @@
+{
+    "SkippedTests":  0,
+    "FailedTests":  6,
+    "PassedTests":  16,
+    "ModuleName":  "CommandExecutionEngine-Day12",
+    "TestDetails":  [
+                        {
+                            "Category":  "Queue Management",
+                            "TestName":  "Add Command to Queue - Medium Priority",
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554508971)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:48 PM"
+                                          },
+                            "Duration":  25.9338,
+                            "Status":  "Failed",
+                            "Error":  "Failed to add command to queue"
+                        },
+                        {
+                            "Category":  "Queue Management",
+                            "TestName":  "Add Multiple Commands - Priority Order",
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554509002)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:49 PM"
+                                          },
+                            "Duration":  71.5219,
+                            "Status":  "Failed",
+                            "Error":  "Critical queue count incorrect"
+                        },
+                        {
+                            "Category":  "Queue Management",
+                            "TestName":  "Get Next Command - Priority Order",
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554509073)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:49 PM"
+                                          },
+                            "Duration":  11.083300000000001,
+                            "Status":  "Failed",
+                            "Error":  "Should get Critical priority first"
+                        },
+                        {
+                            "Category":  "Queue Management",
+                            "TestName":  "Clear Execution Queue",
+                            "Output":  [
+                                           null,
+                                           null,
+                                           {
+                                               "Total":  0,
+                                               "Cleared":  true
+                                           }
+                                       ],
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554509084)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:49 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  29.6157
+                        },
+                        {
+                            "Category":  "Queue Management",
+                            "TestName":  "Queue Statistics Tracking",
+                            "Output":  {
+                                           "AverageExecutionTime":  0,
+                                           "MinConfidenceThreshold":  0.7,
+                                           "LastUpdated":  {
+                                                               "value":  "\/Date(1755554509119)\/",
+                                                               "DisplayHint":  2,
+                                                               "DateTime":  "Monday, August 18, 2025 6:01:49 PM"
+                                                           },
+                                           "LastExecutionTime":  null,
+                                           "TotalFailed":  0,
+                                           "TotalQueued":  0,
+                                           "TotalExecuted":  0,
+                                           "TotalSkipped":  0,
+                                           "ConfiguredThrottle":  5,
+                                           "QueueStatus":  {
+                                                               "Low":  0,
+                                                               "Total":  0,
+                                                               "Critical":  0,
+                                                               "High":  0,
+                                                               "Medium":  0,
+                                                               "Stats":  {
+                                                                             "AverageExecutionTime":  0,
+                                                                             "TotalQueued":  1,
+                                                                             "TotalFailed":  0,
+                                                                             "TotalSkipped":  0,
+                                                                             "LastExecutionTime":  null,
+                                                                             "TotalExecuted":  0
+                                                                         },
+                                                               "ActiveExecutions":  0
+                                                           }
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554509114)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:49 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  7.013
+                        },
+                        {
+                            "Category":  "Safety",
+                            "TestName":  "Safe Command Execution - Valid Command",
+                            "Output":  {
+                                           "Output":  "[DRY-RUN] Command would be executed: Write-Output \u0027Test\u0027",
+                                           "ExecutionTime":  12.4295,
+                                           "DryRun":  true,
+                                           "Success":  true
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554509122)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:49 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  19.1947
+                        },
+                        {
+                            "Category":  "Safety",
+                            "TestName":  "Safe Command Execution - Blocked Command",
+                            "Output":  {
+                                           "Blocked":  true,
+                                           "Reasons":  [
+                                                           "Contains blocked cmdlet: Remove-Item",
+                                                           "Contains dangerous pattern: Remove-Item.*-Recurse"
+                                                       ]
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554509141)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:49 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  18.9949
+                        },
+                        {
+                            "Category":  "Safety",
+                            "TestName":  "Low Confidence Command Handling",
+                            "Output":  [
+                                           true,
+                                           {
+                                               "Threshold":  0.8,
+                                               "Confidence":  0.3,
+                                               "RequiresApproval":  true
+                                           }
+                                       ],
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554509161)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:49 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  20.1138
+                        },
+                        {
+                            "Category":  "Safety",
+                            "TestName":  "Dry-Run Mode Execution",
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554509181)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:49 PM"
+                                          },
+                            "Duration":  13.144200000000001,
+                            "Status":  "Failed",
+                            "Error":  "Dry-run should report success"
+                        },
+                        {
+                            "Category":  "Dependencies",
+                            "TestName":  "Command Dependencies Check",
+                            "Output":  {
+                                           "Satisfied":  true,
+                                           "Dependencies":  [
+                                                                "Get-Content",
+                                                                "Test-Path"
+                                                            ]
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554509195)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:49 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  6.4393
+                        },
+                        {
+                            "Category":  "Dependencies",
+                            "TestName":  "Add Command with Dependencies",
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554509202)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:49 PM"
+                                          },
+                            "Duration":  16.5182,
+                            "Status":  "Failed",
+                            "Error":  "Dependencies not stored correctly"
+                        },
+                        {
+                            "Category":  "Configuration",
+                            "TestName":  "Set Execution Configuration",
+                            "Output":  {
+                                           "ThrottleLimit":  3,
+                                           "EnableParallel":  true,
+                                           "MinConfidenceThreshold":  0.5,
+                                           "DefaultTimeoutMs":  600000,
+                                           "RequireApproval":  false,
+                                           "EnableDryRun":  true
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554509218)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:49 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  12.9274
+                        },
+                        {
+                            "Category":  "Configuration",
+                            "TestName":  "Get Execution Configuration",
+                            "Output":  {
+                                           "ThrottleLimit":  3,
+                                           "EnableParallel":  true,
+                                           "MinConfidenceThreshold":  0.5,
+                                           "DefaultTimeoutMs":  600000,
+                                           "RequireApproval":  false,
+                                           "EnableDryRun":  true
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554509231)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:49 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  1.5091
+                        },
+                        {
+                            "Category":  "Approval",
+                            "TestName":  "Request Human Approval",
+                            "Output":  {
+                                           "Id":  "76d3722a-98f8-4a5e-b2b6-3b51da52cb88",
+                                           "Status":  "Timeout"
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554509233)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:49 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  1078.1576
+                        },
+                        {
+                            "Category":  "Approval",
+                            "TestName":  "Get Pending Approvals",
+                            "Output":  [
+                                           true,
+                                           {
+                                               "Error":  "Command requires human approval (low confidence)",
+                                               "Success":  false,
+                                               "RequiresApproval":  true
+                                           },
+                                           {
+                                               "FirstCommand":  "Get-Process",
+                                               "PendingCount":  3
+                                           }
+                                       ],
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554510311)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:50 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  16.392200000000003
+                        },
+                        {
+                            "Category":  "Parallel",
+                            "TestName":  "ThreadJob Module Availability",
+                            "Output":  {
+                                           "Version":  {
+                                                           "Major":  2,
+                                                           "Minor":  0,
+                                                           "Build":  3,
+                                                           "Revision":  -1,
+                                                           "MajorRevision":  -1,
+                                                           "MinorRevision":  -1
+                                                       },
+                                           "Available":  true
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554510328)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:50 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  11.094100000000001
+                        },
+                        {
+                            "Category":  "Parallel",
+                            "TestName":  "Parallel Execution Configuration",
+                            "Output":  [
+                                           true,
+                                           {
+                                               "ThrottleLimit":  3,
+                                               "ParallelEnabled":  true
+                                           }
+                                       ],
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554510339)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:50 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  6.514
+                        },
+                        {
+                            "Category":  "Statistics",
+                            "TestName":  "Get Execution Statistics",
+                            "Output":  {
+                                           "AverageExecutionTime":  0,
+                                           "MinConfidenceThreshold":  0.9,
+                                           "LastUpdated":  {
+                                                               "value":  "\/Date(1755554510347)\/",
+                                                               "DisplayHint":  2,
+                                                               "DateTime":  "Monday, August 18, 2025 6:01:50 PM"
+                                                           },
+                                           "LastExecutionTime":  null,
+                                           "TotalFailed":  0,
+                                           "TotalQueued":  0,
+                                           "TotalExecuted":  0,
+                                           "TotalSkipped":  0,
+                                           "ConfiguredThrottle":  3,
+                                           "QueueStatus":  {
+                                                               "Low":  0,
+                                                               "Total":  0,
+                                                               "Critical":  0,
+                                                               "High":  0,
+                                                               "Medium":  0,
+                                                               "Stats":  {
+                                                                             "AverageExecutionTime":  0,
+                                                                             "TotalQueued":  1,
+                                                                             "TotalFailed":  0,
+                                                                             "TotalSkipped":  0,
+                                                                             "LastExecutionTime":  null,
+                                                                             "TotalExecuted":  0
+                                                                         },
+                                                               "ActiveExecutions":  0
+                                                           }
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554510346)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:50 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  2.9993000000000003
+                        },
+                        {
+                            "Category":  "Export",
+                            "TestName":  "Export Execution Results - JSON",
+                            "Output":  {
+                                           "Exported":  true,
+                                           "Format":  "JSON"
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554510349)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:50 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  27.4018
+                        },
+                        {
+                            "Category":  "Export",
+                            "TestName":  "Export Execution Results - CSV",
+                            "Output":  {
+                                           "Format":  "CSV",
+                                           "Exported":  true,
+                                           "RowCount":  10
+                                       },
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554510377)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:50 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  33.7259
+                        },
+                        {
+                            "Category":  "Integration",
+                            "TestName":  "End-to-End Command Execution Flow",
+                            "Output":  [
+                                           true,
+                                           {
+                                               "ExecutionSuccess":  true,
+                                               "CommandId":  "3d3f181e-8eac-44b4-bb53-205caff07192",
+                                               "DryRun":  true
+                                           }
+                                       ],
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554510411)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:50 PM"
+                                          },
+                            "Status":  "Passed",
+                            "Duration":  28.1968
+                        },
+                        {
+                            "Category":  "Integration",
+                            "TestName":  "Multi-Priority Queue Processing",
+                            "StartTime":  {
+                                              "value":  "\/Date(1755554510439)\/",
+                                              "DisplayHint":  2,
+                                              "DateTime":  "Monday, August 18, 2025 6:01:50 PM"
+                                          },
+                            "Duration":  58.558400000000006,
+                            "Status":  "Failed",
+                            "Error":  "First should be Critical-1"
+                        }
+                    ],
+    "TestDate":  {
+                     "value":  "\/Date(1755554508889)\/",
+                     "DisplayHint":  2,
+                     "DateTime":  "Monday, August 18, 2025 6:01:48 PM"
+                 },
+    "TotalTests":  22
+}

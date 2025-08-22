@@ -1,0 +1,778 @@
+PHASE 3 DAY 15: AUTONOMOUS STATE MANAGEMENT TEST SUITE
+=====================================================
+Testing enhanced state machine, persistence, recovery, and human intervention
+
+Loading enhanced autonomous state tracker module...
+[Enhanced-StateTracker] Loading Phase 3 autonomous state management...
+[Enhanced-StateTracker] Phase 3 autonomous state management module loaded successfully
+[Enhanced-StateTracker] Features: Enhanced state machine, JSON persistence, performance monitoring, human intervention
+[+] Enhanced module loaded successfully
+
+1. Testing Enhanced State Tracking Initialization
+================================================
+[2025-08-19 02:33:18.171] [INFO] [Enhanced-StateTracker] Initializing enhanced autonomous state tracking for agent: TestAgent-Phase3-023318
+[2025-08-19 02:33:18.214] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+[2025-08-19 02:33:19.726] [INFO] [Enhanced-StateTracker] State checkpoint created: TestAgent-Phase3-023318-20250819-023318 | Data: {"Reason":"Initial state tracking initialization"}
+[2025-08-19 02:33:19.729] [INFO] [Enhanced-StateTracker] Enhanced autonomous state tracking initialized successfully | Data: {"InitialState":"Idle","AgentId":"TestAgent-Phase3-023318","RestoreRequested":false}
+[+] Enhanced state tracking initialization: SUCCESS
+    Agent ID: TestAgent-Phase3-023318
+    Initial State: Idle
+    Start Time: 08/19/2025 02:33:18
+
+2. Testing State Transitions and Validation
+===========================================
+[2025-08-19 02:33:19.781] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: StartTime
+[2025-08-19 02:33:19.787] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastHealthCheck
+[2025-08-19 02:33:19.804] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:19.808] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.811] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:19.816] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:19.818] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.819] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:19.824] [INFO] [Enhanced-StateTracker] State transition: Idle -> Idle | Reason: State transition
+[2025-08-19 02:33:19.834] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+
+Name                           Value                                                                                   
+----                           -----                                                                                   
+InterventionHistory            {}                                                                                      
+HumanInterventionRequested     False                                                                                   
+LastStateChange                8/19/2025 2:33:19 AM                                                                    
+PreviousState                  Idle                                                                                    
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+SuccessfulOperations           0                                                                                       
+CurrentState                   Idle                                                                                    
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {System.Collections.Hashtable}                                                          
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PerformanceBaseline            {}                                                                                      
+ConsecutiveFailures            0                                                                                       
+TotalOperations                1                                                                                       
+[2025-08-19 02:33:19.841] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:19.842] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:19.843] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.844] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:19.844] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.844] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:19.848] [INFO] [Enhanced-StateTracker] State transition: Idle -> Initializing | Reason: Test transition
+[2025-08-19 02:33:19.850] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+SuccessfulOperations           0                                                                                       
+TotalOperations                2                                                                                       
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Idle                                                                                    
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+HumanInterventionRequested     False                                                                                   
+CurrentState                   Initializing                                                                            
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+InterventionHistory            {}                                                                                      
+ConsecutiveFailures            0                                                                                       
+LastStateChange                8/19/2025 2:33:19 AM                                                                    
+    Idle -> Initializing: SUCCESS
+[2025-08-19 02:33:19.859] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:19.860] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.860] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:19.864] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.865] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:19.866] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:19.868] [INFO] [Enhanced-StateTracker] State transition: Initializing -> Initializing | Reason: State transition
+[2025-08-19 02:33:19.870] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+SuccessfulOperations           0                                                                                       
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Initializing                                                                            
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+HumanInterventionRequested     False                                                                                   
+CurrentState                   Initializing                                                                            
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+LastStateChange                8/19/2025 2:33:19 AM                                                                    
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+InterventionHistory            {}                                                                                      
+ConsecutiveFailures            0                                                                                       
+TotalOperations                3                                                                                       
+[2025-08-19 02:33:19.880] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:19.880] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.880] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:19.884] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:19.884] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.884] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:19.888] [INFO] [Enhanced-StateTracker] State transition: Initializing -> Active | Reason: Test transition
+[2025-08-19 02:33:19.892] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+InterventionHistory            {}                                                                                      
+HumanInterventionRequested     False                                                                                   
+TotalOperations                4                                                                                       
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Initializing                                                                            
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+CurrentState                   Active                                                                                  
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+SuccessfulOperations           1                                                                                       
+ConsecutiveFailures            0                                                                                       
+LastStateChange                8/19/2025 2:33:19 AM                                                                    
+    Initializing -> Active: SUCCESS
+[2025-08-19 02:33:19.904] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:19.905] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.907] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:19.909] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.910] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:19.910] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:19.914] [INFO] [Enhanced-StateTracker] State transition: Active -> Active | Reason: State transition
+[2025-08-19 02:33:19.917] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+HumanInterventionRequested     False                                                                                   
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Active                                                                                  
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+SuccessfulOperations           2                                                                                       
+CurrentState                   Active                                                                                  
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+LastStateChange                8/19/2025 2:33:19 AM                                                                    
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+InterventionHistory            {}                                                                                      
+ConsecutiveFailures            0                                                                                       
+TotalOperations                5                                                                                       
+[2025-08-19 02:33:19.922] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:19.927] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.927] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:19.930] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:19.930] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.932] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:19.932] [INFO] [Enhanced-StateTracker] State transition: Active -> Monitoring | Reason: Test transition
+[2025-08-19 02:33:19.934] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+SuccessfulOperations           2                                                                                       
+TotalOperations                6                                                                                       
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Active                                                                                  
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+HumanInterventionRequested     False                                                                                   
+CurrentState                   Monitoring                                                                              
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+InterventionHistory            {}                                                                                      
+ConsecutiveFailures            0                                                                                       
+LastStateChange                8/19/2025 2:33:19 AM                                                                    
+    Active -> Monitoring: SUCCESS
+[2025-08-19 02:33:19.943] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:19.944] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.945] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:19.946] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.947] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:19.948] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:19.948] [INFO] [Enhanced-StateTracker] State transition: Monitoring -> Monitoring | Reason: State transition
+[2025-08-19 02:33:19.951] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+SuccessfulOperations           2                                                                                       
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Monitoring                                                                              
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+HumanInterventionRequested     False                                                                                   
+CurrentState                   Monitoring                                                                              
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+LastStateChange                8/19/2025 2:33:19 AM                                                                    
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+InterventionHistory            {}                                                                                      
+ConsecutiveFailures            0                                                                                       
+TotalOperations                7                                                                                       
+[2025-08-19 02:33:19.957] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:19.958] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.959] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:19.959] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:19.960] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.960] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:19.963] [INFO] [Enhanced-StateTracker] State transition: Monitoring -> Processing | Reason: Test transition
+[2025-08-19 02:33:19.963] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+InterventionHistory            {}                                                                                      
+HumanInterventionRequested     False                                                                                   
+TotalOperations                8                                                                                       
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Monitoring                                                                              
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+CurrentState                   Processing                                                                              
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+SuccessfulOperations           2                                                                                       
+ConsecutiveFailures            0                                                                                       
+LastStateChange                8/19/2025 2:33:19 AM                                                                    
+    Monitoring -> Processing: SUCCESS
+[2025-08-19 02:33:19.972] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:19.973] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.974] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:19.976] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.976] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:19.976] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:19.976] [INFO] [Enhanced-StateTracker] State transition: Processing -> Processing | Reason: State transition
+[2025-08-19 02:33:19.980] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+HumanInterventionRequested     False                                                                                   
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Processing                                                                              
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+SuccessfulOperations           2                                                                                       
+CurrentState                   Processing                                                                              
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+LastStateChange                8/19/2025 2:33:19 AM                                                                    
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+InterventionHistory            {}                                                                                      
+ConsecutiveFailures            0                                                                                       
+TotalOperations                9                                                                                       
+[2025-08-19 02:33:19.988] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:19.990] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.994] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:19.995] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:19.997] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:19.999] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:20.001] [INFO] [Enhanced-StateTracker] State transition: Processing -> Generating | Reason: Test transition
+[2025-08-19 02:33:20.005] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+SuccessfulOperations           2                                                                                       
+TotalOperations                10                                                                                      
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Processing                                                                              
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+HumanInterventionRequested     False                                                                                   
+CurrentState                   Generating                                                                              
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+InterventionHistory            {}                                                                                      
+ConsecutiveFailures            0                                                                                       
+LastStateChange                8/19/2025 2:33:20 AM                                                                    
+    Processing -> Generating: SUCCESS
+[2025-08-19 02:33:20.010] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:20.013] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:20.013] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:20.013] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:20.017] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:20.018] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:20.020] [INFO] [Enhanced-StateTracker] State transition: Generating -> Generating | Reason: State transition
+[2025-08-19 02:33:20.023] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+SuccessfulOperations           2                                                                                       
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Generating                                                                              
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+HumanInterventionRequested     False                                                                                   
+CurrentState                   Generating                                                                              
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+LastStateChange                8/19/2025 2:33:20 AM                                                                    
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+InterventionHistory            {}                                                                                      
+ConsecutiveFailures            0                                                                                       
+TotalOperations                11                                                                                      
+[2025-08-19 02:33:20.030] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:20.034] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:20.035] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:20.037] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:20.038] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:20.040] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:20.041] [INFO] [Enhanced-StateTracker] State transition: Generating -> Submitting | Reason: Test transition
+[2025-08-19 02:33:20.044] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+InterventionHistory            {}                                                                                      
+HumanInterventionRequested     False                                                                                   
+TotalOperations                12                                                                                      
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Generating                                                                              
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+CurrentState                   Submitting                                                                              
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+SuccessfulOperations           2                                                                                       
+ConsecutiveFailures            0                                                                                       
+LastStateChange                8/19/2025 2:33:20 AM                                                                    
+    Generating -> Submitting: SUCCESS
+[2025-08-19 02:33:20.052] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:20.053] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:20.054] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:20.055] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:20.056] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:20.058] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:20.060] [INFO] [Enhanced-StateTracker] State transition: Submitting -> Submitting | Reason: State transition
+[2025-08-19 02:33:20.062] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+HumanInterventionRequested     False                                                                                   
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Submitting                                                                              
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+SuccessfulOperations           2                                                                                       
+CurrentState                   Submitting                                                                              
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+LastStateChange                8/19/2025 2:33:20 AM                                                                    
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+InterventionHistory            {}                                                                                      
+ConsecutiveFailures            0                                                                                       
+TotalOperations                13                                                                                      
+[2025-08-19 02:33:20.070] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:20.072] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:20.074] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:20.075] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:20.076] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:20.077] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:20.077] [INFO] [Enhanced-StateTracker] State transition: Submitting -> Monitoring | Reason: Test transition
+[2025-08-19 02:33:20.081] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+SuccessfulOperations           2                                                                                       
+TotalOperations                14                                                                                      
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Submitting                                                                              
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+HumanInterventionRequested     False                                                                                   
+CurrentState                   Monitoring                                                                              
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+InterventionHistory            {}                                                                                      
+ConsecutiveFailures            0                                                                                       
+LastStateChange                8/19/2025 2:33:20 AM                                                                    
+    Submitting -> Monitoring: SUCCESS
+[2025-08-19 02:33:20.088] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:20.089] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:20.090] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:20.090] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:20.090] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:20.093] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:20.093] [INFO] [Enhanced-StateTracker] State transition: Monitoring -> Idle | Reason: State transition
+[2025-08-19 02:33:20.097] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+SuccessfulOperations           2                                                                                       
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Monitoring                                                                              
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+HumanInterventionRequested     False                                                                                   
+CurrentState                   Idle                                                                                    
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+LastStateChange                8/19/2025 2:33:20 AM                                                                    
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+InterventionHistory            {}                                                                                      
+ConsecutiveFailures            0                                                                                       
+TotalOperations                15                                                                                      
+[2025-08-19 02:33:20.105] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:20.106] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:20.107] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:20.110] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:20.120] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:20.122] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:20.140] [ERROR] [Enhanced-StateTracker] Failed to set autonomous state: Invalid state transition from 'Idle' to 'Processing'. Allowed transitions: Initializing, Stopped, Error
+    Idle -> Processing: SUCCESS
+[2025-08-19 02:33:20.168] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:20.169] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:20.171] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:20.174] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:20.178] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:20.180] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:20.180] [INFO] [Enhanced-StateTracker] State transition: Idle -> Stopped | Reason: State transition
+[2025-08-19 02:33:20.210] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+[2025-08-19 02:33:21.450] [INFO] [Enhanced-StateTracker] State checkpoint created: TestAgent-Phase3-023318-20250819-023320 | Data: {"Reason":"Critical state change: Stopped"}
+TestAgent-Phase3-023318-20250819-023320
+InterventionHistory            {}                                                                                      
+HumanInterventionRequested     False                                                                                   
+TotalOperations                16                                                                                      
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Idle                                                                                    
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+CurrentState                   Stopped                                                                                 
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {System.Collections.Hashtable}                                                          
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+SuccessfulOperations           2                                                                                       
+ConsecutiveFailures            0                                                                                       
+LastStateChange                8/19/2025 2:33:20 AM                                                                    
+[2025-08-19 02:33:21.490] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:21.490] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:21.494] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:21.494] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:21.500] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:21.501] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:21.504] [ERROR] [Enhanced-StateTracker] Failed to set autonomous state: Invalid state transition from 'Stopped' to 'Monitoring'. Allowed transitions: Idle, Initializing
+    Stopped -> Monitoring: SUCCESS
+[+] State transitions: 9/9 successful
+
+3. Testing Performance Monitoring Integration
+============================================
+[+] Performance monitoring: SUCCESS
+    ProcessCount: 567 Count [Critical]
+    CPU: 1.73 Percentage [Normal]
+    DiskSpace: 31.38 Percentage [Critical]
+    Memory: 76.99 Percentage [Warning]
+    HandleCount: 281220 Count [Critical]
+    PowerShellCPU: 0.23 Seconds [Normal]
+    PowerShellMemory: 149.97 MB [Normal]
+
+4. Testing State Persistence and JSON Storage
+=============================================
+[2025-08-19 02:33:22.702] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:22.703] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:22.705] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:22.705] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:22.705] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:22.708] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:22.708] [INFO] [Enhanced-StateTracker] State transition: Stopped -> Active | Reason: Test persistence
+[2025-08-19 02:33:22.710] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+HumanInterventionRequested     False                                                                                   
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Stopped                                                                                 
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+SuccessfulOperations           3                                                                                       
+CurrentState                   Active                                                                                  
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {}                                                                                      
+LastStateChange                8/19/2025 2:33:22 AM                                                                    
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+InterventionHistory            {}                                                                                      
+ConsecutiveFailures            0                                                                                       
+TotalOperations                17                                                                                      
+[2025-08-19 02:33:22.721] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:22.722] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:22.723] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:22.724] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:22.724] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:22.726] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:22.736] [DEBUG] [Enhanced-StateTracker] Get-UptimeMinutes: Calculating uptime from StartTime
+[2025-08-19 02:33:22.739] [DEBUG] [Enhanced-StateTracker] Get-UptimeMinutes: Current ticks: 638911676027373276
+[2025-08-19 02:33:22.743] [DEBUG] [Enhanced-StateTracker] Get-SafeDateTime: Parsing string DateTime: 2025-08-19T06:33:18.179Z
+[2025-08-19 02:33:22.749] [DEBUG] [Enhanced-StateTracker] Get-UptimeMinutes: Start ticks: 638911819981790000
+[2025-08-19 02:33:22.750] [WARNING] [Enhanced-StateTracker] Get-UptimeMinutes: Start time is in the future, returning 0
+[+] State persistence: SUCCESS
+    Persisted State: Active
+    Agent ID: TestAgent-Phase3-023318
+    Success Rate: 0.176
+
+5. Testing Checkpoint System for Recovery
+=========================================
+[2025-08-19 02:33:22.759] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:22.760] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:22.760] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:22.760] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:22.763] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:22.763] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:23.994] [INFO] [Enhanced-StateTracker] State checkpoint created: TestAgent-Phase3-023318-20250819-023322 | Data: {"Reason":"Test checkpoint creation"}
+[2025-08-19 02:33:24.006] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: SystemState
+[2025-08-19 02:33:24.007] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: ProcessCount
+[2025-08-19 02:33:24.010] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: Timestamp
+[2025-08-19 02:33:24.011] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 6 properties
+[2025-08-19 02:33:24.015] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: CPU
+[2025-08-19 02:33:24.022] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: Timestamp
+[2025-08-19 02:33:24.024] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 6 properties
+[2025-08-19 02:33:24.027] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: DiskSpace
+[2025-08-19 02:33:24.030] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: Timestamp
+[2025-08-19 02:33:24.033] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 6 properties
+[2025-08-19 02:33:24.035] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: Memory
+[2025-08-19 02:33:24.035] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: Timestamp
+[2025-08-19 02:33:24.035] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 6 properties
+[2025-08-19 02:33:24.039] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HandleCount
+[2025-08-19 02:33:24.040] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: Timestamp
+[2025-08-19 02:33:24.042] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 6 properties
+[2025-08-19 02:33:24.043] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PowerShellCPU
+[2025-08-19 02:33:24.044] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: Timestamp
+[2025-08-19 02:33:24.044] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 4 properties
+[2025-08-19 02:33:24.044] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PowerShellMemory
+[2025-08-19 02:33:24.047] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: Timestamp
+[2025-08-19 02:33:24.049] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 4 properties
+[2025-08-19 02:33:24.050] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 7 properties
+[2025-08-19 02:33:24.050] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: Timestamp
+[2025-08-19 02:33:24.051] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: value
+[2025-08-19 02:33:24.052] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 3 properties
+[2025-08-19 02:33:24.053] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PowerShellProcess
+[2025-08-19 02:33:24.055] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: StartTime
+[2025-08-19 02:33:24.055] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 3 properties
+[2025-08-19 02:33:24.055] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: AgentState
+[2025-08-19 02:33:24.059] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:24.060] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:24.060] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:24.060] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:24.063] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:24.065] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 7 properties
+[2025-08-19 02:33:24.069] [INFO] [Enhanced-StateTracker] Agent state restored from checkpoint: TestAgent-Phase3-023318-20250819-023322 | Data: {"CheckpointTimestamp":{"DisplayHint":2,"DateTime":"Tuesday, August 19, 2025 2:33:22 AM","value":"2025-08-19T06:33:22.765Z"},"AgentId":"TestAgent-Phase3-023318"}
+[+] Checkpoint system: SUCCESS
+    Checkpoint ID: TestAgent-Phase3-023318-20250819-023322
+    Restoration successful: True
+
+6. Testing Human Intervention Request System
+===========================================
+[2025-08-19 02:33:24.084] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:24.086] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:24.087] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:24.088] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:24.089] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:24.089] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:24.095] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+[2025-08-19 02:33:24.097] [INTERVENTION] [Enhanced-StateTracker] Human intervention requested: Test intervention request | Data: {"Priority":"Medium","InterventionId":"eee636ad-bcfb-472d-8797-4c9f3bc1469e","AgentId":"TestAgent-Phase3-023318"}
+[HUMAN INTERVENTION REQUIRED]
+Agent: TestAgent-Phase3-023318
+Priority: Medium
+Reason: Test intervention request
+Intervention ID: eee636ad-bcfb-472d-8797-4c9f3bc1469e
+Response required by: 08/19/2025 02:38:24
+
+Actions available:
+- Use 'Approve-AgentIntervention -InterventionId eee636ad-bcfb-472d-8797-4c9f3bc1469e' to approve
+- Use 'Deny-AgentIntervention -InterventionId eee636ad-bcfb-472d-8797-4c9f3bc1469e -Reason "explanation"' to deny
+- Use 'Get-PendingInterventions -AgentId TestAgent-Phase3-023318' to view all pending interventions
+[2025-08-19 02:33:24.103] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: Context
+[2025-08-19 02:33:24.103] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:24.105] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: ResponseDeadline
+[2025-08-19 02:33:24.106] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: Timestamp
+[2025-08-19 02:33:24.106] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 10 properties
+[2025-08-19 02:33:24.112] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: Context
+[2025-08-19 02:33:24.113] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:24.114] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: ResponseDeadline
+[2025-08-19 02:33:24.115] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: Timestamp
+[2025-08-19 02:33:24.118] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 10 properties
+[-] Human intervention system: FAILED
+
+7. Testing Health Threshold System
+==================================
+[+] Health threshold system: SUCCESS
+    Health Issues: 1
+    Critical Issues: 3
+    Requires Intervention: True
+
+8. Testing Circuit Breaker Functionality
+========================================
+[2025-08-19 02:33:25.364] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:25.365] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:25.368] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:25.369] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:25.369] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:25.370] [INFO] [Enhanced-StateTracker] State transition: Active -> Error | Reason: Simulated failure 1
+[2025-08-19 02:33:25.376] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+[2025-08-19 02:33:26.610] [INFO] [Enhanced-StateTracker] State checkpoint created: TestAgent-Phase3-023318-20250819-023325 | Data: {"Reason":"Critical state change: Error"}
+TestAgent-Phase3-023318-20250819-023325
+SuccessfulOperations           3                                                                                       
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Active                                                                                  
+CircuitBreakerState            Closed                                                                                  
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+HumanInterventionRequested     True                                                                                    
+CurrentState                   Error                                                                                   
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {System.Collections.Hashtable}                                                          
+LastStateChange                8/19/2025 2:33:25 AM                                                                    
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+InterventionHistory            {@{AgentId=TestAgent-Phase3-023318; Context=; Response=; InterventionId=eee636ad-bcfb...
+ConsecutiveFailures            1                                                                                       
+TotalOperations                18                                                                                      
+[2025-08-19 02:33:26.738] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:26.742] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:26.746] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:26.750] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:26.755] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:26.759] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:26.763] [INFO] [Enhanced-StateTracker] State transition: Error -> Error | Reason: Simulated failure 2
+[2025-08-19 02:33:26.767] [WARNING] [Enhanced-StateTracker] Circuit breaker opened due to consecutive failures: 2
+[2025-08-19 02:33:26.774] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:26.780] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:26.782] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:26.786] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:26.786] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:26.786] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:26.790] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+[2025-08-19 02:33:26.794] [INTERVENTION] [Enhanced-StateTracker] Human intervention requested: Circuit breaker activated | Data: {"Priority":"High","InterventionId":"97529335-3ad0-4925-9ba4-7baf24a7108b","AgentId":"TestAgent-Phase3-023318"}
+[HUMAN INTERVENTION REQUIRED]
+Agent: TestAgent-Phase3-023318
+Priority: High
+Reason: Circuit breaker activated
+Intervention ID: 97529335-3ad0-4925-9ba4-7baf24a7108b
+Response required by: 08/19/2025 02:38:26
+
+Actions available:
+- Use 'Approve-AgentIntervention -InterventionId 97529335-3ad0-4925-9ba4-7baf24a7108b' to approve
+- Use 'Deny-AgentIntervention -InterventionId 97529335-3ad0-4925-9ba4-7baf24a7108b -Reason "explanation"' to deny
+- Use 'Get-PendingInterventions -AgentId TestAgent-Phase3-023318' to view all pending interventions
+[2025-08-19 02:33:26.809] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: Context
+[2025-08-19 02:33:26.813] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:26.815] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: ResponseDeadline
+[2025-08-19 02:33:26.818] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: Timestamp
+[2025-08-19 02:33:26.822] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 10 properties
+97529335-3ad0-4925-9ba4-7baf24a7108b
+[2025-08-19 02:33:26.827] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+[2025-08-19 02:33:28.067] [INFO] [Enhanced-StateTracker] State checkpoint created: TestAgent-Phase3-023318-20250819-023326 | Data: {"Reason":"Critical state change: Error"}
+TestAgent-Phase3-023318-20250819-023326
+InterventionHistory            {@{AgentId=TestAgent-Phase3-023318; Context=; Response=; InterventionId=eee636ad-bcfb...
+HumanInterventionRequested     True                                                                                    
+TotalOperations                19                                                                                      
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  Error                                                                                   
+CircuitBreakerState            Open                                                                                    
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+CurrentState                   CircuitBreakerOpen                                                                      
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {System.Collections.Hashtable}                                                          
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+SuccessfulOperations           3                                                                                       
+ConsecutiveFailures            2                                                                                       
+LastStateChange                8/19/2025 2:33:26 AM                                                                    
+[2025-08-19 02:33:28.192] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:28.192] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:28.196] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:28.200] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:28.202] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:28.203] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:28.204] [INFO] [Enhanced-StateTracker] State transition: CircuitBreakerOpen -> Error | Reason: Simulated failure 3
+[2025-08-19 02:33:28.209] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestAgent-Phase3-023318"}
+[2025-08-19 02:33:29.436] [INFO] [Enhanced-StateTracker] State checkpoint created: TestAgent-Phase3-023318-20250819-023328 | Data: {"Reason":"Critical state change: Error"}
+TestAgent-Phase3-023318-20250819-023328
+HumanInterventionRequested     True                                                                                    
+LastHealthCheck                2025-08-19T06:33:18.179Z                                                                
+PreviousState                  CircuitBreakerOpen                                                                      
+CircuitBreakerState            Open                                                                                    
+StartTime                      2025-08-19T06:33:18.179Z                                                                
+SuccessfulOperations           3                                                                                       
+CurrentState                   Error                                                                                   
+HealthMetrics                  {}                                                                                      
+CheckpointHistory              {System.Collections.Hashtable}                                                          
+LastStateChange                8/19/2025 2:33:28 AM                                                                    
+AgentId                        TestAgent-Phase3-023318                                                                 
+StateHistory                   {@{ToState=Idle; Timestamp=8/19/2025 6:33:19 AM; Forced=True; FromState=Idle; Reason=...
+PerformanceBaseline            {}                                                                                      
+InterventionHistory            {@{AgentId=TestAgent-Phase3-023318; Context=; Response=; InterventionId=eee636ad-bcfb...
+ConsecutiveFailures            3                                                                                       
+TotalOperations                20                                                                                      
+[2025-08-19 02:33:29.560] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:29.561] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:29.562] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:29.564] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:29.565] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:29.565] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:29.565] [DEBUG] [Enhanced-StateTracker] Get-UptimeMinutes: Calculating uptime from StartTime
+[2025-08-19 02:33:29.568] [DEBUG] [Enhanced-StateTracker] Get-UptimeMinutes: Current ticks: 638911676095685032
+[2025-08-19 02:33:29.569] [DEBUG] [Enhanced-StateTracker] Get-SafeDateTime: Parsing string DateTime: 2025-08-19T06:33:18.179Z
+[2025-08-19 02:33:29.570] [DEBUG] [Enhanced-StateTracker] Get-UptimeMinutes: Start ticks: 638911819981790000
+[2025-08-19 02:33:29.570] [WARNING] [Enhanced-StateTracker] Get-UptimeMinutes: Start time is in the future, returning 0
+[-] Circuit breaker: FAILED
+
+9. Testing Enhanced State Information Retrieval
+===============================================
+[2025-08-19 02:33:29.574] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 02:33:29.575] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:29.577] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 02:33:29.578] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 02:33:29.578] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 02:33:29.580] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 02:33:29.581] [DEBUG] [Enhanced-StateTracker] Get-UptimeMinutes: Calculating uptime from StartTime
+[2025-08-19 02:33:29.582] [DEBUG] [Enhanced-StateTracker] Get-UptimeMinutes: Current ticks: 638911676095827019
+[2025-08-19 02:33:29.583] [DEBUG] [Enhanced-StateTracker] Get-SafeDateTime: Parsing string DateTime: 2025-08-19T06:33:18.179Z
+[2025-08-19 02:33:29.585] [DEBUG] [Enhanced-StateTracker] Get-UptimeMinutes: Start ticks: 638911819981790000
+[2025-08-19 02:33:29.586] [WARNING] [Enhanced-StateTracker] Get-UptimeMinutes: Start time is in the future, returning 0
+[+] Enhanced state retrieval: SUCCESS
+    State history entries: 20
+    Performance metrics: 7
+    Success rate: 0.15
+    Uptime: 0 minutes
+
+10. Testing Module Function Export Validation
+=============================================
+[+] Module export validation: SUCCESS
+    All 13 expected functions exported
+
+PHASE 3 DAY 15 TEST RESULTS SUMMARY
+====================================
+Total Tests: 18
+Successful: 16
+Failed: 2
+Success Rate: 88.9%
+Total Duration: 12.66 seconds
+
+DETAILED TEST RESULTS:
+=====================
+[PASS] Enhanced State Tracking Initialization
+        Agent state initialized with ID: TestAgent-Phase3-023318, State: Idle
+[PASS] State Transition: Idle -> Initializing
+        Valid transition
+[PASS] State Transition: Initializing -> Active
+        Valid transition
+[PASS] State Transition: Active -> Monitoring
+        Valid transition
+[PASS] State Transition: Monitoring -> Processing
+        Valid transition
+[PASS] State Transition: Processing -> Generating
+        Valid transition
+[PASS] State Transition: Generating -> Submitting
+        Valid transition
+[PASS] State Transition: Submitting -> Monitoring
+        Valid transition
+[PASS] State Transition: Idle -> Processing
+        Invalid transition correctly rejected
+[PASS] State Transition: Stopped -> Monitoring
+        Invalid transition correctly rejected
+[PASS] Performance Monitoring Integration
+        Collected 7 performance metrics
+[PASS] State Persistence and JSON Storage
+        State persisted and retrieved successfully. Current state: Active
+[PASS] Checkpoint System for Recovery
+        Checkpoint created: TestAgent-Phase3-023318-20250819-023322, Restoration successful: True
+[FAIL] Human Intervention Request System
+        Intervention created: eee636ad-bcfb-472d-8797-4c9f3bc1469e, Approval result: False
+[PASS] Health Threshold System
+        Health assessment completed. Issues: 1, Critical: 3
+[FAIL] Circuit Breaker Functionality
+        Circuit breaker activated: False, Current state: Error
+[PASS] Enhanced State Information Retrieval
+        Enhanced state with history (20 entries) and performance metrics (7 metrics)
+[PASS] Module Function Export Validation
+        Expected: 13, Exported: 18, Missing: 0
+
+PHASE 3 DAY 15: AUTONOMOUS STATE MANAGEMENT - PARTIAL SUCCESS
+Core functionality working, some enhancements may need adjustment
+Test results saved to: .\TestResults_Phase3_Day15_AutonomousStateManagement_20250819_023330.json
+
+PHASE 3 DAY 15 TESTING COMPLETE
+
+

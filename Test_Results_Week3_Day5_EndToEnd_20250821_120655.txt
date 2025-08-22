@@ -1,0 +1,36 @@
+Unity-Claude End-to-End Integration Test Results
+=================================================
+Test Date: 08/21/2025 12:06:55
+Test Duration: 8.31 seconds
+PowerShell Version: 5.1.22621.5697
+
+Summary:
+Total Tests: 12
+Passed: 0
+Failed: 12
+Pass Rate: 0%
+
+Detailed Results:
+[FAIL] Integrated Workflow Module Import (ModuleLoading) - Missing functions: New-IntegratedWorkflow, Start-IntegratedWorkflow, Get-IntegratedWorkflowStatus, Stop-IntegratedWorkflow, Initialize-AdaptiveThrottling, Update-AdaptiveThrottling, New-IntelligentJobBatching, Get-WorkflowPerformanceAnalysis [872ms]
+[FAIL] Dependency Module Availability (ModuleLoading) - Dependencies: 0/3 available (Missing: Unity-Claude-RunspaceManagement, Unity-Claude-UnityParallelization, Unity-Claude-ClaudeParallelization) [810ms]
+[FAIL] Basic Integrated Workflow Creation (WorkflowIntegration) - Workflow creation error: The term 'New-IntegratedWorkflow' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again. [625ms]
+[FAIL] Advanced Integrated Workflow Creation (WorkflowIntegration) - Advanced workflow creation error: The term 'New-IntegratedWorkflow' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again. [504ms]
+[FAIL] Workflow Status and Monitoring (WorkflowIntegration) - No advanced workflow available for status test [657ms]
+[FAIL] Adaptive Throttling Initialization (PerformanceOptimization) - No advanced workflow available for throttling test [606ms]
+[FAIL] Intelligent Job Batching (PerformanceOptimization) - No advanced workflow available for batching test [719ms]
+[FAIL] Performance Analysis Framework (PerformanceOptimization) - No advanced workflow available for performance test [625ms]
+[FAIL] Complete Workflow Simulation (EndToEndWorkflow) - E2E workflow error: The term 'New-IntegratedWorkflow' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again. [622ms]
+[FAIL] Workflow Performance Validation (EndToEndWorkflow) - Performance validation error: The term 'New-IntegratedWorkflow' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again. [675ms]
+[FAIL] Resource Usage Monitoring (ResourceManagement) - Resource monitoring error: The term 'New-IntegratedWorkflow' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again. [731ms]
+[FAIL] Error Propagation Testing (ErrorHandling) - Error handling test error: The term 'New-IntegratedWorkflow' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again. [770ms]
+
+Category Summary:
+EndToEndWorkflow: 0/2 (0%)
+ErrorHandling: 0/1 (0%)
+ModuleLoading: 0/2 (0%)
+PerformanceOptimization: 0/3 (0%)
+ResourceManagement: 0/1 (0%)
+WorkflowIntegration: 0/3 (0%)
+
+??? WEEK 3 DAY 5 END-TO-END INTEGRATION: NEEDS ATTENTION
+Significant issues in integrated workflow implementation

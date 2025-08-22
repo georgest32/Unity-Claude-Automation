@@ -1,0 +1,130 @@
+{
+  "environment": "development",
+  "autonomous_operation": {
+    "enabled": true,
+    "max_conversation_rounds": 10,
+    "response_timeout_ms": 300000,
+    "retry_attempts": 3,
+    "retry_delay_ms": 5000,
+    "auto_submit_enabled": true,
+    "safety_mode": true
+  },
+  "claude_cli": {
+    "enabled": true,
+    "window_title": "Claude Code CLI",
+    "submit_method": "file",
+    "response_directory": "ClaudeResponses",
+    "command_timeout_ms": 30000,
+    "retry_attempts": 3,
+    "cli_path": "claude",
+    "auto_detect_window": true
+  },
+  "monitoring": {
+    "enabled": true,
+    "thresholds": {
+      "memory_warning_mb": 500,
+      "memory_critical_mb": 1000,
+      "object_count_threshold": 10000,
+      "cpu_warning_percentage": 70,
+      "cpu_critical_percentage": 85,
+      "heartbeat_interval_seconds": 60,
+      "heartbeat_failure_threshold": 4,
+      "health_check_interval_seconds": 15,
+      "status_update_interval_seconds": 30
+    }
+  },
+  "error_handling": {
+    "enabled": true,
+    "max_retries": 3,
+    "retry_delay_ms": 5000,
+    "error_log_path": "unity_claude_automation.log",
+    "critical_errors_stop_execution": true,
+    "notification_on_error": true,
+    "capture_stack_trace": true,
+    "aggregate_similar_errors": true
+  },
+  "user_preferences": {
+    "automation_level": "full",
+    "notification_methods": ["console", "file", "dashboard"],
+    "conversation_flow": "autonomous",
+    "window_focus_enabled": true,
+    "mouse_keyboard_lock": true,
+    "detailed_logging": true,
+    "debug_mode": false
+  },
+  "dashboard": {
+    "enabled": true,
+    "port": 8081,
+    "refresh_interval_seconds": 30,
+    "metrics_retention_hours": 24,
+    "real_time_updates": true,
+    "auto_refresh": true,
+    "theme": "default"
+  },
+  "command_whitelist": {
+    "enabled": true,
+    "allowed_unity_commands": [
+      "Test-UnityProject",
+      "Build-UnityProject", 
+      "Analyze-UnityLogs",
+      "Get-UnityErrors",
+      "Clear-UnityCache"
+    ],
+    "allowed_system_commands": [
+      "Get-Process",
+      "Get-Service",
+      "Get-EventLog",
+      "Test-Path",
+      "Get-Content"
+    ],
+    "blocked_commands": [
+      "Remove-Item",
+      "Stop-Process",
+      "Restart-Computer",
+      "Format-Volume"
+    ]
+  },
+  "notification_settings": {
+    "email_enabled": false,
+    "email_recipients": [],
+    "webhook_enabled": false,
+    "webhook_url": "",
+    "console_notifications": true,
+    "file_notifications": true,
+    "dashboard_notifications": true,
+    "severity_levels": {
+      "info": true,
+      "warning": true,
+      "error": true,
+      "critical": true
+    }
+  },
+  "monitoring_thresholds": {
+    "memory_warning_mb": 500,
+    "memory_critical_mb": 1000,
+    "object_count_threshold": 10000,
+    "cpu_warning_percentage": 70,
+    "cpu_critical_percentage": 85,
+    "heartbeat_interval_seconds": 60,
+    "heartbeat_failure_threshold": 4,
+    "health_check_interval_seconds": 15,
+    "status_update_interval_seconds": 30
+  },
+  "dashboard_settings": {
+    "enabled": true,
+    "port": 8081,
+    "refresh_interval_seconds": 30,
+    "metrics_retention_hours": 24,
+    "real_time_updates": true,
+    "auto_refresh": true,
+    "theme": "default"
+  },
+  "performance_settings": {
+    "parallel_processing_enabled": true,
+    "max_concurrent_operations": 3,
+    "memory_limit_mb": 2048,
+    "execution_timeout_ms": 600000,
+    "cleanup_interval_minutes": 30,
+    "log_rotation_size_mb": 100
+  }
+}

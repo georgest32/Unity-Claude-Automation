@@ -1,0 +1,59 @@
+[2025-08-21 23:21:50.102] [INFO] ========================================
+[2025-08-21 23:21:50.117] [INFO] MUTEX SINGLETON ENFORCEMENT TEST SUITE
+[2025-08-21 23:21:50.117] [INFO] ========================================
+[2025-08-21 23:21:50.117] [INFO] Test started at: 08/21/2025 23:21:50
+[2025-08-21 23:21:50.117] [INFO] Output file: .\Test_Results_MutexSingleton_20250821_232150.txt
+[2025-08-21 23:21:50.117] [INFO] 
+[2025-08-21 23:21:50.117] [INFO] Clearing module cache...
+[2025-08-21 23:21:50.133] [INFO] Importing Unity-Claude-SystemStatus module...
+[2025-08-21 23:21:50.323] [OK] Module imported successfully
+[2025-08-21 23:21:50.330] [OK] All required mutex functions verified
+[2025-08-21 23:21:50.332] [INFO] 
+[2025-08-21 23:21:50.332] [INFO] TEST 1: Single Instance Acquisition
+[2025-08-21 23:21:50.335] [INFO] ======================================
+[2025-08-21 23:21:50.355] [OK] SUCCESS: Acquired mutex for TestSubsystem1
+[2025-08-21 23:21:50.355] [DEBUG]   IsNew: True
+[2025-08-21 23:21:50.355] [DEBUG]   Message: Mutex acquired successfully
+[2025-08-21 23:21:50.355] [DEBUG] Cleaned up mutex
+[2025-08-21 23:21:50.369] [INFO] 
+[2025-08-21 23:21:50.369] [INFO] TEST 2: Duplicate Prevention (Same Process)
+[2025-08-21 23:21:50.371] [INFO] ===========================================
+[2025-08-21 23:21:50.379] [OK] Acquired first mutex for TestSubsystem2
+[2025-08-21 23:21:50.386] [ERROR] FAILED: Second acquisition should have been blocked
+[2025-08-21 23:21:50.391] [DEBUG] Cleaned up first mutex
+[2025-08-21 23:21:50.391] [INFO] 
+[2025-08-21 23:21:50.391] [INFO] TEST 3: Abandoned Mutex Recovery
+[2025-08-21 23:21:50.391] [INFO] =================================
+[2025-08-21 23:21:50.391] [INFO] Starting process that will abandon mutex...
+[2025-08-21 23:21:52.527] [INFO] Process terminated, mutex should be abandoned
+[2025-08-21 23:21:52.551] [OK] SUCCESS: Recovered abandoned mutex
+[2025-08-21 23:21:52.551] [DEBUG]   Message: Mutex acquired successfully
+[2025-08-21 23:21:52.551] [DEBUG] Cleaned up recovered mutex
+[2025-08-21 23:21:52.551] [INFO] 
+[2025-08-21 23:21:52.551] [INFO] TEST 4: Cross-Session Blocking
+[2025-08-21 23:21:52.558] [INFO] ===============================
+[2025-08-21 23:21:52.558] [INFO] Starting process to hold mutex...
+[2025-08-21 23:21:53.658] [INFO] Attempting to acquire mutex from current session...
+[2025-08-21 23:21:53.673] [ERROR] FAILED: Should have been blocked by other session
+[2025-08-21 23:21:53.673] [INFO] Waiting for holding process to release...
+[2025-08-21 23:22:01.645] [OK] SUCCESS: Acquired mutex after other session released
+[2025-08-21 23:22:01.660] [INFO] 
+[2025-08-21 23:22:01.676] [INFO] TEST 5: Test-SubsystemMutex Function
+[2025-08-21 23:22:01.676] [INFO] =====================================
+[2025-08-21 23:22:01.676] [OK] SUCCESS: Correctly detected no mutex exists
+[2025-08-21 23:22:01.676] [DEBUG]   Message: Mutex does not exist
+[2025-08-21 23:22:01.699] [ERROR] FAILED: Should detect mutex exists and is held
+[2025-08-21 23:22:02.215] [OK] SUCCESS: Correctly detected mutex is not held after release
+[2025-08-21 23:22:02.216] [DEBUG]   Message: Mutex does not exist
+[2025-08-21 23:22:02.219] [INFO] 
+[2025-08-21 23:22:02.219] [INFO] ========================================
+[2025-08-21 23:22:02.219] [INFO] TEST SUITE COMPLETED
+[2025-08-21 23:22:02.219] [INFO] ========================================
+[2025-08-21 23:22:02.219] [INFO] End time: 08/21/2025 23:22:02
+[2025-08-21 23:22:02.219] [INFO] Duration: 12.1144832 seconds
+[2025-08-21 23:22:02.226] [INFO] 
+[2025-08-21 23:22:02.226] [INFO] Results Summary:
+[2025-08-21 23:22:02.228] [OK]   Successes: 5
+[2025-08-21 23:22:02.229] [ERROR]   Errors: 3
+[2025-08-21 23:22:02.229] [INFO] 
+[2025-08-21 23:22:02.229] [INFO] Saving results to: .\Test_Results_MutexSingleton_20250821_232150.txt

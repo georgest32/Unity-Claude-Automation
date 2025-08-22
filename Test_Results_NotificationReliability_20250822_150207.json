@@ -1,0 +1,184 @@
+{
+    "SkippedTests":  1,
+    "Summary":  "\r\n=== WEEK 6 DAYS 3-4 NOTIFICATION RELIABILITY TEST SUMMARY ===\r\nTotal Tests: 7\r\nPassed: 5\r\nFailed: 1\r\nSkipped: 1\r\nSuccess Rate: 71.43%\r\nDuration: 8.7488351 seconds\r\n\r\nReliability Metrics:\r\nEmail Delivery:\r\n- Attempts: 5\r\n- Success Rate: 100%\r\n- Avg Response Time: 0ms\r\n\r\nWebhook Delivery:\r\n- Attempts: 0\r\n- Success Rate: 0%\r\n- Avg Response Time: 0ms\r\n\r\nOverall System:\r\n- Total Delivery Attempts: 5\r\n- Overall Success Rate: 100%\r\n\r\nKey Findings:\r\n- ✅ Module structure and function loading working correctly\r\n- ✅ Bootstrap Orchestrator integration operational\r\n- ⚠️  Configuration setup required for full email/webhook testing\r\n- ⚠️  Authentication credentials needed for production use\r\n\r\nStatus: PARTIAL SUCCESS",
+    "TotalTests":  7,
+    "ReliabilityMetrics":  {
+                               "EmailDelivery":  {
+                                                     "Failures":  0,
+                                                     "SuccessRate":  100,
+                                                     "Successes":  5,
+                                                     "MaxResponseTime":  114,
+                                                     "AverageResponseTime":  null,
+                                                     "MinResponseTime":  103,
+                                                     "Attempts":  5
+                                                 },
+                               "WebhookDelivery":  {
+                                                       "AverageResponseTime":  0,
+                                                       "MaxResponseTime":  0,
+                                                       "SuccessRate":  0,
+                                                       "Successes":  0,
+                                                       "Failures":  0,
+                                                       "MinResponseTime":  999999,
+                                                       "Attempts":  0
+                                                   },
+                               "OverallSystem":  {
+                                                     "TotalFailures":  0,
+                                                     "TotalAttempts":  5,
+                                                     "CircuitBreakerActivations":  0,
+                                                     "OverallSuccessRate":  100,
+                                                     "FallbackActivations":  0,
+                                                     "TotalSuccesses":  5
+                                                 }
+                           },
+    "PassedTests":  5,
+    "StartTime":  {
+                      "value":  "\/Date(1755889327375)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "Friday, August 22, 2025 3:02:07 PM"
+                  },
+    "Tests":  [
+                  {
+                      "Details":  "System.Collections.Hashtable System.Collections.Hashtable System.Collections.Hashtable System.Collections.Hashtable System.Collections.Hashtable.Count/5 connections successful",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755889330854)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:02:10 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "SMTP Connectivity Reliability",
+                      "Metrics":  {
+                                      "AvgResponseTime":  "0ms",
+                                      "SuccessRate":  "100%",
+                                      "Iterations":  5
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "0/5 emails delivered successfully",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755889330883)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:02:10 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Email Delivery Reliability",
+                      "Metrics":  {
+                                      "Successful":  0,
+                                      "DeliveryRate":  "0%",
+                                      "Total":  5
+                                  },
+                      "Status":  "FAILED"
+                  },
+                  {
+                      "Details":  "Configuration validation score: 6/6",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755889330891)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:02:10 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Email Authentication Configuration",
+                      "Metrics":  {
+                                      "ValidItems":  "6/6",
+                                      "ValidationRate":  "100%"
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "Skipped (webhook disabled or email-only mode)",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755889330895)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:02:10 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Webhook Delivery Reliability Tests",
+                      "Metrics":  {
+
+                                  },
+                      "Status":  "SKIPPED"
+                  },
+                  {
+                      "Details":  "Concurrent delivery completed in 2250.3ms",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755889335184)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:02:15 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Concurrent Delivery Performance",
+                      "Metrics":  {
+                                      "TotalTime":  "2250.3ms",
+                                      "AvgPerTest":  "750.1ms",
+                                      "ConcurrentTests":  3
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "Circuit breaker validation: 5/5 checks passed",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755889335203)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:02:15 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Circuit Breaker Configuration",
+                      "Metrics":  {
+                                      "ValidItems":  "5/5",
+                                      "ValidationRate":  "100%"
+                                  },
+                      "Status":  "PASSED"
+                  },
+                  {
+                      "Details":  "Health monitoring: Healthy",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1755889336117)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 22, 2025 3:02:16 PM"
+                                    },
+                      "Error":  "",
+                      "TestName":  "Health Monitoring Integration",
+                      "Metrics":  {
+                                      "HealthRate":  "133.333333333333%",
+                                      "HealthyServices":  "4/3",
+                                      "Status":  "Healthy"
+                                  },
+                      "Status":  "PASSED"
+                  }
+              ],
+    "TestName":  "Week 6 Days 3-4: Notification Reliability Testing",
+    "PerformanceCounters":  {
+                                "CPUDelta":  1.0273610193165639,
+                                "Initial":  {
+                                                "MemoryAvailable":  35929,
+                                                "ProcessCount":  395,
+                                                "CPUUsage":  0.97001075256613056
+                                            },
+                                "Final":  {
+                                              "MemoryAvailable":  35959,
+                                              "ProcessCount":  394,
+                                              "CPUUsage":  1.9973717718826944
+                                          },
+                                "MemoryDelta":  -30
+                            },
+    "SuccessRate":  71.43,
+    "Duration":  {
+                     "Ticks":  87488351,
+                     "Days":  0,
+                     "Hours":  0,
+                     "Milliseconds":  748,
+                     "Minutes":  0,
+                     "Seconds":  8,
+                     "TotalDays":  0.00010125966550925926,
+                     "TotalHours":  0.0024302319722222221,
+                     "TotalMilliseconds":  8748.8351,
+                     "TotalMinutes":  0.14581391833333335,
+                     "TotalSeconds":  8.7488350999999991
+                 },
+    "EndTime":  {
+                    "value":  "\/Date(1755889336124)\/",
+                    "DisplayHint":  2,
+                    "DateTime":  "Friday, August 22, 2025 3:02:16 PM"
+                },
+    "FailedTests":  1
+}

@@ -1,0 +1,207 @@
+[2025-08-22 01:39:47.878] [INFO] [Framework] ============================================
+[2025-08-22 01:39:47.892] [INFO] [Framework] UNIT TEST FRAMEWORK VALIDATION
+[2025-08-22 01:39:47.896] [INFO] [Framework] Bootstrap Orchestrator - Phase 3 Day 1
+[2025-08-22 01:39:47.899] [INFO] [Framework] ============================================
+[2025-08-22 01:39:47.902] [INFO] [Framework] Framework test started at: 08/22/2025 01:39:47
+[2025-08-22 01:39:47.904] [INFO] [Framework] Output file: .\Test_Results_UnitFramework_20250822_013947.txt
+[2025-08-22 01:39:47.904] [INFO] [Framework] 
+[2025-08-22 01:39:47.922] [INFO] [FrameworkBasicFunctionality] ========================================
+[2025-08-22 01:39:47.924] [INFO] [FrameworkBasicFunctionality] Starting unit test: FrameworkBasicFunctionality
+[2025-08-22 01:39:47.927] [INFO] [FrameworkBasicFunctionality] ========================================
+[2025-08-22 01:39:47.952] [INFO] [FrameworkBasicFunctionality] Testing basic assertion functions
+[2025-08-22 01:39:47.957] [OK] [Assert] PASS: Assert-Equal with matching values (Expected: 5, Actual: 5)
+[2025-08-22 01:39:47.961] [ERROR] [Assert] FAIL: Assert-Equal with different values (should fail) (Expected: test, Actual: different)
+[2025-08-22 01:39:47.965] [OK] [Assert] PASS: Assert-True with true condition
+[2025-08-22 01:39:47.968] [ERROR] [Assert] FAIL: Assert-True with false condition (should fail)
+[2025-08-22 01:39:47.974] [OK] [Assert] PASS: Assert-False with false condition
+[2025-08-22 01:39:47.975] [ERROR] [Assert] FAIL: Assert-False with true condition (should fail)
+[2025-08-22 01:39:47.978] [OK] [Assert] PASS: Assert-NotNull with value
+[2025-08-22 01:39:47.979] [ERROR] [Assert] FAIL: Assert-NotNull with null (should fail)
+[2025-08-22 01:39:47.980] [OK] [Assert] PASS: Assert-Null with null value
+[2025-08-22 01:39:47.981] [ERROR] [Assert] FAIL: Assert-Null with value (should fail)
+[2025-08-22 01:39:47.990] [INFO] [FrameworkBasicFunctionality] 
+[2025-08-22 01:39:47.991] [INFO] [FrameworkBasicFunctionality] Test completed in 58.9823ms
+[2025-08-22 01:39:47.993] [ERROR] [FrameworkBasicFunctionality] Results: 5 passed, 5 failed
+[2025-08-22 01:39:47.993] [ERROR] [FrameworkBasicFunctionality] Unit test FAILED: FrameworkBasicFunctionality
+[2025-08-22 01:39:47.995] [INFO] [MockFramework] Removing all mocks and restoring original functions
+[2025-08-22 01:39:47.996] [INFO] [MockFrameworkFunctionality] ========================================
+[2025-08-22 01:39:47.997] [INFO] [MockFrameworkFunctionality] Starting unit test: MockFrameworkFunctionality
+[2025-08-22 01:39:47.998] [INFO] [MockFrameworkFunctionality] ========================================
+[2025-08-22 01:39:48.020] [INFO] [MockFrameworkFunctionality] Testing mock framework functionality
+[2025-08-22 01:39:48.023] [DEBUG] [MockFramework] Creating mock for function: Test-MockedFunction
+[2025-08-22 01:39:48.066] [OK] [MockFramework] Mock function Test-MockedFunction created successfully
+[2025-08-22 01:39:48.085] [OK] [Assert] PASS: Mock function returns expected result (Expected: Mocked result: hello, world, Actual: Mocked result: hello, world)
+[2025-08-22 01:39:48.090] [OK] [Assert] PASS: Mock call count tracking (Expected: 3, Actual: 3)
+[2025-08-22 01:39:48.093] [OK] [Assert] PASS: Mock call history count (Expected: 3, Actual: 3)
+[2025-08-22 01:39:48.096] [INFO] [MockFrameworkFunctionality] 
+[2025-08-22 01:39:48.097] [INFO] [MockFrameworkFunctionality] Test completed in 98.3902ms
+[2025-08-22 01:39:48.099] [OK] [MockFrameworkFunctionality] Results: 3 passed, 0 failed
+[2025-08-22 01:39:48.102] [OK] [MockFrameworkFunctionality] Unit test PASSED: MockFrameworkFunctionality
+[2025-08-22 01:39:48.104] [INFO] [MockFramework] Removing all mocks and restoring original functions
+[2025-08-22 01:39:48.110] [INFO] [ExceptionTesting] ========================================
+[2025-08-22 01:39:48.113] [INFO] [ExceptionTesting] Starting unit test: ExceptionTesting
+[2025-08-22 01:39:48.115] [INFO] [ExceptionTesting] ========================================
+[2025-08-22 01:39:48.136] [INFO] [ExceptionTesting] Testing exception assertion functionality
+[2025-08-22 01:39:48.156] [OK] [Assert] PASS: Assert-Throws with matching exception - Exception thrown: Test exception
+[2025-08-22 01:39:48.172] [ERROR] [Assert] FAIL: Assert-Throws without exception (should fail) - No exception thrown
+[2025-08-22 01:39:48.188] [ERROR] [Assert] FAIL: Assert-Throws with wrong exception (should fail) - Wrong exception: Different exception
+[2025-08-22 01:39:48.191] [INFO] [ExceptionTesting] 
+[2025-08-22 01:39:48.193] [INFO] [ExceptionTesting] Test completed in 75.5651ms
+[2025-08-22 01:39:48.196] [ERROR] [ExceptionTesting] Results: 1 passed, 2 failed
+[2025-08-22 01:39:48.196] [ERROR] [ExceptionTesting] Unit test FAILED: ExceptionTesting
+[2025-08-22 01:39:48.196] [INFO] [MockFramework] Removing all mocks and restoring original functions
+[2025-08-22 01:39:48.197] [INFO] [Framework] 
+[2025-08-22 01:39:48.198] [INFO] [Framework] ============================================
+[2025-08-22 01:39:48.199] [INFO] [Framework] UNIT TEST FRAMEWORK VALIDATION COMPLETED
+[2025-08-22 01:39:48.200] [INFO] [Framework] ============================================
+[2025-08-22 01:39:48.201] [INFO] [Framework] End time: 08/22/2025 01:39:48
+[2025-08-22 01:39:48.204] [INFO] [Framework] Total duration: 0.320704 seconds
+[2025-08-22 01:39:48.336] [INFO] [Framework] 
+[2025-08-22 01:39:48.338] [INFO] [Framework] Framework Validation Summary:
+[2025-08-22 01:39:48.340] [INFO] [Framework]   Tests Run: 3
+[2025-08-22 01:39:48.341] [ERROR] [Framework]   Tests Passed: 1
+[2025-08-22 01:39:48.341] [INFO] [Framework]   Assertions Passed: 
+[2025-08-22 01:39:48.343] [ERROR] [Framework]   Assertions Failed: 
+[2025-08-22 01:39:48.344] [INFO] [Framework] 
+[2025-08-22 01:39:48.346] [INFO] [Framework] Saving framework validation results to: .\Test_Results_UnitFramework_20250822_013947.txt
+[2025-08-22 01:39:48.349] [ERROR] [Framework] Unit test framework validation FAILED
+[2025-08-22 01:39:48.351] [ERROR] [Framework] Framework requires fixes before use
+[2025-08-22 01:39:48.353] [INFO] [Framework] Framework validation output saved to: .\Test_Results_UnitFramework_20250822_013947.txt
+[2025-08-22 01:39:48.353] [INFO] [Framework] ================================================
+[2025-08-22 01:39:48.354] [INFO] [Framework] BOOTSTRAP ORCHESTRATOR UNIT TESTS
+[2025-08-22 01:39:48.354] [INFO] [Framework] Phase 3 Day 1 - Individual Function Testing
+[2025-08-22 01:39:48.355] [INFO] [Framework] ================================================
+[2025-08-22 01:39:48.355] [INFO] [Framework] Unit tests started at: 08/22/2025 01:39:48
+[2025-08-22 01:39:48.356] [INFO] [Framework] Output file: .\Test_Results_UnitFramework_20250822_013947.txt
+[2025-08-22 01:39:48.356] [INFO] [Framework] 
+[2025-08-22 01:39:48.356] [INFO] [Framework] Importing Unity-Claude-SystemStatus module...
+[2025-08-22 01:39:48.586] [OK] [Framework] Module imported successfully
+[2025-08-22 01:39:48.587] [INFO] [New-SubsystemMutex-UnitTest] ========================================
+[2025-08-22 01:39:48.589] [INFO] [New-SubsystemMutex-UnitTest] Starting unit test: New-SubsystemMutex-UnitTest
+[2025-08-22 01:39:48.591] [INFO] [New-SubsystemMutex-UnitTest] ========================================
+[2025-08-22 01:39:48.595] [INFO] [New-SubsystemMutex-UnitTest] Testing New-SubsystemMutex function in isolation
+[2025-08-22 01:39:48.630] [OK] [Assert] PASS: Mutex result should not be null
+[2025-08-22 01:39:48.632] [ERROR] [Assert] FAIL: New-SubsystemMutex should not throw exception: Method invocation failed because [System.Management.Automation.PSCustomObject] does not contain a method named 'ContainsKey'.
+[2025-08-22 01:39:48.638] [OK] [Assert] PASS: Empty subsystem name should throw exception - Exception thrown: Cannot bind argument to parameter 'SubsystemName' because it is an empty string.
+[2025-08-22 01:39:48.647] [ERROR] [Assert] FAIL: Negative timeout should throw exception - No exception thrown
+[2025-08-22 01:39:48.656] [OK] [Assert] PASS: Custom mutex result should not be null
+[2025-08-22 01:39:48.665] [INFO] [New-SubsystemMutex-UnitTest] 
+[2025-08-22 01:39:48.667] [INFO] [New-SubsystemMutex-UnitTest] Test completed in 71.199ms
+[2025-08-22 01:39:48.668] [ERROR] [New-SubsystemMutex-UnitTest] Results: 3 passed, 2 failed
+[2025-08-22 01:39:48.670] [ERROR] [New-SubsystemMutex-UnitTest] Unit test FAILED: New-SubsystemMutex-UnitTest
+[2025-08-22 01:39:48.670] [INFO] [MockFramework] Removing all mocks and restoring original functions
+[2025-08-22 01:39:48.670] [INFO] [Test-SubsystemMutex-UnitTest] ========================================
+[2025-08-22 01:39:48.671] [INFO] [Test-SubsystemMutex-UnitTest] Starting unit test: Test-SubsystemMutex-UnitTest
+[2025-08-22 01:39:48.672] [INFO] [Test-SubsystemMutex-UnitTest] ========================================
+[2025-08-22 01:39:48.674] [INFO] [Test-SubsystemMutex-UnitTest] Testing Test-SubsystemMutex function in isolation
+[2025-08-22 01:39:48.683] [OK] [Assert] PASS: Test result should not be null
+[2025-08-22 01:39:48.685] [ERROR] [Assert] FAIL: Test-SubsystemMutex should not throw exception: Method invocation failed because [System.Management.Automation.PSCustomObject] does not contain a method named 'ContainsKey'.
+[2025-08-22 01:39:48.698] [OK] [Assert] PASS: Existing mutex should show Exists as true
+[2025-08-22 01:39:48.701] [ERROR] [Assert] FAIL: Held mutex should show IsHeld as true
+[2025-08-22 01:39:48.708] [OK] [Assert] PASS: Empty subsystem name should throw exception - Exception thrown: Cannot bind argument to parameter 'SubsystemName' because it is an empty string.
+[2025-08-22 01:39:48.708] [INFO] [Test-SubsystemMutex-UnitTest] 
+[2025-08-22 01:39:48.709] [INFO] [Test-SubsystemMutex-UnitTest] Test completed in 35.1531ms
+[2025-08-22 01:39:48.709] [ERROR] [Test-SubsystemMutex-UnitTest] Results: 3 passed, 2 failed
+[2025-08-22 01:39:48.710] [ERROR] [Test-SubsystemMutex-UnitTest] Unit test FAILED: Test-SubsystemMutex-UnitTest
+[2025-08-22 01:39:48.711] [INFO] [MockFramework] Removing all mocks and restoring original functions
+[2025-08-22 01:39:48.711] [INFO] [Test-SubsystemManifest-UnitTest] ========================================
+[2025-08-22 01:39:48.713] [INFO] [Test-SubsystemManifest-UnitTest] Starting unit test: Test-SubsystemManifest-UnitTest
+[2025-08-22 01:39:48.713] [INFO] [Test-SubsystemManifest-UnitTest] ========================================
+[2025-08-22 01:39:48.715] [INFO] [Test-SubsystemManifest-UnitTest] Testing Test-SubsystemManifest function in isolation
+[2025-08-22 01:39:48.748] [OK] [Assert] PASS: Validation result should not be null
+[2025-08-22 01:39:48.750] [OK] [Assert] PASS: Result should contain IsValid property
+[2025-08-22 01:39:48.753] [OK] [Assert] PASS: Result should contain Errors property
+[2025-08-22 01:39:48.756] [OK] [Assert] PASS: Result should contain Warnings property
+[2025-08-22 01:39:48.757] [OK] [Assert] PASS: Valid manifest should pass validation
+[2025-08-22 01:39:48.772] [OK] [Assert] PASS: Invalid manifest should fail validation
+[2025-08-22 01:39:48.774] [OK] [Assert] PASS: Invalid manifest should have errors
+[2025-08-22 01:39:48.782] [OK] [Assert] PASS: Invalid version format should fail validation
+[2025-08-22 01:39:48.792] [OK] [Assert] PASS: Invalid enum value should fail validation
+[2025-08-22 01:39:48.794] [INFO] [Test-SubsystemManifest-UnitTest] 
+[2025-08-22 01:39:48.795] [INFO] [Test-SubsystemManifest-UnitTest] Test completed in 80.4047ms
+[2025-08-22 01:39:48.796] [OK] [Test-SubsystemManifest-UnitTest] Results: 9 passed, 0 failed
+[2025-08-22 01:39:48.798] [OK] [Test-SubsystemManifest-UnitTest] Unit test PASSED: Test-SubsystemManifest-UnitTest
+[2025-08-22 01:39:48.800] [INFO] [MockFramework] Removing all mocks and restoring original functions
+[2025-08-22 01:39:48.801] [INFO] [Get-SubsystemManifests-UnitTest] ========================================
+[2025-08-22 01:39:48.803] [INFO] [Get-SubsystemManifests-UnitTest] Starting unit test: Get-SubsystemManifests-UnitTest
+[2025-08-22 01:39:48.804] [INFO] [Get-SubsystemManifests-UnitTest] ========================================
+[2025-08-22 01:39:48.807] [INFO] [Get-SubsystemManifests-UnitTest] Testing Get-SubsystemManifests function in isolation
+[2025-08-22 01:39:48.808] [DEBUG] [MockFramework] Creating mock for function: Get-ChildItem
+[2025-08-22 01:39:48.811] [DEBUG] [MockFramework] Original function Get-ChildItem found and backed up
+[2025-08-22 01:39:48.813] [OK] [MockFramework] Mock function Get-ChildItem created successfully
+[2025-08-22 01:39:48.813] [DEBUG] [MockFramework] Creating mock for function: Test-Path
+[2025-08-22 01:39:48.845] [DEBUG] [MockFramework] Original function Test-Path found and backed up
+[2025-08-22 01:39:48.847] [OK] [MockFramework] Mock function Test-Path created successfully
+[2025-08-22 01:39:48.847] [DEBUG] [MockFramework] Creating mock for function: Import-PowerShellDataFile
+[2025-08-22 01:39:48.848] [DEBUG] [MockFramework] Original function Import-PowerShellDataFile found and backed up
+[2025-08-22 01:39:48.850] [OK] [MockFramework] Mock function Import-PowerShellDataFile created successfully
+[2025-08-22 01:39:48.872] [ERROR] [Assert] FAIL: Manifest discovery should not throw: Missing an argument for parameter 'Recurse'. Specify a parameter of type 'System.Object' and try again.
+[2025-08-22 01:39:48.877] [ERROR] [Assert] FAIL: Cache functionality should work: Missing an argument for parameter 'Recurse'. Specify a parameter of type 'System.Object' and try again.
+[2025-08-22 01:39:48.883] [ERROR] [Assert] FAIL: Force refresh should work: Missing an argument for parameter 'Recurse'. Specify a parameter of type 'System.Object' and try again.
+[2025-08-22 01:39:48.884] [INFO] [Get-SubsystemManifests-UnitTest] 
+[2025-08-22 01:39:48.887] [INFO] [Get-SubsystemManifests-UnitTest] Test completed in 77.5219ms
+[2025-08-22 01:39:48.888] [ERROR] [Get-SubsystemManifests-UnitTest] Results: 0 passed, 3 failed
+[2025-08-22 01:39:48.889] [ERROR] [Get-SubsystemManifests-UnitTest] Unit test FAILED: Get-SubsystemManifests-UnitTest
+[2025-08-22 01:39:48.890] [INFO] [MockFramework] Removing all mocks and restoring original functions
+[2025-08-22 01:39:48.894] [DEBUG] [MockFramework] Original function Test-Path restored
+[2025-08-22 01:39:48.899] [DEBUG] [MockFramework] Original function Get-ChildItem restored
+[2025-08-22 01:39:48.906] [DEBUG] [MockFramework] Original function Import-PowerShellDataFile restored
+[2025-08-22 01:39:48.906] [INFO] [Get-TopologicalSort-UnitTest] ========================================
+[2025-08-22 01:39:48.908] [INFO] [Get-TopologicalSort-UnitTest] Starting unit test: Get-TopologicalSort-UnitTest
+[2025-08-22 01:39:48.908] [INFO] [Get-TopologicalSort-UnitTest] ========================================
+[2025-08-22 01:39:48.910] [INFO] [Get-TopologicalSort-UnitTest] Testing Get-TopologicalSort function in isolation
+[2025-08-22 01:39:48.932] [OK] [Assert] PASS: DFS result should not be null
+[2025-08-22 01:39:48.933] [OK] [Assert] PASS: DFS should return all 3 items (Expected: 3, Actual: 3)
+[2025-08-22 01:39:48.937] [OK] [Assert] PASS: A should come before B in DFS result
+[2025-08-22 01:39:48.938] [OK] [Assert] PASS: B should come before C in DFS result
+[2025-08-22 01:39:48.973] [OK] [Assert] PASS: Kahn result should not be null
+[2025-08-22 01:39:48.973] [OK] [Assert] PASS: Kahn should return all 3 items (Expected: 3, Actual: 3)
+[2025-08-22 01:39:48.976] [OK] [Assert] PASS: Empty graph should return empty result (Expected: 0, Actual: 0)
+[2025-08-22 01:39:48.982] [OK] [Assert] PASS: Circular dependency should throw exception - Exception thrown: Circular dependency detected: C
+[2025-08-22 01:39:48.985] [OK] [Assert] PASS: Invalid algorithm should throw exception - Exception thrown: Cannot validate argument on parameter 'Algorithm'. The argument "Invalid" does not belong to the set "DFS,Kahn" specified by the ValidateSet attribute. Supply an argument that is in the set and then try the command again.
+[2025-08-22 01:39:48.987] [INFO] [Get-TopologicalSort-UnitTest] 
+[2025-08-22 01:39:48.987] [INFO] [Get-TopologicalSort-UnitTest] Test completed in 77.2766ms
+[2025-08-22 01:39:48.988] [OK] [Get-TopologicalSort-UnitTest] Results: 9 passed, 0 failed
+[2025-08-22 01:39:48.988] [OK] [Get-TopologicalSort-UnitTest] Unit test PASSED: Get-TopologicalSort-UnitTest
+[2025-08-22 01:39:48.989] [INFO] [MockFramework] Removing all mocks and restoring original functions
+[2025-08-22 01:39:48.989] [INFO] [Get-SubsystemStartupOrder-UnitTest] ========================================
+[2025-08-22 01:39:48.989] [INFO] [Get-SubsystemStartupOrder-UnitTest] Starting unit test: Get-SubsystemStartupOrder-UnitTest
+[2025-08-22 01:39:48.990] [INFO] [Get-SubsystemStartupOrder-UnitTest] ========================================
+[2025-08-22 01:39:48.992] [INFO] [Get-SubsystemStartupOrder-UnitTest] Testing Get-SubsystemStartupOrder function in isolation
+[2025-08-22 01:39:49.054] [OK] [Assert] PASS: Startup order result should not be null
+[2025-08-22 01:39:49.055] [ERROR] [Assert] FAIL: Result should contain TopologicalOrder
+[2025-08-22 01:39:49.058] [ERROR] [Assert] FAIL: Should order both manifests (Expected: 2, Actual: 0)
+[2025-08-22 01:39:49.060] [ERROR] [Assert] FAIL: Simple startup order should not throw: Exception calling "IndexOf" with "2" argument(s): "Value cannot be null.
+Parameter name: array"
+[2025-08-22 01:39:49.108] [OK] [Assert] PASS: Result should contain ParallelGroups when enabled
+[2025-08-22 01:39:49.109] [OK] [Assert] PASS: Should detect parallel execution opportunities
+[2025-08-22 01:39:49.128] [OK] [Assert] PASS: Should include validation results when requested
+[2025-08-22 01:39:49.131] [OK] [Assert] PASS: Should detect missing dependency as invalid
+[2025-08-22 01:39:49.132] [INFO] [Get-SubsystemStartupOrder-UnitTest] 
+[2025-08-22 01:39:49.134] [INFO] [Get-SubsystemStartupOrder-UnitTest] Test completed in 141.3812ms
+[2025-08-22 01:39:49.136] [ERROR] [Get-SubsystemStartupOrder-UnitTest] Results: 5 passed, 3 failed
+[2025-08-22 01:39:49.138] [ERROR] [Get-SubsystemStartupOrder-UnitTest] Unit test FAILED: Get-SubsystemStartupOrder-UnitTest
+[2025-08-22 01:39:49.139] [INFO] [MockFramework] Removing all mocks and restoring original functions
+[2025-08-22 01:39:49.140] [INFO] [Framework] 
+[2025-08-22 01:39:49.140] [INFO] [Framework] ================================================
+[2025-08-22 01:39:49.141] [INFO] [Framework] BOOTSTRAP ORCHESTRATOR UNIT TESTS COMPLETED
+[2025-08-22 01:39:49.142] [INFO] [Framework] ================================================
+[2025-08-22 01:39:49.142] [INFO] [Framework] End time: 08/22/2025 01:39:49
+[2025-08-22 01:39:49.143] [INFO] [Framework] Total duration: 1.263454 seconds
+[2025-08-22 01:39:49.147] [INFO] [Framework] 
+[2025-08-22 01:39:49.148] [INFO] [Framework] Unit Test Summary:
+[2025-08-22 01:39:49.150] [INFO] [Framework]   Tests Run: 6
+[2025-08-22 01:39:49.151] [ERROR] [Framework]   Tests Passed: 2
+[2025-08-22 01:39:49.151] [INFO] [Framework]   Assertions Passed: 
+[2025-08-22 01:39:49.153] [ERROR] [Framework]   Assertions Failed: 
+[2025-08-22 01:39:49.155] [WARN] [Framework]   Test Coverage: 33.3%
+[2025-08-22 01:39:49.155] [INFO] [Framework] 
+[2025-08-22 01:39:49.155] [INFO] [Framework] Individual Test Results:
+[2025-08-22 01:39:49.160] [ERROR] [Framework]   New-SubsystemMutex-UnitTest: FAIL (3 passed, 2 failed, 71.199ms)
+[2025-08-22 01:39:49.160] [ERROR] [Framework]   Test-SubsystemMutex-UnitTest: FAIL (3 passed, 2 failed, 35.1531ms)
+[2025-08-22 01:39:49.161] [OK] [Framework]   Test-SubsystemManifest-UnitTest: PASS (9 passed, 0 failed, 80.4047ms)
+[2025-08-22 01:39:49.163] [ERROR] [Framework]   Get-SubsystemManifests-UnitTest: FAIL (0 passed, 3 failed, 77.5219ms)
+[2025-08-22 01:39:49.163] [OK] [Framework]   Get-TopologicalSort-UnitTest: PASS (9 passed, 0 failed, 77.2766ms)
+[2025-08-22 01:39:49.164] [ERROR] [Framework]   Get-SubsystemStartupOrder-UnitTest: FAIL (5 passed, 3 failed, 141.3812ms)
+[2025-08-22 01:39:49.164] [INFO] [Framework] 
+[2025-08-22 01:39:49.164] [INFO] [Framework] Saving unit test results to: .\Test_Results_UnitFramework_20250822_013947.txt

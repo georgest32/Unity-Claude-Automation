@@ -1,0 +1,143 @@
+{
+    "_comment": "Testing configuration for notification system - Week 6 integration testing with mock values",
+    "SystemStatus": {
+        "MonitoringInterval": 30,
+        "LogLevel": "DEBUG",
+        "EnableMutex": true,
+        "MaxRetries": 3,
+        "RetryDelayMs": 1000
+    },
+    "CircuitBreaker": {
+        "EnableCircuitBreaker": true,
+        "FailureThreshold": 3,
+        "TimeoutSeconds": 60,
+        "MaxTestRequests": 1,
+        "HalfOpenRetryCount": 1
+    },
+    "HealthMonitoring": {
+        "ParallelHealthChecks": true,
+        "ThrottleLimit": 5,
+        "HealthCheckTimeout": 30,
+        "IncludePerformanceData": true,
+        "DefaultHealthCheckInterval": 30,
+        "MaxParallelHealthChecks": 10
+    },
+    "Logging": {
+        "EnableDetailedLogging": true,
+        "LogRotationSize": "10MB",
+        "MaxLogFiles": 5,
+        "LogFilePath": ".\\unity_claude_automation.log",
+        "EnableTraceLogging": true
+    },
+    "Performance": {
+        "CacheConfigurationMs": 30000,
+        "EnableConfigurationCaching": true,
+        "MaxConfigurationAge": 300000,
+        "FileWatcherEnabled": true
+    },
+    "Security": {
+        "ValidateManifestSignatures": false,
+        "RequireSecureConfiguration": false,
+        "AllowEnvironmentOverrides": true
+    },
+    "Subsystems": {
+        "DefaultRestartPolicy": "OnFailure",
+        "DefaultMaxRestarts": 3,
+        "DefaultRestartDelay": 5,
+        "DefaultMaxMemoryMB": 500,
+        "DefaultMaxCpuPercent": 25
+    },
+    "Notifications": {
+        "_comment": "Testing configuration - notifications disabled for integration testing",
+        "EnableNotifications": false,
+        "NotificationServices": [],
+        "DefaultNotificationLevel": "ERROR",
+        "BatchNotifications": false,
+        "BatchIntervalSeconds": 30,
+        "MaxBatchSize": 10,
+        "EnableFailureNotifications": false,
+        "EnableSuccessNotifications": false,
+        "EnableHealthNotifications": false
+    },
+    "EmailNotifications": {
+        "Enabled": false,
+        "SMTPServer": "smtp.test.local",
+        "SMTPPort": 587,
+        "EnableSSL": true,
+        "FromAddress": "test@test.local",
+        "FromDisplayName": "Unity-Claude Automation Test",
+        "ToAddresses": ["admin@test.local"],
+        "CCAddresses": [],
+        "RetryAttempts": 3,
+        "RetryDelaySeconds": 5,
+        "ExponentialBackoff": true,
+        "TimeoutSeconds": 30,
+        "UseSecureCredentials": false,
+        "CredentialStore": "None",
+        "NotificationTypes": {
+            "UnityCompilationError": false,
+            "ClaudeSubmissionFailure": false,
+            "FixApplicationSuccess": false,
+            "SystemHealthWarning": false,
+            "AutonomousAgentFailure": false
+        }
+    },
+    "WebhookNotifications": {
+        "Enabled": false,
+        "WebhookURLs": ["https://httpbin.org/post"],
+        "AuthenticationMethod": "None",
+        "BearerToken": "",
+        "BasicAuthUsername": "",
+        "BasicAuthPassword": "",
+        "APIKeyHeader": "X-API-Key",
+        "APIKey": "",
+        "RetryAttempts": 3,
+        "RetryDelaySeconds": 5,
+        "ExponentialBackoff": true,
+        "UseJitter": true,
+        "TimeoutSeconds": 30,
+        "UserAgent": "Unity-Claude-Automation-Test/1.0",
+        "ContentType": "application/json",
+        "NotificationTypes": {
+            "UnityCompilationError": false,
+            "ClaudeSubmissionFailure": false,
+            "FixApplicationSuccess": false,
+            "SystemHealthWarning": false,
+            "AutonomousAgentFailure": false
+        }
+    },
+    "NotificationTriggers": {
+        "_comment": "Event-driven trigger configuration - disabled for testing",
+        "UnityCompilation": {
+            "TriggerOnError": false,
+            "TriggerOnSuccess": false,
+            "TriggerOnWarning": false,
+            "DebounceSeconds": 5
+        },
+        "ClaudeSubmission": {
+            "TriggerOnFailure": false,
+            "TriggerOnSuccess": false,
+            "TriggerOnRateLimit": false,
+            "DebounceSeconds": 10
+        },
+        "FixApplication": {
+            "TriggerOnFailure": false,
+            "TriggerOnSuccess": false,
+            "TriggerOnValidation": false,
+            "DebounceSeconds": 5
+        },
+        "SystemHealth": {
+            "TriggerOnCritical": false,
+            "TriggerOnWarning": false,
+            "TriggerOnRecovery": false,
+            "HealthCheckThreshold": 3,
+            "DebounceSeconds": 60
+        },
+        "AutonomousAgent": {
+            "TriggerOnFailure": false,
+            "TriggerOnRestart": false,
+            "TriggerOnIntervention": false,
+            "DebounceSeconds": 30
+        }
+    }
+}

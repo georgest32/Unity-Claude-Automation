@@ -1,0 +1,150 @@
+{
+    "_comment":  "Unified SystemStatus configuration with integrated notification settings - Week 6 Days 1-2 Implementation",
+    "SystemStatus":  {
+                         "MonitoringInterval":  30,
+                         "LogLevel":  "INFO",
+                         "EnableMutex":  true,
+                         "MaxRetries":  3,
+                         "RetryDelayMs":  1000
+                     },
+    "CircuitBreaker":  {
+                           "EnableCircuitBreaker":  true,
+                           "FailureThreshold":  3,
+                           "TimeoutSeconds":  60,
+                           "MaxTestRequests":  1,
+                           "HalfOpenRetryCount":  1
+                       },
+    "HealthMonitoring":  {
+                             "ParallelHealthChecks":  true,
+                             "ThrottleLimit":  5,
+                             "HealthCheckTimeout":  30,
+                             "IncludePerformanceData":  true,
+                             "DefaultHealthCheckInterval":  30,
+                             "MaxParallelHealthChecks":  10
+                         },
+    "Logging":  {
+                    "EnableDetailedLogging":  true,
+                    "LogRotationSize":  "10MB",
+                    "MaxLogFiles":  5,
+                    "LogFilePath":  ".\\unity_claude_automation.log",
+                    "EnableTraceLogging":  true
+                },
+    "Performance":  {
+                        "CacheConfigurationMs":  30000,
+                        "EnableConfigurationCaching":  true,
+                        "MaxConfigurationAge":  300000,
+                        "FileWatcherEnabled":  true
+                    },
+    "Security":  {
+                     "ValidateManifestSignatures":  false,
+                     "RequireSecureConfiguration":  false,
+                     "AllowEnvironmentOverrides":  true
+                 },
+    "Subsystems":  {
+                       "DefaultRestartPolicy":  "OnFailure",
+                       "DefaultMaxRestarts":  3,
+                       "DefaultRestartDelay":  5,
+                       "DefaultMaxMemoryMB":  500,
+                       "DefaultMaxCpuPercent":  25
+                   },
+    "Notifications":  {
+                          "_comment":  "Unified notification configuration for email and webhook services",
+                          "EnableNotifications":  true,
+                          "NotificationServices":  [
+                                                       "EmailNotifications",
+                                                       "WebhookNotifications"
+                                                   ],
+                          "DefaultNotificationLevel":  "ERROR",
+                          "BatchNotifications":  true,
+                          "BatchIntervalSeconds":  30,
+                          "MaxBatchSize":  10,
+                          "EnableFailureNotifications":  true,
+                          "EnableSuccessNotifications":  false,
+                          "EnableHealthNotifications":  true
+                      },
+    "EmailNotifications":  {
+                               "Enabled":  true,
+                               "SMTPServer":  "smtp.gmail.com",
+                               "SMTPPort":  587,
+                               "EnableSSL":  true,
+                               "FromAddress":  "dev@auto-m8.io",
+                               "FromDisplayName":  "Unity-Claude Automation",
+                               "ToAddresses":  "georgest32@gmail.com",
+                               "CCAddresses":  [
+
+                                               ],
+                               "RetryAttempts":  3,
+                               "RetryDelaySeconds":  5,
+                               "ExponentialBackoff":  true,
+                               "TimeoutSeconds":  30,
+                               "UseSecureCredentials":  true,
+                               "CredentialStore":  "DPAPI",
+                               "NotificationTypes":  {
+                                                         "UnityCompilationError":  true,
+                                                         "ClaudeSubmissionFailure":  true,
+                                                         "FixApplicationSuccess":  false,
+                                                         "SystemHealthWarning":  true,
+                                                         "AutonomousAgentFailure":  true
+                                                     }
+                           },
+    "WebhookNotifications":  {
+                                 "Enabled":  false,
+                                 "WebhookURLs":  [
+                                                     "https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN"
+                                                 ],
+                                 "AuthenticationMethod":  "None",
+                                 "BearerToken":  "",
+                                 "BasicAuthUsername":  "",
+                                 "BasicAuthPassword":  "",
+                                 "APIKeyHeader":  "X-API-Key",
+                                 "APIKey":  "",
+                                 "RetryAttempts":  3,
+                                 "RetryDelaySeconds":  5,
+                                 "ExponentialBackoff":  true,
+                                 "UseJitter":  true,
+                                 "TimeoutSeconds":  30,
+                                 "UserAgent":  "Unity-Claude-Automation/1.0",
+                                 "ContentType":  "application/json",
+                                 "NotificationTypes":  {
+                                                           "UnityCompilationError":  true,
+                                                           "ClaudeSubmissionFailure":  true,
+                                                           "FixApplicationSuccess":  false,
+                                                           "SystemHealthWarning":  true,
+                                                           "AutonomousAgentFailure":  true
+                                                       }
+                             },
+    "NotificationTriggers":  {
+                                 "_comment":  "Event-driven trigger configuration for notification system",
+                                 "UnityCompilation":  {
+                                                          "TriggerOnError":  true,
+                                                          "TriggerOnSuccess":  false,
+                                                          "TriggerOnWarning":  true,
+                                                          "DebounceSeconds":  5
+                                                      },
+                                 "ClaudeSubmission":  {
+                                                          "TriggerOnFailure":  true,
+                                                          "TriggerOnSuccess":  false,
+                                                          "TriggerOnRateLimit":  true,
+                                                          "DebounceSeconds":  10
+                                                      },
+                                 "FixApplication":  {
+                                                        "TriggerOnFailure":  true,
+                                                        "TriggerOnSuccess":  false,
+                                                        "TriggerOnValidation":  true,
+                                                        "DebounceSeconds":  5
+                                                    },
+                                 "SystemHealth":  {
+                                                      "TriggerOnCritical":  true,
+                                                      "TriggerOnWarning":  true,
+                                                      "TriggerOnRecovery":  true,
+                                                      "HealthCheckThreshold":  3,
+                                                      "DebounceSeconds":  60
+                                                  },
+                                 "AutonomousAgent":  {
+                                                         "TriggerOnFailure":  true,
+                                                         "TriggerOnRestart":  true,
+                                                         "TriggerOnIntervention":  true,
+                                                         "DebounceSeconds":  30
+                                                     }
+                             }
+}

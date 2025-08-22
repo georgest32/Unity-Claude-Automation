@@ -1,0 +1,50 @@
+{
+    "_comment": "Production environment configuration - Optimized for stability and performance",
+    "SystemStatus": {
+        "MonitoringInterval": 60,
+        "LogLevel": "WARN",
+        "EnableMutex": true,
+        "MaxRetries": 3,
+        "RetryDelayMs": 2000
+    },
+    "CircuitBreaker": {
+        "EnableCircuitBreaker": true,
+        "FailureThreshold": 5,
+        "TimeoutSeconds": 120,
+        "MaxTestRequests": 1,
+        "HalfOpenRetryCount": 1
+    },
+    "HealthMonitoring": {
+        "ParallelHealthChecks": true,
+        "ThrottleLimit": 6,
+        "HealthCheckTimeout": 45,
+        "IncludePerformanceData": false,
+        "DefaultHealthCheckInterval": 60,
+        "MaxParallelHealthChecks": 8
+    },
+    "Logging": {
+        "EnableDetailedLogging": false,
+        "LogRotationSize": "50MB",
+        "MaxLogFiles": 3,
+        "LogFilePath": ".\\logs\\unity_claude_automation.log",
+        "EnableTraceLogging": false
+    },
+    "Performance": {
+        "CacheConfigurationMs": 60000,
+        "EnableConfigurationCaching": true,
+        "MaxConfigurationAge": 600000,
+        "FileWatcherEnabled": false
+    },
+    "Security": {
+        "ValidateManifestSignatures": true,
+        "RequireSecureConfiguration": true,
+        "AllowEnvironmentOverrides": false
+    },
+    "Subsystems": {
+        "DefaultRestartPolicy": "OnFailure",
+        "DefaultMaxRestarts": 2,
+        "DefaultRestartDelay": 10,
+        "DefaultMaxMemoryMB": 300,
+        "DefaultMaxCpuPercent": 20
+    }
+}

@@ -1,0 +1,162 @@
+[2025-08-19 13:26:46.839] [INFO] ========================================
+[2025-08-19 13:26:46.844] [INFO] Day 18 Hour 2.5: Incremental Function Testing
+[2025-08-19 13:26:46.847] [INFO] Purpose: Identify specific function causing PowerShell window crash
+[2025-08-19 13:26:46.849] [INFO] ========================================
+[2025-08-19 13:26:46.851] [INFO] Importing Unity-Claude-SystemStatus module...
+[2025-08-19 13:26:46.860] [OK] Module imported successfully
+[2025-08-19 13:26:46.860] [INFO] Module functions available: 30
+[2025-08-19 13:26:46.865] [INFO] ========================================
+[2025-08-19 13:26:46.876] [INFO] Testing Function: New-SystemStatusSchema
+[2025-08-19 13:26:46.877] [INFO] Description: Create basic JSON schema
+[2025-08-19 13:26:46.878] [INFO] ========================================
+[2025-08-19 13:26:46.879] [DEBUG] Starting test execution for New-SystemStatusSchema...
+[2025-08-19 13:26:46.897] [ERROR] Function New-SystemStatusSchema failed with error: The term 'New-SystemStatusSchema' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-19 13:26:46.905] [ERROR] Exception Type: CommandNotFoundException
+[2025-08-19 13:26:46.909] [ERROR] Stack Trace:    at System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)
+   at System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)
+   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+[2025-08-19 13:26:46.913] [INFO] ========================================
+[2025-08-19 13:26:46.913] [INFO] Testing Function: Test-SystemStatusSchema
+[2025-08-19 13:26:46.913] [INFO] Description: Validate JSON schema
+[2025-08-19 13:26:46.917] [INFO] ========================================
+[2025-08-19 13:26:46.918] [DEBUG] Starting test execution for Test-SystemStatusSchema...
+[2025-08-19 13:26:46.987] [OK] Function Test-SystemStatusSchema completed successfully
+[2025-08-19 13:26:46.987] [DEBUG] Result: False
+[2025-08-19 13:26:47.505] [DEBUG] Post-execution settling complete for Test-SystemStatusSchema
+[2025-08-19 13:26:47.509] [INFO] ========================================
+[2025-08-19 13:26:47.513] [INFO] Testing Function: New-SystemStatusMessage
+[2025-08-19 13:26:47.514] [INFO] Description: Create system status message with ETS DateTime
+[2025-08-19 13:26:47.517] [INFO] ========================================
+[2025-08-19 13:26:47.522] [DEBUG] Starting test execution for New-SystemStatusMessage...
+[2025-08-19 13:26:47.561] [OK] Function New-SystemStatusMessage completed successfully
+[2025-08-19 13:26:47.565] [DEBUG] Result: System.Collections.Hashtable
+[2025-08-19 13:26:48.072] [DEBUG] Post-execution settling complete for New-SystemStatusMessage
+[2025-08-19 13:26:48.080] [INFO] ========================================
+[2025-08-19 13:26:48.084] [INFO] Testing Function: Write-SystemStatus
+[2025-08-19 13:26:48.084] [INFO] Description: Write system status to file
+[2025-08-19 13:26:48.090] [INFO] ========================================
+[2025-08-19 13:26:48.093] [DEBUG] Starting test execution for Write-SystemStatus...
+[2025-08-19 13:34:10.034] [ERROR] Function Write-SystemStatus failed with error: Cannot process argument transformation on parameter 'StatusData'. Cannot convert the " .\Test-Day18-Hour2.5-Incremental-Functions-FIXED.ps1 -SaveResults" value of type "System.String" to type "System.Collections.Hashtable".
+[2025-08-19 13:34:10.042] [ERROR] Exception Type: ParameterBindingArgumentTransformationException
+[2025-08-19 13:34:10.044] [ERROR] Stack Trace:    at System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)
+   at System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)
+   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+[2025-08-19 13:34:10.046] [INFO] ========================================
+[2025-08-19 13:34:10.046] [INFO] Testing Function: Get-SystemStatus
+[2025-08-19 13:34:10.046] [INFO] Description: Read system status from file
+[2025-08-19 13:34:10.050] [INFO] ========================================
+[2025-08-19 13:34:10.050] [DEBUG] Starting test execution for Get-SystemStatus...
+[2025-08-19 13:34:10.188] [ERROR] Function Get-SystemStatus failed with error: The term 'Get-SystemStatus' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-19 13:34:10.190] [ERROR] Exception Type: CommandNotFoundException
+[2025-08-19 13:34:10.196] [ERROR] Stack Trace:    at System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)
+   at System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)
+   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+[2025-08-19 13:34:10.197] [INFO] ========================================
+[2025-08-19 13:34:10.199] [INFO] Testing Function: ConcurrentQueue Test
+[2025-08-19 13:34:10.201] [INFO] Description: Test thread-safe message queues
+[2025-08-19 13:34:10.202] [INFO] ========================================
+[2025-08-19 13:34:10.203] [DEBUG] Starting test execution for ConcurrentQueue Test...
+[2025-08-19 13:34:10.228] [OK] Function ConcurrentQueue Test completed successfully
+[2025-08-19 13:34:10.232] [DEBUG] Result: True
+[2025-08-19 13:34:10.747] [DEBUG] Post-execution settling complete for ConcurrentQueue Test
+[2025-08-19 13:34:10.749] [INFO] ========================================
+[2025-08-19 13:34:10.751] [INFO] Testing Function: Register-MessageHandler
+[2025-08-19 13:34:10.753] [INFO] Description: Register message handler
+[2025-08-19 13:34:10.755] [INFO] ========================================
+[2025-08-19 13:34:10.755] [DEBUG] Starting test execution for Register-MessageHandler...
+[2025-08-19 13:34:10.774] [OK] Function Register-MessageHandler completed successfully
+[2025-08-19 13:34:10.779] [DEBUG] Result: True
+[2025-08-19 13:34:11.288] [DEBUG] Post-execution settling complete for Register-MessageHandler
+[2025-08-19 13:34:11.292] [INFO] ========================================
+[2025-08-19 13:34:11.296] [INFO] Testing Function: Invoke-MessageHandler
+[2025-08-19 13:34:11.300] [INFO] Description: Invoke registered message handler
+[2025-08-19 13:34:11.300] [INFO] ========================================
+[2025-08-19 13:34:11.304] [DEBUG] Starting test execution for Invoke-MessageHandler...
+[2025-08-19 13:34:11.326] [DEBUG] Test handler executed for: TestMessage
+[2025-08-19 13:34:11.333] [OK] Function Invoke-MessageHandler completed successfully
+[2025-08-19 13:34:11.336] [DEBUG] Result: True
+[2025-08-19 13:34:11.841] [DEBUG] Post-execution settling complete for Invoke-MessageHandler
+[2025-08-19 13:34:11.845] [INFO] ========================================
+[2025-08-19 13:34:11.849] [INFO] Testing Function: Initialize-NamedPipeServer
+[2025-08-19 13:34:11.853] [INFO] Description: Initialize named pipe server with security
+[2025-08-19 13:34:11.857] [INFO] ========================================
+[2025-08-19 13:34:11.857] [DEBUG] Starting test execution for Initialize-NamedPipeServer...
+[2025-08-19 13:34:12.130] [OK] Function Initialize-NamedPipeServer completed successfully
+[2025-08-19 13:34:12.134] [DEBUG] Result: True
+[2025-08-19 13:34:12.637] [DEBUG] Post-execution settling complete for Initialize-NamedPipeServer
+[2025-08-19 13:34:12.640] [INFO] ========================================
+[2025-08-19 13:34:12.641] [INFO] Testing Function: Measure-CommunicationPerformance
+[2025-08-19 13:34:12.641] [INFO] Description: Measure communication latency
+[2025-08-19 13:34:12.645] [INFO] ========================================
+[2025-08-19 13:34:12.646] [DEBUG] Starting test execution for Measure-CommunicationPerformance...
+[2025-08-19 13:34:12.723] [OK] Function Measure-CommunicationPerformance completed successfully
+[2025-08-19 13:34:12.727] [DEBUG] Result: 53.7419
+[2025-08-19 13:34:13.239] [DEBUG] Post-execution settling complete for Measure-CommunicationPerformance
+[2025-08-19 13:34:13.244] [INFO] ========================================
+[2025-08-19 13:34:13.248] [INFO] Testing Function: Initialize-CrossModuleEvents
+[2025-08-19 13:34:13.253] [INFO] Description: Initialize cross-module event system
+[2025-08-19 13:34:13.256] [INFO] ========================================
+[2025-08-19 13:34:13.257] [DEBUG] Starting test execution for Initialize-CrossModuleEvents...
+[2025-08-19 13:34:13.276] [OK] Function Initialize-CrossModuleEvents completed successfully
+[2025-08-19 13:34:13.280] [DEBUG] Result: System.Management.Automation.PSEventJob System.Management.Automation.PSEventJob True
+[2025-08-19 13:34:13.787] [DEBUG] Post-execution settling complete for Initialize-CrossModuleEvents
+[2025-08-19 13:34:13.791] [INFO] ========================================
+[2025-08-19 13:34:13.796] [INFO] Testing Function: Send-EngineEvent
+[2025-08-19 13:34:13.800] [INFO] Description: Send engine event message
+[2025-08-19 13:34:13.802] [INFO] ========================================
+[2025-08-19 13:34:13.805] [DEBUG] Starting test execution for Send-EngineEvent...
+[2025-08-19 13:34:13.824] [OK] Function Send-EngineEvent completed successfully
+[2025-08-19 13:34:13.829] [DEBUG] Result: System.Management.Automation.PSEventArgs True
+[2025-08-19 13:34:14.337] [DEBUG] Post-execution settling complete for Send-EngineEvent
+[2025-08-19 13:34:14.342] [INFO] ========================================
+[2025-08-19 13:34:14.346] [INFO] Testing Function: Send-HealthCheckRequest
+[2025-08-19 13:34:14.350] [INFO] Description: Send health check requests
+[2025-08-19 13:34:14.354] [INFO] ========================================
+[2025-08-19 13:34:14.354] [DEBUG] Starting test execution for Send-HealthCheckRequest...
+[2025-08-19 13:34:14.379] [OK] Function Send-HealthCheckRequest completed successfully
+[2025-08-19 13:34:14.384] [DEBUG] Result: System.Collections.Hashtable
+[2025-08-19 13:34:14.895] [DEBUG] Post-execution settling complete for Send-HealthCheckRequest
+[2025-08-19 13:34:14.897] [INFO] ========================================
+[2025-08-19 13:34:14.900] [INFO] Testing Function: Initialize-SystemStatusMonitoring
+[2025-08-19 13:34:14.904] [INFO] Description: Full system monitoring with communication and file watcher
+[2025-08-19 13:34:14.908] [INFO] ========================================
+[2025-08-19 13:34:14.908] [DEBUG] Starting test execution for Initialize-SystemStatusMonitoring...
+[2025-08-19 13:34:15.161] [OK] Function Initialize-SystemStatusMonitoring completed successfully
+[2025-08-19 13:34:15.161] [DEBUG] Result: True
+[2025-08-19 13:34:15.670] [DEBUG] Post-execution settling complete for Initialize-SystemStatusMonitoring
+[2025-08-19 13:34:15.674] [INFO] ========================================
+[2025-08-19 13:34:15.676] [INFO] Testing Function: Initialize-SystemStatusMonitoring (Full)
+[2025-08-19 13:34:15.679] [INFO] Description: Full system monitoring with all features enabled
+[2025-08-19 13:34:15.683] [INFO] ========================================
+[2025-08-19 13:34:15.686] [DEBUG] Starting test execution for Initialize-SystemStatusMonitoring (Full)...
+[2025-08-19 13:34:16.358] [OK] Function Initialize-SystemStatusMonitoring (Full) completed successfully
+[2025-08-19 13:34:16.362] [DEBUG] Result: True True True
+[2025-08-19 13:34:16.873] [DEBUG] Post-execution settling complete for Initialize-SystemStatusMonitoring (Full)
+[2025-08-19 13:34:16.878] [INFO] ========================================
+[2025-08-19 13:34:16.878] [INFO] INCREMENTAL FUNCTION TEST RESULTS SUMMARY
+[2025-08-19 13:34:16.882] [INFO] ========================================
+[2025-08-19 13:34:16.907] [INFO] Total Functions Tested: 15
+[2025-08-19 13:34:16.907] [OK] Successful Functions: 12
+[2025-08-19 13:34:16.911] [ERROR] Failed Functions: 3
+[2025-08-19 13:34:16.916] [INFO] Success Rate: 80%
+[2025-08-19 13:34:16.918] [INFO] ========================================
+[2025-08-19 13:34:16.918] [INFO] DETAILED RESULTS:
+[2025-08-19 13:34:16.920] [ERROR] New-SystemStatusSchema: FAILED - The term 'New-SystemStatusSchema' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-19 13:34:16.923] [OK] Test-SystemStatusSchema: SUCCESS
+[2025-08-19 13:34:16.924] [OK] New-SystemStatusMessage: SUCCESS
+[2025-08-19 13:34:16.924] [ERROR] Write-SystemStatus: FAILED - Cannot process argument transformation on parameter 'StatusData'. Cannot convert the " .\Test-Day18-Hour2.5-Incremental-Functions-FIXED.ps1 -SaveResults" value of type "System.String" to type "System.Collections.Hashtable".
+[2025-08-19 13:34:16.924] [ERROR] Get-SystemStatus: FAILED - The term 'Get-SystemStatus' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-19 13:34:16.929] [OK] ConcurrentQueue Test: SUCCESS
+[2025-08-19 13:34:16.930] [OK] Register-MessageHandler: SUCCESS
+[2025-08-19 13:34:16.931] [OK] Invoke-MessageHandler: SUCCESS
+[2025-08-19 13:34:16.932] [OK] Initialize-NamedPipeServer: SUCCESS
+[2025-08-19 13:34:16.932] [OK] Measure-CommunicationPerformance: SUCCESS
+[2025-08-19 13:34:16.935] [OK] Initialize-CrossModuleEvents: SUCCESS
+[2025-08-19 13:34:16.935] [OK] Send-EngineEvent: SUCCESS
+[2025-08-19 13:34:16.936] [OK] Send-HealthCheckRequest: SUCCESS
+[2025-08-19 13:34:16.937] [OK] Initialize-SystemStatusMonitoring: SUCCESS
+[2025-08-19 13:34:16.938] [OK] Initialize-SystemStatusMonitoring (Full): SUCCESS
+[2025-08-19 13:34:16.939] [INFO] Cleaning up test environment...

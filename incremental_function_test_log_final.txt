@@ -1,0 +1,146 @@
+[2025-08-19 13:44:34.629] [INFO] ========================================
+[2025-08-19 13:44:34.645] [INFO] Day 18 Hour 2.5: Final Corrected Incremental Function Testing
+[2025-08-19 13:44:34.649] [INFO] Purpose: Test all Hour 2.5 functions with proper error handling
+[2025-08-19 13:44:34.650] [INFO] Fixes: Parameter binding, function names, and removed non-existent functions
+[2025-08-19 13:44:34.652] [INFO] ========================================
+[2025-08-19 13:44:34.652] [INFO] Importing Unity-Claude-SystemStatus module...
+[2025-08-19 13:44:34.673] [OK] Module imported successfully
+[2025-08-19 13:44:34.684] [INFO] Module functions available: 30
+[2025-08-19 13:44:34.689] [DEBUG] Available functions: Get-RegisteredSubsystems, Get-SubsystemProcessId, Initialize-CrossModuleEvents, Initialize-NamedPipeServer, Initialize-SystemStatusMonitoring, Invoke-MessageHandler, Measure-CommunicationPerformance, New-SystemStatusMessage, Read-SystemStatus, Receive-SystemStatusMessage, Register-MessageHandler, Register-Subsystem, Send-EngineEvent, Send-HealthCheckRequest, Send-Heartbeat, Send-HeartbeatRequest, Send-SystemStatusMessage, Start-MessageProcessor, Start-SystemStatusFileWatcher, Stop-MessageProcessor, Stop-NamedPipeServer, Stop-SystemStatusFileWatcher, Stop-SystemStatusMonitoring, Test-AllSubsystemHeartbeats, Test-HeartbeatResponse, Test-SystemStatusSchema, Unregister-Subsystem, Update-SubsystemProcessInfo, Write-SystemStatus, Write-SystemStatusLog
+[2025-08-19 13:44:34.691] [INFO] ========================================
+[2025-08-19 13:44:34.693] [INFO] Testing Function: Test-SystemStatusSchema
+[2025-08-19 13:44:34.693] [INFO] Description: Validate JSON schema with proper data
+[2025-08-19 13:44:34.694] [INFO] ========================================
+[2025-08-19 13:44:34.694] [DEBUG] Starting test execution for Test-SystemStatusSchema...
+[2025-08-19 13:44:34.735] [OK] Function Test-SystemStatusSchema completed successfully
+[2025-08-19 13:44:34.738] [DEBUG] Result: False
+[2025-08-19 13:44:35.240] [DEBUG] Post-execution settling complete for Test-SystemStatusSchema
+[2025-08-19 13:44:35.247] [INFO] ========================================
+[2025-08-19 13:44:35.247] [INFO] Testing Function: New-SystemStatusMessage
+[2025-08-19 13:44:35.250] [INFO] Description: Create system status message with ETS DateTime
+[2025-08-19 13:44:35.251] [INFO] ========================================
+[2025-08-19 13:44:35.253] [DEBUG] Starting test execution for New-SystemStatusMessage...
+[2025-08-19 13:44:35.259] [OK] Function New-SystemStatusMessage completed successfully
+[2025-08-19 13:44:35.259] [DEBUG] Result: System.Collections.Hashtable
+[2025-08-19 13:44:35.771] [DEBUG] Post-execution settling complete for New-SystemStatusMessage
+[2025-08-19 13:44:35.775] [INFO] ========================================
+[2025-08-19 13:44:35.775] [INFO] Testing Function: Write-SystemStatus
+[2025-08-19 13:44:35.780] [INFO] Description: Write system status to file with valid data
+[2025-08-19 13:44:35.781] [INFO] ========================================
+[2025-08-19 13:44:35.781] [DEBUG] Starting test execution for Write-SystemStatus...
+[2025-08-19 13:44:35.803] [OK] Function Write-SystemStatus completed successfully
+[2025-08-19 13:44:35.803] [DEBUG] Result: True
+[2025-08-19 13:44:36.308] [DEBUG] Post-execution settling complete for Write-SystemStatus
+[2025-08-19 13:44:36.311] [INFO] ========================================
+[2025-08-19 13:44:36.313] [INFO] Testing Function: Read-SystemStatus
+[2025-08-19 13:44:36.315] [INFO] Description: Read system status from file
+[2025-08-19 13:44:36.315] [INFO] ========================================
+[2025-08-19 13:44:36.315] [DEBUG] Starting test execution for Read-SystemStatus...
+[2025-08-19 13:44:36.345] [OK] Function Read-SystemStatus completed successfully
+[2025-08-19 13:44:36.345] [DEBUG] Result: System.Collections.Hashtable
+[2025-08-19 13:44:36.857] [DEBUG] Post-execution settling complete for Read-SystemStatus
+[2025-08-19 13:44:36.861] [INFO] ========================================
+[2025-08-19 13:44:36.866] [INFO] Testing Function: ConcurrentQueue Test
+[2025-08-19 13:44:36.867] [INFO] Description: Test thread-safe message queues
+[2025-08-19 13:44:36.868] [INFO] ========================================
+[2025-08-19 13:44:36.870] [DEBUG] Starting test execution for ConcurrentQueue Test...
+[2025-08-19 13:44:36.874] [OK] Function ConcurrentQueue Test completed successfully
+[2025-08-19 13:44:36.878] [DEBUG] Result: True
+[2025-08-19 13:44:37.390] [DEBUG] Post-execution settling complete for ConcurrentQueue Test
+[2025-08-19 13:44:37.393] [INFO] ========================================
+[2025-08-19 13:44:37.395] [INFO] Testing Function: Register-MessageHandler
+[2025-08-19 13:44:37.397] [INFO] Description: Register message handler
+[2025-08-19 13:44:37.397] [INFO] ========================================
+[2025-08-19 13:44:37.402] [DEBUG] Starting test execution for Register-MessageHandler...
+[2025-08-19 13:44:37.406] [OK] Function Register-MessageHandler completed successfully
+[2025-08-19 13:44:37.406] [DEBUG] Result: True
+[2025-08-19 13:44:37.916] [DEBUG] Post-execution settling complete for Register-MessageHandler
+[2025-08-19 13:44:37.920] [INFO] ========================================
+[2025-08-19 13:44:37.922] [INFO] Testing Function: Invoke-MessageHandler
+[2025-08-19 13:44:37.923] [INFO] Description: Invoke registered message handler
+[2025-08-19 13:44:37.924] [INFO] ========================================
+[2025-08-19 13:44:37.924] [DEBUG] Starting test execution for Invoke-MessageHandler...
+[2025-08-19 13:44:37.929] [DEBUG] Test handler executed for: TestMessage
+[2025-08-19 13:44:37.933] [OK] Function Invoke-MessageHandler completed successfully
+[2025-08-19 13:44:37.933] [DEBUG] Result: True
+[2025-08-19 13:44:38.437] [DEBUG] Post-execution settling complete for Invoke-MessageHandler
+[2025-08-19 13:44:38.439] [INFO] ========================================
+[2025-08-19 13:44:38.441] [INFO] Testing Function: Initialize-NamedPipeServer
+[2025-08-19 13:44:38.442] [INFO] Description: Initialize named pipe server with security
+[2025-08-19 13:44:38.443] [INFO] ========================================
+[2025-08-19 13:44:38.444] [DEBUG] Starting test execution for Initialize-NamedPipeServer...
+[2025-08-19 13:44:38.679] [OK] Function Initialize-NamedPipeServer completed successfully
+[2025-08-19 13:44:38.683] [DEBUG] Result: True
+[2025-08-19 13:44:39.191] [DEBUG] Post-execution settling complete for Initialize-NamedPipeServer
+[2025-08-19 13:44:39.196] [INFO] ========================================
+[2025-08-19 13:44:39.199] [INFO] Testing Function: Measure-CommunicationPerformance
+[2025-08-19 13:44:39.199] [INFO] Description: Measure communication latency
+[2025-08-19 13:44:39.203] [INFO] ========================================
+[2025-08-19 13:44:39.205] [DEBUG] Starting test execution for Measure-CommunicationPerformance...
+[2025-08-19 13:44:39.251] [OK] Function Measure-CommunicationPerformance completed successfully
+[2025-08-19 13:44:39.251] [DEBUG] Result: 31.4234
+[2025-08-19 13:44:39.768] [DEBUG] Post-execution settling complete for Measure-CommunicationPerformance
+[2025-08-19 13:44:39.777] [INFO] ========================================
+[2025-08-19 13:44:39.777] [INFO] Testing Function: Initialize-CrossModuleEvents
+[2025-08-19 13:44:39.777] [INFO] Description: Initialize cross-module event system
+[2025-08-19 13:44:39.777] [INFO] ========================================
+[2025-08-19 13:44:39.780] [DEBUG] Starting test execution for Initialize-CrossModuleEvents...
+[2025-08-19 13:44:39.801] [OK] Function Initialize-CrossModuleEvents completed successfully
+[2025-08-19 13:44:39.801] [DEBUG] Result: System.Management.Automation.PSEventJob System.Management.Automation.PSEventJob True
+[2025-08-19 13:44:40.312] [DEBUG] Post-execution settling complete for Initialize-CrossModuleEvents
+[2025-08-19 13:44:40.312] [INFO] ========================================
+[2025-08-19 13:44:40.316] [INFO] Testing Function: Send-EngineEvent
+[2025-08-19 13:44:40.318] [INFO] Description: Send engine event message
+[2025-08-19 13:44:40.319] [INFO] ========================================
+[2025-08-19 13:44:40.319] [DEBUG] Starting test execution for Send-EngineEvent...
+[2025-08-19 13:44:40.341] [OK] Function Send-EngineEvent completed successfully
+[2025-08-19 13:44:40.346] [DEBUG] Result: System.Management.Automation.PSEventArgs True
+[2025-08-19 13:44:40.862] [DEBUG] Post-execution settling complete for Send-EngineEvent
+[2025-08-19 13:44:40.867] [INFO] ========================================
+[2025-08-19 13:44:40.868] [INFO] Testing Function: Send-HealthCheckRequest
+[2025-08-19 13:44:40.870] [INFO] Description: Send health check requests
+[2025-08-19 13:44:40.871] [INFO] ========================================
+[2025-08-19 13:44:40.873] [DEBUG] Starting test execution for Send-HealthCheckRequest...
+[2025-08-19 13:44:40.900] [OK] Function Send-HealthCheckRequest completed successfully
+[2025-08-19 13:44:40.900] [DEBUG] Result: System.Collections.Hashtable
+[2025-08-19 13:44:41.413] [DEBUG] Post-execution settling complete for Send-HealthCheckRequest
+[2025-08-19 13:44:41.416] [INFO] ========================================
+[2025-08-19 13:44:41.416] [INFO] Testing Function: Initialize-SystemStatusMonitoring (Basic)
+[2025-08-19 13:44:41.416] [INFO] Description: System monitoring with minimal settings
+[2025-08-19 13:44:41.420] [INFO] ========================================
+[2025-08-19 13:44:41.420] [DEBUG] Starting test execution for Initialize-SystemStatusMonitoring (Basic)...
+[2025-08-19 13:44:41.994] [OK] Function Initialize-SystemStatusMonitoring (Basic) completed successfully
+[2025-08-19 13:44:41.994] [DEBUG] Result: True
+[2025-08-19 13:44:42.509] [DEBUG] Post-execution settling complete for Initialize-SystemStatusMonitoring (Basic)
+[2025-08-19 13:44:42.512] [INFO] ========================================
+[2025-08-19 13:44:42.514] [INFO] Testing Function: Initialize-SystemStatusMonitoring (Full)
+[2025-08-19 13:44:42.515] [INFO] Description: Full system monitoring with all features enabled
+[2025-08-19 13:44:42.517] [INFO] ========================================
+[2025-08-19 13:44:42.518] [DEBUG] Starting test execution for Initialize-SystemStatusMonitoring (Full)...
+[2025-08-19 13:44:43.825] [OK] Function Initialize-SystemStatusMonitoring (Full) completed successfully
+[2025-08-19 13:44:43.825] [DEBUG] Result: True True True
+[2025-08-19 13:44:44.332] [DEBUG] Post-execution settling complete for Initialize-SystemStatusMonitoring (Full)
+[2025-08-19 13:44:44.332] [INFO] ========================================
+[2025-08-19 13:44:44.336] [INFO] FINAL INCREMENTAL FUNCTION TEST RESULTS SUMMARY
+[2025-08-19 13:44:44.336] [INFO] ========================================
+[2025-08-19 13:44:44.368] [INFO] Total Functions Tested: 14
+[2025-08-19 13:44:44.368] [OK] Successful Functions: 14
+[2025-08-19 13:44:44.372] [ERROR] Failed Functions: 0
+[2025-08-19 13:44:44.376] [INFO] Success Rate: 100%
+[2025-08-19 13:44:44.376] [INFO] ========================================
+[2025-08-19 13:44:44.376] [INFO] DETAILED RESULTS:
+[2025-08-19 13:44:44.380] [OK] Test-SystemStatusSchema: SUCCESS
+[2025-08-19 13:44:44.380] [OK] New-SystemStatusMessage: SUCCESS
+[2025-08-19 13:44:44.380] [OK] Write-SystemStatus: SUCCESS
+[2025-08-19 13:44:44.384] [OK] Read-SystemStatus: SUCCESS
+[2025-08-19 13:44:44.384] [OK] ConcurrentQueue Test: SUCCESS
+[2025-08-19 13:44:44.384] [OK] Register-MessageHandler: SUCCESS
+[2025-08-19 13:44:44.384] [OK] Invoke-MessageHandler: SUCCESS
+[2025-08-19 13:44:44.384] [OK] Initialize-NamedPipeServer: SUCCESS
+[2025-08-19 13:44:44.388] [OK] Measure-CommunicationPerformance: SUCCESS
+[2025-08-19 13:44:44.388] [OK] Initialize-CrossModuleEvents: SUCCESS
+[2025-08-19 13:44:44.388] [OK] Send-EngineEvent: SUCCESS
+[2025-08-19 13:44:44.388] [OK] Send-HealthCheckRequest: SUCCESS
+[2025-08-19 13:44:44.392] [OK] Initialize-SystemStatusMonitoring (Basic): SUCCESS
+[2025-08-19 13:44:44.392] [OK] Initialize-SystemStatusMonitoring (Full): SUCCESS
+[2025-08-19 13:44:44.400] [INFO] Cleaning up test environment...

@@ -1,0 +1,112 @@
+﻿{
+    "PerformanceMetrics":  {
+                               "AverageResponseTime":  0,
+                               "SuccessfulCycles":  0,
+                               "TotalCycles":  0,
+                               "FailedCycles":  0,
+                               "TotalProcessingTime":  0,
+                               "LastCycleTime":  0
+                           },
+    "LastHealthCheck":  null,
+    "CircuitBreaker":  {
+                           "IsOpen":  false,
+                           "FailureCount":  0,
+                           "LastFailure":  null,
+                           "RecoveryAttempts":  0,
+                           "NextRetryTime":  null
+                       },
+    "InterventionCount":  0,
+    "TrackingId":  "15588ef5ea1a",
+    "PreviousState":  "Monitoring",
+    "TransitionCount":  4,
+    "Configuration":  {
+                          "VerboseLogging":  true,
+                          "CriticalThresholdMinutes":  15,
+                          "CircuitBreakerFailureThreshold":  3,
+                          "MaxConsecutiveFailures":  5,
+                          "MaxMemoryUsageMB":  500,
+                          "AlertThresholdMinutes":  5,
+                          "HealthCheckIntervalSeconds":  30,
+                          "HealthDataPath":  "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\..\\SessionData\\Health",
+                          "StateHistoryRetention":  1000,
+                          "LogFile":  "autonomous_state_tracker.log",
+                          "CircuitBreakerRecoveryAttempts":  3,
+                          "MaxCpuPercentage":  80,
+                          "MetricsCollectionIntervalSeconds":  60,
+                          "MinSuccessRate":  0.7,
+                          "StateDataPath":  "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\..\\SessionData\\States",
+                          "MaxCycleTimeMinutes":  10,
+                          "CircuitBreakerTimeoutMinutes":  10
+                      },
+    "StartTime":  "2025-08-18 19:53:23.311",
+    "StateStartTime":  "2025-08-18 19:53:26.409",
+    "CurrentState":  "Processing",
+    "HealthMetrics":  {
+                          "ErrorRate":  0,
+                          "ConsecutiveFailures":  0,
+                          "ConsecutiveSuccesses":  0,
+                          "ResponseTime":  0,
+                          "CpuUsage":  0,
+                          "SuccessRate":  0,
+                          "MemoryUsage":  0
+                      },
+    "HealthStatus":  "Unknown",
+    "AgentId":  "DemoAgent123",
+    "InterventionTriggers":  [
+
+                             ],
+    "StateHistory":  [
+                         {
+                             "Timestamp":  "2025-08-18 19:53:23.311",
+                             "Metadata":  {
+
+                                          },
+                             "Reason":  "Initial state",
+                             "FromState":  null,
+                             "ToState":  "Idle"
+                         },
+                         {
+                             "ToState":  "Initializing",
+                             "Timestamp":  "2025-08-18 19:53:23.380",
+                             "Metadata":  {
+
+                                          },
+                             "FromState":  "Idle",
+                             "Reason":  "Demo transition to Initializing",
+                             "Duration":  70.7667
+                         },
+                         {
+                             "ToState":  "Active",
+                             "Timestamp":  "2025-08-18 19:53:24.396",
+                             "Metadata":  {
+
+                                          },
+                             "FromState":  "Initializing",
+                             "Reason":  "Demo transition to Active",
+                             "Duration":  1014.2628000000001
+                         },
+                         {
+                             "ToState":  "Monitoring",
+                             "Timestamp":  "2025-08-18 19:53:25.402",
+                             "Metadata":  {
+
+                                          },
+                             "FromState":  "Active",
+                             "Reason":  "Demo transition to Monitoring",
+                             "Duration":  1006.6937
+                         },
+                         {
+                             "ToState":  "Processing",
+                             "Timestamp":  "2025-08-18 19:53:26.409",
+                             "Metadata":  {
+
+                                          },
+                             "FromState":  "Monitoring",
+                             "Reason":  "Demo transition to Processing",
+                             "Duration":  1007.1867000000001
+                         }
+                     ],
+    "LastIntervention":  null,
+    "LastTransition":  "2025-08-18 19:53:26.409",
+    "LastActivity":  "2025-08-18 19:53:26.414"
+}

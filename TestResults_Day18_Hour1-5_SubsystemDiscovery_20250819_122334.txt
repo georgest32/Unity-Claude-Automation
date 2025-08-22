@@ -1,0 +1,62 @@
+[2025-08-19 12:23:34.949] [INFO] Starting Day 18 Hour 1.5 comprehensive test suite...
+[2025-08-19 12:23:34.953] [INFO] 
+=== Test Group 1: Module Loading and Import ===
+[2025-08-19 12:23:34.960] [PASS] Module file exists - Unity-Claude-SystemStatus.psm1 should exist at correct path
+[2025-08-19 12:23:34.964] [INFO]   Expected: File exists
+[2025-08-19 12:23:34.968] [INFO]   Actual: File exists: True
+[2025-08-19 12:23:34.969] [PASS] Module manifest exists - Unity-Claude-SystemStatus.psd1 should exist
+[2025-08-19 12:23:34.980] [INFO]   Expected: File exists
+[2025-08-19 12:23:34.982] [INFO]   Actual: File exists: True
+[2025-08-19 12:23:35.099] [PASS] Module import successful - Module should import without errors
+[2025-08-19 12:23:35.115] [FAIL] Function Initialize-SystemStatusMonitoring available - Function should be exported and available
+[2025-08-19 12:23:35.127] [FAIL] Function Get-SubsystemProcessId available - Function should be exported and available
+[2025-08-19 12:23:35.139] [FAIL] Function Update-SubsystemProcessInfo available - Function should be exported and available
+[2025-08-19 12:23:35.151] [FAIL] Function Register-Subsystem available - Function should be exported and available
+[2025-08-19 12:23:35.164] [FAIL] Function Unregister-Subsystem available - Function should be exported and available
+[2025-08-19 12:23:35.176] [FAIL] Function Get-RegisteredSubsystems available - Function should be exported and available
+[2025-08-19 12:23:35.193] [FAIL] Function Send-Heartbeat available - Function should be exported and available
+[2025-08-19 12:23:35.204] [FAIL] Function Test-HeartbeatResponse available - Function should be exported and available
+[2025-08-19 12:23:35.217] [FAIL] Function Test-AllSubsystemHeartbeats available - Function should be exported and available
+[2025-08-19 12:23:35.221] [INFO] 
+=== Test Group 2: Integration Point 4 - Process ID Detection ===
+[2025-08-19 12:23:35.233] [FAIL] Process ID detection test group - Unexpected error: The term 'Get-SubsystemProcessId' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-19 12:23:35.233] [INFO] 
+=== Test Group 3: Integration Point 5 - Subsystem Registration ===
+[2025-08-19 12:23:35.246] [FAIL] Subsystem registration test group - Unexpected error: The term 'Register-Subsystem' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-19 12:23:35.248] [INFO] 
+=== Test Group 4: Integration Point 6 - Heartbeat Detection ===
+[2025-08-19 12:23:35.258] [FAIL] Heartbeat detection test group - Unexpected error: The term 'Register-Subsystem' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-19 12:23:35.262] [INFO] 
+=== Test Group 5: System Status File Operations ===
+[2025-08-19 12:23:35.272] [FAIL] System status file operations test group - Unexpected error: The term 'Read-SystemStatus' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-19 12:23:35.273] [INFO] 
+=== Test Summary ===
+[2025-08-19 12:23:35.274] [INFO] Test execution completed at: 08/19/2025 12:23:35
+[2025-08-19 12:23:35.282] [INFO] Total test duration: 0.34 seconds
+[2025-08-19 12:23:35.283] [INFO] Total tests executed: 16
+[2025-08-19 12:23:35.287] [PASS] Tests passed: 3
+[2025-08-19 12:23:35.288] [FAIL] Tests failed: 13
+[2025-08-19 12:23:35.291] [INFO] Success rate: 18.8%
+[2025-08-19 12:23:35.292] [WARN] 
+=== Failed Test Details ===
+[2025-08-19 12:23:35.296] [FAIL] FAILED: Function Initialize-SystemStatusMonitoring available - Function should be exported and available
+[2025-08-19 12:23:35.296] [FAIL] FAILED: Function Get-SubsystemProcessId available - Function should be exported and available
+[2025-08-19 12:23:35.298] [FAIL] FAILED: Function Update-SubsystemProcessInfo available - Function should be exported and available
+[2025-08-19 12:23:35.300] [FAIL] FAILED: Function Register-Subsystem available - Function should be exported and available
+[2025-08-19 12:23:35.300] [FAIL] FAILED: Function Unregister-Subsystem available - Function should be exported and available
+[2025-08-19 12:23:35.302] [FAIL] FAILED: Function Get-RegisteredSubsystems available - Function should be exported and available
+[2025-08-19 12:23:35.303] [FAIL] FAILED: Function Send-Heartbeat available - Function should be exported and available
+[2025-08-19 12:23:35.304] [FAIL] FAILED: Function Test-HeartbeatResponse available - Function should be exported and available
+[2025-08-19 12:23:35.305] [FAIL] FAILED: Function Test-AllSubsystemHeartbeats available - Function should be exported and available
+[2025-08-19 12:23:35.305] [FAIL] FAILED: Process ID detection test group - Unexpected error: The term 'Get-SubsystemProcessId' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-19 12:23:35.307] [FAIL] FAILED: Subsystem registration test group - Unexpected error: The term 'Register-Subsystem' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-19 12:23:35.308] [FAIL] FAILED: Heartbeat detection test group - Unexpected error: The term 'Register-Subsystem' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-19 12:23:35.308] [FAIL] FAILED: System status file operations test group - Unexpected error: The term 'Read-SystemStatus' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[2025-08-19 12:23:35.308] [INFO] 
+=== Day 18 Hour 1.5 Completion Assessment ===
+[2025-08-19 12:23:35.372] [FAIL] ❌ Hour 1.5 INCOMPLETE - Issues detected
+[2025-08-19 12:23:35.374] [WARN] Critical tests passed: 1/4
+[2025-08-19 12:23:35.377] [WARN] Review failed tests before proceeding to Hour 2.5
+[2025-08-19 12:23:35.378] [INFO] 
+Test results saved to: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\TestResults_Day18_Hour1-5_SubsystemDiscovery_20250819_122334.txt
+[2025-08-19 12:23:35.381] [INFO] Day 18 Hour 1.5 Subsystem Discovery and Registration test completed.

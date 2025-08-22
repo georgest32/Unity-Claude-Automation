@@ -1,0 +1,89 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20250819031220
+Username: LAPTOP-6JCV7T48\georg
+RunAs User: LAPTOP-6JCV7T48\georg
+Configuration Name: 
+Machine: LAPTOP-6JCV7T48 (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+Process ID: 63072
+PSVersion: 5.1.22621.5697
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.22621.5697
+BuildVersion: 10.0.22621.5697
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is test_results_combined_fixes.txt
+==================================================================
+Combined Day 15 + Day 16 Fixes Validation Test Suite
+Testing DateTime op_Subtraction and ++ operator fixes
+==================================================================
+
+1. Testing Day 15 DateTime Fixes
+================================
+Test 1.1: Import enhanced state tracker module...
+[Enhanced-StateTracker] Loading Phase 3 autonomous state management...
+[Enhanced-StateTracker] Phase 3 autonomous state management module loaded successfully
+[Enhanced-StateTracker] Features: Enhanced state machine, JSON persistence, performance monitoring, human intervention
+[+] Enhanced state tracker module loaded successfully
+Test 1.2: Initialize autonomous state tracking...
+[2025-08-19 03:12:20.921] [INFO] [Enhanced-StateTracker] Initializing enhanced autonomous state tracking for agent: TestCombined-Day15-16
+[2025-08-19 03:12:20.925] [DEBUG] [Enhanced-StateTracker] Agent state saved successfully | Data: {"AgentId":"TestCombined-Day15-16"}
+[2025-08-19 03:12:22.167] [INFO] [Enhanced-StateTracker] State checkpoint created: TestCombined-Day15-16-20250819-031220 | Data: {"Reason":"Initial state tracking initialization"}
+[2025-08-19 03:12:22.170] [INFO] [Enhanced-StateTracker] Enhanced autonomous state tracking initialized successfully | Data: {"InitialState":"Idle","AgentId":"TestCombined-Day15-16","RestoreRequested":false}
+[-] Failed to initialize state tracking:
+
+2. Testing Day 16 Increment Operator Fixes
+==========================================
+Test 2.1: Import conversation management modules...
+WARNING: The names of some imported commands from the module 'ContextOptimization' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+[+] Conversation management modules loaded successfully
+Test 2.2: Initialize conversation state...
+[+] Conversation state initialized
+Test 2.3: Test increment operations (role-aware history)...
+[+] Role-aware history with increment operations working
+Test 2.4: Test user profile increment operations...
+[+] User profile increment operations working
+
+3. Testing Combined Integration
+==============================
+Test 3.1: Full workflow integration...
+[2025-08-19 03:12:22.213] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: StartTime
+[2025-08-19 03:12:22.213] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastHealthCheck
+[2025-08-19 03:12:22.217] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: PerformanceBaseline
+[2025-08-19 03:12:22.221] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 03:12:22.221] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Special DateTime handling for property: LastStateChange
+[2025-08-19 03:12:22.221] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Recursively converting property: HealthMetrics
+[2025-08-19 03:12:22.225] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 0 properties
+[2025-08-19 03:12:22.225] [DEBUG] [Enhanced-StateTracker] ConvertTo-HashTable: Successfully converted object with 16 properties
+[2025-08-19 03:12:22.229] [DEBUG] [Enhanced-StateTracker] Get-UptimeMinutes: Calculating uptime from StartTime
+[2025-08-19 03:12:22.229] [DEBUG] [Enhanced-StateTracker] Get-UptimeMinutes: Current ticks: 638911699422298210
+[2025-08-19 03:12:22.233] [DEBUG] [Enhanced-StateTracker] Get-SafeDateTime: Parsing string DateTime: 2025-08-19T07:12:20.921Z
+[2025-08-19 03:12:22.237] [DEBUG] [Enhanced-StateTracker] Get-UptimeMinutes: Start ticks: 638911843409210000
+[2025-08-19 03:12:22.237] [WARNING] [Enhanced-StateTracker] Get-UptimeMinutes: Start time is in the future, returning 0
+    [+] Completed 3/4 workflow steps
+    [+] Total integration test duration: 39.91ms
+[+] Integration test passed (75%+ success rate)
+
+==================================================================
+Combined Day 15 + Day 16 Fixes Test Results
+==================================================================
+Total Tests: 3
+Passed: 2
+Failed: 1
+Success Rate: 66.7%
+
+Fix Status Summary:
+âœ… Day 15 DateTime op_Subtraction fixes
+âœ… Day 16 ++ operator increment fixes
+âœ… Cross-module integration working
+âœ… PowerShell 5.1 compatibility maintained
+
+âŒ Fixes need additional work
+**********************
+Windows PowerShell transcript end
+End time: 20250819031222
+**********************

@@ -1,0 +1,41 @@
+{
+    "_comment": "Testing environment configuration - Fast feedback and comprehensive logging",
+    "SystemStatus": {
+        "MonitoringInterval": 5,
+        "LogLevel": "DEBUG",
+        "EnableMutex": false,
+        "MaxRetries": 2,
+        "RetryDelayMs": 100
+    },
+    "CircuitBreaker": {
+        "EnableCircuitBreaker": false,
+        "FailureThreshold": 1,
+        "TimeoutSeconds": 10
+    },
+    "HealthMonitoring": {
+        "ParallelHealthChecks": false,
+        "ThrottleLimit": 1,
+        "HealthCheckTimeout": 5,
+        "IncludePerformanceData": false,
+        "DefaultHealthCheckInterval": 5,
+        "MaxParallelHealthChecks": 1
+    },
+    "Logging": {
+        "EnableDetailedLogging": true,
+        "LogRotationSize": "1MB",
+        "MaxLogFiles": 20,
+        "LogFilePath": ".\\logs\\unity_claude_automation_test.log",
+        "EnableTraceLogging": true
+    },
+    "Performance": {
+        "CacheConfigurationMs": 1000,
+        "EnableConfigurationCaching": false,
+        "MaxConfigurationAge": 5000,
+        "FileWatcherEnabled": false
+    },
+    "Security": {
+        "ValidateManifestSignatures": false,
+        "RequireSecureConfiguration": false,
+        "AllowEnvironmentOverrides": true
+    }
+}

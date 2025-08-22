@@ -1,0 +1,857 @@
+# Unity-Claude-IPC-Bidirectional.psm1
+# Bidirectional communication module for Unity-Claude automation
+# Implements named pipes, TCP socket server, and queue management
+
+# Simple logging function (standalone to avoid dependencies)
+function Write-Log {
+    param(
+        [string]$Message,
+        [string]$Level = 'INFO'
+    )
+    $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
+    Write-Verbose "[$timestamp] [$Level] $Message"
+}
+
+#region Module Variables
+
+$script:PipeServers = @{}
+$script:HttpListeners = @{}
+$script:MessageQueue = [System.Collections.Concurrent.ConcurrentQueue[PSObject]]::new()
+$script:ResponseQueue = [System.Collections.Concurrent.ConcurrentQueue[PSObject]]::new()
+$script:ActiveConnections = @{}
+$script:ServerRunning = $false
+
+#endregion
+
+#region Named Pipes Implementation
+
+function Start-NamedPipeServer {
+    <#
+    .SYNOPSIS
+    Starts a bidirectional named pipe server for IPC
+    
+    .DESCRIPTION
+    Creates a named pipe server that can handle bidirectional communication
+    with clients. Supports multiple concurrent connections.
+    
+    .PARAMETER PipeName
+    Name of the pipe to create
+    
+    .PARAMETER MaxConnections
+    Maximum number of concurrent connections (default 10)
+    
+    .EXAMPLE
+    Start-NamedPipeServer -PipeName "Unity-Claude-Bridge"
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$PipeName,
+        
+        [int]$MaxConnections = 10,
+        
+        [switch]$Async
+    )
+    
+    try {
+        Write-Verbose "Creating named pipe server: $PipeName"
+        
+        # Create pipe security (allow everyone read/write)
+        $pipeSecurity = New-Object System.IO.Pipes.PipeSecurity
+        $everyone = New-Object System.Security.Principal.SecurityIdentifier(
+            [System.Security.Principal.WellKnownSidType]::WorldSid, $null
+        )
+        $pipeAccessRule = New-Object System.IO.Pipes.PipeAccessRule(
+            $everyone, 
+            [System.IO.Pipes.PipeAccessRights]::ReadWrite,
+            [System.Security.AccessControl.AccessControlType]::Allow
+        )
+        $pipeSecurity.AddAccessRule($pipeAccessRule)
+        
+        # Create the pipe server
+        $pipeDirection = [System.IO.Pipes.PipeDirection]::InOut
+        $pipeTransmission = [System.IO.Pipes.PipeTransmissionMode]::Message
+        $pipeOptions = if ($Async) { 
+            [System.IO.Pipes.PipeOptions]::Asynchronous 
+        } else { 
+            [System.IO.Pipes.PipeOptions]::None 
+        }
+        
+        $pipeServer = New-Object System.IO.Pipes.NamedPipeServerStream(
+            $PipeName,
+            $pipeDirection,
+            $MaxConnections,
+            $pipeTransmission,
+            $pipeOptions,
+            1024,  # inBufferSize
+            1024,  # outBufferSize
+            $pipeSecurity
+        )
+        
+        # Store server reference
+        $script:PipeServers[$PipeName] = @{
+            Server = $pipeServer
+            Active = $true
+            Connections = 0
+            StartTime = Get-Date
+        }
+        
+        if ($Async) {
+            # Start async listener
+            Start-PipeListener -PipeName $PipeName -PipeServer $pipeServer
+        } else {
+            # Wait for connection synchronously
+            Write-Verbose "Waiting for client connection on pipe: $PipeName"
+            $pipeServer.WaitForConnection()
+            
+            # Handle the connection
+            Handle-PipeConnection -PipeName $PipeName -PipeServer $pipeServer
+        }
+        
+        return @{
+            Success = $true
+            PipeName = $PipeName
+            Server = $pipeServer
+        }
+        
+    } catch {
+        Write-Error "Failed to start named pipe server: $_"
+        return @{
+            Success = $false
+            Error = $_.Exception.Message
+        }
+    }
+}
+
+function Start-PipeListener {
+    <#
+    .SYNOPSIS
+    Starts async listener for pipe connections
+    #>
+    [CmdletBinding()]
+    param(
+        [string]$PipeName,
+        [System.IO.Pipes.NamedPipeServerStream]$PipeServer
+    )
+    
+    $scriptBlock = {
+        param($PipeName, $PipeServer)
+        
+        while ($script:PipeServers[$PipeName].Active) {
+            try {
+                # Wait for connection asynchronously
+                $asyncResult = $PipeServer.BeginWaitForConnection($null, $null)
+                
+                # Wait with timeout
+                $waitHandle = $asyncResult.AsyncWaitHandle
+                $signaled = $waitHandle.WaitOne(1000)
+                
+                if ($signaled) {
+                    $PipeServer.EndWaitForConnection($asyncResult)
+                    
+                    # Handle connection in separate runspace
+                    Handle-PipeConnection -PipeName $PipeName -PipeServer $PipeServer
+                    
+                    # Disconnect to allow new connections
+                    if ($PipeServer.IsConnected) {
+                        $PipeServer.Disconnect()
+                    }
+                }
+            } catch {
+                Write-Error "Pipe listener error: $_"
+            }
+        }
+    }
+    
+    # Start listener in background runspace
+    if (Get-Command Start-ThreadJob -ErrorAction SilentlyContinue) {
+        Start-ThreadJob -ScriptBlock $scriptBlock -ArgumentList $PipeName, $PipeServer | Out-Null
+    } else {
+        # Fallback to regular job if ThreadJob not available
+        Start-Job -ScriptBlock $scriptBlock -ArgumentList $PipeName, $PipeServer | Out-Null
+    }
+}
+
+function Handle-PipeConnection {
+    <#
+    .SYNOPSIS
+    Handles a connected pipe client
+    #>
+    [CmdletBinding()]
+    param(
+        [string]$PipeName,
+        [System.IO.Pipes.NamedPipeServerStream]$PipeServer
+    )
+    
+    try {
+        $reader = New-Object System.IO.StreamReader($PipeServer)
+        $writer = New-Object System.IO.StreamWriter($PipeServer)
+        $writer.AutoFlush = $true
+        
+        Write-Verbose "Client connected to pipe: $PipeName"
+        $script:PipeServers[$PipeName].Connections++
+        
+        # Send welcome message
+        $writer.WriteLine("CONNECTED:Unity-Claude-IPC:v2.0")
+        
+        # Message loop
+        while ($PipeServer.IsConnected) {
+            # Check for incoming messages
+            if ($reader.Peek() -ge 0) {
+                $message = $reader.ReadLine()
+                
+                if ($message) {
+                    Write-Verbose "Received: $message"
+                    
+                    # Process message
+                    $response = Process-PipeMessage -Message $message -PipeName $PipeName
+                    
+                    # Send response
+                    $writer.WriteLine($response)
+                }
+            }
+            
+            # Check outgoing queue
+            $outMessage = $null
+            if ($script:MessageQueue.TryDequeue([ref]$outMessage)) {
+                $writer.WriteLine("MESSAGE:$($outMessage | ConvertTo-Json -Compress)")
+            }
+            
+            Start-Sleep -Milliseconds 100
+        }
+        
+    } catch {
+        Write-Error "Pipe connection error: $_"
+    } finally {
+        if ($reader) { $reader.Dispose() }
+        if ($writer) { $writer.Dispose() }
+        $script:PipeServers[$PipeName].Connections--
+    }
+}
+
+function Process-PipeMessage {
+    <#
+    .SYNOPSIS
+    Processes incoming pipe messages
+    #>
+    [CmdletBinding()]
+    param(
+        [string]$Message,
+        [string]$PipeName
+    )
+    
+    try {
+        # Parse message format: COMMAND:DATA
+        if ($Message -match '^([A-Z_]+):(.*)$') {
+            $command = $Matches[1]
+            $data = $Matches[2]
+            
+            switch ($command) {
+                'PING' {
+                    return "PONG:$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+                }
+                
+                'CLAUDE_QUESTION' {
+                    # Claude needs clarification - queue for user
+                    $question = @{
+                        Type = 'Question'
+                        Source = 'Claude'
+                        Data = $data
+                        Timestamp = Get-Date
+                    }
+                    $script:MessageQueue.Enqueue($question)
+                    return "QUEUED:Question received"
+                }
+                
+                'ERROR_REPORT' {
+                    # New error to analyze
+                    $errorData = $data | ConvertFrom-Json
+                    $script:MessageQueue.Enqueue($errorData)
+                    return "QUEUED:Error report received"
+                }
+                
+                'GET_STATUS' {
+                    $status = @{
+                        QueueLength = $script:MessageQueue.Count
+                        Connections = $script:PipeServers[$PipeName].Connections
+                        Uptime = ((Get-Date) - $script:PipeServers[$PipeName].StartTime).TotalSeconds
+                    }
+                    return "STATUS:$($status | ConvertTo-Json -Compress)"
+                }
+                
+                default {
+                    return "ERROR:Unknown command: $command"
+                }
+            }
+        } else {
+            return "ERROR:Invalid message format"
+        }
+        
+    } catch {
+        return "ERROR:$($_.Exception.Message)"
+    }
+}
+
+function Send-PipeMessage {
+    <#
+    .SYNOPSIS
+    Sends a message to a named pipe client
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$PipeName,
+        
+        [Parameter(Mandatory)]
+        [string]$Message
+    )
+    
+    try {
+        $pipeClient = New-Object System.IO.Pipes.NamedPipeClientStream(
+            ".",  # local machine
+            $PipeName,
+            [System.IO.Pipes.PipeDirection]::InOut
+        )
+        
+        # Connect with timeout
+        $pipeClient.Connect(5000)
+        
+        $writer = New-Object System.IO.StreamWriter($pipeClient)
+        $reader = New-Object System.IO.StreamReader($pipeClient)
+        $writer.AutoFlush = $true
+        
+        # Send message
+        $writer.WriteLine($Message)
+        
+        # Read response
+        $response = $reader.ReadLine()
+        
+        return @{
+            Success = $true
+            Response = $response
+        }
+        
+    } catch {
+        return @{
+            Success = $false
+            Error = $_.Exception.Message
+        }
+    } finally {
+        if ($writer) { $writer.Dispose() }
+        if ($reader) { $reader.Dispose() }
+        if ($pipeClient) { $pipeClient.Dispose() }
+    }
+}
+
+#endregion
+
+#region TCP/HTTP REST API Server
+
+function Start-HttpApiServer {
+    <#
+    .SYNOPSIS
+    Starts an HTTP REST API server
+    
+    .DESCRIPTION
+    Creates an HttpListener-based REST API server for remote communication
+    
+    .PARAMETER Port
+    Port to listen on (default 5555)
+    
+    .PARAMETER Prefix
+    URL prefix (default http://+:port/)
+    
+    .EXAMPLE
+    Start-HttpApiServer -Port 5555
+    #>
+    [CmdletBinding()]
+    param(
+        [int]$Port = 5555,
+        
+        [string]$Prefix = "",
+        
+        [switch]$LocalOnly
+    )
+    
+    try {
+        # Build prefix
+        if (-not $Prefix) {
+            $host = if ($LocalOnly) { "localhost" } else { "+" }
+            $Prefix = "http://${host}:${Port}/"
+        }
+        
+        Write-Verbose "Starting HTTP API server on: $Prefix"
+        
+        # Create listener
+        $listener = New-Object System.Net.HttpListener
+        $listener.Prefixes.Add($Prefix)
+        
+        # Start listener
+        $listener.Start()
+        
+        # Store listener reference
+        $script:HttpListeners[$Port] = @{
+            Listener = $listener
+            Active = $true
+            Prefix = $Prefix
+            StartTime = Get-Date
+            RequestCount = 0
+        }
+        
+        # Start async request handler
+        Start-HttpRequestHandler -Port $Port -Listener $listener
+        
+        Write-Host "HTTP API Server started on $Prefix" -ForegroundColor Green
+        
+        return @{
+            Success = $true
+            Port = $Port
+            Prefix = $Prefix
+        }
+        
+    } catch {
+        Write-Error "Failed to start HTTP server: $_"
+        return @{
+            Success = $false
+            Error = $_.Exception.Message
+        }
+    }
+}
+
+function Start-HttpRequestHandler {
+    <#
+    .SYNOPSIS
+    Handles HTTP requests asynchronously
+    #>
+    [CmdletBinding()]
+    param(
+        [int]$Port,
+        [System.Net.HttpListener]$Listener
+    )
+    
+    $scriptBlock = {
+        param($Port, $Listener, $MessageQueue, $ResponseQueue)
+        
+        while ($Listener.IsListening) {
+            try {
+                # Get context asynchronously
+                $asyncResult = $Listener.BeginGetContext($null, $null)
+                $waitHandle = $asyncResult.AsyncWaitHandle
+                
+                # Wait with timeout
+                $signaled = $waitHandle.WaitOne(1000)
+                
+                if ($signaled) {
+                    $context = $Listener.EndGetContext($asyncResult)
+                    
+                    # Process request
+                    Process-HttpRequest -Context $context -Port $Port `
+                                       -MessageQueue $MessageQueue `
+                                       -ResponseQueue $ResponseQueue
+                }
+                
+            } catch {
+                if ($_.Exception.Message -notlike "*Listener was closed*") {
+                    Write-Error "HTTP handler error: $_"
+                }
+            }
+        }
+    }
+    
+    # Start handler in background
+    if (Get-Command Start-ThreadJob -ErrorAction SilentlyContinue) {
+        Start-ThreadJob -ScriptBlock $scriptBlock `
+                       -ArgumentList $Port, $Listener, $script:MessageQueue, $script:ResponseQueue | Out-Null
+    } else {
+        # Fallback to regular job if ThreadJob not available
+        Start-Job -ScriptBlock $scriptBlock `
+                 -ArgumentList $Port, $Listener, $script:MessageQueue, $script:ResponseQueue | Out-Null
+    }
+}
+
+function Process-HttpRequest {
+    <#
+    .SYNOPSIS
+    Processes HTTP API requests
+    #>
+    [CmdletBinding()]
+    param(
+        [System.Net.HttpListenerContext]$Context,
+        [int]$Port,
+        $MessageQueue,
+        $ResponseQueue
+    )
+    
+    try {
+        $request = $Context.Request
+        $response = $Context.Response
+        
+        Write-Verbose "HTTP Request: $($request.HttpMethod) $($request.Url.AbsolutePath)"
+        
+        # Route based on path and method
+        $path = $request.Url.AbsolutePath
+        $method = $request.HttpMethod
+        
+        $result = switch -Regex ($path) {
+            '^/api/status$' {
+                Get-ApiStatus -Port $Port
+            }
+            
+            '^/api/errors$' {
+                if ($method -eq 'POST') {
+                    # Submit error for analysis
+                    $body = Read-RequestBody -Request $request
+                    Submit-ErrorViaApi -ErrorData $body -MessageQueue $MessageQueue
+                } else {
+                    # Get error queue status
+                    Get-ErrorQueueStatus -MessageQueue $MessageQueue
+                }
+            }
+            
+            '^/api/claude/ask$' {
+                if ($method -eq 'POST') {
+                    $body = Read-RequestBody -Request $request
+                    Submit-ClaudeQuestion -Question $body -MessageQueue $MessageQueue
+                } else {
+                    @{ error = "Method not allowed" }
+                }
+            }
+            
+            '^/api/responses$' {
+                Get-PendingResponses -ResponseQueue $ResponseQueue
+            }
+            
+            '^/api/health$' {
+                @{ status = "healthy"; timestamp = Get-Date -Format 'o' }
+            }
+            
+            default {
+                $response.StatusCode = 404
+                @{ error = "Not found"; path = $path }
+            }
+        }
+        
+        # Send response
+        $json = $result | ConvertTo-Json -Depth 10 -Compress
+        $buffer = [System.Text.Encoding]::UTF8.GetBytes($json)
+        
+        $response.ContentType = "application/json"
+        $response.ContentLength64 = $buffer.Length
+        $response.OutputStream.Write($buffer, 0, $buffer.Length)
+        
+    } catch {
+        # Send error response
+        $response.StatusCode = 500
+        $errorJson = @{ error = $_.Exception.Message } | ConvertTo-Json
+        $buffer = [System.Text.Encoding]::UTF8.GetBytes($errorJson)
+        $response.OutputStream.Write($buffer, 0, $buffer.Length)
+        
+    } finally {
+        $response.Close()
+    }
+}
+
+function Read-RequestBody {
+    <#
+    .SYNOPSIS
+    Reads and parses HTTP request body
+    #>
+    param([System.Net.HttpListenerRequest]$Request)
+    
+    if ($Request.HasEntityBody) {
+        $reader = New-Object System.IO.StreamReader($Request.InputStream, $Request.ContentEncoding)
+        $body = $reader.ReadToEnd()
+        $reader.Close()
+        
+        if ($Request.ContentType -like "*json*") {
+            return $body | ConvertFrom-Json
+        }
+        return $body
+    }
+    return $null
+}
+
+function Get-ApiStatus {
+    param([int]$Port)
+    
+    return @{
+        status = "running"
+        port = $Port
+        uptime = ((Get-Date) - $script:HttpListeners[$Port].StartTime).TotalSeconds
+        requests = $script:HttpListeners[$Port].RequestCount++
+        queued_messages = $script:MessageQueue.Count
+        pending_responses = $script:ResponseQueue.Count
+    }
+}
+
+function Submit-ErrorViaApi {
+    param($ErrorData, $MessageQueue)
+    
+    $error = @{
+        Type = 'Error'
+        Source = 'API'
+        Data = $ErrorData
+        Timestamp = Get-Date
+        Id = [Guid]::NewGuid().ToString()
+    }
+    
+    $MessageQueue.Enqueue($error)
+    
+    return @{
+        success = $true
+        id = $error.Id
+        message = "Error queued for analysis"
+    }
+}
+
+#endregion
+
+#region Queue Management
+
+function Initialize-MessageQueues {
+    <#
+    .SYNOPSIS
+    Initializes thread-safe message queues
+    #>
+    [CmdletBinding()]
+    param()
+    
+    # Already initialized in module load
+    Write-Verbose "Message queues initialized"
+    
+    return @{
+        MessageQueue = $script:MessageQueue
+        ResponseQueue = $script:ResponseQueue
+    }
+}
+
+function Add-MessageToQueue {
+    <#
+    .SYNOPSIS
+    Adds a message to the processing queue
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [PSObject]$Message,
+        
+        [ValidateSet('Message','Response')]
+        [string]$QueueType = 'Message'
+    )
+    
+    if ($QueueType -eq 'Message') { 
+        $script:MessageQueue.Enqueue($Message)
+        $queueCount = $script:MessageQueue.Count
+    } else { 
+        $script:ResponseQueue.Enqueue($Message)
+        $queueCount = $script:ResponseQueue.Count
+    }
+    
+    Write-Verbose "Added message to $QueueType queue (Count: $queueCount)"
+}
+
+function Get-NextMessage {
+    <#
+    .SYNOPSIS
+    Gets the next message from the queue
+    #>
+    [CmdletBinding()]
+    param(
+        [ValidateSet('Message','Response')]
+        [string]$QueueType = 'Message',
+        
+        [switch]$Wait,
+        
+        [int]$TimeoutMs = 1000
+    )
+    
+    $message = $null
+    
+    if ($QueueType -eq 'Message') {
+        if ($Wait) {
+            $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+            
+            while (-not $script:MessageQueue.TryDequeue([ref]$message) -and 
+                   $stopwatch.ElapsedMilliseconds -lt $TimeoutMs) {
+                Start-Sleep -Milliseconds 100
+            }
+        } else {
+            [void]$script:MessageQueue.TryDequeue([ref]$message)
+        }
+    } else {
+        if ($Wait) {
+            $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+            
+            while (-not $script:ResponseQueue.TryDequeue([ref]$message) -and 
+                   $stopwatch.ElapsedMilliseconds -lt $TimeoutMs) {
+                Start-Sleep -Milliseconds 100
+            }
+        } else {
+            [void]$script:ResponseQueue.TryDequeue([ref]$message)
+        }
+    }
+    
+    return $message
+}
+
+function Get-QueueStatus {
+    <#
+    .SYNOPSIS
+    Gets the status of all queues
+    #>
+    [CmdletBinding()]
+    param()
+    
+    return @{
+        MessageQueue = @{
+            Count = $script:MessageQueue.Count
+            Type = 'ConcurrentQueue[PSObject]'
+        }
+        ResponseQueue = @{
+            Count = $script:ResponseQueue.Count
+            Type = 'ConcurrentQueue[PSObject]'
+        }
+        PipeServers = $script:PipeServers.Keys | ForEach-Object {
+            @{
+                Name = $_
+                Active = $script:PipeServers[$_].Active
+                Connections = $script:PipeServers[$_].Connections
+            }
+        }
+        HttpListeners = $script:HttpListeners.Keys | ForEach-Object {
+            @{
+                Port = $_
+                Active = $script:HttpListeners[$_].Active
+                Requests = $script:HttpListeners[$_].RequestCount
+            }
+        }
+    }
+}
+
+function Clear-MessageQueue {
+    <#
+    .SYNOPSIS
+    Clears all messages from a queue
+    #>
+    [CmdletBinding()]
+    param(
+        [ValidateSet('Message','Response','All')]
+        [string]$QueueType = 'All'
+    )
+    
+    if ($QueueType -eq 'Message' -or $QueueType -eq 'All') {
+        while ($script:MessageQueue.TryDequeue([ref]$null)) { }
+        Write-Verbose "Cleared message queue"
+    }
+    
+    if ($QueueType -eq 'Response' -or $QueueType -eq 'All') {
+        while ($script:ResponseQueue.TryDequeue([ref]$null)) { }
+        Write-Verbose "Cleared response queue"
+    }
+}
+
+#endregion
+
+#region Server Management
+
+function Start-BidirectionalServers {
+    <#
+    .SYNOPSIS
+    Starts all bidirectional communication servers
+    #>
+    [CmdletBinding()]
+    param(
+        [string]$PipeName = "Unity-Claude-Bridge",
+        
+        [int]$HttpPort = 5555,
+        
+        [switch]$LocalOnly
+    )
+    
+    $results = @{}
+    
+    # Start named pipe server
+    Write-Host "Starting named pipe server..." -ForegroundColor Cyan
+    $pipeResult = Start-NamedPipeServer -PipeName $PipeName -Async
+    $results.NamedPipe = $pipeResult
+    
+    # Start HTTP API server
+    Write-Host "Starting HTTP API server..." -ForegroundColor Cyan
+    $httpResult = Start-HttpApiServer -Port $HttpPort -LocalOnly:$LocalOnly
+    $results.HttpApi = $httpResult
+    
+    # Initialize queues
+    $queues = Initialize-MessageQueues
+    $results.Queues = $queues
+    
+    $script:ServerRunning = $true
+    
+    Write-Host "`nBidirectional servers started successfully!" -ForegroundColor Green
+    Write-Host "  Named Pipe: \\.\pipe\$PipeName" -ForegroundColor White
+    Write-Host "  HTTP API: http://localhost:$HttpPort/api/" -ForegroundColor White
+    
+    return $results
+}
+
+function Stop-BidirectionalServers {
+    <#
+    .SYNOPSIS
+    Stops all bidirectional communication servers
+    #>
+    [CmdletBinding()]
+    param()
+    
+    Write-Host "Stopping bidirectional servers..." -ForegroundColor Yellow
+    
+    # Stop pipe servers
+    foreach ($pipeName in $script:PipeServers.Keys) {
+        $script:PipeServers[$pipeName].Active = $false
+        if ($script:PipeServers[$pipeName].Server) {
+            $script:PipeServers[$pipeName].Server.Dispose()
+        }
+    }
+    $script:PipeServers.Clear()
+    
+    # Stop HTTP listeners
+    foreach ($port in $script:HttpListeners.Keys) {
+        $script:HttpListeners[$port].Active = $false
+        if ($script:HttpListeners[$port].Listener) {
+            $script:HttpListeners[$port].Listener.Stop()
+            $script:HttpListeners[$port].Listener.Close()
+        }
+    }
+    $script:HttpListeners.Clear()
+    
+    # Clear queues
+    Clear-MessageQueue -QueueType All
+    
+    $script:ServerRunning = $false
+    
+    Write-Host "All servers stopped" -ForegroundColor Green
+}
+
+#endregion
+
+#region Module Exports
+
+Export-ModuleMember -Function @(
+    # Named Pipes
+    'Start-NamedPipeServer',
+    'Send-PipeMessage',
+    
+    # HTTP API
+    'Start-HttpApiServer',
+    
+    # Queue Management
+    'Initialize-MessageQueues',
+    'Add-MessageToQueue',
+    'Get-NextMessage',
+    'Get-QueueStatus',
+    'Clear-MessageQueue',
+    
+    # Server Management
+    'Start-BidirectionalServers',
+    'Stop-BidirectionalServers'
+)
+
+#endregion

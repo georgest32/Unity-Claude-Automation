@@ -1,0 +1,19 @@
+File: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Export-Tools\Export-ErrorsForClaude.ps1
+Remaining errors after automated fix:
+  Line 66: Unexpected token 'Reading:' in expression or statement.
+    Content:             Write-Host "  Reading: $($log.Name)" -ForegroundColor Gray
+  Line 121: Unexpected token 'FAILED:' in expression or statement.
+    Content:                         $exportContent += "FAILED: $($test.Groups[1].Value)"
+  Line 154: Unexpected token '```"' in expression or statement.
+    Content:             $exportContent += "```"
+  Line 183: Unexpected token '```"' in expression or statement.
+    Content:             $exportContent += "```"
+  Line 198: Unexpected token 'PowerShell' in expression or statement.
+    Content: $exportContent += "PowerShell Version: $($PSVersionTable.PSVersion)"
+  Line 225: Unexpected token 'ErrorExport_$(Get-Date -Format 'yyyyMMdd_HHmmss').md"
+$exportContent | Out-String | Set-Content -Path $exportPath
+
+Write-Host "`n═══════════════════════════════════════" -ForegroundColor Green
+Write-Host "' in expression or statement.
+    Content: $exportPath = Join-Path $PSScriptRoot "ErrorExport_$(Get-Date -Format 'yyyyMMdd_HHmmss').md"
+

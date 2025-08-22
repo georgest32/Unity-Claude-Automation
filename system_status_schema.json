@@ -1,0 +1,265 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Unity-Claude System Status Schema",
+    "description": "JSON schema for Unity-Claude Automation system status monitoring",
+    "type": "object",
+    "properties": {
+        "systemInfo": {
+            "type": "object",
+            "properties": {
+                "hostName": {
+                    "type": "string",
+                    "description": "System hostname"
+                },
+                "powerShellVersion": {
+                    "type": "string",
+                    "description": "PowerShell version (e.g., 5.1.x)"
+                },
+                "unityVersion": {
+                    "type": "string", 
+                    "description": "Unity version (e.g., 2021.1.14f1)"
+                },
+                "lastUpdate": {
+                    "type": "string",
+                    "description": "Last system update timestamp in DateTime format",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}$"
+                },
+                "systemUptime": {
+                    "type": "number",
+                    "description": "System uptime in minutes"
+                }
+            },
+            "required": ["hostName", "powerShellVersion", "lastUpdate"]
+        },
+        "subsystems": {
+            "type": "object",
+            "description": "Status of all Unity-Claude subsystems",
+            "patternProperties": {
+                "^Unity-Claude-.*": {
+                    "type": "object",
+                    "properties": {
+                        "processId": {
+                            "type": ["number", "null"],
+                            "description": "Process ID of the subsystem"
+                        },
+                        "status": {
+                            "type": "string",
+                            "enum": ["Healthy", "Warning", "Critical", "Unknown", "Stopped"],
+                            "description": "Current health status"
+                        },
+                        "lastHeartbeat": {
+                            "type": "string",
+                            "description": "Last heartbeat timestamp",
+                            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}$"
+                        },
+                        "healthScore": {
+                            "type": "number",
+                            "minimum": 0.0,
+                            "maximum": 1.0,
+                            "description": "Health score between 0.0 (critical) and 1.0 (perfect)"
+                        },
+                        "performance": {
+                            "type": "object",
+                            "properties": {
+                                "cpuPercent": {
+                                    "type": "number",
+                                    "minimum": 0.0,
+                                    "maximum": 100.0
+                                },
+                                "memoryMB": {
+                                    "type": "number",
+                                    "minimum": 0.0
+                                },
+                                "responseTimeMs": {
+                                    "type": "number",
+                                    "minimum": 0.0
+                                }
+                            }
+                        },
+                        "moduleInfo": {
+                            "type": "object",
+                            "properties": {
+                                "version": {
+                                    "type": "string"
+                                },
+                                "path": {
+                                    "type": "string"
+                                },
+                                "exportedFunctions": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": ["status", "lastHeartbeat", "healthScore"]
+                }
+            },
+            "additionalProperties": false
+        },
+        "dependencies": {
+            "type": "object",
+            "description": "Subsystem dependency mapping for cascade restart logic",
+            "patternProperties": {
+                "^Unity-Claude-.*": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^Unity-Claude-.*"
+                    },
+                    "description": "List of subsystems this subsystem depends on"
+                }
+            }
+        },
+        "alerts": {
+            "type": "array",
+            "description": "System alerts and notifications",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique alert identifier"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}$"
+                    },
+                    "severity": {
+                        "type": "string",
+                        "enum": ["Info", "Warning", "Critical", "Error"]
+                    },
+                    "subsystem": {
+                        "type": "string",
+                        "description": "Affected subsystem"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "Alert message"
+                    },
+                    "resolved": {
+                        "type": "boolean",
+                        "description": "Whether alert has been resolved"
+                    },
+                    "resolvedTimestamp": {
+                        "type": ["string", "null"],
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}$"
+                    }
+                },
+                "required": ["id", "timestamp", "severity", "message", "resolved"]
+            }
+        },
+        "watchdog": {
+            "type": "object",
+            "description": "System watchdog configuration and status",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Whether system watchdog is enabled"
+                },
+                "lastCheck": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}$"
+                },
+                "checkIntervalSeconds": {
+                    "type": "number",
+                    "minimum": 1,
+                    "description": "Watchdog check interval in seconds"
+                },
+                "restartPolicy": {
+                    "type": "string",
+                    "enum": ["Manual", "Automatic", "Escalate"],
+                    "description": "Policy for handling failed subsystems"
+                },
+                "restartHistory": {
+                    "type": "array",
+                    "description": "History of subsystem restarts",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "timestamp": {
+                                "type": "string",
+                                "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}$"
+                            },
+                            "subsystem": {
+                                "type": "string"
+                            },
+                            "reason": {
+                                "type": "string"
+                            },
+                            "success": {
+                                "type": "boolean"
+                            },
+                            "dependenciesRestarted": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "required": ["timestamp", "subsystem", "reason", "success"]
+                    }
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "minimum": 1,
+                    "description": "Number of failed heartbeats before triggering alert"
+                },
+                "heartbeatIntervalSeconds": {
+                    "type": "number",
+                    "minimum": 1,
+                    "description": "Expected heartbeat interval in seconds"
+                }
+            },
+            "required": ["enabled", "lastCheck", "restartPolicy"]
+        },
+        "communication": {
+            "type": "object",
+            "description": "Cross-subsystem communication status",
+            "properties": {
+                "namedPipesEnabled": {
+                    "type": "boolean",
+                    "description": "Whether named pipes communication is available"
+                },
+                "jsonFallbackEnabled": {
+                    "type": "boolean", 
+                    "description": "Whether JSON file fallback is enabled"
+                },
+                "messageQueue": {
+                    "type": "object",
+                    "properties": {
+                        "pending": {
+                            "type": "number",
+                            "minimum": 0
+                        },
+                        "processed": {
+                            "type": "number",
+                            "minimum": 0
+                        },
+                        "failed": {
+                            "type": "number",
+                            "minimum": 0
+                        }
+                    }
+                },
+                "performanceMetrics": {
+                    "type": "object",
+                    "properties": {
+                        "averageLatencyMs": {
+                            "type": "number",
+                            "minimum": 0.0
+                        },
+                        "messagesPerSecond": {
+                            "type": "number",
+                            "minimum": 0.0
+                        }
+                    }
+                }
+            },
+            "required": ["namedPipesEnabled", "jsonFallbackEnabled"]
+        }
+    },
+    "required": ["systemInfo", "subsystems", "watchdog", "communication"]
+}

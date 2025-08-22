@@ -1,0 +1,299 @@
+﻿{
+    "SystemState":  {
+                        "ProcessCount":  {
+                                             "Value":  584,
+                                             "Timestamp":  "\/Date(1755584304085)\/",
+                                             "ThresholdWarning":  200,
+                                             "Unit":  "Count",
+                                             "Status":  "Critical",
+                                             "ThresholdCritical":  300
+                                         },
+                        "CPU":  {
+                                    "Value":  3.12,
+                                    "Timestamp":  "\/Date(1755584304085)\/",
+                                    "ThresholdWarning":  60,
+                                    "Unit":  "Percentage",
+                                    "Status":  "Normal",
+                                    "ThresholdCritical":  80
+                                },
+                        "DiskSpace":  {
+                                          "Value":  31.39,
+                                          "Timestamp":  "\/Date(1755584304085)\/",
+                                          "ThresholdWarning":  15,
+                                          "Unit":  "Percentage",
+                                          "Status":  "Critical",
+                                          "ThresholdCritical":  10
+                                      },
+                        "Memory":  {
+                                       "Value":  78.56,
+                                       "Timestamp":  "\/Date(1755584304085)\/",
+                                       "ThresholdWarning":  70,
+                                       "Unit":  "Percentage",
+                                       "Status":  "Warning",
+                                       "ThresholdCritical":  85
+                                   },
+                        "HandleCount":  {
+                                            "Value":  285693,
+                                            "Timestamp":  "\/Date(1755584304085)\/",
+                                            "ThresholdWarning":  50000,
+                                            "Unit":  "Count",
+                                            "Status":  "Critical",
+                                            "ThresholdCritical":  75000
+                                        },
+                        "PowerShellCPU":  {
+                                              "Timestamp":  "\/Date(1755584304085)\/",
+                                              "Status":  "Normal",
+                                              "Unit":  "Seconds",
+                                              "Value":  0.33
+                                          },
+                        "PowerShellMemory":  {
+                                                 "Timestamp":  "\/Date(1755584304085)\/",
+                                                 "Status":  "Normal",
+                                                 "Unit":  "MB",
+                                                 "Value":  150.89
+                                             }
+                    },
+    "Timestamp":  {
+                      "value":  "\/Date(1755584304085)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "Tuesday, August 19, 2025 2:18:24 AM"
+                  },
+    "CheckpointId":  "TestAgent-Phase3-021815-20250819-021824",
+    "PowerShellProcess":  {
+                              "WorkingSet":  158216192,
+                              "PID":  68992,
+                              "StartTime":  "\/Date(1755584291709)\/"
+                          },
+    "Reason":  "Critical state change: Error",
+    "AgentId":  "TestAgent-Phase3-021815",
+    "AgentState":  {
+                       "InterventionHistory":  [
+                                                   {
+                                                       "AgentId":  "TestAgent-Phase3-021815",
+                                                       "Context":  {
+
+                                                                   },
+                                                       "Response":  null,
+                                                       "InterventionId":  "5b129efa-cde0-4625-b205-915a932a3973",
+                                                       "ResponseDeadline":  "\/Date(1755584601257)\/",
+                                                       "Timestamp":  "\/Date(1755584301257)\/",
+                                                       "Status":  "Requested",
+                                                       "Reason":  "Test intervention request",
+                                                       "Priority":  "Medium",
+                                                       "ResolutionTime":  null
+                                                   }
+                                               ],
+                       "HumanInterventionRequested":  true,
+                       "TotalOperations":  19,
+                       "LastHealthCheck":  "2025-08-19T06:18:15.062Z",
+                       "PreviousState":  "Error",
+                       "CircuitBreakerState":  "Open",
+                       "StartTime":  "2025-08-19T06:18:15.062Z",
+                       "CurrentState":  "CircuitBreakerOpen",
+                       "HealthMetrics":  {
+
+                                         },
+                       "CheckpointHistory":  [
+
+                                             ],
+                       "AgentId":  "TestAgent-Phase3-021815",
+                       "StateHistory":  [
+                                            {
+                                                "ToState":  "Idle",
+                                                "Timestamp":  "\/Date(1755584296739)\/",
+                                                "Forced":  true,
+                                                "FromState":  "Idle",
+                                                "Reason":  "State transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Initializing",
+                                                "Timestamp":  "\/Date(1755584296769)\/",
+                                                "Forced":  false,
+                                                "FromState":  "Idle",
+                                                "Reason":  "Test transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Initializing",
+                                                "Timestamp":  "\/Date(1755584296787)\/",
+                                                "Forced":  true,
+                                                "FromState":  "Initializing",
+                                                "Reason":  "State transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Active",
+                                                "Timestamp":  "\/Date(1755584296808)\/",
+                                                "Forced":  false,
+                                                "FromState":  "Initializing",
+                                                "Reason":  "Test transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Active",
+                                                "Timestamp":  "\/Date(1755584296841)\/",
+                                                "Forced":  true,
+                                                "FromState":  "Active",
+                                                "Reason":  "State transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Monitoring",
+                                                "Timestamp":  "\/Date(1755584296861)\/",
+                                                "Forced":  false,
+                                                "FromState":  "Active",
+                                                "Reason":  "Test transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Monitoring",
+                                                "Timestamp":  "\/Date(1755584296877)\/",
+                                                "Forced":  true,
+                                                "FromState":  "Monitoring",
+                                                "Reason":  "State transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Processing",
+                                                "Timestamp":  "\/Date(1755584296895)\/",
+                                                "Forced":  false,
+                                                "FromState":  "Monitoring",
+                                                "Reason":  "Test transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Processing",
+                                                "Timestamp":  "\/Date(1755584296911)\/",
+                                                "Forced":  true,
+                                                "FromState":  "Processing",
+                                                "Reason":  "State transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Generating",
+                                                "Timestamp":  "\/Date(1755584296943)\/",
+                                                "Forced":  false,
+                                                "FromState":  "Processing",
+                                                "Reason":  "Test transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Generating",
+                                                "Timestamp":  "\/Date(1755584296963)\/",
+                                                "Forced":  true,
+                                                "FromState":  "Generating",
+                                                "Reason":  "State transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Submitting",
+                                                "Timestamp":  "\/Date(1755584296989)\/",
+                                                "Forced":  false,
+                                                "FromState":  "Generating",
+                                                "Reason":  "Test transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Submitting",
+                                                "Timestamp":  "\/Date(1755584297012)\/",
+                                                "Forced":  true,
+                                                "FromState":  "Submitting",
+                                                "Reason":  "State transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Monitoring",
+                                                "Timestamp":  "\/Date(1755584297035)\/",
+                                                "Forced":  false,
+                                                "FromState":  "Submitting",
+                                                "Reason":  "Test transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Idle",
+                                                "Timestamp":  "\/Date(1755584297054)\/",
+                                                "Forced":  true,
+                                                "FromState":  "Monitoring",
+                                                "Reason":  "State transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Stopped",
+                                                "Timestamp":  "\/Date(1755584297090)\/",
+                                                "Forced":  true,
+                                                "FromState":  "Idle",
+                                                "Reason":  "State transition",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Active",
+                                                "Timestamp":  "\/Date(1755584299681)\/",
+                                                "Forced":  true,
+                                                "FromState":  "Stopped",
+                                                "Reason":  "Test persistence",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Error",
+                                                "Timestamp":  "\/Date(1755584302567)\/",
+                                                "Forced":  true,
+                                                "FromState":  "Active",
+                                                "Reason":  "Simulated failure 1",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            },
+                                            {
+                                                "ToState":  "Error",
+                                                "Timestamp":  "\/Date(1755584304025)\/",
+                                                "Forced":  true,
+                                                "FromState":  "Error",
+                                                "Reason":  "Simulated failure 2",
+                                                "AdditionalData":  {
+
+                                                                   }
+                                            }
+                                        ],
+                       "PerformanceBaseline":  {
+
+                                               },
+                       "SuccessfulOperations":  3,
+                       "ConsecutiveFailures":  2,
+                       "LastStateChange":  "\/Date(1755584304025)\/"
+                   }
+}

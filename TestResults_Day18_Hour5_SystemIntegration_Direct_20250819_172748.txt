@@ -1,0 +1,85 @@
+﻿[2025-08-19 17:27:48.720] [INFO] Module imported for testing
+[2025-08-19 17:27:48.721] [INFO] Starting Day 18 Hour 5 System Integration Validation
+[2025-08-19 17:27:48.723] [INFO] 
+[2025-08-19 17:27:48.725] [INFO] === Phase 1: Module Loading and Integration ===
+[2025-08-19 17:27:48.725] [DEBUG] Executing IP1: JSON Format Compatibility
+[2025-08-19 17:27:48.727] [DEBUG]   JSON validation: systemInfo exists = True, subsystems exists = True
+[2025-08-19 17:27:48.727] [INFO] Testing Integration Point 1: JSON Format Compatibility
+[2025-08-19 17:27:48.727] [OK] IP1 PASSED: JSON Format Compatibility
+[2025-08-19 17:27:48.731] [DEBUG] Executing IP2: SessionData Directory Structure
+[2025-08-19 17:27:48.731] [DEBUG]   Directory .\SessionData\Health exists: True
+[2025-08-19 17:27:48.731] [DEBUG]   Directory .\SessionData\Watchdog exists: True
+[2025-08-19 17:27:48.731] [INFO] Testing Integration Point 2: SessionData Directory Structure
+[2025-08-19 17:27:48.731] [OK] IP2 PASSED: SessionData Directory Structure
+[2025-08-19 17:27:48.735] [DEBUG] Executing IP3: Write-Log Pattern Integration
+[2025-08-19 17:27:48.735] [DEBUG]   Write-SystemStatusLog command found: True
+[2025-08-19 17:27:48.735] [DEBUG]   Command module: Unity-Claude-SystemStatus
+[2025-08-19 17:27:48.735] [INFO] Testing Integration Point 3: Write-Log Pattern Integration
+[2025-08-19 17:27:48.739] [OK] IP3 PASSED: Write-Log Pattern Integration
+[2025-08-19 17:27:48.739] [DEBUG] Executing IP4: PID Tracking Integration
+[2025-08-19 17:27:48.759] [DEBUG]   Current PID: 54644, Process found: True
+[2025-08-19 17:27:48.763] [INFO] Testing Integration Point 4: PID Tracking Integration
+[2025-08-19 17:27:48.763] [OK] IP4 PASSED: PID Tracking Integration
+[2025-08-19 17:27:48.763] [DEBUG] Executing IP5: Module Discovery Pattern
+[2025-08-19 17:27:48.771] [DEBUG]   Unity-Claude modules found: 0
+[2025-08-19 17:27:48.771] [INFO] Testing Integration Point 5: Module Discovery Pattern
+[2025-08-19 17:27:48.775] [ERROR] IP5 FAILED: Module Discovery Pattern
+[2025-08-19 17:27:48.775] [DEBUG] Executing IP6: Timer Pattern Compatibility
+[2025-08-19 17:27:48.775] [DEBUG]   Timer created successfully: True
+[2025-08-19 17:27:48.775] [INFO] Testing Integration Point 6: Timer Pattern Compatibility
+[2025-08-19 17:27:48.779] [OK] IP6 PASSED: Timer Pattern Compatibility
+[2025-08-19 17:27:48.779] [DEBUG] Executing IP7: Named Pipes IPC
+[2025-08-19 17:27:48.779] [DEBUG]   System.Core assembly loaded successfully
+[2025-08-19 17:27:48.779] [INFO] Testing Integration Point 7: Named Pipes IPC
+[2025-08-19 17:27:48.783] [OK] IP7 PASSED: Named Pipes IPC
+[2025-08-19 17:27:48.783] [DEBUG] Executing IP8: Message Protocol Format
+[2025-08-19 17:27:48.783] [DEBUG]   JSON message created: True, Length: 214 chars
+[2025-08-19 17:27:48.783] [INFO] Testing Integration Point 8: Message Protocol Format
+[2025-08-19 17:27:48.787] [OK] IP8 PASSED: Message Protocol Format
+[2025-08-19 17:27:48.787] [DEBUG] Executing IP9: Real-Time Status Updates
+[2025-08-19 17:27:48.787] [DEBUG]   FileSystemWatcher created: True
+[2025-08-19 17:27:48.791] [INFO] Testing Integration Point 9: Real-Time Status Updates
+[2025-08-19 17:27:48.791] [OK] IP9 PASSED: Real-Time Status Updates
+[2025-08-19 17:27:48.791] [DEBUG] Executing IP10: Heartbeat Mechanism
+[2025-08-19 17:27:48.791] [DEBUG]   Send-HeartbeatRequest command found: True
+[2025-08-19 17:27:48.795] [INFO] Testing Integration Point 10: Heartbeat Mechanism
+[2025-08-19 17:27:48.795] [OK] IP10 PASSED: Heartbeat Mechanism
+[2025-08-19 17:27:48.795] [DEBUG] Executing IP11: Health Check Thresholds
+[2025-08-19 17:27:48.795] [DEBUG]   Threshold validation: True
+[2025-08-19 17:27:48.799] [INFO] Testing Integration Point 11: Health Check Thresholds
+[2025-08-19 17:27:48.799] [OK] IP11 PASSED: Health Check Thresholds
+[2025-08-19 17:27:48.799] [DEBUG] Executing IP12: Performance Monitoring
+[2025-08-19 17:27:48.799] [DEBUG]   Test-ProcessPerformanceHealth command found: True
+[2025-08-19 17:27:48.799] [INFO] Testing Integration Point 12: Performance Monitoring
+[2025-08-19 17:27:48.812] [OK] IP12 PASSED: Performance Monitoring
+[2025-08-19 17:27:48.812] [DEBUG] Executing IP13: Watchdog Response System
+[2025-08-19 17:27:48.812] [DEBUG]   Invoke-CircuitBreakerCheck command found: True
+[2025-08-19 17:27:48.812] [INFO] Testing Integration Point 13: Watchdog Response System
+[2025-08-19 17:27:48.816] [OK] IP13 PASSED: Watchdog Response System
+[2025-08-19 17:27:48.816] [DEBUG] Executing IP14: Dependency Mapping
+[2025-08-19 17:27:48.816] [DEBUG]   Get-ServiceDependencyGraph command found: True
+[2025-08-19 17:27:48.816] [INFO] Testing Integration Point 14: Dependency Mapping
+[2025-08-19 17:27:48.816] [OK] IP14 PASSED: Dependency Mapping
+[2025-08-19 17:27:48.820] [DEBUG] Executing IP15: SafeCommandExecution Integration
+[2025-08-19 17:27:48.820] [DEBUG]   SafeCommandExecution graceful fallback: True
+[2025-08-19 17:27:48.820] [INFO] Testing Integration Point 15: SafeCommandExecution Integration
+[2025-08-19 17:27:48.824] [OK] IP15 PASSED: SafeCommandExecution Integration
+[2025-08-19 17:27:48.824] [DEBUG] Executing IP16: RunspacePool Session Management
+[2025-08-19 17:27:48.824] [DEBUG]   Initialize-SubsystemRunspaces command found: True
+[2025-08-19 17:27:48.824] [INFO] Testing Integration Point 16: RunspacePool Session Management
+[2025-08-19 17:27:48.824] [OK] IP16 PASSED: RunspacePool Session Management
+[2025-08-19 17:27:48.828] [INFO] 
+[2025-08-19 17:27:48.828] [INFO] === Phase 2: End-to-End Testing ===
+[2025-08-19 17:27:48.828] [INFO] Testing full module load and initialization...
+[2025-08-19 17:27:48.828] [OK] Module loaded with 47 exported functions
+[2025-08-19 17:27:48.832] [DEBUG]   Functions: Get-AlertHistory, Get-CriticalSubsystems, Get-ProcessPerformanceCounters, Get-RegisteredSubsystems, Get-ServiceDependencyGraph, Get-SubsystemProcessId, Get-TopologicalSort, Initialize-CrossModuleEvents, Initialize-NamedPipeServer, Initialize-SubsystemRunspaces, Initialize-SystemStatusMonitoring, Invoke-CircuitBreakerCheck, Invoke-EscalationProcedure, Invoke-MessageHandler, Measure-CommunicationPerformance, New-SystemStatusMessage, Read-SystemStatus, Receive-SystemStatusMessage, Register-MessageHandler, Register-Subsystem, Restart-ServiceWithDependencies, Send-EngineEvent, Send-HealthAlert, Send-HealthCheckRequest, Send-Heartbeat, Send-HeartbeatRequest, Send-SystemStatusMessage, Start-MessageProcessor, Start-ServiceRecoveryAction, Start-SubsystemSession, Start-SystemStatusFileWatcher, Stop-MessageProcessor, Stop-NamedPipeServer, Stop-SubsystemRunspaces, Stop-SystemStatusFileWatcher, Stop-SystemStatusMonitoring, Test-AllSubsystemHeartbeats, Test-CriticalSubsystemHealth, Test-HeartbeatResponse, Test-ProcessHealth, Test-ProcessPerformanceHealth, Test-ServiceResponsiveness, Test-SystemStatusSchema, Unregister-Subsystem, Update-SubsystemProcessInfo, Write-SystemStatus, Write-SystemStatusLog
+[2025-08-19 17:27:48.832] [INFO] Testing system status file operations...
+[2025-08-19 17:27:48.832] [OK] System status file valid and readable
+[2025-08-19 17:27:48.836] [INFO] Testing performance overhead...
+[2025-08-19 17:27:48.836] [OK] Performance overhead acceptable: 0ms
+[2025-08-19 17:27:48.836] [INFO] 
+[2025-08-19 17:27:48.836] [INFO] === Phase 3: Documentation and Configuration ===
+[2025-08-19 17:27:48.840] [INFO] Testing configuration accessibility...
+[2025-08-19 17:27:48.840] [DEBUG] Configuration found: Unity-Claude-SystemStatus.psd1
+[2025-08-19 17:27:48.840] [DEBUG] Configuration found: system_status.json
+[2025-08-19 17:27:48.840] [OK] All configuration files accessible
