@@ -1,0 +1,76 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../Dithering/Assets/Scripts",
+          "files": [
+            "**/*.cs"
+          ],
+          "exclude": [
+            "**/Editor/**",
+            "**/Tests/**"
+          ]
+        }
+      ],
+      "dest": "api/unity",
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false,
+      "outputFormat": "markdown"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/unity/**.md",
+          "api/unity/**/toc.yml"
+        ]
+      },
+      {
+        "files": [
+          "docs/**.md",
+          "docs/**/toc.yml",
+          "toc.yml",
+          "*.md"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "overwrite": [
+      {
+        "files": [
+          "apidoc/**.md"
+        ],
+        "exclude": [
+          "obj/**",
+          "_site/**"
+        ]
+      }
+    ],
+    "globalMetadata": {
+      "_appTitle": "Unity-Claude-Automation API",
+      "_appFooter": "Unity-Claude-Automation - Intelligent Unity Development",
+      "_appLogoPath": "images/logo.svg",
+      "_appFaviconPath": "images/favicon.ico",
+      "_enableSearch": true,
+      "_gitContribute": {
+        "repo": "https://github.com/georgest32/Unity-Claude-Automation",
+        "branch": "main"
+      }
+    },
+    "dest": "_site/docfx",
+    "template": [
+      "default",
+      "modern"
+    ],
+    "postProcessors": ["ExtractSearchIndex"],
+    "markdownEngineName": "markdig"
+  }
+}

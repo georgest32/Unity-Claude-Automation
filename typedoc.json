@@ -1,0 +1,37 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./scripts/**/*.ts"],
+  "out": "./docs/api/typescript",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "none",
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeInternal": true,
+  "excludeExternals": false,
+  "includeVersion": true,
+  "disableSources": false,
+  "githubPages": false,
+  "outputFileStrategy": "members",
+  "navigationLinks": {
+    "Home": "/",
+    "API Reference": "/api"
+  },
+  "sidebarLinks": {
+    "Unity-Claude-Automation": "https://github.com/georgest32/Unity-Claude-Automation"
+  },
+  "categorizeByGroup": true,
+  "categoryOrder": [
+    "Core",
+    "Analysis",
+    "Documentation",
+    "Utilities",
+    "*"
+  ],
+  "skipErrorChecking": true,
+  "treatWarningsAsErrors": false,
+  "validation": {
+    "notExported": false,
+    "invalidLink": false,
+    "notDocumented": false
+  }
+}
