@@ -1,0 +1,265 @@
+# GitHub Actions workflow for documentation quality checks
+# This workflow runs Vale and markdownlint on documentation changes
+
+name: Documentation Quality Checks
+
+on:
+  pull_request:
+    paths:
+      - 'docs/**/*.md'
+      - '*.md'
+      - '.vale.ini'
+      - '.markdownlint*'
+      - '.github/workflows/docs-quality.yml'
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'docs/**/*.md'
+      - '*.md'
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  # Markdown linting
+  markdownlint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: |
+            **/*.md
+            !node_modules
+            !.venv
+            !site
+        continue-on-error: true
+        id: markdownlint
+
+      - name: Create annotation for markdownlint results
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const results = `${{ steps.markdownlint.outputs.results }}`;
+            if (results) {
+              const issues = JSON.parse(results);
+              let comment = '## 📝 Markdown Lint Results\n\n';
+              
+              if (issues.length > 0) {
+                comment += '⚠️ Found markdown style issues:\n\n';
+                issues.forEach(issue => {
+                  comment += `- **${issue.file}** (line ${issue.line}): ${issue.rule} - ${issue.description}\n`;
+                });
+              } else {
+                comment += '✅ No markdown style issues found!\n';
+              }
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }
+
+  # Vale prose linting
+  vale:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Vale
+        run: |
+          wget https://github.com/errata-ai/vale/releases/download/v3.0.7/vale_3.0.7_Linux_64-bit.tar.gz
+          tar -xzf vale_3.0.7_Linux_64-bit.tar.gz
+          sudo mv vale /usr/local/bin/
+
+      - name: Download Vale styles
+        run: |
+          # Download Microsoft style guide if configured
+          if [ -f ".vale.ini" ]; then
+            vale sync
+          fi
+        continue-on-error: true
+
+      - name: Run Vale
+        id: vale
+        run: |
+          vale --output=JSON docs/ > vale-results.json || true
+          if [ -s vale-results.json ]; then
+            echo "has_issues=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_issues=false" >> $GITHUB_OUTPUT
+          fi
+        continue-on-error: true
+
+      - name: Post Vale results as PR comment
+        if: github.event_name == 'pull_request' && steps.vale.outputs.has_issues == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let valeResults;
+            try {
+              const rawData = fs.readFileSync('vale-results.json', 'utf8');
+              valeResults = JSON.parse(rawData);
+            } catch (e) {
+              console.log('No Vale results to process');
+              return;
+            }
+            
+            let comment = '## 📚 Vale Prose Linting Results\n\n';
+            let hasErrors = false;
+            let hasWarnings = false;
+            
+            for (const [file, issues] of Object.entries(valeResults)) {
+              if (issues.length > 0) {
+                comment += `### ${file}\n\n`;
+                issues.forEach(issue => {
+                  const icon = issue.Severity === 'error' ? '❌' : '⚠️';
+                  comment += `${icon} **Line ${issue.Line}:** ${issue.Message} (${issue.Check})\n`;
+                  if (issue.Severity === 'error') hasErrors = true;
+                  else hasWarnings = true;
+                });
+                comment += '\n';
+              }
+            }
+            
+            if (!hasErrors && !hasWarnings) {
+              comment += '✅ No prose style issues found!\n';
+            }
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  # Check for broken links
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: >
+            --verbose
+            --no-progress
+            --accept 200,204,206
+            --timeout 20
+            --max-retries 3
+            --exclude-loopback
+            --exclude-mail
+            docs/
+            *.md
+        continue-on-error: true
+        id: lychee
+
+      - name: Create link check comment
+        if: github.event_name == 'pull_request' && steps.lychee.outputs.exit_code != 0
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let comment = '## 🔗 Link Check Results\n\n';
+            
+            try {
+              const report = fs.readFileSync('lychee-report.md', 'utf8');
+              comment += report;
+            } catch (e) {
+              comment += '⚠️ Some links may be broken. Please check the workflow logs for details.\n';
+            }
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  # Documentation completeness check
+  doc-completeness:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check documentation coverage
+        run: |
+          # Check if essential documentation files exist
+          MISSING_DOCS=""
+          
+          # Check for essential files
+          [ -f "README.md" ] || MISSING_DOCS="$MISSING_DOCS README.md"
+          [ -f "docs/index.md" ] || MISSING_DOCS="$MISSING_DOCS docs/index.md"
+          [ -f "docs/getting-started/installation.md" ] || MISSING_DOCS="$MISSING_DOCS docs/getting-started/installation.md"
+          [ -f "docs/getting-started/quickstart.md" ] || MISSING_DOCS="$MISSING_DOCS docs/getting-started/quickstart.md"
+          
+          if [ -n "$MISSING_DOCS" ]; then
+            echo "⚠️ Missing documentation files:"
+            echo "$MISSING_DOCS"
+            exit 1
+          else
+            echo "✅ All essential documentation files present"
+          fi
+
+      - name: Check for TODOs in documentation
+        run: |
+          echo "Checking for TODO items in documentation..."
+          grep -r "TODO\|FIXME\|XXX" docs/ --include="*.md" || echo "✅ No TODOs found in documentation"
+
+  # Summary job
+  quality-summary:
+    needs: [markdownlint, vale, link-check, doc-completeness]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Documentation Quality Summary
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const jobs = [
+              { name: 'Markdown Lint', status: '${{ needs.markdownlint.result }}' },
+              { name: 'Vale Prose Check', status: '${{ needs.vale.result }}' },
+              { name: 'Link Check', status: '${{ needs.link-check.result }}' },
+              { name: 'Documentation Completeness', status: '${{ needs.doc-completeness.result }}' }
+            ];
+            
+            let comment = '## 📊 Documentation Quality Summary\n\n';
+            let allPassed = true;
+            
+            jobs.forEach(job => {
+              const icon = job.status === 'success' ? '✅' : job.status === 'failure' ? '❌' : '⚠️';
+              comment += `${icon} **${job.name}:** ${job.status}\n`;
+              if (job.status !== 'success') allPassed = false;
+            });
+            
+            comment += '\n';
+            if (allPassed) {
+              comment += '🎉 **All quality checks passed!** Your documentation is ready for review.\n';
+            } else {
+              comment += '⚠️ **Some quality checks need attention.** Please review the comments above.\n';
+            }
+            
+            if (context.eventName === 'pull_request') {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }

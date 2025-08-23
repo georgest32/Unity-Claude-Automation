@@ -1,0 +1,290 @@
+# GitHub Actions workflow for versioned MkDocs documentation with mike
+# This workflow builds and deploys versioned documentation to GitHub Pages
+# It supports development builds, releases, and PR previews
+
+name: Deploy Versioned Documentation
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - '.github/workflows/docs-versioned.yml'
+      - 'requirements.txt'
+  release:
+    types: [published]
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - '.github/workflows/docs-versioned.yml'
+      - 'requirements.txt'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to deploy (e.g., 1.0.0)'
+        required: false
+      alias:
+        description: 'Alias for the version (e.g., latest, dev)'
+        required: false
+
+# Set permissions for GITHUB_TOKEN
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  pull-requests: write
+
+# Allow only one concurrent deployment per branch
+concurrency:
+  group: "pages-${{ github.ref }}"
+  cancel-in-progress: false
+
+jobs:
+  # Deploy development version (main branch)
+  deploy-dev:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required for mike to access gh-pages branch
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Configure Git Credentials
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          key: mkdocs-material-${{ hashFiles('**/requirements.txt') }}-${{ env.cache_id }}
+          path: ~/.cache
+          restore-keys: |
+            mkdocs-material-
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install mike
+
+      - name: Deploy development version
+        run: |
+          mike deploy --push --update-aliases dev latest
+          mike set-default --push latest
+
+  # Deploy release version
+  deploy-release:
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required for mike
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Configure Git Credentials
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          key: mkdocs-material-${{ hashFiles('**/requirements.txt') }}
+          path: ~/.cache
+          restore-keys: |
+            mkdocs-material-
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install mike
+
+      - name: Deploy release version
+        run: |
+          VERSION="${{ github.event.release.tag_name }}"
+          # Remove 'v' prefix if present
+          VERSION="${VERSION#v}"
+          mike deploy --push --update-aliases "$VERSION" latest
+          mike set-default --push latest
+
+  # Manual deployment with custom version
+  deploy-manual:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Configure Git Credentials
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install mike
+
+      - name: Deploy custom version
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          ALIAS="${{ github.event.inputs.alias }}"
+          
+          if [ -z "$VERSION" ]; then
+            VERSION="dev"
+          fi
+          
+          if [ -z "$ALIAS" ]; then
+            mike deploy --push "$VERSION"
+          else
+            mike deploy --push --update-aliases "$VERSION" "$ALIAS"
+          fi
+
+  # Deploy PR preview
+  deploy-preview:
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build preview documentation
+        run: |
+          # Add PR number to site URL for preview
+          export SITE_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr-preview/pr-${{ github.event.pull_request.number }}/"
+          mkdocs build --strict --site-url "$SITE_URL"
+
+      - name: Deploy PR Preview
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          destination_dir: pr-preview/pr-${{ github.event.pull_request.number }}
+          keep_files: false
+
+      - name: Find PR comment
+        uses: peter-evans/find-comment@v3
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Documentation Preview
+
+      - name: Create or update PR comment
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## 📖 Documentation Preview
+            
+            The documentation preview for this PR is available at:
+            https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr-preview/pr-${{ github.event.pull_request.number }}/
+            
+            **Build Status:** ✅ Success
+            **Build Time:** ${{ github.event.head_commit.timestamp }}
+            **Commit:** ${{ github.event.pull_request.head.sha }}
+            
+            *This preview will be automatically updated when you push new commits.*
+          edit-mode: replace
+
+  # Clean up PR preview when PR is closed
+  cleanup-preview:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Remove PR preview
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs  # Dummy directory
+          destination_dir: pr-preview/pr-${{ github.event.pull_request.number }}
+          remove_files: true
+
+      - name: Find PR comment
+        uses: peter-evans/find-comment@v3
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Documentation Preview
+
+      - name: Update PR comment
+        if: steps.fc.outputs.comment-id != ''
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## 📖 Documentation Preview
+            
+            The preview for this PR has been removed as the PR is now closed.
+            
+            **Status:** 🗑️ Preview Deleted
+            **Deleted At:** ${{ github.event.pull_request.closed_at }}
+          edit-mode: replace
+
+  # Setup GitHub Pages (one-time setup)
+  setup-pages:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      contents: read
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        with:
+          static_site_generator: mkdocs
+
+      - name: Create initial gh-pages branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan gh-pages
+          git reset --hard
+          echo "# Documentation" > README.md
+          git add README.md
+          git commit -m "Initial gh-pages commit"
+          git push origin gh-pages || echo "Branch might already exist"
