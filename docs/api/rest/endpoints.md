@@ -43,9 +43,9 @@ Configuration options for this component.
 
 ## Related Documentation
 
-- [Home](../index.md)
-- [User Guide](../user-guide/overview.md)
-- [Getting Started](../getting-started/installation.md)
+- [Home](../../index.md)
+- [User Guide](../../user-guide/overview.md)
+- [Getting Started](../../getting-started/installation.md)
 
 ## Notes
 
@@ -55,3 +55,4 @@ Configuration options for this component.
 ---
 
 *Last updated: 2025-08-23*
+
