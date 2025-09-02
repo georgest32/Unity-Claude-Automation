@@ -81,27 +81,7 @@ struct SystemStatus: Equatable, Codable {
 }
 
 // MARK: - Agent Models
-
-struct Agent: Equatable, Codable, Identifiable {
-    let id: UUID
-    let name: String
-    let type: AgentType
-    let status: AgentStatus
-    let description: String
-    let startTime: Date?
-    let lastActivity: Date?
-    let resourceUsage: ResourceUsage?
-    let configuration: [String: String]
-    
-    // Debug logging
-    func logStatus() {
-        print("[Agent] ID: \(id)")
-        print("[Agent] Name: \(name)")
-        print("[Agent] Type: \(type.rawValue)")
-        print("[Agent] Status: \(status.rawValue)")
-        print("[Agent] Last Activity: \(lastActivity?.description ?? "Never")")
-    }
-}
+// Note: Agent struct is defined in Models/Agent.swift to avoid duplication
 
 enum AgentType: String, Codable, CaseIterable {
     case orchestrator = "CLI Orchestrator"
