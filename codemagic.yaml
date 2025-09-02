@@ -36,37 +36,46 @@ workflows:
       - name: Select iOS 18.5 simulator matching SDK
         script: |
           set -e
-          echo "=== Available iOS 18.5 simulators ==="
-          xcrun simctl list devices | grep "iOS 18" || true
+          echo "=== Finding iPhone 16 Pro with iOS 18.5 ==="
           
-          # Try to find iOS 18.5 simulator first, fall back to any iOS 18.x
-          DEVICE_NAME="iPhone 16 Pro"
-          OS_VERSION="18.5"
+          # Get the exact device ID for iPhone 16 Pro with iOS 18.5
+          SIM_UDID=$(xcrun simctl list devices available | \
+            awk '/iPhone 16 Pro.*18\.5/ {gsub(/[()]/, ""); print $NF; exit}')
           
-          # Check if specific version exists
-          if xcrun simctl list devices | grep -q "$DEVICE_NAME.*$OS_VERSION"; then
-            echo "Using $DEVICE_NAME with iOS $OS_VERSION"
-          else
-            # Fall back to latest iOS 18.x
-            OS_VERSION="18"
-            echo "iOS 18.5 not found, using latest iOS 18.x"
+          if [ -z "$SIM_UDID" ]; then
+            echo "iPhone 16 Pro (18.5) not found, using any iPhone 16 with 18.5"
+            SIM_UDID=$(xcrun simctl list devices available | \
+              awk '/iPhone 16.*18\.5/ {gsub(/[()]/, ""); print $NF; exit}')
           fi
           
-          # Boot the simulator
-          xcrun simctl boot "$DEVICE_NAME" || true
-          echo "SIMULATOR_NAME=$DEVICE_NAME" >> $CM_ENV
-          echo "SIMULATOR_OS=$OS_VERSION" >> $CM_ENV
+          if [ -z "$SIM_UDID" ]; then
+            echo "No iPhone 16 found, using first available iOS 18.5 device"
+            SIM_UDID=$(xcrun simctl list devices available | \
+              awk '/18\.5/ && /iPhone/ {gsub(/[()]/, ""); print $NF; exit}')
+          fi
+          
+          if [ -z "$SIM_UDID" ]; then
+            echo "ERROR: No iOS 18.5 simulator found!"
+            xcrun simctl list devices
+            exit 1
+          fi
+          
+          echo "Selected simulator ID: $SIM_UDID"
+          xcrun simctl boot "$SIM_UDID" || true
+          
+          # Export for use in all subsequent steps
+          echo "export SIM_UDID=$SIM_UDID" >> $CM_ENV
 
       - name: Build with full diagnostics
         script: |
           set -o pipefail
           source $CM_ENV
-          # Build with iOS 18.5 simulator matching SDK
+          # Build with selected simulator using its UDID
           xcodebuild \
             -project iOS-App/AgentDashboard/AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
             -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,name=$SIMULATOR_NAME,OS=$SIMULATOR_OS" \
+            -destination "id=$SIM_UDID" \
             -configuration Debug \
             -resolvePackageDependencies \
             -skipMacroValidation \
@@ -179,18 +188,18 @@ workflows:
         script: |
           # Fix working directory issue - use absolute paths
           cd $CM_BUILD_DIR/iOS-App/AgentDashboard
-          # Load environment variables
+          # Load environment variables including SIM_UDID
           source $CM_ENV
           # CRITICAL: Set macOS 13.0 target for TCA macro host compilation
           export MACOSX_DEPLOYMENT_TARGET=13.0
-          echo "Building with $SIMULATOR_NAME on iOS $SIMULATOR_OS"
+          echo "Building with simulator ID: $SIM_UDID"
           pwd
-          # Build with iOS 18.5 simulator matching SDK
+          # Build using the same simulator UDID
           xcodebuild build \
             -project AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
             -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,name=$SIMULATOR_NAME,OS=$SIMULATOR_OS" \
+            -destination "id=$SIM_UDID" \
             -configuration Debug \
             -skipMacroValidation \
             -skipPackagePluginValidation \
@@ -250,27 +259,48 @@ workflows:
             echo "No result bundle found at $RESULT"
           fi
             
-      - name: Archive Build Artifacts
+      - name: Archive Build Artifacts for Preview
         script: |
-          cd $CM_BUILD_DIR/iOS-App/AgentDashboard
-          mkdir -p build/artifacts
+          cd $CM_BUILD_DIR
           
-          # Find and copy the built app
-          DERIVED_DATA=$(find ~/Library/Developer/Xcode/DerivedData -name "AgentDashboard-*" -type d | head -1)
-          if [ ! -z "$DERIVED_DATA" ]; then
-            find "$DERIVED_DATA" -name "AgentDashboard.app" -type d | head -1 | xargs -I {} cp -r {} build/artifacts/
-            echo "TCA iOS app successfully built and archived!"
+          # Find the .app in our custom DerivedData location
+          echo "=== Searching for built .app bundle ==="
+          APP_PATH=$(find "$CM_BUILD_DIR/DerivedData" -name "AgentDashboard.app" -type d | head -1)
+          
+          if [ ! -z "$APP_PATH" ]; then
+            echo "✅ Found app at: $APP_PATH"
+            
+            # Create a Payload directory for Codemagic preview
+            mkdir -p Payload
+            cp -r "$APP_PATH" Payload/
+            
+            # Create an IPA for better preview support
+            zip -r AgentDashboard.ipa Payload
+            
+            # Also keep the .app for direct access
+            mkdir -p artifacts
+            cp -r "$APP_PATH" artifacts/
+            mv AgentDashboard.ipa artifacts/
+            
+            echo "📱 iOS app successfully prepared for Codemagic preview!"
+            echo "Contents of artifacts:"
+            ls -la artifacts/
           else
-            echo "Build completed but no app bundle found"
+            echo "⚠️ Build succeeded but .app bundle not found in DerivedData"
+            echo "Searching for .app in all possible locations..."
+            find "$CM_BUILD_DIR" -name "*.app" -type d 2>/dev/null | head -10
           fi
           
     artifacts:
-      - iOS-App/AgentDashboard/build/artifacts/**/*
+      - artifacts/*.ipa
+      - artifacts/*.app
+      - artifacts/**/*
+      - $CM_BUILD_DIR/DerivedData/**/Build/**/*.app
       - $CM_BUILD_DIR/xcodebuild.log
       - $CM_BUILD_DIR/diagnostics.txt
       - $CM_BUILD_DIR/build.xcresult
       - $CM_BUILD_DIR/main-build.xcresult
-      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+      - $CM_BUILD_DIR/DerivedData/**/Build/**/*.dSYM
       - /tmp/xcodebuild_logs/*.log
       
     publishing:
