@@ -426,7 +426,7 @@ final class MockAPIClient: APIClientProtocol {
             Agent(
                 id: UUID().uuidString,
                 name: "CLI Orchestrator",
-                type: .orchestrator,
+                type: "CLI Orchestrator",
                 status: .running,
                 description: "Main orchestration agent",
                 startTime: Date().addingTimeInterval(-3600),
