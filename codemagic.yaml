@@ -20,10 +20,31 @@ workflows:
       - name: Archive Build Output
         script: |
           cd iOS-App/AgentDashboard
-          mkdir -p build
-          cp -r build/Debug-iphonesimulator/AgentDashboard.app build/ || echo "App bundle not found - build may have failed"
+          echo "Searching for build outputs..."
+          find . -name "*.app" -type d | head -10
+          find . -name "AgentDashboard.app" -type d | head -5
+          
+          # Check common build locations
+          ls -la build/ 2>/dev/null || echo "No build/ directory"
+          ls -la DerivedData/ 2>/dev/null || echo "No DerivedData/ directory"  
+          ls -la ~/Library/Developer/Xcode/DerivedData/ 2>/dev/null || echo "No user DerivedData"
+          
+          # Create artifacts directory
+          mkdir -p artifacts
+          
+          # Find and copy app bundle
+          APP_PATH=$(find . -name "AgentDashboard.app" -type d | head -1)
+          if [ ! -z "$APP_PATH" ]; then
+            echo "Found app at: $APP_PATH"
+            cp -r "$APP_PATH" artifacts/
+            ls -la artifacts/
+          else
+            echo "No app bundle found - listing build contents:"
+            find . -type d -name "*build*" -exec ls -la {} \; 2>/dev/null
+          fi
     artifacts:
-      - build/**/AgentDashboard.ipa
+      - artifacts/**/AgentDashboard.app
+      - artifacts/**/*.ipa
     publishing:
       email:
         recipients:
