@@ -153,34 +153,46 @@ workflows:
           fi
           
           echo "✅ Found simulator app: $APP_PATH"
+          APP_NAME=$(basename "$APP_PATH")
+          echo "App name: $APP_NAME"
           
           # Create artifacts directory
           mkdir -p artifacts
           
-          # Copy the .app for archiving
+          # Copy the .app for direct download
           cp -r "$APP_PATH" artifacts/
           
-          # Create a Payload directory for IPA-style preview
+          # Create properly structured IPA for Codemagic preview
           mkdir -p Payload
           cp -r "$APP_PATH" Payload/
           
-          # Create a zip for Codemagic preview
-          zip -r ios-simulator-app.zip Payload
+          # Create IPA (which is just a zip with .ipa extension)
+          cd "$CM_BUILD_DIR"
+          zip -r "AgentDashboard.ipa" Payload
+          mv AgentDashboard.ipa artifacts/
+          
+          # Also create a regular zip for compatibility
+          zip -r "ios-simulator-app.zip" Payload  
           mv ios-simulator-app.zip artifacts/
           
-          echo "📱 iOS app successfully prepared for preview!"
-          echo "Contents of artifacts:"
+          echo "📱 iOS app artifacts created:"
           ls -la artifacts/
+          echo "File sizes:"
+          du -h artifacts/*
+          
+          # Verify IPA structure
+          echo "IPA contents:"
+          unzip -l artifacts/AgentDashboard.ipa | head -10
           
       - name: Dump Swift diagnostics (optional)
         script: |
           find ~/Library/Developer/Xcode/DerivedData -name "*.dia" -exec strings {} \; | tee $CM_BUILD_DIR/diagnostics.txt || true
             
     artifacts:
+      - artifacts/*.ipa
       - artifacts/*.app
       - artifacts/*.zip
       - artifacts/**/*
-      - $CM_BUILD_DIR/DerivedData/Build/Products/Debug-iphonesimulator/*.app
       - $CM_BUILD_DIR/build.xcresult
       - $CM_BUILD_DIR/diagnostics.txt
       - $CM_BUILD_DIR/DerivedData/**/Build/**/*.dSYM
