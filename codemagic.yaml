@@ -10,8 +10,8 @@ workflows:
         XCODE_SCHEME: "AgentDashboard"
         BUNDLE_ID: "com.unity.claude.automation.dashboard"
         MACOSX_DEPLOYMENT_TARGET: "13.0"
-      # CRITICAL FIX: Upgrade from 16.0 to 16.2 to resolve TCA XCSwiftPackageProductDependency errors
-      xcode: 16.2  
+      # CRITICAL FIX: Upgrade to 16.4+ to support -enablePackageFeature for TCA macros
+      xcode: latest  
       
     triggering:
       events:
@@ -41,15 +41,13 @@ workflows:
         script: |
           set -o pipefail
           DEVICE_ID=$(cat $CM_BUILD_DIR/sim_id.txt)
+          # Simple diagnostic build without validation skip flags (not needed with Xcode 16.4+)
           xcodebuild \
             -project iOS-App/AgentDashboard/AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
             -sdk iphonesimulator \
             -destination "id=$DEVICE_ID" \
             -configuration Debug \
-            -skipMacroValidation \
-            -skipPackagePluginValidation \
-            -skipPackageSignatureValidation \
             | tee $CM_BUILD_DIR/xcodebuild.log
 
       - name: Dump Swift diagnostics
@@ -83,19 +81,25 @@ workflows:
           echo "=== Force fresh checkout ==="  
           git checkout HEAD -- AgentDashboard/Models/Models.swift
           
-      - name: Resolve Swift Package Dependencies
+      - name: Resolve Swift Package Dependencies with Macro Features
         script: |
           # Fix working directory issue - use absolute paths
           cd $CM_BUILD_DIR/iOS-App/AgentDashboard  
           pwd
           ls -la AgentDashboard.xcodeproj
-          xcodebuild \
-            -resolvePackageDependencies \
+          # Resolve with features (Xcode 16.4+)
+          xcodebuild -resolvePackageDependencies \
             -project AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
-            -skipMacroValidation \
-            -skipPackagePluginValidation \
-            -skipPackageSignatureValidation
+            -enablePackageFeature swift-composable-architecture/Macros \
+            -enablePackageFeature swift-case-paths/Macros \
+            -enablePackageFeature swift-dependencies/Macros \
+            -enablePackageFeature swift-perception/Macros
+            
+      - name: Clean DerivedData to avoid stale state
+        script: |
+          echo "Cleaning DerivedData to ensure fresh build..."
+          rm -rf ~/Library/Developer/Xcode/DerivedData
             
       - name: Build for iOS Simulator (No Code Signing)
         script: |
@@ -107,15 +111,13 @@ workflows:
           DEVICE_ID=$(cat $CM_BUILD_DIR/sim_id.txt)
           echo "Building with simulator ID: $DEVICE_ID"
           pwd
-          xcodebuild \
-            build \
+          # Build with clean state after enabling macro features
+          xcodebuild build \
             -project AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
+            -sdk iphonesimulator \
             -destination "id=$DEVICE_ID" \
             -configuration Debug \
-            -skipMacroValidation \
-            -skipPackagePluginValidation \
-            -skipPackageSignatureValidation \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
