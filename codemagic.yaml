@@ -1,63 +1,88 @@
 workflows:
-  ios-app-workflow:
-    name: iOS AgentDashboard Build
-    max_build_duration: 60
-    instance_type: mac_mini_m1
+  ios-tca-dashboard:
+    name: iOS TCA Dashboard Build  
+    max_build_duration: 120
+    instance_type: mac_mini_m2  # Required for Xcode 16.x
+    
     environment:
       vars:
         XCODE_PROJECT: "iOS-App/AgentDashboard/AgentDashboard.xcodeproj"
         XCODE_SCHEME: "AgentDashboard"
-      xcode: 16.0
+        BUNDLE_ID: "com.unity.claude.automation.dashboard"
+      # CRITICAL FIX: Upgrade from 16.0 to 16.2 to resolve TCA XCSwiftPackageProductDependency errors
+      xcode: 16.2  
+      
+    triggering:
+      events:
+        - push
+        - tag
+        - pull_request
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+          source: true
+          
     scripts:
+      - name: Skip Xcode Macro Fingerprint Validation
+        script: |
+          # Required for TCA macros to work in CI/CD environment 
+          # Research confirmed this resolves "CasePathsMacros must be enabled" errors
+          defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
+          
+      - name: Reset Swift Package Manager Caches  
+        script: |
+          # Clear SPM caches to avoid package resolution conflicts
+          rm -rf ~/Library/Caches/org.swift.swiftpm
+          rm -rf ~/Library/Developer/Xcode/DerivedData
+          rm -rf ~/Library/org.swift.swiftpm  
+          rm -rf ~/.swiftpm/xcode/
+          
+      - name: Resolve Swift Package Dependencies
+        script: |
+          cd iOS-App/AgentDashboard
+          # TCA SPM dependency resolution with macro validation disabled
+          xcodebuild -skipMacroValidation \
+            -resolvePackageDependencies \
+            -project AgentDashboard.xcodeproj \
+            -scheme AgentDashboard
+            
       - name: Build for iOS Simulator (No Code Signing)
         script: |
           cd iOS-App/AgentDashboard
-          xcodebuild -project AgentDashboard.xcodeproj \
-                     -scheme AgentDashboard \
-                     -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
-                     -configuration Debug \
-                     build
-      - name: Archive Build Output
+          # Build with macro validation disabled (required for TCA)
+          xcodebuild -skipMacroValidation \
+            build \
+            -project AgentDashboard.xcodeproj \
+            -scheme AgentDashboard \
+            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
+            -configuration Debug \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+            
+      - name: Archive Build Artifacts
         script: |
           cd iOS-App/AgentDashboard
-          echo "Searching for build outputs in derived data..."
+          mkdir -p build/artifacts
           
-          # Look in derived data folder
+          # Find and copy the built app
           DERIVED_DATA=$(find ~/Library/Developer/Xcode/DerivedData -name "AgentDashboard-*" -type d | head -1)
-          echo "Derived data path: $DERIVED_DATA"
-          
           if [ ! -z "$DERIVED_DATA" ]; then
-            echo "Contents of derived data:"
-            ls -la "$DERIVED_DATA/Build/Products/" 2>/dev/null || echo "No Build/Products in derived data"
-            
-            # Look for the app in derived data
-            find "$DERIVED_DATA" -name "*.app" -type d | head -5
-          fi
-          
-          # Also search globally for any .app files
-          echo "Searching globally for app bundles..."
-          find ~/Library/Developer/Xcode/DerivedData -name "AgentDashboard.app" -type d 2>/dev/null | head -5
-          
-          # Create artifacts directory
-          mkdir -p artifacts
-          
-          # Find and copy app bundle from derived data
-          APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -name "AgentDashboard.app" -type d | head -1)
-          if [ ! -z "$APP_PATH" ]; then
-            echo "Found app at: $APP_PATH"
-            cp -r "$APP_PATH" artifacts/
-            echo "Copied app to artifacts:"
-            ls -la artifacts/
+            find "$DERIVED_DATA" -name "AgentDashboard.app" -type d | head -1 | xargs -I {} cp -r {} build/artifacts/
+            echo "TCA iOS app successfully built and archived!"
           else
-            echo "No app bundle found. Checking all derived data build products:"
-            find ~/Library/Developer/Xcode/DerivedData -path "*/Build/Products/*" -name "*.app" -type d | head -10
+            echo "Build completed but no app bundle found"
           fi
+          
     artifacts:
-      - iOS-App/AgentDashboard/artifacts/**/*
+      - iOS-App/AgentDashboard/build/artifacts/**/*
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+      - /tmp/xcodebuild_logs/*.log
+      
     publishing:
       email:
         recipients:
-          - georgest32@example.com
+          - developer@unity-claude-automation.com
         notify:
           success: true
           failure: true

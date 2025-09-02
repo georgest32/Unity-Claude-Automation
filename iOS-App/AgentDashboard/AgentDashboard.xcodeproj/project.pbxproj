@@ -9,9 +9,11 @@
 /* Begin PBXBuildFile section */
 		4A1234567890ABCD1234567E /* AgentDashboardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD1234567F /* AgentDashboardApp.swift */; };
 		4A1234567890ABCD12345680 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD12345681 /* ContentView.swift */; };
-		4A1234567890ABCD12345689 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 4A1234567890ABCD12345688 /* ComposableArchitecture */; };
-		4A1234567890ABCD1234568C /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD1234568D /* AppFeature.swift */; };
-		4A1234567890ABCD1234568E /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD1234568F /* AppView.swift */; };
+		4A1234567890ABCD1234568C /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD1234568D /* AppStore.swift */; };
+		4A1234567890ABCD1234568E /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD1234568F /* DashboardView.swift */; };
+		4A1234567890ABCD12345690 /* Agent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD12345691 /* Agent.swift */; };
+		4A1234567890ABCD12345692 /* SystemStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD12345693 /* SystemStatus.swift */; };
+		4A1234567890ABCD12345694 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 4A1234567890ABCD12345695 /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,8 +21,10 @@
 		4A1234567890ABCD1234567F /* AgentDashboardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentDashboardApp.swift; sourceTree = "<group>"; };
 		4A1234567890ABCD12345681 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4A1234567890ABCD12345682 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4A1234567890ABCD1234568D /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
-		4A1234567890ABCD1234568F /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/AppView.swift; sourceTree = "<group>"; };
+		4A1234567890ABCD1234568D /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
+		4A1234567890ABCD1234568F /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		4A1234567890ABCD12345691 /* Agent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agent.swift; sourceTree = "<group>"; };
+		4A1234567890ABCD12345693 /* SystemStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemStatus.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,7 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A1234567890ABCD12345689 /* ComposableArchitecture in Frameworks */,
+				4A1234567890ABCD12345694 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,9 +51,11 @@
 			isa = PBXGroup;
 			children = (
 				4A1234567890ABCD1234567F /* AgentDashboardApp.swift */,
-				4A1234567890ABCD1234568D /* AppFeature.swift */,
+				4A1234567890ABCD1234568D /* AppStore.swift */,
 				4A1234567890ABCD12345681 /* ContentView.swift */,
-				4A1234567890ABCD1234568F /* AppView.swift */,
+				4A1234567890ABCD1234568F /* DashboardView.swift */,
+				4A1234567890ABCD12345691 /* Agent.swift */,
+				4A1234567890ABCD12345693 /* SystemStatus.swift */,
 				4A1234567890ABCD12345682 /* Info.plist */,
 			);
 			path = AgentDashboard;
@@ -79,7 +85,7 @@
 			);
 			name = AgentDashboard;
 			packageProductDependencies = (
-				4A1234567890ABCD12345688 /* ComposableArchitecture */,
+				4A1234567890ABCD12345695 /* ComposableArchitecture */,
 			);
 			productName = AgentDashboard;
 			productReference = 4A1234567890ABCD1234567C /* AgentDashboard.app */;
@@ -110,7 +116,7 @@
 			);
 			mainGroup = 4A1234567890ABCD12345676;
 			packageReferences = (
-				4A1234567890ABCD1234568A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				4A1234567890ABCD12345696 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 			);
 			productRefGroup = 4A1234567890ABCD12345678 /* Products */;
 			projectDirPath = "";
@@ -128,8 +134,10 @@
 			files = (
 				4A1234567890ABCD12345680 /* ContentView.swift in Sources */,
 				4A1234567890ABCD1234567E /* AgentDashboardApp.swift in Sources */,
-				4A1234567890ABCD1234568C /* AppFeature.swift in Sources */,
-				4A1234567890ABCD1234568E /* AppView.swift in Sources */,
+				4A1234567890ABCD1234568C /* AppStore.swift in Sources */,
+				4A1234567890ABCD1234568E /* DashboardView.swift in Sources */,
+				4A1234567890ABCD12345690 /* Agent.swift in Sources */,
+				4A1234567890ABCD12345692 /* SystemStatus.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,20 +339,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4A1234567890ABCD1234568A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+		4A1234567890ABCD12345696 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.8.0;
+				minimumVersion = 1.20.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4A1234567890ABCD12345688 /* ComposableArchitecture */ = {
+		4A1234567890ABCD12345695 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4A1234567890ABCD1234568A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			package = 4A1234567890ABCD12345696 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
 		};
 /* End XCSwiftPackageProductDependency section */
