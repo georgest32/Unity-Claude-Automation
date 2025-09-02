@@ -50,7 +50,7 @@ struct User: Equatable, Codable, Identifiable {
 
 enum UserRole: String, Codable {
     case admin
-    case operator
+    case systemOperator = "operator"
     case viewer
 }
 
