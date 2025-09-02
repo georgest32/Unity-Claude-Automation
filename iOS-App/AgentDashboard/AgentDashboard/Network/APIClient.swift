@@ -1,5 +1,5 @@
 // APIClient.swift
-@preconcurrency import Foundation
+import Foundation
 import Dependencies
 
 // MARK: - Errors
@@ -15,7 +15,10 @@ public struct APIError: Error, Sendable, LocalizedError, Equatable {
     self.underlying = underlying
   }
 
-  public var errorDescription: String? { message }
+  public var errorDescription: String? {
+    if let code { return "[\(code)] \(message)" }
+    return message
+  }
 
   public static func http(_ status: Int, body: Data?) -> APIError {
     let bodyString = body.flatMap { String(data: $0, encoding: .utf8) }?
@@ -42,21 +45,22 @@ actor HTTPSession {
 
 public struct APIClient: Sendable {
   public var data: @Sendable (_ request: URLRequest) async throws -> (Data, URLResponse)
-  public var json: @Sendable <T: Decodable>(_ request: URLRequest,
-                                            _ configureDecoder: @Sendable ((inout JSONDecoder) -> Void)?)
-    async throws -> T
+  public var json: @Sendable <T: Decodable>(
+    _ request: URLRequest,
+    _ configureDecoder: @Sendable ((inout JSONDecoder) -> Void)?
+  ) async throws -> T
 
   public init(
-    data: @escaping @Sendable (_: URLRequest) async throws -> (Data, URLResponse),
-    json: @escaping @Sendable <T: Decodable>(_: URLRequest,
-                                             _: @Sendable ((inout JSONDecoder) -> Void)?)
-      async throws -> T
+    data: @escaping @Sendable (_ request: URLRequest) async throws -> (Data, URLResponse),
+    json: @escaping @Sendable <T: Decodable>(
+      _ request: URLRequest,
+      _ configureDecoder: @Sendable ((inout JSONDecoder) -> Void)?
+    ) async throws -> T
   ) {
     self.data = data
     self.json = json
   }
 
-  // Convenience
   @inlinable
   public func json<T: Decodable>(_ request: URLRequest) async throws -> T {
     try await self.json(request, nil)
@@ -65,9 +69,13 @@ public struct APIClient: Sendable {
 
 // MARK: - Live implementation
 
-extension APIClient {
-  public static let live: APIClient = {
-    let http = HTTPSession() // actor is Sendable-safe to capture
+extension APIClient: DependencyKey {
+  public static var liveValue: APIClient {
+    let config = URLSessionConfiguration.ephemeral
+    config.timeoutIntervalForRequest = 30
+    config.timeoutIntervalForResource = 60
+
+    let http = HTTPSession(configuration: config)
 
     return APIClient(
       data: { request in
@@ -79,48 +87,69 @@ extension APIClient {
         guard let httpResponse = response as? HTTPURLResponse else {
           throw APIError(code: nil, message: "Non-HTTP response")
         }
+
         guard (200..<300).contains(httpResponse.statusCode) else {
           throw APIError.http(httpResponse.statusCode, body: data)
         }
 
         var decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
         decoder.dateDecodingStrategy = .iso8601
-        if let configureDecoder { configureDecoder(&decoder) }
-
-        do {
+        if let configureDecoder {
+          var d = decoder
+          configureDecoder(&d)
+          return try d.decode(T.self, from: data)
+        } else {
           return try decoder.decode(T.self, from: data)
-        } catch {
-          let sample = String(data: data.prefix(512), encoding: .utf8)
-          throw APIError(code: httpResponse.statusCode,
-                         message: "Decoding error: \(T.self)",
-                         underlying: sample)
         }
       }
     )
-  }()
+  }
+
+  public static var testValue: APIClient {
+    APIClient(
+      data: { _ in
+        struct Unimplemented: Error {}
+        throw Unimplemented()
+      },
+      json: { _, _ in
+        struct Unimplemented: Error {}
+        throw Unimplemented()
+      }
+    )
+  }
+
+  public static var previewValue: APIClient { .testValue }
 }
 
-// MARK: - Dependencies wiring (Point-Free)
-
-extension APIClient: DependencyKey {
-  public static let liveValue: APIClient = .live
-
-  public static let testValue: APIClient = APIClient(
-    data: { _ in
-      struct Unimplemented: Error {}
-      throw Unimplemented()
-    },
-    json: { _, _ in
-      struct Unimplemented: Error {}
-      throw Unimplemented()
-    }
-  )
-}
+// MARK: - Dependency Accessor
 
 public extension DependencyValues {
   var apiClient: APIClient {
     get { self[APIClient.self] }
     set { self[APIClient.self] = newValue }
+  }
+}
+
+// MARK: - Convenience builders
+
+public enum RequestBuilder {
+  public static func get(url: URL, headers: [String: String] = [:]) -> URLRequest {
+    var req = URLRequest(url: url)
+    req.httpMethod = "GET"
+    headers.forEach { req.addValue($1, forHTTPHeaderField: $0) }
+    return req
+  }
+
+  public static func postJSON<Body: Encodable>(
+    url: URL,
+    body: Body,
+    headers: [String: String] = [:]
+  ) throws -> URLRequest {
+    var req = URLRequest(url: url)
+    req.httpMethod = "POST"
+    req.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    headers.forEach { req.addValue($1, forHTTPHeaderField: $0) }
+    req.httpBody = try JSONEncoder().encode(body)
+    return req
   }
 }
