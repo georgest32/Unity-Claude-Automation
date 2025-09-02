@@ -80,25 +80,30 @@ workflows:
           RESULT="${CM_BUILD_DIR:-$PWD}/build.xcresult"
           
           if [ -d "$RESULT" ] || [ -f "$RESULT" ]; then
-            echo "=== Human-readable compiler errors ==="
-            xcrun xcresulttool get --format humanReadable --path "$RESULT" | awk '/[Ee]rror:|[Ee]rrors:/, /^$/' || true
-          
-            echo "=== Detailed JSON error extraction ==="
-            xcrun xcresulttool get --path "$RESULT" --format json | python3 -c "
+            echo "=== Extracting compilation errors ==="
+            # Xcode 16.4+ uses 'get object' with --legacy flag
+            xcrun xcresulttool get object --legacy --path "$RESULT" --format json 2>/dev/null | python3 -c "
           import json, sys, urllib.parse
-          j = json.load(sys.stdin)
+          try:
+              j = json.load(sys.stdin)
+          except:
+              print('No JSON data received from xcresulttool')
+              sys.exit(0)
           
           errors = []
           def walk(x):
               if isinstance(x, dict):
-                  if x.get('issueType') == 'error':
-                      msg = x.get('message', {}).get('text', '')
+                  # Check for error in multiple possible formats
+                  if (x.get('issueType') == 'error' or 
+                      (x.get('_type','').endswith('IssueSummary') and x.get('issueType') == 'error')):
+                      msg = x.get('message', {}).get('text', '') if isinstance(x.get('message'), dict) else x.get('message', '')
                       loc = x.get('documentLocationInCreatingWorkspace', {}) or {}
                       url = loc.get('url') or x.get('documentURL', '')
                       if url.startswith('file://'):
-                          url = urllib.parse.unquote(url.replace('file://', ''))
+                          url = urllib.parse.unquote(url[7:])
                       line = loc.get('line') or loc.get('startingLineNumber') or ''
-                      errors.append((msg, url, line))
+                      if msg:
+                          errors.append((msg.strip(), url, str(line) if line else ''))
                   for v in x.values():
                       walk(v)
               elif isinstance(x, list):
@@ -109,12 +114,13 @@ workflows:
           if not errors:
               print('No compilation errors found in result bundle')
           else:
-              for msg, url, line in errors:
-                  print('ERROR:', msg)
-                  if url:  print('  File:', url)
-                  if line: print('  Line:', line)
+              print('=== Compilation Errors ===')
+              for i, (msg, url, line) in enumerate(errors, 1):
+                  print(f'{i}) {msg}')
+                  if url:  print(f'    File: {url}')
+                  if line: print(f'    Line: {line}')
                   print()
-          "
+          " || true
           else
             echo "No result bundle found at $RESULT"
           fi
@@ -199,25 +205,30 @@ workflows:
           RESULT="${CM_BUILD_DIR:-$PWD}/main-build.xcresult"
           
           if [ -d "$RESULT" ] || [ -f "$RESULT" ]; then
-            echo "=== Main build human-readable errors ==="
-            xcrun xcresulttool get --format humanReadable --path "$RESULT" | awk '/[Ee]rror:|[Ee]rrors:/, /^$/' || true
-            
-            echo "=== Main build detailed errors ==="
-            xcrun xcresulttool get --path "$RESULT" --format json | python3 -c "
+            echo "=== Extracting main build errors ==="
+            # Xcode 16.4+ uses 'get object' with --legacy flag
+            xcrun xcresulttool get object --legacy --path "$RESULT" --format json 2>/dev/null | python3 -c "
           import json, sys, urllib.parse
-          j = json.load(sys.stdin)
+          try:
+              j = json.load(sys.stdin)
+          except:
+              print('No JSON data received from xcresulttool')
+              sys.exit(0)
           
           errors = []
           def walk(x):
               if isinstance(x, dict):
-                  if x.get('issueType') == 'error':
-                      msg = x.get('message', {}).get('text', '')
+                  # Check for error in multiple possible formats
+                  if (x.get('issueType') == 'error' or 
+                      (x.get('_type','').endswith('IssueSummary') and x.get('issueType') == 'error')):
+                      msg = x.get('message', {}).get('text', '') if isinstance(x.get('message'), dict) else x.get('message', '')
                       loc = x.get('documentLocationInCreatingWorkspace', {}) or {}
                       url = loc.get('url') or x.get('documentURL', '')
                       if url.startswith('file://'):
-                          url = urllib.parse.unquote(url.replace('file://', ''))
+                          url = urllib.parse.unquote(url[7:])
                       line = loc.get('line') or loc.get('startingLineNumber') or ''
-                      errors.append((msg, url, line))
+                      if msg:
+                          errors.append((msg.strip(), url, str(line) if line else ''))
                   for v in x.values():
                       walk(v)
               elif isinstance(x, list):
@@ -228,12 +239,13 @@ workflows:
           if not errors:
               print('No compilation errors found in main build')
           else:
-              for msg, url, line in errors:
-                  print('ERROR:', msg)
-                  if url:  print('  File:', url)
-                  if line: print('  Line:', line)
+              print('=== Main Build Compilation Errors ===')
+              for i, (msg, url, line) in enumerate(errors, 1):
+                  print(f'{i}) {msg}')
+                  if url:  print(f'    File: {url}')
+                  if line: print(f'    Line: {line}')
                   print()
-          "
+          " || true
           else
             echo "No result bundle found at $RESULT"
           fi
