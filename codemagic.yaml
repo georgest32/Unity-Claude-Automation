@@ -41,13 +41,15 @@ workflows:
         script: |
           set -o pipefail
           DEVICE_ID=$(cat $CM_BUILD_DIR/sim_id.txt)
-          # Simple diagnostic build without validation skip flags (not needed with Xcode 16.4+)
+          # Build with macro/plugin validation skipped for CI
           xcodebuild \
             -project iOS-App/AgentDashboard/AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
             -sdk iphonesimulator \
             -destination "id=$DEVICE_ID" \
             -configuration Debug \
+            -skipMacroValidation \
+            -skipPackagePluginValidation \
             | tee $CM_BUILD_DIR/xcodebuild.log
 
       - name: Dump Swift diagnostics
@@ -81,20 +83,18 @@ workflows:
           echo "=== Force fresh checkout ==="  
           git checkout HEAD -- AgentDashboard/Models/Models.swift
           
-      - name: Resolve Swift Package Dependencies with Macro Features
+      - name: Resolve Swift Package Dependencies (allow macros/plugins)
         script: |
           # Fix working directory issue - use absolute paths
           cd $CM_BUILD_DIR/iOS-App/AgentDashboard  
           pwd
           ls -la AgentDashboard.xcodeproj
-          # Resolve with features (Xcode 16.4+)
+          # Resolve packages with macro/plugin validation skipped for CI
           xcodebuild -resolvePackageDependencies \
             -project AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
-            -enablePackageFeature swift-composable-architecture/Macros \
-            -enablePackageFeature swift-case-paths/Macros \
-            -enablePackageFeature swift-dependencies/Macros \
-            -enablePackageFeature swift-perception/Macros
+            -skipMacroValidation \
+            -skipPackagePluginValidation
             
       - name: Clean DerivedData to avoid stale state
         script: |
@@ -111,13 +111,16 @@ workflows:
           DEVICE_ID=$(cat $CM_BUILD_DIR/sim_id.txt)
           echo "Building with simulator ID: $DEVICE_ID"
           pwd
-          # Build with clean state after enabling macro features
+          # Build with macro/plugin validation skipped for CI
           xcodebuild build \
             -project AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
             -sdk iphonesimulator \
             -destination "id=$DEVICE_ID" \
             -configuration Debug \
+            -skipMacroValidation \
+            -skipPackagePluginValidation \
+            -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
