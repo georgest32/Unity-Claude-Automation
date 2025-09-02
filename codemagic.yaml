@@ -48,8 +48,10 @@ workflows:
           
       - name: Resolve Swift Package Dependencies
         script: |
-          cd iOS-App/AgentDashboard
-          # TCA SPM dependency resolution with macro validation disabled
+          # Fix working directory issue - use absolute paths
+          cd $CM_BUILD_DIR/iOS-App/AgentDashboard  
+          pwd
+          ls -la AgentDashboard.xcodeproj
           xcodebuild -skipMacroValidation \
             -resolvePackageDependencies \
             -project AgentDashboard.xcodeproj \
@@ -57,8 +59,9 @@ workflows:
             
       - name: Build for iOS Simulator (No Code Signing)
         script: |
-          cd iOS-App/AgentDashboard
-          # Build with macro validation disabled (required for TCA)
+          # Fix working directory issue - use absolute paths
+          cd $CM_BUILD_DIR/iOS-App/AgentDashboard
+          pwd
           xcodebuild -skipMacroValidation \
             build \
             -project AgentDashboard.xcodeproj \
@@ -71,7 +74,7 @@ workflows:
             
       - name: Archive Build Artifacts
         script: |
-          cd iOS-App/AgentDashboard
+          cd $CM_BUILD_DIR/iOS-App/AgentDashboard
           mkdir -p build/artifacts
           
           # Find and copy the built app
