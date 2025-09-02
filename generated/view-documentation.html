@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity-Claude Documentation Viewer</title>
+    
+    <!-- Markdown-it for parsing markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@14/dist/markdown-it.min.js"></script>
+    
+    <!-- Mermaid for diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    
+    <!-- Highlight.js for syntax highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/github-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/highlight.min.js"></script>
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #c9d1d9;
+            background: #0d1117;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .file-selector {
+            position: sticky;
+            top: 0;
+            background: #161b22;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .file-selector select {
+            width: 100%;
+            padding: 8px;
+            background: #0d1117;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        #markdown-content {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 32px;
+        }
+        
+        /* Markdown styling */
+        #markdown-content h1 {
+            border-bottom: 1px solid #21262d;
+            padding-bottom: 0.3em;
+            color: #58a6ff;
+        }
+        
+        #markdown-content h2 {
+            border-bottom: 1px solid #21262d;
+            padding-bottom: 0.3em;
+            color: #58a6ff;
+        }
+        
+        #markdown-content h3 {
+            color: #58a6ff;
+        }
+        
+        #markdown-content a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+        
+        #markdown-content a:hover {
+            text-decoration: underline;
+        }
+        
+        #markdown-content code {
+            background: #161b22;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 85%;
+        }
+        
+        #markdown-content pre {
+            background: #161b22;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        
+        #markdown-content pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        #markdown-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        
+        #markdown-content th {
+            background: #161b22;
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #30363d;
+        }
+        
+        #markdown-content td {
+            padding: 8px;
+            border: 1px solid #30363d;
+        }
+        
+        #markdown-content blockquote {
+            border-left: 4px solid #30363d;
+            padding-left: 16px;
+            color: #8b949e;
+            margin: 16px 0;
+        }
+        
+        /* Mermaid diagram container */
+        .mermaid {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #8b949e;
+        }
+        
+        .error {
+            background: #1e1515;
+            border: 1px solid #f85149;
+            color: #f85149;
+            padding: 16px;
+            border-radius: 6px;
+            margin: 16px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: #58a6ff; border-bottom: 1px solid #21262d; padding-bottom: 16px;">
+            Unity-Claude Documentation Viewer
+        </h1>
+        
+        <div class="file-selector">
+            <label for="docFile" style="color: #c9d1d9; display: block; margin-bottom: 8px;">
+                Select Documentation File:
+            </label>
+            <select id="docFile" onchange="loadMarkdownFile(this.value)">
+                <option value="">-- Select a file --</option>
+                <option value="HYBRID_DOCUMENTATION.md">Hybrid Documentation (AI + Pattern)</option>
+                <option value="SEMANTIC_DOCUMENTATION.md">Semantic Documentation</option>
+                <option value="AI_SEMANTIC_DOCUMENTATION.md">AI Semantic Documentation</option>
+                <option value="MASTER_DOCUMENTATION.md">Master Documentation</option>
+                <option value="module_documentation.md">Module Documentation</option>
+                <option value="function_index.md">Function Index</option>
+            </select>
+        </div>
+        
+        <div id="markdown-content">
+            <div class="loading">Select a documentation file to view...</div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({ 
+            startOnLoad: false,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#1f6feb',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#0969da',
+                lineColor: '#8b949e',
+                secondaryColor: '#161b22',
+                tertiaryColor: '#0d1117',
+                background: '#ffffff',
+                mainBkg: '#1f6feb',
+                secondBkg: '#161b22',
+                tertiaryBkg: '#0d1117'
+            }
+        });
+        
+        // Initialize markdown-it with custom renderer for mermaid
+        const md = window.markdownit({
+            html: true,
+            linkify: true,
+            typographer: true,
+            highlight: function (str, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    try {
+                        return hljs.highlight(str, { language: lang }).value;
+                    } catch (__) {}
+                }
+                return ''; // use external default escaping
+            }
+        });
+        
+        // Custom renderer for mermaid code blocks
+        const defaultFenceRenderer = md.renderer.rules.fence;
+        md.renderer.rules.fence = function (tokens, idx, options, env, renderer) {
+            const token = tokens[idx];
+            const info = token.info.trim();
+            
+            if (info === 'mermaid') {
+                // Generate unique ID for this diagram
+                const id = 'mermaid-' + Math.random().toString(36).substr(2, 9);
+                return `<div class="mermaid" id="${id}">${token.content}</div>`;
+            }
+            
+            // Default rendering for non-mermaid code blocks
+            return defaultFenceRenderer(tokens, idx, options, env, renderer);
+        };
+        
+        async function loadMarkdownFile(filename) {
+            if (!filename) {
+                document.getElementById('markdown-content').innerHTML = 
+                    '<div class="loading">Select a documentation file to view...</div>';
+                return;
+            }
+            
+            const contentDiv = document.getElementById('markdown-content');
+            contentDiv.innerHTML = '<div class="loading">Loading documentation...</div>';
+            
+            try {
+                // Construct the file path
+                const response = await fetch(filename);
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to load file: ${response.statusText}`);
+                }
+                
+                const markdown = await response.text();
+                
+                // Render markdown to HTML
+                const html = md.render(markdown);
+                contentDiv.innerHTML = html;
+                
+                // Process any Mermaid diagrams
+                const mermaidDivs = document.querySelectorAll('.mermaid');
+                for (const div of mermaidDivs) {
+                    try {
+                        const graphDefinition = div.textContent;
+                        const { svg } = await mermaid.render(div.id + '-svg', graphDefinition);
+                        div.innerHTML = svg;
+                    } catch (error) {
+                        console.error('Mermaid rendering error:', error);
+                        div.innerHTML = `<div class="error">Failed to render diagram: ${error.message}</div>`;
+                    }
+                }
+                
+                // Apply syntax highlighting to code blocks
+                document.querySelectorAll('pre code').forEach((block) => {
+                    if (!block.classList.contains('language-mermaid')) {
+                        hljs.highlightElement(block);
+                    }
+                });
+                
+                // Smooth scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+            } catch (error) {
+                contentDiv.innerHTML = `
+                    <div class="error">
+                        <h3>Error Loading Documentation</h3>
+                        <p>${error.message}</p>
+                        <p>Make sure the file exists in the same directory as this HTML file.</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Load default document on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            // Check if there's a hash parameter for the file
+            const hash = window.location.hash.substr(1);
+            if (hash) {
+                document.getElementById('docFile').value = hash;
+                loadMarkdownFile(hash);
+            }
+        });
+    </script>
+</body>
+</html>

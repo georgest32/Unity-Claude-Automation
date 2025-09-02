@@ -1,0 +1,220 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-Core",
+  "Commands": [
+    {
+      "Parameters": [
+        "OutputPath",
+        "TimeoutSeconds",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Export-UnityConsole",
+      "Synopsis": "\r\nExport-UnityConsole [[-OutputPath] <string>] [[-TimeoutSeconds] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "FailedStreak",
+        "MaxBeforeReview",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-CurrentPromptType",
+      "Synopsis": "\r\nGet-CurrentPromptType [[-FailedStreak] <int>] [[-MaxBeforeReview] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Path",
+        "Tail",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-FileTailAsString",
+      "Synopsis": "\r\nGet-FileTailAsString [[-Path] <string>] [[-Tail] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ProjectPath",
+        "UnityExe",
+        "LogDirectory",
+        "DefaultTimeout",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-AutomationContext",
+      "Synopsis": "\r\nInitialize-AutomationContext [-ProjectPath] <string> [[-UnityExe] <string>] [[-LogDirectory] <string>] [[-DefaultTimeout] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Force",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Install-AutoRecompileScript",
+      "Synopsis": "\r\nInstall-AutoRecompileScript [-Force] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ProjectPath",
+        "Loop",
+        "RunOnce",
+        "PromptType",
+        "AdditionalInstructions",
+        "Model",
+        "ClaudeExe",
+        "MaxCycles",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Start-UnityAutomation",
+      "Synopsis": "\r\nStart-UnityAutomation [-ProjectPath] <string> [[-PromptType] <string>] [[-AdditionalInstructions] <string>] [[-Model] <string>] [[-ClaudeExe] <string>] [[-MaxCycles] <int>] [-Loop] [-RunOnce] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ConsolePath",
+        "EditorLogPath",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-EditorSuccess",
+      "Synopsis": "\r\nTest-EditorSuccess [[-ConsolePath] <string>] [[-EditorLogPath] <string>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "TimeoutSeconds",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-UnityCompilation",
+      "Synopsis": "\r\nTest-UnityCompilation [[-TimeoutSeconds] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Message",
+        "Level",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Write-Log",
+      "Synopsis": "\r\nWrite-Log [-Message] <string> [[-Level] <string>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-Core",
+  "ExportedFunctions": [
+    "Export-UnityConsole",
+    "Get-CurrentPromptType",
+    "Get-FileTailAsString",
+    "Initialize-AutomationContext",
+    "Install-AutoRecompileScript",
+    "Start-UnityAutomation",
+    "Test-EditorSuccess",
+    "Test-UnityCompilation",
+    "Write-Log"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-EventLog",
+  "Commands": [
+    {
+      "Parameters": [
+        "CorrelationId",
+        "StartTime",
+        "EndTime",
+        "Component",
+        "IncludeRelated",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-UCEventCorrelation",
+      "Synopsis": "Correlates events across the Unity-Claude workflow",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "MaxEvents",
+        "StartTime",
+        "EndTime",
+        "EntryType",
+        "Component",
+        "EventId",
+        "XPath",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-UCEventLog",
+      "Synopsis": "Retrieves events from the Unity-Claude Event Log",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "TimeRange",
+        "PatternType",
+        "MinOccurrences",
+        "Component",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-UCEventPatterns",
+      "Synopsis": "Analyzes event logs to identify patterns and recurring issues",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "LogName",
+        "SourceName",
+        "Force",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-UCEventSource",
+      "Synopsis": "Initializes the Windows Event Log source for Unity-Claude Automation",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "SourceName",
+        "Detailed",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-UCEventSource",
+      "Synopsis": "Tests if the Unity-Claude Event Log source exists",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Message",
+        "EntryType",
+        "EventId",
+        "Component",
+        "Action",
+        "Details",
+        "CorrelationId",
+        "NoFallback",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Write-UCEventLog",
+      "Synopsis": "Writes an event to the Unity-Claude Event Log",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-EventLog",
+  "ExportedFunctions": [
+    "Get-UCEventCorrelation",
+    "Get-UCEventLog",
+    "Get-UCEventPatterns",
+    "Initialize-UCEventSource",
+    "Test-UCEventSource",
+    "Write-UCEventLog"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

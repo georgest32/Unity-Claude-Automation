@@ -1,0 +1,243 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-MessageQueue",
+  "Commands": [
+    {
+      "Parameters": [
+        "QueueName",
+        "Message",
+        "MessageType",
+        "Priority",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Add-MessageToQueue",
+      "Synopsis": "\r\nAdd-MessageToQueue [-QueueName] <string> [-Message] <Object> [[-MessageType] <string>] [[-Priority] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ServiceName",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-CircuitBreakerStatus",
+      "Synopsis": "\r\nGet-CircuitBreakerStatus [[-ServiceName] <string>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "QueueName",
+        "TimeoutSeconds",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-MessageFromQueue",
+      "Synopsis": "\r\nGet-MessageFromQueue [-QueueName] <string> [[-TimeoutSeconds] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "QueueName",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-QueueStatistics",
+      "Synopsis": "\r\nGet-QueueStatistics [[-QueueName] <string>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ServiceName",
+        "FailureThreshold",
+        "ResetTimeoutSeconds",
+        "HalfOpenMaxAttempts",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-CircuitBreaker",
+      "Synopsis": "\r\nInitialize-CircuitBreaker [-ServiceName] <string> [[-FailureThreshold] <int>] [[-ResetTimeoutSeconds] <int>] [[-HalfOpenMaxAttempts] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "QueueName",
+        "MaxMessages",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-MessageQueue",
+      "Synopsis": "\r\nInitialize-MessageQueue [[-QueueName] <string>] [[-MaxMessages] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ServiceName",
+        "Action",
+        "FallbackAction",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-WithCircuitBreaker",
+      "Synopsis": "\r\nInvoke-WithCircuitBreaker [-ServiceName] <string> [-Action] <scriptblock> [[-FallbackAction] <scriptblock>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Path",
+        "QueueName",
+        "Filter",
+        "DebounceMilliseconds",
+        "NotifyFilter",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Register-FileSystemWatcher",
+      "Synopsis": "\r\nRegister-FileSystemWatcher [-Path] <string> [-QueueName] <string> [[-Filter] <string>] [[-DebounceMilliseconds] <int>] [[-NotifyFilter] <NotifyFilters>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "QueueName",
+        "Handler",
+        "MaxConcurrency",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Register-MessageHandler",
+      "Synopsis": "\r\nRegister-MessageHandler [-QueueName] <string> [-Handler] <scriptblock> [[-MaxConcurrency] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "QueueName",
+        "Continuous",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Start-MessageProcessor",
+      "Synopsis": "\r\nStart-MessageProcessor [-QueueName] <string> [-Continuous] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-MessageQueue",
+  "ExportedFunctions": [
+    "Add-MessageToQueue",
+    "Get-CircuitBreakerStatus",
+    "Get-MessageFromQueue",
+    "Get-QueueStatistics",
+    "Initialize-CircuitBreaker",
+    "Initialize-MessageQueue",
+    "Invoke-WithCircuitBreaker",
+    "Register-FileSystemWatcher",
+    "Register-MessageHandler",
+    "Start-MessageProcessor"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

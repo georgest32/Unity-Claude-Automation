@@ -1,0 +1,108 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced",
+  "Commands": [
+    {
+      "Parameters": [
+        "CallGraph",
+        "OutputPath",
+        "ExportFormat",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Export-CallGraphData",
+      "Synopsis": "Exports call graph data in formats suitable for visualization",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Modules",
+        "CalculateStrength",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-CrossModuleRelationships",
+      "Synopsis": "Maps cross-module relationships and dependencies with strength calculation",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Module",
+        "IncludeInternal",
+        "IncludeExternal",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-FunctionCallAnalysis",
+      "Synopsis": "Analyzes function call patterns within and across modules",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ModulePaths",
+        "ModuleNames",
+        "IncludeBuiltIn",
+        "CacheResults",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ModuleCallGraph",
+      "Synopsis": "Generates comprehensive call graphs for PowerShell modules using enhanced AST analysis",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-AST-Enhanced",
+  "ExportedFunctions": [
+    "Export-CallGraphData",
+    "Get-CrossModuleRelationships",
+    "Get-FunctionCallAnalysis",
+    "Get-ModuleCallGraph"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

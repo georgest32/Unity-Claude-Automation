@@ -1,0 +1,125 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-SlackIntegration",
+  "Commands": [
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-SlackIntegrationStatistics",
+      "Synopsis": "Returns comprehensive Slack integration statistics.",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "WebhookUrl",
+        "DefaultChannel",
+        "EnablePSSlackModule",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-SlackIntegration",
+      "Synopsis": "Initializes Slack integration with webhook and PSSlack module support.",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Alert",
+        "Channel",
+        "AddAttachments",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Send-SlackAlert",
+      "Synopsis": "Sends alert notification to Slack with research-validated formatting.",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "WebhookUrl",
+        "DefaultChannel",
+        "RateLimitPerSecond",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Set-SlackConfiguration",
+      "Synopsis": "Updates Slack integration configuration.",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-SlackIntegration",
+      "Synopsis": "Tests Slack integration with various message types and severity levels.",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-SlackIntegration",
+  "ExportedFunctions": [
+    "Get-SlackIntegrationStatistics",
+    "Initialize-SlackIntegration",
+    "Send-SlackAlert",
+    "Set-SlackConfiguration",
+    "Test-SlackIntegration"
+  ],
+  "Version": {
+    "Major": 0,
+    "Minor": 0,
+    "Build": -1,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

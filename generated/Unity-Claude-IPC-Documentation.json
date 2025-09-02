@@ -1,0 +1,198 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-IPC",
+  "Commands": [
+    {
+      "Parameters": [
+        "ConsolePath",
+        "EditorLogPath",
+        "ContextLines",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Format-ErrorContext",
+      "Synopsis": "\r\nFormat-ErrorContext [[-ConsolePath] <string>] [[-EditorLogPath] <string>] [[-ContextLines] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Type",
+        "BoilerplatePath",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-PromptBoilerplate",
+      "Synopsis": "\r\nGet-PromptBoilerplate [[-Type] <string>] [[-BoilerplatePath] <string>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ErrorContext",
+        "PromptType",
+        "AdditionalInstructions",
+        "Model",
+        "TimeoutSeconds",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-ClaudeAnalysis",
+      "Synopsis": "\r\nInvoke-ClaudeAnalysis [-ErrorContext] <string> [[-PromptType] <string>] [[-AdditionalInstructions] <string>] [[-Model] <string>] [[-TimeoutSeconds] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "PipeServer",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Receive-ClaudeResponse",
+      "Synopsis": "\r\nReceive-ClaudeResponse [-PipeServer] <NamedPipeServerStream> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Prompt",
+        "Model",
+        "ClaudeExe",
+        "TimeoutSeconds",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Send-ClaudePrompt",
+      "Synopsis": "\r\nSend-ClaudePrompt [-Prompt] <string> [[-Model] <string>] [[-ClaudeExe] <string>] [[-TimeoutSeconds] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "LogPath",
+        "OutputDirectory",
+        "MaxLinesPerFile",
+        "MaxFileSizeKB",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Split-ConsoleLog",
+      "Synopsis": "\r\nSplit-ConsoleLog [-LogPath] <string> [[-OutputDirectory] <string>] [[-MaxLinesPerFile] <int>] [[-MaxFileSizeKB] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "PipeName",
+        "MessageHandler",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Start-BidirectionalPipe",
+      "Synopsis": "\r\nStart-BidirectionalPipe [[-PipeName] <string>] [[-MessageHandler] <scriptblock>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ClaudeExe",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-ClaudeAvailable",
+      "Synopsis": "\r\nTest-ClaudeAvailable [[-ClaudeExe] <string>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-IPC",
+  "ExportedFunctions": [
+    "Format-ErrorContext",
+    "Get-PromptBoilerplate",
+    "Invoke-ClaudeAnalysis",
+    "Receive-ClaudeResponse",
+    "Send-ClaudePrompt",
+    "Split-ConsoleLog",
+    "Start-BidirectionalPipe",
+    "Test-ClaudeAvailable"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

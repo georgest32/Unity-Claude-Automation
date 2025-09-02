@@ -1,0 +1,233 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-TestAutomation",
+  "Commands": [
+    {
+      "Parameters": [
+        "AggregatedResults",
+        "OutputPath",
+        "Format",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Export-TestReport",
+      "Synopsis": "\r\nExport-TestReport [-AggregatedResults] <hashtable> [[-OutputPath] <string>] [[-Format] <string>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "SearchPath",
+        "Pattern",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Find-CustomTestScripts",
+      "Synopsis": "\r\nFind-CustomTestScripts [[-SearchPath] <string>] [[-Pattern] <string>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResultsDirectory",
+        "IncludeHistory",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-TestResultAggregation",
+      "Synopsis": "\r\nGet-TestResultAggregation [[-ResultsDirectory] <string>] [-IncludeHistory] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ProjectPath",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-UnityTestCategories",
+      "Synopsis": "\r\nGet-UnityTestCategories [-ProjectPath] <string> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResultFile",
+        "Detailed",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-UnityTestResults",
+      "Synopsis": "\r\nGet-UnityTestResults [-ResultFile] <string> [-Detailed] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "TestPath",
+        "TestNames",
+        "Tags",
+        "OutputPath",
+        "OutputFormat",
+        "PassThru",
+        "CodeCoverage",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-PowerShellTests",
+      "Synopsis": "\r\nInvoke-PowerShellTests [[-TestPath] <string>] [[-TestNames] <string[]>] [[-Tags] <string[]>] [[-OutputPath] <string>] [[-OutputFormat] <string>] [-PassThru] [-CodeCoverage] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ProjectPath",
+        "TestCategory",
+        "TestFilter",
+        "TestPlatform",
+        "RunSynchronously",
+        "ResultsDirectory",
+        "GenerateCodeCoverage",
+        "TimeoutSeconds",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-UnityEditModeTests",
+      "Synopsis": "\r\nInvoke-UnityEditModeTests [-ProjectPath] <string> [[-TestCategory] <string>] [[-TestFilter] <string>] [[-TestPlatform] <string>] [[-ResultsDirectory] <string>] [[-TimeoutSeconds] <int>] [-RunSynchronously] [-GenerateCodeCoverage] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ProjectPath",
+        "BuildTarget",
+        "TestCategory",
+        "TestFilter",
+        "ResultsDirectory",
+        "GenerateCodeCoverage",
+        "TimeoutSeconds",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-UnityPlayModeTests",
+      "Synopsis": "\r\nInvoke-UnityPlayModeTests [-ProjectPath] <string> [[-BuildTarget] <string>] [[-TestCategory] <string>] [[-TestFilter] <string>] [[-ResultsDirectory] <string>] [[-TimeoutSeconds] <int>] [-GenerateCodeCoverage] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "IncludeCategories",
+        "ExcludeCategories",
+        "IncludeTests",
+        "ExcludeTests",
+        "NamePattern",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "New-UnityTestFilter",
+      "Synopsis": "\r\nNew-UnityTestFilter [[-IncludeCategories] <string[]>] [[-ExcludeCategories] <string[]>] [[-IncludeTests] <string[]>] [[-ExcludeTests] <string[]>] [[-NamePattern] <string>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-TestAutomation",
+  "ExportedFunctions": [
+    "Export-TestReport",
+    "Find-CustomTestScripts",
+    "Get-TestResultAggregation",
+    "Get-UnityTestCategories",
+    "Get-UnityTestResults",
+    "Invoke-PowerShellTests",
+    "Invoke-UnityEditModeTests",
+    "Invoke-UnityPlayModeTests",
+    "New-UnityTestFilter"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

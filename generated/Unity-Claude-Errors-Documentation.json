@@ -1,0 +1,219 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-Errors",
+  "Commands": [
+    {
+      "Parameters": [
+        "ErrorCode",
+        "Pattern",
+        "ErrorType",
+        "FilePath",
+        "LineNumber",
+        "Description",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Add-ErrorPattern",
+      "Synopsis": "\r\nAdd-ErrorPattern [-ErrorCode] <string> [-Pattern] <string> [[-ErrorType] <string>] [[-FilePath] <string>] [[-LineNumber] <int>] [[-Description] <string>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "OutputPath",
+        "StartDate",
+        "EndDate",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Export-ErrorReport",
+      "Synopsis": "\r\nExport-ErrorReport [[-OutputPath] <string>] [[-StartDate] <datetime>] [[-EndDate] <datetime>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ErrorMessage",
+        "MaxResults",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Find-SimilarErrors",
+      "Synopsis": "\r\nFind-SimilarErrors [-ErrorMessage] <string> [[-MaxResults] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ErrorCode",
+        "Pattern",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ErrorPattern",
+      "Synopsis": "\r\nGet-ErrorPattern [[-ErrorCode] <string>] [[-Pattern] <string>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ErrorCode",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ErrorSeverity",
+      "Synopsis": "\r\nGet-ErrorSeverity [-ErrorCode] <string> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "StartDate",
+        "EndDate",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ErrorStatistics",
+      "Synopsis": "\r\nGet-ErrorStatistics [[-StartDate] <datetime>] [[-EndDate] <datetime>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "DatabasePath",
+        "Force",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-ErrorDatabase",
+      "Synopsis": "\r\nInitialize-ErrorDatabase [[-DatabasePath] <string>] [-Force] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ErrorLine",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Parse-UnityError",
+      "Synopsis": "\r\nParse-UnityError [-ErrorLine] <string> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "PatternId",
+        "Solution",
+        "Success",
+        "FixDuration",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Update-ErrorSolution",
+      "Synopsis": "\r\nUpdate-ErrorSolution [-PatternId] <int> [-Solution] <string> [-Success] <bool> [[-FixDuration] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-Errors",
+  "ExportedFunctions": [
+    "Add-ErrorPattern",
+    "Export-ErrorReport",
+    "Find-SimilarErrors",
+    "Get-ErrorPattern",
+    "Get-ErrorSeverity",
+    "Get-ErrorStatistics",
+    "Initialize-ErrorDatabase",
+    "Parse-UnityError",
+    "Update-ErrorSolution"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

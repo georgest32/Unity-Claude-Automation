@@ -1,0 +1,486 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-ResponseMonitor",
+  "Commands": [
+    {
+      "Parameters": [
+        "Continuation",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Add-PendingContinuation",
+      "Synopsis": "\r\nAdd-PendingContinuation [-Continuation] <hashtable> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Execution",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Add-PendingExecution",
+      "Synopsis": "\r\nAdd-PendingExecution [-Execution] <hashtable> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Recommendation",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Add-PendingRecommendation",
+      "Synopsis": "\r\nAdd-PendingRecommendation [-Recommendation] <hashtable> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "TestRequest",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Add-PendingTest",
+      "Synopsis": "\r\nAdd-PendingTest [-TestRequest] <hashtable> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Clear-ResponseQueue",
+      "Synopsis": "\r\nClear-ResponseQueue [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Content",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ActionableItems",
+      "Synopsis": "\r\nGet-ActionableItems [-Content] <string> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-MonitoringStatus",
+      "Synopsis": "\r\nGet-MonitoringStatus [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ResponseMonitorConfig",
+      "Synopsis": "\r\nGet-ResponseMonitorConfig [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ResponseQueue",
+      "Synopsis": "\r\nGet-ResponseQueue [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "MonitorPath",
+        "FileFilter",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-FileSystemWatcher",
+      "Synopsis": "\r\nInitialize-FileSystemWatcher [-MonitorPath] <string> [[-FileFilter] <string>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Response",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-AutonomousResponseHandling",
+      "Synopsis": "\r\nInvoke-AutonomousResponseHandling [-Response] <hashtable> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Item",
+        "Response",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-ContinuationHandler",
+      "Synopsis": "\r\nInvoke-ContinuationHandler [-Item] <hashtable> [-Response] <hashtable> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "FilePath",
+        "EventType",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-DebouncedResponseHandler",
+      "Synopsis": "\r\nInvoke-DebouncedResponseHandler [-FilePath] <string> [-EventType] <string> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Item",
+        "Response",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-ExecutionHandler",
+      "Synopsis": "\r\nInvoke-ExecutionHandler [-Item] <hashtable> [-Response] <hashtable> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Item",
+        "Response",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-RecommendationHandler",
+      "Synopsis": "\r\nInvoke-RecommendationHandler [-Item] <hashtable> [-Response] <hashtable> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "FilePath",
+        "EventType",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-ResponseProcessing",
+      "Synopsis": "\r\nInvoke-ResponseProcessing [-FilePath] <string> [-EventType] <string> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Item",
+        "Response",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-TestHandler",
+      "Synopsis": "\r\nInvoke-TestHandler [-Item] <hashtable> [-Response] <hashtable> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "EnableDebugLogging",
+        "MonitorPath",
+        "ResponseFilePattern",
+        "DebounceDelayMs",
+        "RefreshCycleMs",
+        "MaxResponseSizeMB",
+        "TimeoutSeconds",
+        "IntegrationEnabled",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Set-ResponseMonitorConfig",
+      "Synopsis": "\r\nSet-ResponseMonitorConfig [[-EnableDebugLogging] <bool>] [[-MonitorPath] <string>] [[-ResponseFilePattern] <string>] [[-DebounceDelayMs] <int>] [[-RefreshCycleMs] <int>] [[-MaxResponseSizeMB] <int>] [[-TimeoutSeconds] <int>] [[-IntegrationEnabled] <bool>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "MonitorPath",
+        "FilePattern",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Start-ClaudeResponseMonitoring",
+      "Synopsis": "\r\nStart-ClaudeResponseMonitoring [[-MonitorPath] <string>] [[-FilePattern] <string>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Stop-ClaudeResponseMonitoring",
+      "Synopsis": "\r\nStop-ClaudeResponseMonitoring [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Stop-FileSystemWatcher",
+      "Synopsis": "\r\nStop-FileSystemWatcher [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-ResponseMonitorIntegration",
+      "Synopsis": "\r\nTest-ResponseMonitorIntegration [<CommonParameters>]\r\n",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-ResponseMonitor",
+  "ExportedFunctions": [
+    "Add-PendingContinuation",
+    "Add-PendingExecution",
+    "Add-PendingRecommendation",
+    "Add-PendingTest",
+    "Clear-ResponseQueue",
+    "Get-ActionableItems",
+    "Get-MonitoringStatus",
+    "Get-ResponseMonitorConfig",
+    "Get-ResponseQueue",
+    "Initialize-FileSystemWatcher",
+    "Invoke-AutonomousResponseHandling",
+    "Invoke-ContinuationHandler",
+    "Invoke-DebouncedResponseHandler",
+    "Invoke-ExecutionHandler",
+    "Invoke-RecommendationHandler",
+    "Invoke-ResponseProcessing",
+    "Invoke-TestHandler",
+    "Set-ResponseMonitorConfig",
+    "Start-ClaudeResponseMonitoring",
+    "Stop-ClaudeResponseMonitoring",
+    "Stop-FileSystemWatcher",
+    "Test-ResponseMonitorIntegration"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

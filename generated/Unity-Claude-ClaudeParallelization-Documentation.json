@@ -1,0 +1,202 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-ClaudeParallelization",
+  "Commands": [
+    {
+      "Parameters": [
+        "Submitter",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ClaudeAPIRateLimit",
+      "Synopsis": "Gets Claude API rate limit status and metrics",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ManagerName",
+        "MaxConcurrentCLI",
+        "EnableWindowManagement",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "New-ClaudeCLIParallelManager",
+      "Synopsis": "Creates a new Claude CLI parallel management system",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "SubmitterName",
+        "MaxConcurrentRequests",
+        "EnableRateLimiting",
+        "EnableResourceMonitoring",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "New-ClaudeParallelSubmitter",
+      "Synopsis": "Creates a new Claude parallel submission system",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseProcessor",
+        "Responses",
+        "ParsingMode",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Parse-ClaudeResponseParallel",
+      "Synopsis": "Parses Claude responses in parallel using runspace pools",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseProcessor",
+        "ResponseSources",
+        "ProcessingMode",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Start-ConcurrentResponseMonitoring",
+      "Synopsis": "Starts concurrent Claude response monitoring and processing",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Submitter",
+        "Prompts",
+        "Model",
+        "MaxTokens",
+        "Priority",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Submit-ClaudeAPIParallel",
+      "Synopsis": "Submits prompts to Claude API in parallel",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Manager",
+        "Prompts",
+        "OutputFormat",
+        "TimeoutSeconds",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Submit-ClaudeCLIParallel",
+      "Synopsis": "Submits prompts to Claude CLI in parallel with window coordination",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "TestType",
+        "TestPrompts",
+        "Iterations",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-ClaudeParallelizationPerformance",
+      "Synopsis": "Tests Claude parallelization performance compared to sequential processing",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-ClaudeParallelization",
+  "ExportedFunctions": [
+    "Get-ClaudeAPIRateLimit",
+    "New-ClaudeCLIParallelManager",
+    "New-ClaudeParallelSubmitter",
+    "Parse-ClaudeResponseParallel",
+    "Start-ConcurrentResponseMonitoring",
+    "Submit-ClaudeAPIParallel",
+    "Submit-ClaudeCLIParallel",
+    "Test-ClaudeParallelizationPerformance"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

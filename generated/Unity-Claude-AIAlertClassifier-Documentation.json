@@ -1,0 +1,104 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AIAlertClassifier",
+  "Commands": [
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-AIAlertStatistics",
+      "Synopsis": "\r\nGet-AIAlertStatistics [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Configuration",
+        "EnableAI",
+        "TestConnection",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-AIAlertClassifier",
+      "Synopsis": "\r\nInitialize-AIAlertClassifier [[-Configuration] <hashtable>] [-EnableAI] [-TestConnection] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Alert",
+        "UseAI",
+        "ForceClassification",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-AIAlertClassification",
+      "Synopsis": "\r\nInvoke-AIAlertClassification [-Alert] <psobject> [-UseAI] [-ForceClassification] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "NewAlert",
+        "WindowSeconds",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-AlertCorrelation",
+      "Synopsis": "\r\nTest-AlertCorrelation [-NewAlert] <psobject> [[-WindowSeconds] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-AIAlertClassifier",
+  "ExportedFunctions": [
+    "Get-AIAlertStatistics",
+    "Initialize-AIAlertClassifier",
+    "Invoke-AIAlertClassification",
+    "Test-AlertCorrelation"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}
