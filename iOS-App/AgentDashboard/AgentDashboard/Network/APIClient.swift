@@ -424,7 +424,7 @@ final class MockAPIClient: APIClientProtocol {
         
         return [
             Agent(
-                id: UUID(),
+                id: UUID().uuidString,
                 name: "CLI Orchestrator",
                 type: .orchestrator,
                 status: .running,
@@ -435,9 +435,9 @@ final class MockAPIClient: APIClientProtocol {
                 configuration: ["mode": "auto", "priority": "high"]
             ),
             Agent(
-                id: UUID(),
+                id: UUID().uuidString,
                 name: "System Monitor",
-                type: .monitor,
+                type: "System Monitor",
                 status: .running,
                 description: "System health monitoring",
                 startTime: Date().addingTimeInterval(-7200),
