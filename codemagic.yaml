@@ -109,21 +109,26 @@ workflows:
           def walk(x):
               if isinstance(x, dict):
                   # Check for error in multiple possible formats
-                  if (x.get('issueType') == 'error' or 
-                      (x.get('_type','').endswith('IssueSummary') and x.get('issueType') == 'error')):
-                      msg = x.get('message', {}).get('text', '') if isinstance(x.get('message'), dict) else x.get('message', '')
+                  issue_type = x.get('issueType', '')
+                  type_name = str(x.get('_type', ''))
+                  
+                  if (issue_type == 'error' or 
+                      (type_name and 'IssueSummary' in type_name and issue_type == 'error')):
+                      msg = x.get('message', {}).get('text', '') if isinstance(x.get('message'), dict) else str(x.get('message', ''))
                       loc = x.get('documentLocationInCreatingWorkspace', {}) or {}
                       url = loc.get('url') or x.get('documentURL', '')
-                      if url.startswith('file://'):
+                      if isinstance(url, str) and url.startswith('file://'):
                           url = urllib.parse.unquote(url[7:])
                       line = loc.get('line') or loc.get('startingLineNumber') or ''
-                      if msg:
-                          errors.append((msg.strip(), url, str(line) if line else ''))
+                      if msg and msg.strip():
+                          errors.append((msg.strip(), str(url) if url else '', str(line) if line else ''))
                   for v in x.values():
-                      walk(v)
+                      if v is not None:
+                          walk(v)
               elif isinstance(x, list):
                   for v in x:
-                      walk(v)
+                      if v is not None:
+                          walk(v)
           
           walk(j)
           if not errors:
@@ -140,49 +145,102 @@ workflows:
             echo "No result bundle found at $RESULT"
           fi
           
-      - name: Verify and archive the .app
+      - name: Debug and locate the .app file
         script: |
-          # Find the .app in the build products
-          APP_PATH="$(/usr/bin/find "$DERIVED_DATA/Build/Products/Debug-iphonesimulator" -maxdepth 1 -name '*.app' -print -quit)"
+          echo "=== Debugging .app location ==="
+          echo "DERIVED_DATA: $DERIVED_DATA"
+          
+          # Show the full DerivedData structure
+          echo "DerivedData contents:"
+          ls -la "$DERIVED_DATA" || echo "DerivedData directory not found"
+          
+          echo "Build directory contents:"
+          find "$DERIVED_DATA" -type d -name "Build" 2>/dev/null | head -5
+          
+          echo "Looking for all .app files in DerivedData:"
+          find "$DERIVED_DATA" -name "*.app" -type d 2>/dev/null | while read app; do
+            echo "Found: $app ($(du -sh "$app" | cut -f1))"
+          done
+          
+          # Try different common locations
+          POSSIBLE_PATHS=(
+            "$DERIVED_DATA/Build/Products/Debug-iphonesimulator"
+            "$DERIVED_DATA/Build/Products/Debug"
+            "$DERIVED_DATA/Build/Intermediates.noindex"
+          )
+          
+          APP_PATH=""
+          for path in "${POSSIBLE_PATHS[@]}"; do
+            if [ -d "$path" ]; then
+              echo "Checking: $path"
+              ls -la "$path" 2>/dev/null || echo "  (not accessible)"
+              found_app=$(find "$path" -name "*.app" -type d -print -quit 2>/dev/null)
+              if [ -n "$found_app" ]; then
+                APP_PATH="$found_app"
+                echo "✅ Found app at: $APP_PATH"
+                break
+              fi
+            fi
+          done
           
           if [[ -z "${APP_PATH:-}" ]]; then
-            echo "❌ Build succeeded but no .app found in Debug-iphonesimulator"
-            echo "Searching for .app in all DerivedData locations..."
-            find "$DERIVED_DATA" -name "*.app" -type d 2>/dev/null | head -10
+            echo "❌ No .app found anywhere in DerivedData"
+            echo "Full search results:"
+            find "$DERIVED_DATA" -name "*.app" -type d 2>/dev/null || echo "No .app files found"
             exit 1
           fi
           
-          echo "✅ Found simulator app: $APP_PATH"
+          echo "App size: $(du -sh "$APP_PATH" | cut -f1)"
+          echo "App contents:"
+          ls -la "$APP_PATH" | head -10
+          
+          # Export for next step
+          echo "export APP_PATH='$APP_PATH'" >> $CM_ENV
+          
+      - name: Create preview artifacts
+        script: |
+          # Load the app path from previous step
+          source $CM_ENV
+          
+          if [[ -z "${APP_PATH:-}" ]]; then
+            echo "❌ APP_PATH not set from previous step"
+            exit 1
+          fi
+          
+          echo "Creating artifacts for: $APP_PATH"
           APP_NAME=$(basename "$APP_PATH")
-          echo "App name: $APP_NAME"
           
           # Create artifacts directory
           mkdir -p artifacts
           
-          # Copy the .app for direct download
+          # Copy the .app directly
           cp -r "$APP_PATH" artifacts/
+          echo "Copied .app: $(du -sh "artifacts/$APP_NAME" | cut -f1)"
           
-          # Create properly structured IPA for Codemagic preview
+          # Create IPA structure
           mkdir -p Payload
           cp -r "$APP_PATH" Payload/
           
-          # Create IPA (which is just a zip with .ipa extension)
-          cd "$CM_BUILD_DIR"
+          # Create IPA
           zip -r "AgentDashboard.ipa" Payload
           mv AgentDashboard.ipa artifacts/
           
-          # Also create a regular zip for compatibility
-          zip -r "ios-simulator-app.zip" Payload  
-          mv ios-simulator-app.zip artifacts/
+          # Create additional zip
+          zip -r "app-preview.zip" Payload  
+          mv app-preview.zip artifacts/
           
-          echo "📱 iOS app artifacts created:"
-          ls -la artifacts/
-          echo "File sizes:"
-          du -h artifacts/*
+          echo "📱 Final artifacts:"
+          ls -lah artifacts/
           
-          # Verify IPA structure
-          echo "IPA contents:"
-          unzip -l artifacts/AgentDashboard.ipa | head -10
+          # Verify non-empty files
+          for file in artifacts/*; do
+            size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null)
+            if [ "$size" -lt 1000 ]; then
+              echo "⚠️  Warning: $file is only $size bytes"
+            else
+              echo "✅ $file: $size bytes"
+            fi
+          done
           
       - name: Dump Swift diagnostics (optional)
         script: |
