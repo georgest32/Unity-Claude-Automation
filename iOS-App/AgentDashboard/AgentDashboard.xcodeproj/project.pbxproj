@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4A1234567890ABCD1234567E /* AgentDashboardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD1234567F /* AgentDashboardApp.swift */; };
 		4A1234567890ABCD12345680 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD12345681 /* ContentView.swift */; };
-		4A1234567890ABCD12345689 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 4A1234567890ABCD12345688 /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,7 +23,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A1234567890ABCD12345689 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,7 +71,6 @@
 			);
 			name = AgentDashboard;
 			packageProductDependencies = (
-				4A1234567890ABCD12345688 /* ComposableArchitecture */,
 			);
 			productName = AgentDashboard;
 			productReference = 4A1234567890ABCD1234567C /* AgentDashboard.app */;
@@ -104,7 +101,6 @@
 			);
 			mainGroup = 4A1234567890ABCD12345676;
 			packageReferences = (
-				4A1234567890ABCD1234568A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 			);
 			productRefGroup = 4A1234567890ABCD12345678 /* Products */;
 			projectDirPath = "";
@@ -322,24 +318,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		4A1234567890ABCD1234568A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.8.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		4A1234567890ABCD12345688 /* ComposableArchitecture */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4A1234567890ABCD1234568A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
-			productName = ComposableArchitecture;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4A1234567890ABCD12345675 /* Project object */;
 }
