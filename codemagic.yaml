@@ -77,37 +77,51 @@ workflows:
 
       - name: Extract compiler errors from result bundle
         script: |
-          if [ -f "$CM_BUILD_DIR/build.xcresult" ]; then
+          #!/usr/bin/env bash
+          set -euo pipefail
+          
+          RESULT="${CM_BUILD_DIR:-$PWD}/build.xcresult"
+          
+          if [ -d "$RESULT" ] || [ -f "$RESULT" ]; then
             echo "=== Human-readable compiler errors ==="
-            xcrun xcresulttool get --format humanReadable --path "$CM_BUILD_DIR/build.xcresult" | sed -n '/Error:/,/^$/p' || true
-            
+            xcrun xcresulttool get --format humanReadable --path "$RESULT" \
+              | awk '/[Ee]rror:|[Ee]rrors:/, /^$/' || true
+          
             echo "=== Detailed JSON error extraction ==="
-            xcrun xcresulttool get --path "$CM_BUILD_DIR/build.xcresult" --format json \
+            xcrun xcresulttool get --path "$RESULT" --format json \
               | python3 - <<'PY'
-            import json, sys
-            j=json.load(sys.stdin)
-            errors_found = False
-            def walk(x):
-              global errors_found
+          import json, sys, urllib.parse
+          j = json.load(sys.stdin)
+          
+          errors = []
+          def walk(x):
               if isinstance(x, dict):
-                if x.get('issueType') == 'error':
-                  errors_found = True
-                  msg = x.get('message',{}).get('text','')
-                  doc = x.get('documentLocationInCreatingWorkspace',{}).get('url','') or x.get('documentURL','')
-                  line = x.get('documentLocationInCreatingWorkspace',{}).get('line','')
-                  print(f"ERROR: {msg}")
-                  if doc: print(f"  File: {doc}")
-                  if line: print(f"  Line: {line}")
-                  print()
-                for v in x.values(): walk(v)
+                  if x.get('issueType') == 'error':
+                      msg = x.get('message', {}).get('text', '')
+                      loc = x.get('documentLocationInCreatingWorkspace', {}) or {}
+                      url = loc.get('url') or x.get('documentURL', '')
+                      if url.startswith('file://'):
+                          url = urllib.parse.unquote(url.replace('file://', ''))
+                      line = loc.get('line') or loc.get('startingLineNumber') or ''
+                      errors.append((msg, url, line))
+                  for v in x.values():
+                      walk(v)
               elif isinstance(x, list):
-                for v in x: walk(v)
-            walk(j)
-            if not errors_found:
+                  for v in x:
+                      walk(v)
+          
+          walk(j)
+          if not errors:
               print("No compilation errors found in result bundle")
-            PY
+          else:
+              for msg, url, line in errors:
+                  print("ERROR:", msg)
+                  if url:  print("  File:", url)
+                  if line: print("  Line:", line)
+                  print()
+PY
           else
-            echo "No result bundle found at $CM_BUILD_DIR/build.xcresult"
+            echo "No result bundle found at $RESULT"
           fi
 
       - name: Dump Swift diagnostics
@@ -187,36 +201,51 @@ workflows:
             
       - name: Extract main build errors
         script: |
-          if [ -d "$CM_BUILD_DIR/main-build.xcresult" ]; then
+          #!/usr/bin/env bash
+          set -euo pipefail
+          
+          RESULT="${CM_BUILD_DIR:-$PWD}/main-build.xcresult"
+          
+          if [ -d "$RESULT" ] || [ -f "$RESULT" ]; then
             echo "=== Main build human-readable errors ==="
-            xcrun xcresulttool get --format humanReadable --path "$CM_BUILD_DIR/main-build.xcresult" | sed -n '/Error:/,/^$/p' || true
+            xcrun xcresulttool get --format humanReadable --path "$RESULT" \
+              | awk '/[Ee]rror:|[Ee]rrors:/, /^$/' || true
             
             echo "=== Main build detailed errors ==="
-            xcrun xcresulttool get --path "$CM_BUILD_DIR/main-build.xcresult" --format json > "$CM_BUILD_DIR/main-build.json"
-            python3 - <<'PY'
-            import json, sys
-            with open("$CM_BUILD_DIR/main-build.json") as f:
-              j=json.load(f)
-            errors_found = False
-            def walk(x):
-              global errors_found
+            xcrun xcresulttool get --path "$RESULT" --format json \
+              | python3 - <<'PY'
+          import json, sys, urllib.parse
+          j = json.load(sys.stdin)
+          
+          errors = []
+          def walk(x):
               if isinstance(x, dict):
-                if x.get('issueType') == 'error':
-                  errors_found = True
-                  msg = x.get('message',{}).get('text','')
-                  doc = x.get('documentLocationInCreatingWorkspace',{}).get('url','') or x.get('documentURL','')
-                  line = x.get('documentLocationInCreatingWorkspace',{}).get('line','')
-                  print(f"ERROR: {msg}")
-                  if doc: print(f"  File: {doc}")
-                  if line: print(f"  Line: {line}")
-                  print()
-                for v in x.values(): walk(v)
+                  if x.get('issueType') == 'error':
+                      msg = x.get('message', {}).get('text', '')
+                      loc = x.get('documentLocationInCreatingWorkspace', {}) or {}
+                      url = loc.get('url') or x.get('documentURL', '')
+                      if url.startswith('file://'):
+                          url = urllib.parse.unquote(url.replace('file://', ''))
+                      line = loc.get('line') or loc.get('startingLineNumber') or ''
+                      errors.append((msg, url, line))
+                  for v in x.values():
+                      walk(v)
               elif isinstance(x, list):
-                for v in x: walk(v)
-            walk(j)
-            if not errors_found:
+                  for v in x:
+                      walk(v)
+          
+          walk(j)
+          if not errors:
               print("No compilation errors found in main build")
-            PY
+          else:
+              for msg, url, line in errors:
+                  print("ERROR:", msg)
+                  if url:  print("  File:", url)
+                  if line: print("  Line:", line)
+                  print()
+PY
+          else
+            echo "No result bundle found at $RESULT"
           fi
             
       - name: Archive Build Artifacts
