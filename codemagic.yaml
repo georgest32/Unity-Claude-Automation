@@ -1,363 +1,46 @@
 workflows:
   ios-preview:
-    scripts:
-      - name: Build for iOS Simulator (No Code Signing)
-        script: |
-          xcodebuild -project iOS-App/AgentDashboard/AgentDashboard.xcodeproj \
-                     -scheme AgentDashboard \
-                     -sdk iphonesimulator \
-                     -configuration Debug \
-                     -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
-                     build
-      - name: Archive Build Artifacts for Preview
-        script: |
-          #!/usr/bin/env bash
-          set -euo pipefail
-          APP_DIR="$(find "$CM_BUILD_DIR/DerivedData/Build/Products/Debug-iphonesimulator" -maxdepth 1 -name '*.app' -print -quit)"
-          if [[ -z "${APP_DIR:-}" ]]; then
-            echo "❌ No simulator .app found in Debug-iphonesimulator"
-            exit 1
-          fi
-          echo "✅ Found simulator app: $APP_DIR"
-          (
-            cd "$(dirname "$APP_DIR")"
-            ZIP_PATH="$CM_ARTIFACTS/ios-simulator-app.zip"
-            /usr/bin/zip -qry "$ZIP_PATH" "$(basename "$APP_DIR")"
-            echo "📦 Created preview artifact: $ZIP_PATH"
-          )
-          echo "export CM_PREVIEW_IOS_ARTIFACT=$CM_ARTIFACTS/ios-simulator-app.zip" >> "$CM_ENV"
-  ios-tca-dashboard:
-    name: iOS TCA Dashboard Build  
-    max_build_duration: 120
-    instance_type: mac_mini_m2  # Required for Xcode 16.x
-    
+    name: AgentDashboard - iOS Simulator Preview
     environment:
+      xcode: 16.4
       vars:
         XCODE_PROJECT: "iOS-App/AgentDashboard/AgentDashboard.xcodeproj"
         XCODE_SCHEME: "AgentDashboard"
-        BUNDLE_ID: "com.unity.claude.automation.dashboard"
-        MACOSX_DEPLOYMENT_TARGET: "13.0"
-      # CRITICAL FIX: Upgrade to 16.4+ to support -enablePackageFeature for TCA macros
-      xcode: latest  
-      
-    triggering:
-      events:
-        - push
-        - tag
-        - pull_request
-      branch_patterns:
-        - pattern: 'main'
-          include: true
-          source: true
-          
+        DERIVED_DATA: "$CM_BUILD_DIR/DerivedData"
+
     scripts:
-      - name: Set environment for simulator builds
+      - name: Clean DerivedData (hygiene)
         script: |
-          export DEVELOPER_DIR=/Applications/Xcode.app
-          export SDKROOT=$(xcrun --sdk iphonesimulator --show-sdk-path)
-          export DYLD_ROOT_PATH="$SDKROOT"
-          echo "DEVELOPER_DIR=$DEVELOPER_DIR" >> $CM_ENV
-          echo "SDKROOT=$SDKROOT" >> $CM_ENV
-          echo "DYLD_ROOT_PATH=$DYLD_ROOT_PATH" >> $CM_ENV
-          
-      - name: Select iOS 18.5 simulator matching SDK
-        script: |
-          set -euo pipefail
-          
-          echo "=== Selecting iOS 18.5 simulator ==="
-          
-          # Get devices in JSON format and find iPhone 16 Pro with iOS 18.5
-          # The device list shows it exists with UDID: 04C96020-74CB-4B79-A7FD-AE5B1CBF7188
-          xcrun simctl list devices available -j > devices.json
-          
-          # Create Python script to parse the JSON
-          cat > find_sim.py << 'EOF'
-          import json, sys
-          with open('devices.json') as f:
-              j = json.load(f)
-          
-          runtime = "iOS-18-5"
-          prefs = ["iPhone 16 Pro", "iPhone 16 Pro Max", "iPhone 16", "iPhone 16 Plus"]
-          
-          candidates = []
-          for key, group in j.get("devices", {}).items():
-              if runtime in key or key.endswith(runtime):
-                  for d in group:
-                      if d.get("isAvailable", True) and not d.get("availabilityError"):
-                          candidates.append((d["name"], d["udid"]))
-          
-          for p in prefs:
-              for name, udid in candidates:
-                  if name == p:
-                      print(udid)
-                      sys.exit(0)
-          
-          if candidates:
-              print(candidates[0][1])
-              sys.exit(0)
-          
-          sys.exit(1)
-          EOF
-          
-          # Run the Python script to get UDID
-          UDID="$(python3 find_sim.py)" || {
-              echo "ERROR: Failed to find iOS 18.5 simulator!"
-              echo "Available simulators:"
-              xcrun simctl list devices
-              exit 1
-          }
-          
-          echo "Selected simulator UDID: $UDID"
-          echo "export SIM_UDID=$UDID" >> "$CM_ENV"
-          
-          # Boot the simulator
-          echo "Booting simulator..."
-          xcrun simctl boot "$UDID" || true
+          rm -rf "$DERIVED_DATA" || true
+          rm -rf "$HOME/Library/Developer/Xcode/DerivedData" || true
 
-      - name: Build with full diagnostics
-        script: |
-          set -o pipefail
-          source $CM_ENV
-          # Build with selected simulator using its UDID
-          xcodebuild \
-            -project iOS-App/AgentDashboard/AgentDashboard.xcodeproj \
-            -scheme AgentDashboard \
-            -sdk iphonesimulator \
-            -destination "id=$SIM_UDID" \
-            -configuration Debug \
-            -resolvePackageDependencies \
-            -skipMacroValidation \
-            -skipPackagePluginValidation \
-            -resultBundlePath "$CM_BUILD_DIR/build.xcresult" \
-            clean build \
-            | tee $CM_BUILD_DIR/xcodebuild.log || true
-
-      - name: Extract compiler errors from result bundle
-        script: |
-          RESULT="${CM_BUILD_DIR:-$PWD}/build.xcresult"
-          
-          if [ -d "$RESULT" ] || [ -f "$RESULT" ]; then
-            echo "=== Extracting compilation errors ==="
-            # Xcode 16.4+ uses 'get object' with --legacy flag
-            xcrun xcresulttool get object --legacy --path "$RESULT" --format json 2>/dev/null | python3 -c "
-          import json, sys, urllib.parse
-          try:
-              j = json.load(sys.stdin)
-          except:
-              print('No JSON data received from xcresulttool')
-              sys.exit(0)
-          
-          errors = []
-          def walk(x):
-              if isinstance(x, dict):
-                  # Check for error in multiple possible formats
-                  if (x.get('issueType') == 'error' or 
-                      (x.get('_type','').endswith('IssueSummary') and x.get('issueType') == 'error')):
-                      msg = x.get('message', {}).get('text', '') if isinstance(x.get('message'), dict) else x.get('message', '')
-                      loc = x.get('documentLocationInCreatingWorkspace', {}) or {}
-                      url = loc.get('url') or x.get('documentURL', '')
-                      if url.startswith('file://'):
-                          url = urllib.parse.unquote(url[7:])
-                      line = loc.get('line') or loc.get('startingLineNumber') or ''
-                      if msg:
-                          errors.append((msg.strip(), url, str(line) if line else ''))
-                  for v in x.values():
-                      walk(v)
-              elif isinstance(x, list):
-                  for v in x:
-                      walk(v)
-          
-          walk(j)
-          if not errors:
-              print('No compilation errors found in result bundle')
-          else:
-              print('=== Compilation Errors ===')
-              for i, (msg, url, line) in enumerate(errors, 1):
-                  print(f'{i}) {msg}')
-                  if url:  print(f'    File: {url}')
-                  if line: print(f'    Line: {line}')
-                  print()
-          " || true
-          else
-            echo "No result bundle found at $RESULT"
-          fi
-
-      - name: Dump Swift diagnostics
-        script: |
-          find ~/Library/Developer/Xcode/DerivedData -name "*.dia" -exec strings {} \; | tee $CM_BUILD_DIR/diagnostics.txt || true
-
-      - name: Grep APIClient errors from log
-        script: |
-          echo "=== APIClient.swift compilation context ==="
-          grep -n "APIClient.swift" $CM_BUILD_DIR/xcodebuild.log -C10 || true
-
-      - name: Skip Xcode Macro Fingerprint Validation
-        script: |
-          # Required for TCA macros to work in CI/CD environment 
-          # Research confirmed this resolves "CasePathsMacros must be enabled" errors
-          defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
-          
-      - name: Force Complete Cache Reset
-        script: |
-          # Comprehensive cache clearing to force fresh build with latest git changes
-          rm -rf ~/Library/Caches/org.swift.swiftpm
-          rm -rf ~/Library/Developer/Xcode/DerivedData
-          rm -rf ~/Library/org.swift.swiftpm  
-          rm -rf ~/.swiftpm/xcode/
-          rm -rf ~/Library/Caches/com.apple.dt.Xcode
-          # Verify git changes are present
-          cd iOS-App/AgentDashboard
-          echo "=== Current Git Status ==="
-          git log --oneline -3
-          echo "=== Verifying SystemStatus removal ==="
-          grep -n "struct SystemStatus" AgentDashboard/Models/Models.swift || echo "SystemStatus successfully removed from Models.swift"
-          echo "=== Force fresh checkout ==="  
-          git checkout HEAD -- AgentDashboard/Models/Models.swift
-          
       - name: Resolve Swift Package Dependencies (allow macros/plugins)
         script: |
-          # Fix working directory issue - use absolute paths
-          cd $CM_BUILD_DIR/iOS-App/AgentDashboard  
-          pwd
-          ls -la AgentDashboard.xcodeproj
-          # Resolve packages with macro/plugin validation skipped for CI
           xcodebuild -resolvePackageDependencies \
-            -project AgentDashboard.xcodeproj \
-            -scheme AgentDashboard \
-            -skipMacroValidation \
-            -skipPackagePluginValidation
-            
-      - name: Clean DerivedData to avoid stale state
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -skipMacroValidation
+
+      - name: Build .app for the iOS Simulator (no code signing)
         script: |
-          echo "Cleaning DerivedData to ensure fresh build..."
-          rm -rf ~/Library/Developer/Xcode/DerivedData
-            
-      - name: Build for iOS Simulator (No Code Signing)
-        script: |
-          # Fix working directory issue - use absolute paths
-          cd $CM_BUILD_DIR/iOS-App/AgentDashboard
-          # Load environment variables including SIM_UDID
-          source $CM_ENV
-          # CRITICAL: Set macOS 13.0 target for TCA macro host compilation
-          export MACOSX_DEPLOYMENT_TARGET=13.0
-          echo "Building with simulator ID: $SIM_UDID"
-          pwd
-          # Build using the same simulator UDID
+          set -x
           xcodebuild build \
-            -project AgentDashboard.xcodeproj \
-            -scheme AgentDashboard \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
             -sdk iphonesimulator \
-            -destination "id=$SIM_UDID" \
             -configuration Debug \
-            -skipMacroValidation \
-            -skipPackagePluginValidation \
-            -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
-            -resultBundlePath "$CM_BUILD_DIR/main-build.xcresult" \
-            CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO || true
-            
-      - name: Extract main build errors
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$DERIVED_DATA" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
+
+      - name: Sanity check - did the .app appear?
         script: |
-          RESULT="${CM_BUILD_DIR:-$PWD}/main-build.xcresult"
-          
-          if [ -d "$RESULT" ] || [ -f "$RESULT" ]; then
-            echo "=== Extracting main build errors ==="
-            # Xcode 16.4+ uses 'get object' with --legacy flag
-            xcrun xcresulttool get object --legacy --path "$RESULT" --format json 2>/dev/null | python3 -c "
-          import json, sys, urllib.parse
-          try:
-              j = json.load(sys.stdin)
-          except:
-              print('No JSON data received from xcresulttool')
-              sys.exit(0)
-          
-          errors = []
-          def walk(x):
-              if isinstance(x, dict):
-                  # Check for error in multiple possible formats
-                  if (x.get('issueType') == 'error' or 
-                      (x.get('_type','').endswith('IssueSummary') and x.get('issueType') == 'error')):
-                      msg = x.get('message', {}).get('text', '') if isinstance(x.get('message'), dict) else x.get('message', '')
-                      loc = x.get('documentLocationInCreatingWorkspace', {}) or {}
-                      url = loc.get('url') or x.get('documentURL', '')
-                      if url.startswith('file://'):
-                          url = urllib.parse.unquote(url[7:])
-                      line = loc.get('line') or loc.get('startingLineNumber') or ''
-                      if msg:
-                          errors.append((msg.strip(), url, str(line) if line else ''))
-                  for v in x.values():
-                      walk(v)
-              elif isinstance(x, list):
-                  for v in x:
-                      walk(v)
-          
-          walk(j)
-          if not errors:
-              print('No compilation errors found in main build')
-          else:
-              print('=== Main Build Compilation Errors ===')
-              for i, (msg, url, line) in enumerate(errors, 1):
-                  print(f'{i}) {msg}')
-                  if url:  print(f'    File: {url}')
-                  if line: print(f'    Line: {line}')
-                  print()
-          " || true
-          else
-            echo "No result bundle found at $RESULT"
+          APP_PATH="$(/usr/bin/find "$DERIVED_DATA/Build/Products/Debug-iphonesimulator" -maxdepth 1 -name '*.app' -print -quit)"
+          if [[ -z "${APP_PATH:-}" ]]; then
+            echo "❌ Build succeeded but no .app found in Debug-iphonesimulator"
+            exit 1
           fi
-            
-      - name: Archive Build Artifacts for Preview
-        script: |
-          cd $CM_BUILD_DIR
-          
-          # Find the .app in our custom DerivedData location
-          echo "=== Searching for built .app bundle ==="
-          APP_PATH=$(find "$CM_BUILD_DIR/DerivedData" -name "AgentDashboard.app" -type d | head -1)
-          
-          if [ ! -z "$APP_PATH" ]; then
-            echo "✅ Found app at: $APP_PATH"
-            
-            # Create a Payload directory for Codemagic preview
-            mkdir -p Payload
-            cp -r "$APP_PATH" Payload/
-            
-            # Create an IPA for better preview support
-            zip -r AgentDashboard.ipa Payload
-            
-            # Also keep the .app for direct access
-            mkdir -p artifacts
-            cp -r "$APP_PATH" artifacts/
-            mv AgentDashboard.ipa artifacts/
-            
-            echo "📱 iOS app successfully prepared for Codemagic preview!"
-            echo "Contents of artifacts:"
-            ls -la artifacts/
-          else
-            echo "⚠️ Build succeeded but .app bundle not found in DerivedData"
-            echo "Searching for .app in all possible locations..."
-            find "$CM_BUILD_DIR" -name "*.app" -type d 2>/dev/null | head -10
-          fi
-          
+          echo "✅ Found simulator app: $APP_PATH"
+
     artifacts:
-      - artifacts/*.ipa
-      - artifacts/*.app
-      - artifacts/**/*
-      - $CM_BUILD_DIR/DerivedData/**/Build/**/*.app
-      - $CM_BUILD_DIR/xcodebuild.log
-      - $CM_BUILD_DIR/diagnostics.txt
-      - $CM_BUILD_DIR/build.xcresult
-      - $CM_BUILD_DIR/main-build.xcresult
-      - $CM_BUILD_DIR/DerivedData/**/Build/**/*.dSYM
-      - /tmp/xcodebuild_logs/*.log
-      
-    publishing:
-      email:
-        recipients:
-          - developer@unity-claude-automation.com
-        notify:
-          success: true
-          failure: true
-      app_preview:
-        ios:
-          artifact: "$CM_ARTIFACTS/ios-simulator-app.zip"
+      - $CM_BUILD_DIR/DerivedData/Build/Products/Debug-iphonesimulator/*.app
