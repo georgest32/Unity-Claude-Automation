@@ -55,8 +55,8 @@ struct DashboardFeature: Sendable {
     }
     
     // MARK: - Dependencies
-    @Dependency(\.apiClient) var apiClient
     @Dependency(\.continuousClock) var clock
+    // Note: apiClient dependency to be added when APIClient is properly defined
     
     // MARK: - Reducer
     var body: some Reducer<State, Action> {
