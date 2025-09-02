@@ -2,6 +2,7 @@ import SwiftUI
 import ComposableArchitecture
 
 /// Sophisticated dashboard view with modular widget system
+@MainActor
 struct DashboardView: View {
     @Bindable var store: StoreOf<DashboardFeature>
     

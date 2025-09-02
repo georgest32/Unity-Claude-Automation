@@ -10,8 +10,9 @@ import ComposableArchitecture
 import Foundation
 
 @Reducer
-struct DashboardFeature {
+struct DashboardFeature: Sendable {
     // MARK: - State
+    @ObservableState
     struct State: Equatable {
         var systemStatus: SystemStatus?
         var agents: [Agent] = []
