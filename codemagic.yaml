@@ -53,8 +53,7 @@ workflows:
             find ~/Library/Developer/Xcode/DerivedData -path "*/Build/Products/*" -name "*.app" -type d | head -10
           fi
     artifacts:
-      - artifacts/**/AgentDashboard.app
-      - artifacts/**/*.ipa
+      - iOS-App/AgentDashboard/artifacts/**/*
     publishing:
       email:
         recipients:
