@@ -109,7 +109,7 @@ public struct Module: Identifiable, Codable, Equatable {
 // MARK: - Extensions
 
 extension SystemStatus {
-    public var healthStatus: HealthStatus {
+    public var healthStatus: SystemStatus.HealthStatus {
         if !isOnline || errorCount > 10 {
             return .critical
         } else if errorCount > 5 || warningCount > 20 {

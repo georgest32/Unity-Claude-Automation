@@ -129,22 +129,7 @@ struct ResourceUsage: Equatable, Codable {
 }
 
 // MARK: - Module Models
-
-struct Module: Equatable, Codable, Identifiable {
-    let id: UUID
-    let name: String
-    let version: String
-    let isLoaded: Bool
-    let dependencies: [String]
-    let lastModified: Date
-    
-    // Debug logging
-    func logInfo() {
-        print("[Module] Name: \(name) v\(version)")
-        print("[Module] Loaded: \(isLoaded)")
-        print("[Module] Dependencies: \(dependencies.joined(separator: ", "))")
-    }
-}
+// Note: Module struct is defined in Models/SystemStatus.swift to avoid duplication
 
 // MARK: - Command Models
 
