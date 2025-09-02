@@ -458,7 +458,7 @@ final class MockAPIClient: APIClientProtocol {
                 id: UUID().uuidString,
                 name: "Unity-Claude-Core",
                 version: "1.2.1",
-                status: .loaded,
+                status: .active,
                 loadTime: Date().addingTimeInterval(-86400),
                 dependencies: ["PowerShell.Core"]
             ),
@@ -466,7 +466,7 @@ final class MockAPIClient: APIClientProtocol {
                 id: UUID().uuidString,
                 name: "Unity-Claude-SystemStatus", 
                 version: "1.1.0",
-                status: .loaded,
+                status: .active,
                 loadTime: Date().addingTimeInterval(-3600),
                 dependencies: ["Unity-Claude-Core"]
             )
