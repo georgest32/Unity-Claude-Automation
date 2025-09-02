@@ -24,53 +24,91 @@ workflows:
           source: true
           
     scripts:
-      - name: Select an available iPhone simulator
+      - name: Set environment for simulator builds
+        script: |
+          export DEVELOPER_DIR=/Applications/Xcode.app
+          export SDKROOT=$(xcrun --sdk iphonesimulator --show-sdk-path)
+          export DYLD_ROOT_PATH="$SDKROOT"
+          echo "DEVELOPER_DIR=$DEVELOPER_DIR" >> $CM_ENV
+          echo "SDKROOT=$SDKROOT" >> $CM_ENV
+          echo "DYLD_ROOT_PATH=$DYLD_ROOT_PATH" >> $CM_ENV
+          
+      - name: Select iOS 18.5 simulator matching SDK
         script: |
           set -e
-          DEVICE_ID=$(xcrun simctl list devices available | \
-            awk -F '[()]' '/iPhone 1[4-9]|iPhone SE \(3rd generation\)/ {print $2; exit}')
-          if [ -z "$DEVICE_ID" ]; then
-            echo "No suitable iPhone simulator found"
-            exit 70
+          echo "=== Available iOS 18.5 simulators ==="
+          xcrun simctl list devices | grep "iOS 18" || true
+          
+          # Try to find iOS 18.5 simulator first, fall back to any iOS 18.x
+          DEVICE_NAME="iPhone 16 Pro"
+          OS_VERSION="18.5"
+          
+          # Check if specific version exists
+          if xcrun simctl list devices | grep -q "$DEVICE_NAME.*$OS_VERSION"; then
+            echo "Using $DEVICE_NAME with iOS $OS_VERSION"
+          else
+            # Fall back to latest iOS 18.x
+            OS_VERSION="18"
+            echo "iOS 18.5 not found, using latest iOS 18.x"
           fi
-          echo "Using simulator id: $DEVICE_ID"
-          xcrun simctl bootstatus "$DEVICE_ID" -b
-          echo "$DEVICE_ID" > $CM_BUILD_DIR/sim_id.txt
+          
+          # Boot the simulator
+          xcrun simctl boot "$DEVICE_NAME" || true
+          echo "SIMULATOR_NAME=$DEVICE_NAME" >> $CM_ENV
+          echo "SIMULATOR_OS=$OS_VERSION" >> $CM_ENV
 
       - name: Build with full diagnostics
         script: |
           set -o pipefail
-          DEVICE_ID=$(cat $CM_BUILD_DIR/sim_id.txt)
-          # Build with result bundle for better error capture
+          source $CM_ENV
+          # Build with iOS 18.5 simulator matching SDK
           xcodebuild \
             -project iOS-App/AgentDashboard/AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
             -sdk iphonesimulator \
-            -destination "id=$DEVICE_ID" \
+            -destination "platform=iOS Simulator,name=$SIMULATOR_NAME,OS=$SIMULATOR_OS" \
             -configuration Debug \
+            -resolvePackageDependencies \
             -skipMacroValidation \
             -skipPackagePluginValidation \
             -resultBundlePath "$CM_BUILD_DIR/build.xcresult" \
-            | tee $CM_BUILD_DIR/xcodebuild.log
+            clean build \
+            | tee $CM_BUILD_DIR/xcodebuild.log || true
 
       - name: Extract compiler errors from result bundle
         script: |
-          echo "=== Extracting Swift compiler errors ==="
-          xcrun xcresulttool get --path "$CM_BUILD_DIR/build.xcresult" --format json \
-            | python3 - <<'PY'
-          import json, sys
-          j=json.load(sys.stdin)
-          def walk(x):
-            if isinstance(x, dict):
-              if x.get('issueType') == 'error':
-                msg = x.get('message',{}).get('text','')
-                doc = x.get('documentLocationInCreatingWorkspace',{}).get('url','') or x.get('documentURL','')
-                print(msg, "\n->", doc, "\n")
-              for v in x.values(): walk(v)
-            elif isinstance(x, list):
-              for v in x: walk(v)
-          walk(j)
-          PY
+          if [ -f "$CM_BUILD_DIR/build.xcresult" ]; then
+            echo "=== Human-readable compiler errors ==="
+            xcrun xcresulttool get --format humanReadable --path "$CM_BUILD_DIR/build.xcresult" | sed -n '/Error:/,/^$/p' || true
+            
+            echo "=== Detailed JSON error extraction ==="
+            xcrun xcresulttool get --path "$CM_BUILD_DIR/build.xcresult" --format json \
+              | python3 - <<'PY'
+            import json, sys
+            j=json.load(sys.stdin)
+            errors_found = False
+            def walk(x):
+              global errors_found
+              if isinstance(x, dict):
+                if x.get('issueType') == 'error':
+                  errors_found = True
+                  msg = x.get('message',{}).get('text','')
+                  doc = x.get('documentLocationInCreatingWorkspace',{}).get('url','') or x.get('documentURL','')
+                  line = x.get('documentLocationInCreatingWorkspace',{}).get('line','')
+                  print(f"ERROR: {msg}")
+                  if doc: print(f"  File: {doc}")
+                  if line: print(f"  Line: {line}")
+                  print()
+                for v in x.values(): walk(v)
+              elif isinstance(x, list):
+                for v in x: walk(v)
+            walk(j)
+            if not errors_found:
+              print("No compilation errors found in result bundle")
+            PY
+          else
+            echo "No result bundle found at $CM_BUILD_DIR/build.xcresult"
+          fi
 
       - name: Dump Swift diagnostics
         script: |
@@ -126,18 +164,18 @@ workflows:
         script: |
           # Fix working directory issue - use absolute paths
           cd $CM_BUILD_DIR/iOS-App/AgentDashboard
+          # Load environment variables
+          source $CM_ENV
           # CRITICAL: Set macOS 13.0 target for TCA macro host compilation
           export MACOSX_DEPLOYMENT_TARGET=13.0
-          # Use the previously selected simulator
-          DEVICE_ID=$(cat $CM_BUILD_DIR/sim_id.txt)
-          echo "Building with simulator ID: $DEVICE_ID"
+          echo "Building with $SIMULATOR_NAME on iOS $SIMULATOR_OS"
           pwd
-          # Build with result bundle for error capture
+          # Build with iOS 18.5 simulator matching SDK
           xcodebuild build \
             -project AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
             -sdk iphonesimulator \
-            -destination "id=$DEVICE_ID" \
+            -destination "platform=iOS Simulator,name=$SIMULATOR_NAME,OS=$SIMULATOR_OS" \
             -configuration Debug \
             -skipMacroValidation \
             -skipPackagePluginValidation \
@@ -150,21 +188,34 @@ workflows:
       - name: Extract main build errors
         script: |
           if [ -d "$CM_BUILD_DIR/main-build.xcresult" ]; then
-            echo "=== Main build compiler errors ==="
-            xcrun xcresulttool get --path "$CM_BUILD_DIR/main-build.xcresult" --format json \
-              | python3 - <<'PY'
+            echo "=== Main build human-readable errors ==="
+            xcrun xcresulttool get --format humanReadable --path "$CM_BUILD_DIR/main-build.xcresult" | sed -n '/Error:/,/^$/p' || true
+            
+            echo "=== Main build detailed errors ==="
+            xcrun xcresulttool get --path "$CM_BUILD_DIR/main-build.xcresult" --format json > "$CM_BUILD_DIR/main-build.json"
+            python3 - <<'PY'
             import json, sys
-            j=json.load(sys.stdin)
+            with open("$CM_BUILD_DIR/main-build.json") as f:
+              j=json.load(f)
+            errors_found = False
             def walk(x):
+              global errors_found
               if isinstance(x, dict):
                 if x.get('issueType') == 'error':
+                  errors_found = True
                   msg = x.get('message',{}).get('text','')
                   doc = x.get('documentLocationInCreatingWorkspace',{}).get('url','') or x.get('documentURL','')
-                  print(msg, "\n->", doc, "\n")
+                  line = x.get('documentLocationInCreatingWorkspace',{}).get('line','')
+                  print(f"ERROR: {msg}")
+                  if doc: print(f"  File: {doc}")
+                  if line: print(f"  Line: {line}")
+                  print()
                 for v in x.values(): walk(v)
               elif isinstance(x, list):
                 for v in x: walk(v)
             walk(j)
+            if not errors_found:
+              print("No compilation errors found in main build")
             PY
           fi
             
