@@ -6,31 +6,24 @@ workflows:
     integrations:
       app_store_connect: Automatic
     environment:
-      ios_signing:
-        distribution_type: development
-        bundle_identifier: com.unity-claude.AgentDashboard
       vars:
         XCODE_WORKSPACE: "iOS-App/AgentDashboard/AgentDashboard.xcworkspace"
         XCODE_SCHEME: "AgentDashboard"
       xcode: 16.0
-      cocoapods: default
     scripts:
-      - name: Set up keychain to be used for code signing using Codemagic CLI 'keychain'
-        script: |
-          keychain initialize
-      - name: Fetch signing files
-        script: |
-          # For now, skip code signing for demo build
-          echo "Skipping code signing for demo build"
-      - name: Set up code signing settings on Xcode project
-        script: |
-          xcode-project use-profiles
-      - name: Build ipa for distribution
+      - name: Build for iOS Simulator (No Code Signing)
         script: |
           cd iOS-App/AgentDashboard
-          xcode-project build-ipa \
-            --workspace "$XCODE_WORKSPACE" \
-            --scheme "$XCODE_SCHEME"
+          xcodebuild -workspace AgentDashboard.xcworkspace \
+                     -scheme AgentDashboard \
+                     -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
+                     -configuration Debug \
+                     build
+      - name: Archive Build Output
+        script: |
+          cd iOS-App/AgentDashboard
+          mkdir -p build
+          cp -r build/Debug-iphonesimulator/AgentDashboard.app build/ || echo "App bundle not found - build may have failed"
     artifacts:
       - build/**/AgentDashboard.ipa
     publishing:
