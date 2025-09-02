@@ -47,45 +47,43 @@ workflows:
           # Get devices in JSON format
           JSON="$(xcrun simctl list devices available -j)"
           
-          # Parse JSON to find the best matching device
-          UDID="$(
-            python3 - "$RUNTIME" "${PREFERRED_NAMES[@]}" <<'PY'
+          # Parse JSON to find the best matching device - use python -c to avoid heredoc issues
+          UDID="$(echo "$JSON" | python3 -c "
 import json, sys
-runtime = sys.argv[1]
-prefs   = sys.argv[2:]
+runtime = '$RUNTIME'
+prefs = ['iPhone 16 Pro', 'iPhone 16 Pro Max', 'iPhone 16', 'iPhone 16 Plus']
 j = json.load(sys.stdin)
 
 candidates = []
-for key, group in j.get("devices", {}).items():
+for key, group in j.get('devices', {}).items():
     for d in group:
-        if not d.get("isAvailable", True): 
+        if not d.get('isAvailable', True): 
             continue
         # Check if this is an iOS 18.5 device
-        # The key format is like "com.apple.CoreSimulator.SimRuntime.iOS-18-5"
+        # The key format is like 'com.apple.CoreSimulator.SimRuntime.iOS-18-5'
         if runtime in key or key.endswith(runtime):
-            if d.get("availabilityError"): 
+            if d.get('availabilityError'): 
                 continue
-            candidates.append((d["name"], d["udid"]))
-            print(f"Found candidate: {d['name']} ({d['udid']})", file=sys.stderr)
+            candidates.append((d['name'], d['udid']))
+            print(f\"Found candidate: {d['name']} ({d['udid']})\", file=sys.stderr)
 
 # Prefer named devices in order
 for p in prefs:
     for name, udid in candidates:
         if name == p:
-            print(f"Selected preferred device: {name}", file=sys.stderr)
+            print(f'Selected preferred device: {name}', file=sys.stderr)
             print(udid)
             sys.exit(0)
 
 # Else use first available iOS 18.5 device
 if candidates:
-    print(f"Using first available: {candidates[0][0]}", file=sys.stderr)
+    print(f'Using first available: {candidates[0][0]}', file=sys.stderr)
     print(candidates[0][1])
     sys.exit(0)
 
-print("No iOS 18.5 devices found", file=sys.stderr)
+print('No iOS 18.5 devices found', file=sys.stderr)
 sys.exit(1)
-PY
-          )"
+          ")"
           
           if [[ -z "${UDID:-}" ]]; then
             echo "ERROR: No iOS 18.5 simulator found!"
