@@ -88,37 +88,36 @@ workflows:
               | awk '/[Ee]rror:|[Ee]rrors:/, /^$/' || true
           
             echo "=== Detailed JSON error extraction ==="
-            xcrun xcresulttool get --path "$RESULT" --format json \
-              | python3 - <<'PY'
-          import json, sys, urllib.parse
-          j = json.load(sys.stdin)
-          
-          errors = []
-          def walk(x):
-              if isinstance(x, dict):
-                  if x.get('issueType') == 'error':
-                      msg = x.get('message', {}).get('text', '')
-                      loc = x.get('documentLocationInCreatingWorkspace', {}) or {}
-                      url = loc.get('url') or x.get('documentURL', '')
-                      if url.startswith('file://'):
-                          url = urllib.parse.unquote(url.replace('file://', ''))
-                      line = loc.get('line') or loc.get('startingLineNumber') or ''
-                      errors.append((msg, url, line))
-                  for v in x.values():
-                      walk(v)
-              elif isinstance(x, list):
-                  for v in x:
-                      walk(v)
-          
-          walk(j)
-          if not errors:
-              print("No compilation errors found in result bundle")
-          else:
-              for msg, url, line in errors:
-                  print("ERROR:", msg)
-                  if url:  print("  File:", url)
-                  if line: print("  Line:", line)
-                  print()
+            xcrun xcresulttool get --path "$RESULT" --format json | python3 - <<'PY'
+import json, sys, urllib.parse
+j = json.load(sys.stdin)
+
+errors = []
+def walk(x):
+    if isinstance(x, dict):
+        if x.get('issueType') == 'error':
+            msg = x.get('message', {}).get('text', '')
+            loc = x.get('documentLocationInCreatingWorkspace', {}) or {}
+            url = loc.get('url') or x.get('documentURL', '')
+            if url.startswith('file://'):
+                url = urllib.parse.unquote(url.replace('file://', ''))
+            line = loc.get('line') or loc.get('startingLineNumber') or ''
+            errors.append((msg, url, line))
+        for v in x.values():
+            walk(v)
+    elif isinstance(x, list):
+        for v in x:
+            walk(v)
+
+walk(j)
+if not errors:
+    print("No compilation errors found in result bundle")
+else:
+    for msg, url, line in errors:
+        print("ERROR:", msg)
+        if url:  print("  File:", url)
+        if line: print("  Line:", line)
+        print()
 PY
           else
             echo "No result bundle found at $RESULT"
@@ -212,37 +211,36 @@ PY
               | awk '/[Ee]rror:|[Ee]rrors:/, /^$/' || true
             
             echo "=== Main build detailed errors ==="
-            xcrun xcresulttool get --path "$RESULT" --format json \
-              | python3 - <<'PY'
-          import json, sys, urllib.parse
-          j = json.load(sys.stdin)
-          
-          errors = []
-          def walk(x):
-              if isinstance(x, dict):
-                  if x.get('issueType') == 'error':
-                      msg = x.get('message', {}).get('text', '')
-                      loc = x.get('documentLocationInCreatingWorkspace', {}) or {}
-                      url = loc.get('url') or x.get('documentURL', '')
-                      if url.startswith('file://'):
-                          url = urllib.parse.unquote(url.replace('file://', ''))
-                      line = loc.get('line') or loc.get('startingLineNumber') or ''
-                      errors.append((msg, url, line))
-                  for v in x.values():
-                      walk(v)
-              elif isinstance(x, list):
-                  for v in x:
-                      walk(v)
-          
-          walk(j)
-          if not errors:
-              print("No compilation errors found in main build")
-          else:
-              for msg, url, line in errors:
-                  print("ERROR:", msg)
-                  if url:  print("  File:", url)
-                  if line: print("  Line:", line)
-                  print()
+            xcrun xcresulttool get --path "$RESULT" --format json | python3 - <<'PY'
+import json, sys, urllib.parse
+j = json.load(sys.stdin)
+
+errors = []
+def walk(x):
+    if isinstance(x, dict):
+        if x.get('issueType') == 'error':
+            msg = x.get('message', {}).get('text', '')
+            loc = x.get('documentLocationInCreatingWorkspace', {}) or {}
+            url = loc.get('url') or x.get('documentURL', '')
+            if url.startswith('file://'):
+                url = urllib.parse.unquote(url.replace('file://', ''))
+            line = loc.get('line') or loc.get('startingLineNumber') or ''
+            errors.append((msg, url, line))
+        for v in x.values():
+            walk(v)
+    elif isinstance(x, list):
+        for v in x:
+            walk(v)
+
+walk(j)
+if not errors:
+    print("No compilation errors found in main build")
+else:
+    for msg, url, line in errors:
+        print("ERROR:", msg)
+        if url:  print("  File:", url)
+        if line: print("  Line:", line)
+        print()
 PY
           else
             echo "No result bundle found at $RESULT"
