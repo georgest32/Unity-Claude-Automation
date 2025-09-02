@@ -1,0 +1,50 @@
+{
+  "version": "1.0.0",
+  "global": {
+    "createIssues": true,
+    "checkDuplicates": true, 
+    "duplicateSimilarityThreshold": 0.8,
+    "maxSearchResults": 100,
+    "autoCloseResolved": false
+  },
+  "repositories": {},
+  "unityProjects": {},
+  "templates": {
+    "compilationError": {
+      "title": "Unity {{errorCode}}: {{errorMessage}}",
+      "body": "## Unity Compilation Error\n\n### Error Details\n- **Error Code**: `{{errorCode}}`\n- **Message**: {{errorMessage}}\n- **File**: `{{scriptPath}}`\n- **Line**: {{lineNumber}}\n\n### Full Error Output\n```\n{{fullErrorText}}\n```\n\n{{#codeContext}}\n### Code Context\n```csharp\n{{codeContext}}\n```\n{{/codeContext}}\n\n### Environment\n- **Unity Version**: {{unityVersion}}\n- **Platform**: Windows\n- **Timestamp**: {{timestamp}}\n\n### Metadata\n<!-- Unity-Claude-Automation Generated Issue -->\n<!-- Error-Hash: {{errorSignature}} -->",
+      "labels": ["unity", "compilation-error", "automated"]
+    },
+    "runtimeError": {
+      "title": "Unity Runtime Error: {{errorMessage}}",
+      "body": "## Unity Runtime Error\n\n### Error Details\n- **Type**: Runtime Exception\n- **Message**: {{errorMessage}}\n- **Stack Trace**: \n```\n{{stackTrace}}\n```\n\n### Environment\n- **Unity Version**: {{unityVersion}}\n- **Platform**: Windows\n- **Timestamp**: {{timestamp}}\n\n### Metadata\n<!-- Unity-Claude-Automation Generated Issue -->\n<!-- Error-Hash: {{errorSignature}} -->",
+      "labels": ["unity", "runtime-error", "automated"]
+    },
+    "nullReferenceError": {
+      "title": "Unity Null Reference: {{errorMessage}}",
+      "body": "## Null Reference Exception\n\n### Error Details\n- **Component**: {{component}}\n- **Message**: {{errorMessage}}\n- **GameObject**: {{gameObject}}\n- **Scene**: {{sceneName}}\n\n### Stack Trace\n```\n{{stackTrace}}\n```\n\n### Environment\n- **Unity Version**: {{unityVersion}}\n- **Platform**: Windows\n- **Timestamp**: {{timestamp}}\n\n### Debugging Steps\n1. Check if the referenced component/object exists\n2. Verify initialization order in Start/Awake methods\n3. Check for missing component assignments in the Inspector\n\n### Metadata\n<!-- Unity-Claude-Automation Generated Issue -->\n<!-- Error-Hash: {{errorSignature}} -->",
+      "labels": ["unity", "null-reference", "runtime-error", "automated"]
+    }
+  },
+  "environments": {
+    "development": {
+      "global": {
+        "createIssues": true,
+        "maxSearchResults": 50
+      }
+    },
+    "testing": {
+      "global": {
+        "createIssues": false,
+        "checkDuplicates": true
+      }
+    },
+    "production": {
+      "global": {
+        "createIssues": true,
+        "duplicateSimilarityThreshold": 0.9,
+        "autoCloseResolved": true
+      }
+    }
+  }
+}

@@ -193,12 +193,30 @@ function Register-SubsystemFromManifest {
                 
                 # Prepare start parameters
                 $startParams = @{
-                    FilePath = "powershell.exe"
-                    ArgumentList = "-ExecutionPolicy Bypass -File `"$startScriptPath`""
+                    FilePath = "C:\Program Files\PowerShell\7\pwsh.exe"
                 }
                 
                 if ($manifestData.WorkingDirectory) {
                     $startParams.WorkingDirectory = $manifestData.WorkingDirectory
+                    # Convert script path to absolute path for proper resolution
+                    $absoluteScriptPath = $startScriptPath
+                    if (-not [System.IO.Path]::IsPathRooted($absoluteScriptPath)) {
+                        $absoluteScriptPath = Join-Path $manifestData.WorkingDirectory $startScriptPath
+                    }
+                    
+                    # Create a command that sets working directory and PSModulePath before executing script
+                    $workDir = $manifestData.WorkingDirectory
+                    $modulesPath = Join-Path $workDir "Modules"
+                    $command = @"
+Set-Location -Path '$workDir'
+`$env:PSModulePath = '$modulesPath;' + `$env:PSModulePath
+Write-Host 'WebhookNotificationService PWD:' `$PWD.Path
+Write-Host 'WebhookNotificationService PSModulePath:' (`$env:PSModulePath -split ';' | Select-Object -First 3)
+& '$absoluteScriptPath'
+"@
+                    $startParams.ArgumentList = "-ExecutionPolicy Bypass -NoProfile -Command `"$command`""
+                } else {
+                    $startParams.ArgumentList = "-ExecutionPolicy Bypass -File `"$startScriptPath`""
                 }
                 
                 if ($manifestData.WindowStyle) {
@@ -288,35 +306,36 @@ function Register-SubsystemFromManifest {
     }
 }
 # SIG # Begin signature block
-# MIIFqQYJKoZIhvcNAQcCoIIFmjCCBZYCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
-# gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU8MtB7rpzsSyQPlc1Fy1+/hAk
-# 3SCgggMwMIIDLDCCAhSgAwIBAgIQdR0W2SKoK5VE8JId4ZxrRTANBgkqhkiG9w0B
-# AQsFADAuMSwwKgYDVQQDDCNVbml0eS1DbGF1ZGUtQXV0b21hdGlvbi1EZXZlbG9w
-# bWVudDAeFw0yNTA4MjAyMTE1MTdaFw0yNjA4MjAyMTM1MTdaMC4xLDAqBgNVBAMM
-# I1VuaXR5LUNsYXVkZS1BdXRvbWF0aW9uLURldmVsb3BtZW50MIIBIjANBgkqhkiG
-# 9w0BAQEFAAOCAQ8AMIIBCgKCAQEAseH3qinVEOhrn2OLpjc5TNT4vGh1BkfB5X4S
-# FhY7K0QMQsYYnkZVmx3tB8PqVQXl++l+e3uT7uCscc7vjMTK8tDSWH98ji0U34WL
-# JBwXC62l1ArazMKp4Tyr7peksei7vL4pZOtOVgAyTYn5d1hbnsVQmCSTPRtpn7mC
-# Azfq2ec5qZ9Kgl7puPW5utvYfh8idtOWa5/WgYSKwOIvyZawIdZKLFpwqOtqbJe4
-# sWzVahasFhLfoAKkniKOAocJDkJexh5pO/EOSKEZ3mOCU1ZSs4XWRGISRhV3qGZp
-# f+Y3JlHKMeFDWKynaJBO8/GU5sqMATlDUvrByBtU2OQ2Um/L3QIDAQABo0YwRDAO
-# BgNVHQ8BAf8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUHAwMwHQYDVR0OBBYEFHw5
-# rOy6xlW6B45sJUsiI2A/yS0MMA0GCSqGSIb3DQEBCwUAA4IBAQAUTLH0+w8ysvmh
-# YuBw4NDKcZm40MTh9Zc1M2p2hAkYsgNLJ+/rAP+I74rNfqguTYwxpCyjkwrg8yF5
-# wViwggboLpF2yDu4N/dgDainR4wR8NVpS7zFZOFkpmNPepc6bw3d4yQKa/wJXKeC
-# pkRjS50N77/hfVI+fFKNao7POb7en5fcXuZaN6xWoTRy+J4I4MhfHpjZuxSLSXjb
-# VXtPD4RZ9HGjl9BU8162cRhjujr/Lc3/dY/6ikHQYnxuxcdxRew4nzaqAQaOeWu6
-# tGp899JPKfldM5Zay5IBl3zs15gNS9+0Jrd0ARQnSVYoI0DLh3KybFnfK4POezoN
-# Lp/dbX2SMYIB4zCCAd8CAQEwQjAuMSwwKgYDVQQDDCNVbml0eS1DbGF1ZGUtQXV0
-# b21hdGlvbi1EZXZlbG9wbWVudAIQdR0W2SKoK5VE8JId4ZxrRTAJBgUrDgMCGgUA
-# oHgwGAYKKwYBBAGCNwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYB
-# BAGCNwIBBDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0B
-# CQQxFgQU/LmlVQtUOzEjEbfodOtuxedgE/4wDQYJKoZIhvcNAQEBBQAEggEAIlxK
-# bpnCCe/HEQRdN7vVOOihG1I9+TVtDkcqznOyd3CJRhhKCJ+s4lCbVRYXMrVnK/xC
-# 3IBojd54I0yKvK26hrYyb+44lMY6DGq5tAViD7jD8uF6xwvqNWQfuRQlnnDzpsAN
-# jB2hyKf3xuqT39rXih90ynpNO9GpR9g4cuwFVlzMpSotiXMi++H97QClRrA8KumV
-# QVvnLVMqBKaAsvKsB1YDihTQGHFrZ2SjpVrVIy3U4ug9LvS6kFAdSdtxn4Y8schW
-# /6Kwj8nGDfEbK/guTM8Wj5asM+M5BiE+LHzTDPceo8xr13boikSJsTzsMupuEF0a
-# xXMCazqdOrE51mkrDw==
+# MIIFzgYJKoZIhvcNAQcCoIIFvzCCBbsCAQExDzANBglghkgBZQMEAgEFADB5Bgor
+# BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCDoVXha9mKfgbdp
+# 6KKTTrgJWMV4mX9rWSFMGfj2/cFI3aCCAzAwggMsMIICFKADAgECAhB1HRbZIqgr
+# lUTwkh3hnGtFMA0GCSqGSIb3DQEBCwUAMC4xLDAqBgNVBAMMI1VuaXR5LUNsYXVk
+# ZS1BdXRvbWF0aW9uLURldmVsb3BtZW50MB4XDTI1MDgyMDIxMTUxN1oXDTI2MDgy
+# MDIxMzUxN1owLjEsMCoGA1UEAwwjVW5pdHktQ2xhdWRlLUF1dG9tYXRpb24tRGV2
+# ZWxvcG1lbnQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCx4feqKdUQ
+# 6GufY4umNzlM1Pi8aHUGR8HlfhIWFjsrRAxCxhieRlWbHe0Hw+pVBeX76X57e5Pu
+# 4Kxxzu+MxMry0NJYf3yOLRTfhYskHBcLraXUCtrMwqnhPKvul6Sx6Lu8vilk605W
+# ADJNifl3WFuexVCYJJM9G2mfuYIDN+rZ5zmpn0qCXum49bm629h+HyJ205Zrn9aB
+# hIrA4i/JlrAh1kosWnCo62psl7ixbNVqFqwWEt+gAqSeIo4ChwkOQl7GHmk78Q5I
+# oRneY4JTVlKzhdZEYhJGFXeoZml/5jcmUcox4UNYrKdokE7z8ZTmyowBOUNS+sHI
+# G1TY5DZSb8vdAgMBAAGjRjBEMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUEDDAKBggr
+# BgEFBQcDAzAdBgNVHQ4EFgQUfDms7LrGVboHjmwlSyIjYD/JLQwwDQYJKoZIhvcN
+# AQELBQADggEBABRMsfT7DzKy+aFi4HDg0MpxmbjQxOH1lzUzanaECRiyA0sn7+sA
+# /4jvis1+qC5NjDGkLKOTCuDzIXnBWLCCBugukXbIO7g392ANqKdHjBHw1WlLvMVk
+# 4WSmY096lzpvDd3jJApr/Alcp4KmRGNLnQ3vv+F9Uj58Uo1qjs85vt6fl9xe5lo3
+# rFahNHL4ngjgyF8emNm7FItJeNtVe08PhFn0caOX0FTzXrZxGGO6Ov8tzf91j/qK
+# QdBifG7Fx3FF7DifNqoBBo55a7q0anz30k8p+V0zllrLkgGXfOzXmA1L37Qmt3QB
+# FCdJVigjQMuHcrJsWd8rg857Og0un91tfZIxggH0MIIB8AIBATBCMC4xLDAqBgNV
+# BAMMI1VuaXR5LUNsYXVkZS1BdXRvbWF0aW9uLURldmVsb3BtZW50AhB1HRbZIqgr
+# lUTwkh3hnGtFMA0GCWCGSAFlAwQCAQUAoIGEMBgGCisGAQQBgjcCAQwxCjAIoAKA
+# AKECgAAwGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEO
+# MAwGCisGAQQBgjcCARUwLwYJKoZIhvcNAQkEMSIEIKrelgShWnF8dow9x7u60Iee
+# al2aDF/LvxPdUIwNTWo7MA0GCSqGSIb3DQEBAQUABIIBAEomUD8Tel21Y8SH+DFe
+# Qn880+r8LFRfqVgbIbNxMJf/EnLm25/4wCS3ZokhDn1KlnwMMdCkoxr1HzWmT184
+# 8ldHwRBlylCa7s6QKBqsFEHABOtrqQ9SlqgOg4DZbo+2KqXnZzMSTq9h6S79ITHZ
+# i0Alzoraxx644GlFodiO3drpXm6XIK4ttuG6oCqC2JQyRBPmUNyqWCY2tw8Gnc0E
+# VHwbPMjcqkkZCSEgLYVMMagwrMhIiuHvjdO3nL0sqdrHt3Zb3QfBWXUeUcK9GXia
+# 35JE6mkXVyoisbherhz9MqBGlb46I8Ke6X5dJ9K5gDM+XIrbQwFpinSm0ikuZ7gy
+# IrE=
 # SIG # End signature block

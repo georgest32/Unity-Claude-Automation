@@ -81,6 +81,13 @@ function Initialize-SystemStatusMonitoring {
         if ($EnableCommunication) {
             Write-SystemStatusLog "Initializing Hour 2.5 Cross-Subsystem Communication Protocol..." -Level 'INFO'
             
+            # Initialize communication state object first
+            $communicationStateResult = Initialize-CommunicationState
+            if (-not $communicationStateResult) {
+                Write-SystemStatusLog "Failed to initialize communication state - disabling communication features" -Level 'WARN'
+                return $false
+            }
+            
             # Initialize cross-module engine events first
             $engineEventResult = Initialize-CrossModuleEvents
             if ($engineEventResult) {

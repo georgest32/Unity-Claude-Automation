@@ -109,17 +109,40 @@ function Test-GitHubIssueDuplicate {
             
             foreach ($query in $searchQueries) {
                 Write-Verbose "Searching with query: $query"
+                Write-Debug "TEST-DUPLICATE: About to call Search-GitHubIssues with query: $query"
                 
                 try {
+                    Write-Debug "TEST-DUPLICATE: Calling Search-GitHubIssues..."
                     $results = Search-GitHubIssues -Query $query -State $state -MaxResults 10
+                    Write-Debug "TEST-DUPLICATE: Search-GitHubIssues returned successfully"
                     
                     if ($results) {
                         Write-Verbose "Found $($results.Count) potential matches"
+                        Write-Debug "TEST-DUPLICATE: Adding $($results.Count) results to potentialDuplicates"
                         $potentialDuplicates += $results
+                    } else {
+                        Write-Debug "TEST-DUPLICATE: Search returned no results"
                     }
                 }
                 catch {
-                    Write-Warning "Search query failed: $_"
+                    Write-Debug "TEST-DUPLICATE: Caught exception from Search-GitHubIssues"
+                    Write-Debug "  Exception Type: $($_.GetType().FullName)"
+                    Write-Debug "  Exception Message: $($_.Exception.Message)"
+                    Write-Debug "  Full Error Object: $_"
+                    
+                    # Handle specific error types more gracefully
+                    if ($_.Exception.Message -match "422|Validation Failed|cannot be searched") {
+                        Write-Debug "TEST-DUPLICATE: Handling as expected 422/validation error"
+                        Write-Verbose "Repository not found or not accessible - this is expected for test repositories"
+                    } elseif ($_.Exception.Message -match "403|forbidden") {
+                        Write-Debug "TEST-DUPLICATE: Handling as expected 403/forbidden error"
+                        Write-Verbose "Access forbidden - insufficient permissions for repository search"
+                    } else {
+                        Write-Debug "TEST-DUPLICATE: Handling as unexpected error - will show warning"
+                        Write-Warning "Search query failed: $_"
+                    }
+                    
+                    Write-Debug "TEST-DUPLICATE: Error handling complete, continuing with next query"
                 }
                 
                 # Stop if we found exact signature match
@@ -234,3 +257,37 @@ function Test-GitHubIssueDuplicate {
         Write-Verbose "Completed Test-GitHubIssueDuplicate"
     }
 }
+# SIG # Begin signature block
+# MIIFzgYJKoZIhvcNAQcCoIIFvzCCBbsCAQExDzANBglghkgBZQMEAgEFADB5Bgor
+# BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCDsbi86rbbR/VL0
+# G5kz5xyL71GUchmMk9isFSsAP4capKCCAzAwggMsMIICFKADAgECAhB1HRbZIqgr
+# lUTwkh3hnGtFMA0GCSqGSIb3DQEBCwUAMC4xLDAqBgNVBAMMI1VuaXR5LUNsYXVk
+# ZS1BdXRvbWF0aW9uLURldmVsb3BtZW50MB4XDTI1MDgyMDIxMTUxN1oXDTI2MDgy
+# MDIxMzUxN1owLjEsMCoGA1UEAwwjVW5pdHktQ2xhdWRlLUF1dG9tYXRpb24tRGV2
+# ZWxvcG1lbnQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCx4feqKdUQ
+# 6GufY4umNzlM1Pi8aHUGR8HlfhIWFjsrRAxCxhieRlWbHe0Hw+pVBeX76X57e5Pu
+# 4Kxxzu+MxMry0NJYf3yOLRTfhYskHBcLraXUCtrMwqnhPKvul6Sx6Lu8vilk605W
+# ADJNifl3WFuexVCYJJM9G2mfuYIDN+rZ5zmpn0qCXum49bm629h+HyJ205Zrn9aB
+# hIrA4i/JlrAh1kosWnCo62psl7ixbNVqFqwWEt+gAqSeIo4ChwkOQl7GHmk78Q5I
+# oRneY4JTVlKzhdZEYhJGFXeoZml/5jcmUcox4UNYrKdokE7z8ZTmyowBOUNS+sHI
+# G1TY5DZSb8vdAgMBAAGjRjBEMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUEDDAKBggr
+# BgEFBQcDAzAdBgNVHQ4EFgQUfDms7LrGVboHjmwlSyIjYD/JLQwwDQYJKoZIhvcN
+# AQELBQADggEBABRMsfT7DzKy+aFi4HDg0MpxmbjQxOH1lzUzanaECRiyA0sn7+sA
+# /4jvis1+qC5NjDGkLKOTCuDzIXnBWLCCBugukXbIO7g392ANqKdHjBHw1WlLvMVk
+# 4WSmY096lzpvDd3jJApr/Alcp4KmRGNLnQ3vv+F9Uj58Uo1qjs85vt6fl9xe5lo3
+# rFahNHL4ngjgyF8emNm7FItJeNtVe08PhFn0caOX0FTzXrZxGGO6Ov8tzf91j/qK
+# QdBifG7Fx3FF7DifNqoBBo55a7q0anz30k8p+V0zllrLkgGXfOzXmA1L37Qmt3QB
+# FCdJVigjQMuHcrJsWd8rg857Og0un91tfZIxggH0MIIB8AIBATBCMC4xLDAqBgNV
+# BAMMI1VuaXR5LUNsYXVkZS1BdXRvbWF0aW9uLURldmVsb3BtZW50AhB1HRbZIqgr
+# lUTwkh3hnGtFMA0GCWCGSAFlAwQCAQUAoIGEMBgGCisGAQQBgjcCAQwxCjAIoAKA
+# AKECgAAwGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEO
+# MAwGCisGAQQBgjcCARUwLwYJKoZIhvcNAQkEMSIEIIggV6rGv+Nz5s1PTvX7KwK3
+# kzO9ZRvVmz3IKGwn6aXIMA0GCSqGSIb3DQEBAQUABIIBADqH29u8mpWUuPvvIFXT
+# k25dj4tJKWuW5ZEsYRPin/0PbcH5Qzddk3CCdPCFcSy8d1TnNBs6nfm/RkjaitHD
+# Soa8lT91YB7AIwwe/wpVcRN1U2JGA3cft+06dTPEofLGu/UKWvUzuo1l0VkSQ/6s
+# VX94fsAJOzJBVcGPNpPcrZqBeJT7c2iwus3rk1mQNdT3GuIJsK7vx3UdiH0Ro8T3
+# Y5yMzwnGAmv4yjQs5LBFFsuV8knS7YQmRA25YRIr7iQRJzMAEAwtZre2l8/Y3uRZ
+# iVxnN8p+yXrd1f9G3Q8TDqnu6gWjXo5MutIL7Uo6bfcuj8hge9lPkqxI0Th83UJY
+# FPY=
+# SIG # End signature block

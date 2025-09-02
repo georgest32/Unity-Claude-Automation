@@ -95,8 +95,8 @@ function Search-GitHubIssues {
                 throw "GitHub authentication not configured. Use Set-GitHubPAT to configure."
             }
             
-            # Get the PAT
-            $pat = Get-GitHubPAT
+            # Get the PAT internally (no warnings)
+            $pat = Get-GitHubPATInternal
             if (-not $pat) {
                 throw "Failed to retrieve GitHub Personal Access Token"
             }
@@ -205,13 +205,68 @@ function Search-GitHubIssues {
             return $allResults
         }
         catch {
-            # Log error
-            $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-            $logEntry = "[$timestamp] [ERROR] Search-GitHubIssues: Failed to search - $($_.Exception.Message)"
-            Add-Content -Path $logFile -Value $logEntry -ErrorAction SilentlyContinue
+            # Categorize errors appropriately
+            $statusCode = $null
+            $errorMessage = $_.Exception.Message
             
-            Write-Error "Failed to search GitHub issues: $_"
-            throw
+            # Debug logging for error analysis
+            Write-Debug "Search-GitHubIssues Error Debug:"
+            Write-Debug "  Exception Type: $($_.Exception.GetType().FullName)"
+            Write-Debug "  Exception Message: $errorMessage"
+            Write-Debug "  Has Response: $(if ($_.Exception.Response) { 'Yes' } else { 'No' })"
+            
+            # Try multiple ways to get status code
+            if ($_.Exception.Response) {
+                $statusCode = [int]$_.Exception.Response.StatusCode
+                Write-Debug "  Status Code: $statusCode"
+            } elseif ($errorMessage -match '\b(\d{3})\b') {
+                # Try to extract status code from error message
+                $statusCode = [int]$Matches[1]
+                Write-Debug "  Status Code (extracted): $statusCode"
+            }
+            
+            # Log error with appropriate severity
+            $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+            
+            # Add comprehensive debug logging
+            Write-Debug "SEARCH ERROR ANALYSIS START"
+            Write-Debug "  Full Error: $_"
+            Write-Debug "  Error Type: $($_.GetType().FullName)"
+            Write-Debug "  StatusCode Variable: $statusCode"
+            Write-Debug "  ErrorMessage Variable: $errorMessage" 
+            Write-Debug "  Testing Conditions:"
+            Write-Debug "    statusCode -eq 422: $(if ($statusCode -eq 422) { 'TRUE' } else { 'FALSE' })"
+            Write-Debug "    statusCode -eq 403: $(if ($statusCode -eq 403) { 'TRUE' } else { 'FALSE' })"
+            Write-Debug "    errorMessage matches 422|403: $(if ($errorMessage -match '422|403') { 'TRUE' } else { 'FALSE' })"
+            
+            # Handle expected vs unexpected errors differently
+            if ($statusCode -eq 422 -or $statusCode -eq 403 -or $errorMessage -match '422|403') {
+                Write-Debug "TAKING EXPECTED ERROR PATH (422/403)"
+                
+                # Expected errors (repository not found, access denied) - log as info, display as verbose
+                $logEntry = "[$timestamp] [INFO] Search-GitHubIssues: Search validation failed (expected for test repositories) - Status: $statusCode"
+                Add-Content -Path $logFile -Value $logEntry -ErrorAction SilentlyContinue
+                
+                Write-Verbose "GitHub search validation failed (Status: $statusCode) - This is expected for non-existent test repositories"
+                Write-Debug "EXPECTED ERROR - Using Write-Verbose output"
+                
+                # Still throw the exception for proper error propagation, but don't display as error
+                Write-Debug "EXPECTED ERROR - About to throw exception for propagation"
+                throw $_
+            }
+            else {
+                Write-Debug "TAKING UNEXPECTED ERROR PATH (NOT 422/403)"
+                
+                # Unexpected errors - log as error and display
+                $logEntry = "[$timestamp] [ERROR] Search-GitHubIssues: Unexpected search failure - $($_.Exception.Message)"
+                Add-Content -Path $logFile -Value $logEntry -ErrorAction SilentlyContinue
+                
+                Write-Debug "UNEXPECTED ERROR - Using Write-Error output"
+                Write-Error "Failed to search GitHub issues: $_"
+                throw
+            }
+            
+            Write-Debug "SEARCH ERROR ANALYSIS END"
         }
     }
     
@@ -219,3 +274,37 @@ function Search-GitHubIssues {
         Write-Verbose "Completed Search-GitHubIssues"
     }
 }
+# SIG # Begin signature block
+# MIIFzgYJKoZIhvcNAQcCoIIFvzCCBbsCAQExDzANBglghkgBZQMEAgEFADB5Bgor
+# BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCD8zKHcfQzyVAiD
+# 5sOYCsdnzGB5uHW86cBwODg4b59iTKCCAzAwggMsMIICFKADAgECAhB1HRbZIqgr
+# lUTwkh3hnGtFMA0GCSqGSIb3DQEBCwUAMC4xLDAqBgNVBAMMI1VuaXR5LUNsYXVk
+# ZS1BdXRvbWF0aW9uLURldmVsb3BtZW50MB4XDTI1MDgyMDIxMTUxN1oXDTI2MDgy
+# MDIxMzUxN1owLjEsMCoGA1UEAwwjVW5pdHktQ2xhdWRlLUF1dG9tYXRpb24tRGV2
+# ZWxvcG1lbnQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCx4feqKdUQ
+# 6GufY4umNzlM1Pi8aHUGR8HlfhIWFjsrRAxCxhieRlWbHe0Hw+pVBeX76X57e5Pu
+# 4Kxxzu+MxMry0NJYf3yOLRTfhYskHBcLraXUCtrMwqnhPKvul6Sx6Lu8vilk605W
+# ADJNifl3WFuexVCYJJM9G2mfuYIDN+rZ5zmpn0qCXum49bm629h+HyJ205Zrn9aB
+# hIrA4i/JlrAh1kosWnCo62psl7ixbNVqFqwWEt+gAqSeIo4ChwkOQl7GHmk78Q5I
+# oRneY4JTVlKzhdZEYhJGFXeoZml/5jcmUcox4UNYrKdokE7z8ZTmyowBOUNS+sHI
+# G1TY5DZSb8vdAgMBAAGjRjBEMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUEDDAKBggr
+# BgEFBQcDAzAdBgNVHQ4EFgQUfDms7LrGVboHjmwlSyIjYD/JLQwwDQYJKoZIhvcN
+# AQELBQADggEBABRMsfT7DzKy+aFi4HDg0MpxmbjQxOH1lzUzanaECRiyA0sn7+sA
+# /4jvis1+qC5NjDGkLKOTCuDzIXnBWLCCBugukXbIO7g392ANqKdHjBHw1WlLvMVk
+# 4WSmY096lzpvDd3jJApr/Alcp4KmRGNLnQ3vv+F9Uj58Uo1qjs85vt6fl9xe5lo3
+# rFahNHL4ngjgyF8emNm7FItJeNtVe08PhFn0caOX0FTzXrZxGGO6Ov8tzf91j/qK
+# QdBifG7Fx3FF7DifNqoBBo55a7q0anz30k8p+V0zllrLkgGXfOzXmA1L37Qmt3QB
+# FCdJVigjQMuHcrJsWd8rg857Og0un91tfZIxggH0MIIB8AIBATBCMC4xLDAqBgNV
+# BAMMI1VuaXR5LUNsYXVkZS1BdXRvbWF0aW9uLURldmVsb3BtZW50AhB1HRbZIqgr
+# lUTwkh3hnGtFMA0GCWCGSAFlAwQCAQUAoIGEMBgGCisGAQQBgjcCAQwxCjAIoAKA
+# AKECgAAwGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEO
+# MAwGCisGAQQBgjcCARUwLwYJKoZIhvcNAQkEMSIEII7nx66nBtK3QHtemSa0HKRv
+# R89WGFU7oEsj2/r+Rtq4MA0GCSqGSIb3DQEBAQUABIIBAGr499cGdpTqAFRHbmQr
+# 0OOYh8rPUoszRJEZoZd+PBX3Tzfp+hHkribaW4XoPb+EPr29m0HvSXLnAzpXvEgk
+# Yi5so8W3WEaKvoI+j8z7xYEaVoquzXQzM2MSeNkGAQEuqU1X4GIL9pAqu35g84mD
+# ayScJa6YPJFpOtEqczfhWiLVQbKWi9vqQI1uF/AAMQGbNblFJ1bPai7T4Vl8Gy+d
+# LBxT/eFGarnhh0jH5m2yorl+rwrGVyTqpkSxTU7McParHQx9t/Vs3e7A96aw94sQ
+# RJD4IUgm+FK+Oe5P8/qryatDTYV00uVTgFzY6thDSQxvsXK8A8wkYytOMw1X4kzj
+# ObE=
+# SIG # End signature block

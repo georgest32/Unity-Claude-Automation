@@ -1,0 +1,235 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://unity-claude-automation.com/schemas/github-integration.json",
+  "title": "Unity-Claude GitHub Integration Configuration",
+  "description": "Configuration schema for Unity-Claude GitHub integration system",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Configuration schema version",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "default": "1.0.0"
+    },
+    "global": {
+      "type": "object",
+      "description": "Global GitHub integration settings",
+      "properties": {
+        "defaultOwner": {
+          "type": "string",
+          "description": "Default GitHub repository owner/organization"
+        },
+        "defaultRepository": {
+          "type": "string", 
+          "description": "Default GitHub repository name"
+        },
+        "createIssues": {
+          "type": "boolean",
+          "description": "Enable automatic issue creation for Unity errors",
+          "default": true
+        },
+        "checkDuplicates": {
+          "type": "boolean",
+          "description": "Check for duplicate issues before creating new ones",
+          "default": true
+        },
+        "duplicateSimilarityThreshold": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Similarity threshold for duplicate detection (0.0-1.0)",
+          "default": 0.8
+        },
+        "maxSearchResults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000,
+          "description": "Maximum number of search results for duplicate detection",
+          "default": 100
+        },
+        "autoCloseResolved": {
+          "type": "boolean",
+          "description": "Automatically close issues when errors are resolved",
+          "default": false
+        }
+      },
+      "required": ["createIssues", "checkDuplicates"]
+    },
+    "repositories": {
+      "type": "object",
+      "description": "Repository-specific configurations",
+      "patternProperties": {
+        "^[^/]+/[^/]+$": {
+          "type": "object",
+          "description": "Configuration for specific repository (owner/repo)",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Enable GitHub integration for this repository",
+              "default": true
+            },
+            "labels": {
+              "type": "object",
+              "description": "Label configuration for this repository",
+              "properties": {
+                "default": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Default labels to apply to all issues",
+                  "default": ["unity", "automated"]
+                },
+                "errorTypeMapping": {
+                  "type": "object",
+                  "description": "Error type to label mapping",
+                  "properties": {
+                    "CS": {
+                      "type": "array",
+                      "items": {"type": "string"},
+                      "default": ["csharp", "compilation-error"]
+                    },
+                    "NullReference": {
+                      "type": "array", 
+                      "items": {"type": "string"},
+                      "default": ["null-reference", "runtime-error"]
+                    },
+                    "MissingComponent": {
+                      "type": "array",
+                      "items": {"type": "string"}, 
+                      "default": ["missing-component", "unity-specific"]
+                    }
+                  }
+                }
+              }
+            },
+            "assignees": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Default assignees for issues in this repository"
+            },
+            "milestone": {
+              "type": "integer",
+              "description": "Default milestone number for new issues"
+            },
+            "templates": {
+              "type": "object",
+              "description": "Issue template configuration",
+              "properties": {
+                "useCustomTemplates": {
+                  "type": "boolean",
+                  "description": "Use custom templates instead of default formatting",
+                  "default": false
+                },
+                "templateDirectory": {
+                  "type": "string",
+                  "description": "Directory containing custom issue templates",
+                  "default": "templates"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "unityProjects": {
+      "type": "object",
+      "description": "Unity project to repository mapping",
+      "patternProperties": {
+        "^.+$": {
+          "type": "object",
+          "description": "Unity project configuration",
+          "properties": {
+            "repositoryOwner": {
+              "type": "string",
+              "description": "GitHub repository owner for this Unity project"
+            },
+            "repositoryName": {
+              "type": "string",
+              "description": "GitHub repository name for this Unity project"
+            },
+            "enabled": {
+              "type": "boolean",
+              "description": "Enable GitHub integration for this Unity project",
+              "default": true
+            },
+            "errorFilters": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Error patterns to include/exclude for this project"
+            }
+          },
+          "required": ["repositoryOwner", "repositoryName"]
+        }
+      }
+    },
+    "templates": {
+      "type": "object",
+      "description": "Global issue template definitions",
+      "properties": {
+        "compilationError": {
+          "type": "object",
+          "description": "Template for compilation errors",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "Issue title template with variables",
+              "default": "Unity {{errorCode}}: {{errorMessage}}"
+            },
+            "body": {
+              "type": "string",
+              "description": "Issue body template with variables"
+            },
+            "labels": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Labels to apply to compilation error issues",
+              "default": ["unity", "compilation-error", "automated"]
+            }
+          }
+        },
+        "runtimeError": {
+          "type": "object",
+          "description": "Template for runtime errors",
+          "properties": {
+            "title": {
+              "type": "string",
+              "default": "Unity Runtime Error: {{errorMessage}}"
+            },
+            "body": {
+              "type": "string"
+            },
+            "labels": {
+              "type": "array",
+              "items": {"type": "string"},
+              "default": ["unity", "runtime-error", "automated"]
+            }
+          }
+        }
+      }
+    },
+    "environments": {
+      "type": "object",
+      "description": "Environment-specific overrides",
+      "properties": {
+        "development": {
+          "type": "object",
+          "description": "Development environment settings"
+        },
+        "testing": {
+          "type": "object", 
+          "description": "Testing environment settings"
+        },
+        "production": {
+          "type": "object",
+          "description": "Production environment settings"
+        }
+      }
+    }
+  },
+  "required": ["version", "global"]
+}
