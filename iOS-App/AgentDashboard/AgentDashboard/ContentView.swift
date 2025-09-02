@@ -12,28 +12,28 @@ struct ContentView: View {
                 }
                 .tag(Tab.dashboard)
             
-            AgentsView()
+            Text("Agents")
                 .tabItem {
                     Image(systemName: Tab.agents.iconName)
                     Text(Tab.agents.rawValue)
                 }
                 .tag(Tab.agents)
             
-            TerminalView()
+            Text("Terminal")
                 .tabItem {
                     Image(systemName: Tab.terminal.iconName)
                     Text(Tab.terminal.rawValue)
                 }
                 .tag(Tab.terminal)
             
-            AnalyticsView()
+            Text("Analytics")
                 .tabItem {
                     Image(systemName: Tab.analytics.iconName)
                     Text(Tab.analytics.rawValue)
                 }
                 .tag(Tab.analytics)
             
-            SettingsView()
+            Text("Settings")
                 .tabItem {
                     Image(systemName: Tab.settings.iconName)
                     Text(Tab.settings.rawValue)
