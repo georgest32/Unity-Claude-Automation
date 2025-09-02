@@ -107,6 +107,52 @@ packages/
 PS7Migration_*/
 *Migration_*/
 
+# Node.js dependencies (Visualization directory)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.npm
+
+# SARIF analysis files (CodeQL/AI analysis)
+*.sarif
+.ai/
+
+# .NET build outputs
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+
+# Python virtual environment
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Claude response files (too many)
+ClaudeResponses/Autonomous/*.json
+!ClaudeResponses/Autonomous/.gitkeep
+
+# Large log directories
+Logs/ErrorExport_*.md
+TestResults/*.txt
+TestResults/*.json
+
+# iOS build artifacts
+*.ipa
+*.app
+*.dSYM
+DerivedData/
+build/
+
+# Xcode user settings
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcworkspace/xcshareddata/
+
 # Keep important directories
 !Modules/
 !Documentation/
@@ -114,3 +160,4 @@ PS7Migration_*/
 !Research/
 !API-Integration/
 !CLI-Automation/
+!iOS-App/
