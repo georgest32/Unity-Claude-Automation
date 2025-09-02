@@ -32,9 +32,11 @@ let package = Package(
             dependencies: [
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 .product(name: "SwiftTerm", package: "SwiftTerm")
-            ]),
+            ],
+            path: "AgentDashboard"),
         .testTarget(
             name: "AgentDashboardTests",
-            dependencies: ["AgentDashboard"]),
+            dependencies: ["AgentDashboard"],
+            path: "AgentDashboardTests"),
     ]
 )
