@@ -1,4 +1,31 @@
 workflows:
+  ios-preview:
+    scripts:
+      - name: Build for iOS Simulator (No Code Signing)
+        script: |
+          xcodebuild -project iOS-App/AgentDashboard/AgentDashboard.xcodeproj \
+                     -scheme AgentDashboard \
+                     -sdk iphonesimulator \
+                     -configuration Debug \
+                     -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
+                     build
+      - name: Archive Build Artifacts for Preview
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          APP_DIR="$(find "$CM_BUILD_DIR/DerivedData/Build/Products/Debug-iphonesimulator" -maxdepth 1 -name '*.app' -print -quit)"
+          if [[ -z "${APP_DIR:-}" ]]; then
+            echo "❌ No simulator .app found in Debug-iphonesimulator"
+            exit 1
+          fi
+          echo "✅ Found simulator app: $APP_DIR"
+          (
+            cd "$(dirname "$APP_DIR")"
+            ZIP_PATH="$CM_ARTIFACTS/ios-simulator-app.zip"
+            /usr/bin/zip -qry "$ZIP_PATH" "$(basename "$APP_DIR")"
+            echo "📦 Created preview artifact: $ZIP_PATH"
+          )
+          echo "export CM_PREVIEW_IOS_ARTIFACT=$CM_ARTIFACTS/ios-simulator-app.zip" >> "$CM_ENV"
   ios-tca-dashboard:
     name: iOS TCA Dashboard Build  
     max_build_duration: 120
@@ -331,3 +358,6 @@ workflows:
         notify:
           success: true
           failure: true
+      app_preview:
+        ios:
+          artifact: "$CM_ARTIFACTS/ios-simulator-app.zip"
