@@ -1,0 +1,41 @@
+{
+    "Manual":  {
+                   "OutputPath":  ".\\Documentation\\Generated",
+                   "LogActivity":  true,
+                   "Enabled":  true
+               },
+    "FileWatcher":  {
+                        "FileExtensions":  [
+                                               ".ps1",
+                                               ".psm1",
+                                               ".py",
+                                               ".cs",
+                                               ".js",
+                                               ".ts"
+                                           ],
+                        "BufferSize":  8192,
+                        "NotifyFilters":  [
+                                              "LastWrite",
+                                              "CreationTime",
+                                              "FileName"
+                                          ],
+                        "IncludeSubdirectories":  true,
+                        "WatchPaths":  [
+                                           ".\\"
+                                       ],
+                        "ThrottleSeconds":  5,
+                        "Enabled":  true
+                    },
+    "Scheduled":  {
+                      "IntervalMinutes":  60,
+                      "RunOnStartup":  false,
+                      "Enabled":  false
+                  },
+    "GitHooks":  {
+                     "PrePush":  false,
+                     "PreCommit":  true,
+                     "HooksPath":  ".git\\hooks",
+                     "PostCommit":  false,
+                     "Enabled":  true
+                 }
+}

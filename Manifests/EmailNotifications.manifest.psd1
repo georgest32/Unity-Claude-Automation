@@ -8,6 +8,7 @@
     Version = "1.0.0"
     Description = "Email notification service for Unity-Claude autonomous operations with SMTP integration and retry logic"
     StartScript = ".\Start-EmailNotificationService.ps1"
+    WorkingDirectory = "C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation"
     
     # Dependencies - requires SystemMonitoring for configuration and logging
     Dependencies = @("SystemMonitoring")

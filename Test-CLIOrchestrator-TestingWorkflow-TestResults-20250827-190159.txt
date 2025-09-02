@@ -1,0 +1,100 @@
+﻿====================================
+Test Execution Report
+====================================
+
+Test Script: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\.\Test-CLIOrchestrator-TestingWorkflow.ps1
+Execution Time: 2025-08-27 19:02:02
+Duration: 1.96 seconds
+Exit Code: 1
+Status: FAILED
+
+Test Output:
+============
+================================================================
+  CLIOrchestrator Testing Workflow Validation
+  Started: 2025-08-27 19:02:02
+================================================================
+
+Preparing test environment...
+
+Testing: Module Import
+WARNING: The names of some imported commands from the module 'Unity-Claude-CLIOrchestrator' include unapproved verbs 
+that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again
+ with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+  [PASS] Module Import
+Testing: Core Functions Availability
+  [PASS] Core Functions Availability
+Testing: Response Directory Setup
+  [PASS] Response Directory Setup
+Testing: Create Test Response File
+    Response file created: .\ClaudeResponses\Autonomous\test_workflow_20250827_190202.json
+  [PASS] Create Test Response File
+Testing: Process Response File
+Processing response file: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\ClaudeResponses\Autonomous\test_workflow_20250827_190202.json
+Response processing completed
+    Prompt Type: Testing
+    Test Details: .\Test-CLIOrchestrator-Simple.ps1
+    Recommendations: 1
+    Next Actions: 1
+  [PASS] Process Response File
+Testing: Autonomous Decision Making
+    Making autonomous decision...
+      Decision: EXECUTE_TEST
+      Confidence: 85%
+      Test Path: .\Test-CLIOrchestrator-Simple.ps1
+    Decision: EXECUTE_TEST
+    Confidence: 85%
+    Test Path: .\Test-CLIOrchestrator-Simple.ps1
+  [PASS] Autonomous Decision Making
+Testing: Execute-TestInWindow Script Exists
+    Test runner found at: .\Execute-TestInWindow.ps1
+  [PASS] Execute-TestInWindow Script Exists
+Testing: Signal File Creation and Processing
+  [ERROR] Signal File Creation and Processing : The process cannot access the file 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\ClaudeResponses\Autonomous\TestComplete_20250827_190202.signal' because it is being used by another process.
+Testing: Claude Window Detection (Optional)
+Simulating Claude window detection...
+    Claude window found: 
+  [PASS] Claude Window Detection (Optional)
+Testing: End-to-End Workflow Simulation
+    Simulating complete Testing workflow...
+      1. Created response file
+Processing response file: .\ClaudeResponses\Autonomous\e2e_test_20250827_190202.json
+Response processing completed
+      2. Processed response (Type: Testing)
+    Making autonomous decision...
+      Decision: EXECUTE_TEST
+      Confidence: 85%
+      Test Path: .\Test-CLIOrchestrator-Simple.ps1
+      3. Decision made: EXECUTE_TEST
+      4. Would execute test: True
+  [PASS] End-to-End Workflow Simulation
+
+================================================================
+  Test Results Summary
+================================================================
+
+Total Tests: 10
+Passed: 9
+Failed: 1
+
+Test Details:
+  [PASS] Module Import
+  [PASS] Core Functions Availability
+  [PASS] Response Directory Setup
+  [PASS] Create Test Response File
+  [PASS] Process Response File
+  [PASS] Autonomous Decision Making
+  [PASS] Execute-TestInWindow Script Exists
+  [ERROR] Signal File Creation and Processing : The process cannot access the file 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\ClaudeResponses\Autonomous\TestComplete_20250827_190202.signal' because it is being used by another process.
+  [PASS] Claude Window Detection (Optional)
+  [PASS] End-to-End Workflow Simulation
+
+ISSUES FOUND: 1 test(s) failed
+Please review the failed tests above.
+
+Test completed at: 2025-08-27 19:02:02
+================================================================
+
+====================================
+End of Test Report
+====================================

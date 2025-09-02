@@ -1,0 +1,425 @@
+=== WEEK 2 DAY 3 SEMANTIC ANALYSIS TEST SUITE ===
+Testing pattern detection and quality metrics implementations
+
+=== POWERSHELL ENVIRONMENT INFORMATION ===
+PowerShell Version: 5.1.22621.5697
+PowerShell Edition: Desktop
+PowerShell Host: ConsoleHost
+Operating System: 
+Platform: 
+Execution Policy: 
+Debug Preference: Continue
+
+=== LOADING SEMANTIC ANALYSIS MODULES ===
+DEBUG: [TEST] Starting: Load PatternDetector module
+[PASS] Load PatternDetector module
+DEBUG: [TEST] Starting: Load Metrics module
+[PASS] Load Metrics module
+
+=== TESTING PATTERN DETECTION FUNCTIONS ===
+DEBUG: [TEST] Starting: PowerShell 5.1 function syntax validation
+DEBUG: [TEST] Testing simple function syntax with PowerShell 5.1.22621.5697
+DEBUG: [TEST] Function content: function Get-TestInstance {
+    param()
+    if (-not ) {
+         = "TestInstance"
+    }
+    return 
+}
+
+function New-TestObject {
+    param([string] )
+    return @{ Type = ; Created = Get-Date }
+}
+DEBUG: [TEST] Direct parse errors: 4
+DEBUG: [TEST] Parse error: Missing expression after unary operator '-not'. at line 3
+DEBUG: [TEST] Parse error: Parameter declarations are a comma-separated list of variable names with optional 
+initializer expressions. at line 10
+DEBUG: [TEST] Parse error: Missing ')' in function parameter list. at line 10
+DEBUG: [TEST] Parse error: Missing statement after '=' in hash literal. at line 11
+DEBUG: [TEST] Failed: PowerShell 5.1 function syntax validation - Result: False
+[FAIL] PowerShell 5.1 function syntax validation
+DEBUG: [TEST] Starting: PowerShell AST parsing functionality
+DEBUG: [TEST] File-based AST test - PowerShell Version: 5.1.22621.5697
+DEBUG: [TEST] Content to write: class TestSingleton {
+    hidden static [TestSingleton] 
+    
+    hidden TestSingleton() {}
+    
+    static [TestSingleton] GetInstance() {
+        if (-not [TestSingleton]::Instance) {
+            [TestSingleton]::Instance = [TestSingleton]::new()
+        }
+        return [TestSingleton]::Instance
+    }
+}
+DEBUG: [TEST] File written successfully, size: 320 bytes
+DEBUG: [TEST] File content matches: False
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestClass.ps1
+WARNING: [AST] Parse errors found in C:\Users\georg\AppData\Local\Temp\TestClass.ps1
+DEBUG: [AST] PowerShell Version: 5.1.22621.5697 Edition: Desktop
+DEBUG: [AST] File content length: 320 characters
+DEBUG: [AST] First 200 characters of content: class TestSingleton {
+    hidden static [TestSingleton] 
+    
+    hidden TestSingleton() {}
+    
+    static [TestSingleton] GetInstance() {
+        if (-not [TestSingleton]::Instance) {
+       
+DEBUG: [AST] Parse error: Duplicate 'hidden' qualifier at line 4 column 5
+DEBUG: [AST] Error extent: hidden
+DEBUG: [AST] Parse error: A constructor cannot specify a return type. at line 2 column 19
+DEBUG: [AST] Error extent: [TestSingleton]
+DEBUG: [AST] Parse error: Not all code path returns value within method. at line 4 column 12
+DEBUG: [AST] Error extent: TestSingleton
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestClass.ps1 - AST nodes: 35
+DEBUG: [TEST] AST Result: AST=True, ParseErrors=3
+DEBUG: [TEST] Specific parse error details:
+DEBUG: [TEST]   Error: Duplicate 'hidden' qualifier
+DEBUG: [TEST]   Location: Line 4, Column 5
+DEBUG: [TEST]   Text: 'hidden'
+DEBUG: [TEST]   Error: A constructor cannot specify a return type.
+DEBUG: [TEST]   Location: Line 2, Column 19
+DEBUG: [TEST]   Text: '[TestSingleton]'
+DEBUG: [TEST]   Error: Not all code path returns value within method.
+DEBUG: [TEST]   Location: Line 4, Column 12
+DEBUG: [TEST]   Text: 'TestSingleton'
+DEBUG: [TEST] Failed: PowerShell AST parsing functionality - Result: False
+[FAIL] PowerShell AST parsing functionality
+DEBUG: [TEST] Starting: PowerShell 5.1 compatible pattern detection
+DEBUG: [TEST] Testing PowerShell 5.1 compatible pattern detection
+DEBUG: [PATTERN] PS5.1 - Starting function-based pattern detection for: dummy.ps1
+DEBUG: [PATTERN] PS5.1 - Testing with simple function syntax instead of classes
+DEBUG: [AST] PS5.1 Compatible - Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestFunctions.ps1
+DEBUG: [AST] PS5.1 - Content length: 351 characters
+DEBUG: [AST] PS5.1 - PowerShell Version: 5.1.22621.5697
+WARNING: [AST] PS5.1 - Parse errors found in C:\Users\georg\AppData\Local\Temp\TestFunctions.ps1
+DEBUG: [AST] PS5.1 - Parse error: Missing expression after unary operator '-not'.
+DEBUG: [AST] PS5.1 - Error location: Line 3, Column 13
+DEBUG: [AST] PS5.1 - Error text: ''
+DEBUG: [AST] PS5.1 - Parse error: Parameter declarations are a comma-separated list of variable names with optional 
+initializer expressions.
+DEBUG: [AST] PS5.1 - Error location: Line 10, Column 19
+DEBUG: [AST] PS5.1 - Error text: ''
+DEBUG: [AST] PS5.1 - Parse error: Missing ')' in function parameter list.
+DEBUG: [AST] PS5.1 - Error location: Line 10, Column 19
+DEBUG: [AST] PS5.1 - Error text: ''
+DEBUG: [AST] PS5.1 - Parse error: A switch statement must have one of the following:  '-file file_name' or '( 
+expression )'.
+DEBUG: [AST] PS5.1 - Error location: Line 11, Column 13
+DEBUG: [AST] PS5.1 - Error text: ''
+DEBUG: [AST] PS5.1 - Successfully parsed C:\Users\georg\AppData\Local\Temp\TestFunctions.ps1 - AST nodes: 66
+DEBUG: [PATTERN] PS5.1 - Function syntax parsing failed
+DEBUG: [TEST] Pattern detection completed, found 0 patterns
+[PASS] PowerShell 5.1 compatible pattern detection
+DEBUG: [TEST] Starting: Factory pattern detection
+DEBUG: [PATTERN] Starting pattern detection for: C:\Users\georg\AppData\Local\Temp\TestFactory.ps1
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestFactory.ps1
+WARNING: [AST] Parse errors found in C:\Users\georg\AppData\Local\Temp\TestFactory.ps1
+DEBUG: [AST] PowerShell Version: 5.1.22621.5697 Edition: Desktop
+DEBUG: [AST] File content length: 422 characters
+DEBUG: [AST] First 200 characters of content: class CarFactory {
+    static [object] CreateCar([string] ) {
+        switch () {
+            "Sedan" { return [Sedan]::new() }
+            "SUV" { return [SUV]::new() }
+            default { ret
+DEBUG: [AST] Parse error: Parameter declarations are a comma-separated list of variable names with optional initializer
+ expressions. at line 2 column 39
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Missing ')' in function parameter list. at line 2 column 39
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Unexpected token 'PatternDetection' in expression or statement. at line 10 column 41
+DEBUG: [AST] Error extent: PatternDetection
+DEBUG: [AST] Parse error: Missing closing ')' in expression. at line 10 column 40
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Unexpected token ')' in expression or statement. at line 10 column 57
+DEBUG: [AST] Error extent: )
+DEBUG: [AST] Parse error: Missing ')' in method call. at line 11 column 31
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Unexpected token 'PatternDetection' in expression or statement. at line 11 column 31
+DEBUG: [AST] Error extent: PatternDetection
+DEBUG: [AST] Parse error: Missing closing '}' in statement block or type definition. at line 10 column 59
+DEBUG: [AST] Error extent: {
+DEBUG: [AST] Parse error: Unexpected token ')' in expression or statement. at line 11 column 47
+DEBUG: [AST] Error extent: )
+DEBUG: [AST] Parse error: Unexpected token '}' in expression or statement. at line 12 column 5
+DEBUG: [AST] Error extent: }
+DEBUG: [AST] Parse error: Unexpected token '}' in expression or statement. at line 13 column 1
+DEBUG: [AST] Error extent: }
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestFactory.ps1 - AST nodes: 33
+DEBUG: [AST] Finding class definitions in AST
+DEBUG: [AST] Found class: Car with 0 methods, 0 properties
+DEBUG: [AST] Found class: Sedan with 0 methods, 0 properties
+DEBUG: [AST] Found class: SUV with 0 methods, 0 properties
+DEBUG: [AST] Finding function definitions in AST
+DEBUG: [PATTERN] Found 3 classes and 0 functions
+DEBUG: [PATTERN] Analyzing class: Car
+DEBUG: [PATTERN] Testing Factory pattern for class: Car
+DEBUG: [PATTERN] Created pattern match for Factory at Car with 0% confidence
+DEBUG: [PATTERN] Analyzing class: Sedan
+DEBUG: [PATTERN] Testing Factory pattern for class: Sedan
+DEBUG: [PATTERN] Created pattern match for Factory at Sedan with 0% confidence
+DEBUG: [PATTERN] Analyzing class: SUV
+DEBUG: [PATTERN] Testing Factory pattern for class: SUV
+DEBUG: [PATTERN] Created pattern match for Factory at SUV with 0% confidence
+DEBUG: [PATTERN] Pattern detection complete: 0 patterns detected
+DEBUG: [TEST] Failed: Factory pattern detection - Result: False
+[FAIL] Factory pattern detection
+
+=== TESTING QUALITY METRICS FUNCTIONS ===
+DEBUG: [TEST] Starting: CHM cohesion calculation
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestCohesion.ps1
+WARNING: [AST] Parse errors found in C:\Users\georg\AppData\Local\Temp\TestCohesion.ps1
+DEBUG: [AST] PowerShell Version: 5.1.22621.5697 Edition: Desktop
+DEBUG: [AST] File content length: 521 characters
+DEBUG: [AST] First 200 characters of content: class Calculator {
+    [double] Add([double] , [double] ) {
+        return .PerformCalculation(, , "Add")
+    }
+    
+    [double] Subtract([double] , [double] ) {
+        return .PerformCalculat
+DEBUG: [AST] Parse error: Parameter declarations are a comma-separated list of variable names with optional initializer
+ expressions. at line 2 column 26
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Missing ')' in function parameter list. at line 2 column 26
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Unexpected token 'Subtract' in expression or statement. at line 6 column 14
+DEBUG: [AST] Error extent: Subtract
+DEBUG: [AST] Parse error: A switch statement must have one of the following:  '-file file_name' or '( expression )'. at
+ line 11 column 17
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Missing expression after unary operator '+'. at line 12 column 30
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Missing expression after unary operator '-'. at line 13 column 35
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Unexpected token 'LogResult' in expression or statement. at line 18 column 12
+DEBUG: [AST] Error extent: LogResult
+DEBUG: [AST] Parse error: Unexpected token '}' in expression or statement. at line 21 column 1
+DEBUG: [AST] Error extent: }
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestCohesion.ps1 - AST nodes: 78
+DEBUG: [AST] Finding class definitions in AST
+DEBUG: [TEST] Failed: CHM cohesion calculation - Result: False
+[FAIL] CHM cohesion calculation
+DEBUG: [TEST] Starting: CHD domain cohesion calculation
+DEBUG: [METRICS] Calculating CHD (Cohesion at Domain Level) for module with 5 functions
+DEBUG: [METRICS] CHD calculated: 0.8 (Domain: 4/5, Entropy: 1.186)
+[PASS] CHD domain cohesion calculation
+DEBUG: [TEST] Starting: CBO coupling analysis
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestCoupling.ps1
+WARNING: [AST] Parse errors found in C:\Users\georg\AppData\Local\Temp\TestCoupling.ps1
+DEBUG: [AST] PowerShell Version: 5.1.22621.5697 Edition: Desktop
+DEBUG: [AST] File content length: 363 characters
+DEBUG: [AST] First 200 characters of content: class OrderService {
+    [Customer] 
+    [PaymentProcessor] 
+    
+    [bool] ProcessOrder([Order] ) {
+         = [Customer]::new()
+         = [PaymentProcessor]::new()
+        return .ProcessPa
+DEBUG: [AST] Parse error: Only one type may be specified on class members. at line 3 column 5
+DEBUG: [AST] Error extent: [PaymentProcessor]
+DEBUG: [AST] Parse error: Only one type may be specified on class members. at line 5 column 5
+DEBUG: [AST] Error extent: [bool]
+DEBUG: [AST] Parse error: Parameter declarations are a comma-separated list of variable names with optional initializer
+ expressions. at line 5 column 32
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Missing ')' in function parameter list. at line 5 column 32
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Unexpected token '}' in expression or statement. at line 10 column 1
+DEBUG: [AST] Error extent: }
+DEBUG: [AST] Parse error: Missing a property name or method definition. at line 13 column 13
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Parameter declarations are a comma-separated list of variable names with optional initializer
+ expressions. at line 17 column 35
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Missing ')' in function parameter list. at line 17 column 35
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Unexpected token '}' in expression or statement. at line 20 column 1
+DEBUG: [AST] Error extent: }
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestCoupling.ps1 - AST nodes: 8
+DEBUG: [AST] Finding class definitions in AST
+DEBUG: [TEST] Failed: CBO coupling analysis - Result: False
+[FAIL] CBO coupling analysis
+DEBUG: [TEST] Starting: Enhanced Maintainability Index
+DEBUG: [METRICS] Calculating Enhanced Maintainability Index
+DEBUG: [METRICS] Maintainability Index: Standard=83, Enhanced=89
+[PASS] Enhanced Maintainability Index
+DEBUG: [TEST] Starting: Comprehensive quality analysis
+DEBUG: [METRICS] Starting comprehensive quality analysis for: C:\Users\georg\AppData\Local\Temp\TestQuality.ps1
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestQuality.ps1
+WARNING: [AST] Parse errors found in C:\Users\georg\AppData\Local\Temp\TestQuality.ps1
+DEBUG: [AST] PowerShell Version: 5.1.22621.5697 Edition: Desktop
+DEBUG: [AST] File content length: 579 characters
+DEBUG: [AST] First 200 characters of content: class DataManager {
+    [string] 
+    [hashtable] 
+    
+    DataManager() {
+        .cache = @{}
+        .connectionString = "default"
+    }
+    
+    [object] GetData([string] ) {
+        if
+DEBUG: [AST] Parse error: Only one type may be specified on class members. at line 3 column 5
+DEBUG: [AST] Error extent: [hashtable]
+DEBUG: [AST] Parse error: Parameter declarations are a comma-separated list of variable names with optional initializer
+ expressions. at line 10 column 30
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Missing ')' in function parameter list. at line 10 column 30
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Unexpected token 'ClearCache' in expression or statement. at line 23 column 12
+DEBUG: [AST] Error extent: ClearCache
+DEBUG: [AST] Parse error: An expression was expected after '('. at line 23 column 23
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: An expression was expected after '('. at line 24 column 22
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Unexpected token '}' in expression or statement. at line 26 column 1
+DEBUG: [AST] Error extent: }
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestQuality.ps1 - AST nodes: 45
+DEBUG: [AST] Finding class definitions in AST
+DEBUG: [AST] Finding function definitions in AST
+DEBUG: [AST] Found function: Get-DataManagerInstance at lines 28-30
+DEBUG: [METRICS] Analysis scope: 0 classes, 7 functions
+DEBUG: [METRICS] Calculating CHD (Cohesion at Domain Level) for module with 7 functions
+DEBUG: [METRICS] CHD calculated: 0.143 (Domain: 1/7, Entropy: 0)
+DEBUG: [METRICS] Quality analysis complete for C:\Users\georg\AppData\Local\Temp\TestQuality.ps1 in 0.0246868 seconds
+DEBUG: [TEST] Failed: Comprehensive quality analysis - Result: False
+[FAIL] Comprehensive quality analysis
+
+=== TESTING CONFIGURATION AND UTILITIES ===
+DEBUG: [TEST] Starting: Pattern detection configuration
+DEBUG: [PATTERN] Updated confidence thresholds
+DEBUG: [PATTERN] Debug logging enabled: True
+[PASS] Pattern detection configuration
+DEBUG: [TEST] Starting: Quality metrics configuration
+DEBUG: [METRICS] Detailed logging enabled: True
+[PASS] Quality metrics configuration
+
+=== TESTING INTEGRATION WITH EXISTING INFRASTRUCTURE ===
+DEBUG: [TEST] Starting: CPG infrastructure integration
+[2025-08-28 15:17:12.498] [INFO] [Module] Loading Unified CPG Module
+[2025-08-28 15:17:12.498] [DEBUG] [Init] Initializing module-level variables
+[2025-08-28 15:17:12.502] [SUCCESS] [Init] Module variables initialized successfully
+[2025-08-28 15:17:12.503] [DEBUG] [TypeDef] Defining CPGNodeType enumeration
+[2025-08-28 15:17:12.504] [DEBUG] [TypeDef] Defining CPGNode class
+[2025-08-28 15:17:12.504] [DEBUG] [TypeDef] Defining DataFlowEdge class (inherits from CPGEdge)
+[2025-08-28 15:17:12.504] [DEBUG] [Factory] Defining factory function: New-CPGNode
+[2025-08-28 15:17:12.504] [DEBUG] [Factory] Defining factory function: New-DataFlowEdge
+[2025-08-28 15:17:12.504] [DEBUG] [Factory] Defining factory function: New-CPGraph
+[2025-08-28 15:17:12.507] [INFO] [Module] Exporting module members
+[2025-08-28 15:17:12.507] [SUCCESS] [Module] Unified CPG Module loaded successfully
+[2025-08-28 15:17:12.507] [INFO] [Module] Total types defined: 8 classes, 4 enumerations
+[2025-08-28 15:17:12.507] [INFO] [Module] Total functions exported: 12
+[PASS] CPG infrastructure integration
+DEBUG: [TEST] Starting: Error handling with invalid input
+DEBUG: [AST] Parsing PowerShell file: C:\NonExistent\File.ps1
+[PASS] Error handling with invalid input
+DEBUG: [TEST] Starting: Performance with simulated large codebase
+DEBUG: [PATTERN] Starting pattern detection for: C:\Users\georg\AppData\Local\Temp\TestPerf1.ps1
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestPerf1.ps1
+WARNING: [AST] Parse errors found in C:\Users\georg\AppData\Local\Temp\TestPerf1.ps1
+DEBUG: [AST] PowerShell Version: 5.1.22621.5697 Edition: Desktop
+DEBUG: [AST] File content length: 107 characters
+DEBUG: [AST] First 200 characters of content: class TestClass1 {
+    [string] 1
+    
+    [void] Method1() {
+        Write-Host "Method 1"
+    }
+}
+DEBUG: [AST] Parse error: Missing a property name or method definition. at line 2 column 13
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Missing closing '}' in statement block or type definition. at line 2 column 5
+DEBUG: [AST] Error extent: [string]
+DEBUG: [AST] Parse error: Unexpected token 'Method1' in expression or statement. at line 4 column 12
+DEBUG: [AST] Error extent: Method1
+DEBUG: [AST] Parse error: An expression was expected after '('. at line 4 column 20
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Unexpected token '}' in expression or statement. at line 7 column 1
+DEBUG: [AST] Error extent: }
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestPerf1.ps1 - AST nodes: 22
+DEBUG: [AST] Finding class definitions in AST
+DEBUG: [AST] Finding function definitions in AST
+DEBUG: [PATTERN] Found 0 classes and 0 functions
+DEBUG: [PATTERN] Pattern detection complete: 0 patterns detected
+DEBUG: [PATTERN] Starting pattern detection for: C:\Users\georg\AppData\Local\Temp\TestPerf2.ps1
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestPerf2.ps1
+WARNING: [AST] Parse errors found in C:\Users\georg\AppData\Local\Temp\TestPerf2.ps1
+DEBUG: [AST] PowerShell Version: 5.1.22621.5697 Edition: Desktop
+DEBUG: [AST] File content length: 107 characters
+DEBUG: [AST] First 200 characters of content: class TestClass2 {
+    [string] 2
+    
+    [void] Method2() {
+        Write-Host "Method 2"
+    }
+}
+DEBUG: [AST] Parse error: Missing a property name or method definition. at line 2 column 13
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Missing closing '}' in statement block or type definition. at line 2 column 5
+DEBUG: [AST] Error extent: [string]
+DEBUG: [AST] Parse error: Unexpected token 'Method2' in expression or statement. at line 4 column 12
+DEBUG: [AST] Error extent: Method2
+DEBUG: [AST] Parse error: An expression was expected after '('. at line 4 column 20
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Unexpected token '}' in expression or statement. at line 7 column 1
+DEBUG: [AST] Error extent: }
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestPerf2.ps1 - AST nodes: 22
+DEBUG: [AST] Finding class definitions in AST
+DEBUG: [AST] Finding function definitions in AST
+DEBUG: [PATTERN] Found 0 classes and 0 functions
+DEBUG: [PATTERN] Pattern detection complete: 0 patterns detected
+DEBUG: [PATTERN] Starting pattern detection for: C:\Users\georg\AppData\Local\Temp\TestPerf3.ps1
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestPerf3.ps1
+WARNING: [AST] Parse errors found in C:\Users\georg\AppData\Local\Temp\TestPerf3.ps1
+DEBUG: [AST] PowerShell Version: 5.1.22621.5697 Edition: Desktop
+DEBUG: [AST] File content length: 107 characters
+DEBUG: [AST] First 200 characters of content: class TestClass3 {
+    [string] 3
+    
+    [void] Method3() {
+        Write-Host "Method 3"
+    }
+}
+DEBUG: [AST] Parse error: Missing a property name or method definition. at line 2 column 13
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Missing closing '}' in statement block or type definition. at line 2 column 5
+DEBUG: [AST] Error extent: [string]
+DEBUG: [AST] Parse error: Unexpected token 'Method3' in expression or statement. at line 4 column 12
+DEBUG: [AST] Error extent: Method3
+DEBUG: [AST] Parse error: An expression was expected after '('. at line 4 column 20
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Unexpected token '}' in expression or statement. at line 7 column 1
+DEBUG: [AST] Error extent: }
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestPerf3.ps1 - AST nodes: 22
+DEBUG: [AST] Finding class definitions in AST
+DEBUG: [AST] Finding function definitions in AST
+DEBUG: [PATTERN] Found 0 classes and 0 functions
+DEBUG: [PATTERN] Pattern detection complete: 0 patterns detected
+[PASS] Performance with simulated large codebase
+
+=== TEST SUMMARY ===
+Total Tests: 16
+Passed: 10
+Failed: 6
+Success Rate: 62.5%
+Duration: 1.11 seconds
+
+Detailed results saved to: Week2Day3-SemanticAnalysis-TestResults-20250828-151711.json
+
+=== IMPLEMENTATION ACHIEVEMENTS ===
+1. AST-based pattern detection with confidence scoring
+2. Custom CHM/CHD cohesion metrics implementation
+3. Enhanced maintainability index with cohesion/coupling integration
+4. Comprehensive quality analysis framework
+5. Integration with existing CPG infrastructure
+
+[NEEDS WORK] Below 80% pass rate - Implementation requires fixes
+
+Week 2 Day 3 Semantic Analysis implementation complete.
+Ready to proceed with Week 2 Day 4-5: D3.js Visualization Foundation

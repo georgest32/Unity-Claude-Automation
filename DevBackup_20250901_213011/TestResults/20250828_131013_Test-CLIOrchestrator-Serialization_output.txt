@@ -1,0 +1,69 @@
+=== CLIOrchestrator Serialization Test ===
+Testing serialization fix for path corruption issue
+
+[1] Importing Unity-Claude-CLIOrchestrator module...
+WARNING: The names of some imported commands from the module 'Unity-Claude-CLIOrchestrator-Original' include unapproved
+ verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module 
+command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+  Module imported successfully
+
+[2] Running serialization tests...
+  Testing: String ActionDetails
+[PROMPT GENERATION] Creating autonomous prompt for: CONTINUE
+  Action Details Type: String
+  Prompt Type: Continue Implementation Plan
+  Generated prompt: 801 characters
+    [PASS] Expected content found: 'Enhanced_Documentation_Second_Pass_Implementation_2025_08_28.md'
+    [PASS] Unwanted pattern absent: '@{'
+    Result: PASSED
+  Testing: Hashtable with file path
+[PROMPT GENERATION] Creating autonomous prompt for: CONTINUE
+  Action Details Type: Hashtable
+  Serialized to: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Implementation.md
+  Prompt Type: Continue Implementation Plan
+  Generated prompt: 755 characters
+    [PASS] Expected content found: 'Implementation.md'
+    [PASS] Unwanted pattern absent: 'System.Object'
+    Result: PASSED
+  Testing: Complex hashtable (week priorities)
+[PROMPT GENERATION] Creating autonomous prompt for: CONTINUE
+  Action Details Type: Hashtable
+  Serialized to: C:\Test\Week1.md
+  Prompt Type: Continue Implementation Plan
+  Generated prompt: 697 characters
+    [PASS] Expected content found: 'Week1.md'
+    [PASS] Unwanted pattern absent: 'System.Object[]'
+    Result: PASSED
+  Testing: PSObject with FilePath property
+[PROMPT GENERATION] Creating autonomous prompt for: CONTINUE
+  Action Details Type: PSCustomObject
+  Serialized to: C:\Documents\TestPlan.md
+  Prompt Type: Continue Implementation Plan
+  Generated prompt: 705 characters
+    [PASS] Expected content found: 'TestPlan.md'
+    [PASS] Unwanted pattern absent: '@{'
+    Result: PASSED
+  Testing: Array with file paths
+[PROMPT GENERATION] Creating autonomous prompt for: CONTINUE
+  Action Details Type: Object[]
+  Serialized to: C:\Path\File1.md
+  Prompt Type: Continue Implementation Plan
+  Generated prompt: 697 characters
+    [PASS] Expected content found: 'File1.md'
+    [PASS] Unwanted pattern absent: 'System.Object[]'
+    Result: PASSED
+
+[3] Test Summary
+  Total Tests: 5
+  Passed: 5
+  Failed: 0
+
+[4] Testing Convert-ToSerializedString function directly...
+  [PASS] Direct test passed: Input type String
+  [PASS] Direct test passed: Input type Hashtable
+  [PASS] Direct test passed: Input type Hashtable
+
+Test results saved to: .\CLIOrchestrator-Serialization-TestResults-20250828-131014.txt
+
+=== ALL TESTS PASSED ===
+The serialization fix is working correctly!

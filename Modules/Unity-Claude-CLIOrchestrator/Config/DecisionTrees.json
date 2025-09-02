@@ -1,0 +1,220 @@
+{
+  "version": "1.0.0",
+  "description": "Decision trees configuration for CLIOrchestrator autonomous decision making",
+  "lastUpdated": "2025-08-25",
+  "decisionTrees": {
+    "primaryDecision": {
+      "description": "Primary decision tree for action selection based on response analysis",
+      "nodes": {
+        "root": {
+          "type": "condition",
+          "condition": "response_type",
+          "branches": {
+            "CONTINUE": {
+              "action": "execute_continue",
+              "confidence_threshold": 0.75,
+              "safety_level": "low",
+              "priority": 1
+            },
+            "TEST": {
+              "action": "execute_test",
+              "confidence_threshold": 0.85,
+              "safety_level": "medium",
+              "priority": 2,
+              "conditions": [
+                {
+                  "field": "file_path",
+                  "operator": "exists",
+                  "required": true
+                },
+                {
+                  "field": "test_type",
+                  "operator": "in",
+                  "values": ["unit", "integration", "functional", "validation"]
+                }
+              ]
+            },
+            "FIX": {
+              "action": "execute_fix",
+              "confidence_threshold": 0.90,
+              "safety_level": "high",
+              "priority": 3,
+              "conditions": [
+                {
+                  "field": "file_path",
+                  "operator": "exists",
+                  "required": true
+                },
+                {
+                  "field": "backup_required",
+                  "operator": "equals",
+                  "value": true
+                }
+              ]
+            },
+            "COMPILE": {
+              "action": "execute_compile",
+              "confidence_threshold": 0.80,
+              "safety_level": "medium",
+              "priority": 4,
+              "conditions": [
+                {
+                  "field": "project_path",
+                  "operator": "exists",
+                  "required": true
+                }
+              ]
+            },
+            "RESTART": {
+              "action": "execute_restart",
+              "confidence_threshold": 0.95,
+              "safety_level": "high",
+              "priority": 5,
+              "conditions": [
+                {
+                  "field": "service_name",
+                  "operator": "exists",
+                  "required": true
+                },
+                {
+                  "field": "restart_safe",
+                  "operator": "equals",
+                  "value": true
+                }
+              ]
+            },
+            "COMPLETE": {
+              "action": "mark_complete",
+              "confidence_threshold": 0.70,
+              "safety_level": "low",
+              "priority": 6
+            },
+            "ERROR": {
+              "action": "handle_error",
+              "confidence_threshold": 0.60,
+              "safety_level": "high",
+              "priority": 7
+            }
+          }
+        }
+      }
+    },
+    "confidenceAdjustment": {
+      "description": "Bayesian confidence adjustment based on historical success rates",
+      "bayesian_parameters": {
+        "success_weight": 0.8,
+        "failure_weight": 0.2,
+        "prior_confidence": 0.5,
+        "learning_rate": 0.1,
+        "decay_factor": 0.95,
+        "min_samples": 5
+      },
+      "confidence_bands": {
+        "high": {
+          "threshold": 0.85,
+          "action": "proceed_immediately",
+          "escalation": false
+        },
+        "medium": {
+          "threshold": 0.65,
+          "action": "proceed_with_monitoring",
+          "escalation": false
+        },
+        "low": {
+          "threshold": 0.45,
+          "action": "request_confirmation",
+          "escalation": true
+        },
+        "very_low": {
+          "threshold": 0.30,
+          "action": "escalate_to_human",
+          "escalation": true
+        }
+      }
+    },
+    "contextualFactors": {
+      "description": "Context-based decision adjustments",
+      "factors": {
+        "time_of_day": {
+          "business_hours": {
+            "weight": 1.0,
+            "safety_multiplier": 1.0
+          },
+          "after_hours": {
+            "weight": 0.8,
+            "safety_multiplier": 1.5
+          }
+        },
+        "system_load": {
+          "low": {
+            "weight": 1.0,
+            "timeout_multiplier": 1.0
+          },
+          "medium": {
+            "weight": 0.9,
+            "timeout_multiplier": 1.2
+          },
+          "high": {
+            "weight": 0.7,
+            "timeout_multiplier": 1.5
+          }
+        },
+        "error_frequency": {
+          "low": {
+            "confidence_boost": 0.05,
+            "proceed_threshold": 0.70
+          },
+          "medium": {
+            "confidence_boost": 0.0,
+            "proceed_threshold": 0.75
+          },
+          "high": {
+            "confidence_boost": -0.10,
+            "proceed_threshold": 0.85
+          }
+        }
+      }
+    }
+  },
+  "escalationRules": {
+    "patterns": [
+      {
+        "condition": "consecutive_failures >= 3",
+        "action": "escalate_to_human",
+        "message": "Multiple consecutive failures detected"
+      },
+      {
+        "condition": "confidence < 0.3",
+        "action": "request_confirmation",
+        "message": "Low confidence in recommended action"
+      },
+      {
+        "condition": "safety_level == 'high' AND confidence < 0.85",
+        "action": "escalate_to_human", 
+        "message": "High-risk action with insufficient confidence"
+      },
+      {
+        "condition": "execution_time > 300",
+        "action": "timeout_escalation",
+        "message": "Action execution exceeded timeout threshold"
+      }
+    ]
+  },
+  "learningRules": {
+    "success_reinforcement": {
+      "confidence_boost": 0.05,
+      "pattern_weight_increase": 0.02,
+      "memory_retention": 0.95
+    },
+    "failure_penalties": {
+      "confidence_reduction": -0.08,
+      "pattern_weight_decrease": -0.03,
+      "escalation_threshold_reduction": -0.05
+    },
+    "adaptation_rates": {
+      "fast_learning_threshold": 10,
+      "slow_learning_threshold": 50,
+      "convergence_threshold": 0.01
+    }
+  }
+}

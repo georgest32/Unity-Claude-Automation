@@ -1,0 +1,40 @@
+{
+  "Services": [
+    {
+      "Details": "HTTP 200",
+      "Status": "Healthy",
+      "Service": "Documentation Web"
+    },
+    {
+      "Details": "No connection could be made because the target machine actively refused it. (localhost:8091)",
+      "Status": "Error",
+      "Service": "Documentation API"
+    },
+    {
+      "Details": "An error occurred while sending the request.",
+      "Status": "Error",
+      "Service": "PowerShell Modules"
+    },
+    {
+      "Details": "HTTP 200",
+      "Status": "Healthy",
+      "Service": "LangGraph API"
+    },
+    {
+      "Details": "Response status code does not indicate success: 503 (Service Unavailable).",
+      "Status": "Error",
+      "Service": "AutoGen Service"
+    },
+    {
+      "Details": "HTTP 200",
+      "Status": "Healthy",
+      "Service": "Grafana Dashboard"
+    }
+  ],
+  "Timestamp": "2025-08-30 22:52:55",
+  "Environment": "Development",
+  "HealthyServices": 3,
+  "TotalServices": 6,
+  "WarningServices": 0,
+  "ErrorServices": 3
+}

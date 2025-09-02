@@ -1,0 +1,51 @@
+{
+  "timestamp": "2025-08-24T12:00:00",
+  "prompt_type": "Test Results",
+  "issue": "Test-ObsolescenceDetection.ps1 - Persistent op_Subtraction errors",
+  "analysis": {
+    "root_cause": "Multiple regex Matches operations not wrapped in array operators",
+    "locations_fixed": [
+      {
+        "line": 628,
+        "description": "Cyclomatic complexity calculation regex matches",
+        "fix": "Wrapped [regex]::Matches in @() array operator"
+      },
+      {
+        "line": 654,
+        "description": "Nesting level open braces count",
+        "fix": "Wrapped [regex]::Matches in @() array operator"
+      },
+      {
+        "line": 655,
+        "description": "Nesting level close braces count",
+        "fix": "Wrapped [regex]::Matches in @() array operator"
+      },
+      {
+        "line": 676,
+        "description": "Halstead operators extraction",
+        "fix": "Wrapped [regex]::Matches in @() array operator"
+      },
+      {
+        "line": 677,
+        "description": "Halstead operands extraction",
+        "fix": "Wrapped [regex]::Matches in @() array operator"
+      }
+    ],
+    "total_fixes": 5
+  },
+  "solution": {
+    "pattern": "Always wrap [regex]::Matches() in @() when accessing .Count property",
+    "reason": "PowerShell 5.1 MatchCollection.Count can return array instead of scalar",
+    "applied_to": "All regex Matches operations in Unity-Claude-ObsolescenceDetection.psm1"
+  },
+  "testing_status": {
+    "previous_fixes": [
+      "Enum references: [NodeType] to [CPGNodeType]"
+    ],
+    "current_fixes": [
+      "All regex Matches wrapped in array operators"
+    ],
+    "expected_result": "All 8 tests should pass (100% success rate)"
+  },
+  "RESPONSE": "RECOMMENDATION: TEST - C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CPG\\Test-ObsolescenceDetection.ps1: Re-run the test suite after comprehensive regex Matches fixes. All 5 instances of regex operations have been wrapped in @() array operators to ensure scalar Count values. Expected: 8/8 tests passing."
+}

@@ -1,0 +1,72 @@
+{
+  "timestamp": "2025-08-24T15:00:00",
+  "prompt_type": "Test Results",
+  "issue": "Persistent Test-CodeRedundancy op_Subtraction error despite multiple previous fixes",
+  "analysis": {
+    "root_cause_identified": "Remaining direct .Count property usage in arithmetic and comparison operations",
+    "critical_discovery": "Line 520: 'Count = $similarBlocks.Count + 1' was performing arithmetic on potentially array-type Count property",
+    "research_insight": "PowerShell op_Subtraction error messages are misleading - can occur with addition operations when Count returns array instead of scalar",
+    "locations_identified": [
+      {
+        "line": 520,
+        "code": "Count = $similarBlocks.Count + 1",
+        "issue": "Arithmetic addition on Count property",
+        "severity": "Critical"
+      },
+      {
+        "line": 511,
+        "code": "if ($similarBlocks.Count -gt 0)",
+        "issue": "Comparison on Count property", 
+        "severity": "High"
+      },
+      {
+        "lines": "483, 491",
+        "code": "for loops using $codeBlocks.Count",
+        "issue": "Loop conditions with Count property",
+        "severity": "Medium"
+      },
+      {
+        "line": 477,
+        "code": "Write-Verbose with $codeBlocks.Count",
+        "issue": "String interpolation with Count property",
+        "severity": "Low"
+      },
+      {
+        "line": 535,
+        "code": "$processed.Count in division",
+        "issue": "Hashtable Count property in arithmetic",
+        "severity": "Medium"
+      }
+    ]
+  },
+  "solution_applied": {
+    "strategy": "Replace all remaining direct .Count usage with Measure-Object pattern",
+    "pattern": "($collection | Measure-Object).Count",
+    "specific_fixes": [
+      "Line 520: Count = ($similarBlocks | Measure-Object).Count + 1",
+      "Line 511: if (($similarBlocks | Measure-Object).Count -gt 0)",
+      "Lines 483-484: Created $totalBlocks variable with Measure-Object for loops", 
+      "Line 491: Used $totalBlocks in inner loop condition",
+      "Line 477: Write-Verbose with $(($codeBlocks | Measure-Object).Count)",
+      "Line 535: Used ($processed.Keys | Measure-Object).Count for hashtable"
+    ],
+    "total_fixes": 6
+  },
+  "technical_insights": {
+    "misleading_error": "op_Subtraction error can occur with addition operations due to array type issues",
+    "powershell_behavior": "In PSv3+, accessing property on collection returns array of property values",
+    "arithmetic_safety": "Arrays don't support arithmetic operators, causing op_Subtraction errors",
+    "hashtable_specifics": "Used .Keys collection for hashtable count to avoid potential issues"
+  },
+  "expected_outcome": {
+    "test_success": "Test-CodeRedundancy should now pass without op_Subtraction error",
+    "overall_result": "8/8 tests passing (100% success rate)",
+    "stability": "No more CLR crashes or array operation errors",
+    "performance": "Minimal impact from Measure-Object usage"
+  },
+  "documentation": {
+    "analysis_file": "Test_Results_Analysis_Persistent_OpSubtraction_20250824.md",
+    "learnings_update": "Should add Learning #226 about comprehensive Count property safety"
+  },
+  "RESPONSE": "RECOMMENDATION: TEST - C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CPG\\Test-ObsolescenceDetection.ps1: Re-run the test after fixing all remaining direct Count property usage in Test-CodeRedundancy function. Applied Measure-Object pattern to 6 critical locations including the arithmetic operation on line 520. Expected: 8/8 tests passing (100% success rate)."
+}

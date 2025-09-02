@@ -1,0 +1,153 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-NotificationConfiguration",
+  "Commands": [
+    {
+      "Parameters": [
+        "Description",
+        "Silent",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Backup-NotificationConfig",
+      "Synopsis": "Creates a backup of the current configuration",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Limit",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ConfigBackupHistory",
+      "Synopsis": "Gets the history of configuration backups",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Section",
+        "NoCache",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-NotificationConfig",
+      "Synopsis": "Retrieves the current notification configuration",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "BackupFile",
+        "Latest",
+        "Force",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable",
+        "WhatIf",
+        "Confirm"
+      ],
+      "Name": "Restore-NotificationConfig",
+      "Synopsis": "Restores configuration from a backup",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Section",
+        "Settings",
+        "Force",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable",
+        "WhatIf",
+        "Confirm"
+      ],
+      "Name": "Set-NotificationConfig",
+      "Synopsis": "Updates notification configuration settings",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "TestConnections",
+        "Detailed",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-NotificationConfig",
+      "Synopsis": "Validates notification configuration",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-NotificationConfiguration",
+  "ExportedFunctions": [
+    "Backup-NotificationConfig",
+    "Get-ConfigBackupHistory",
+    "Get-NotificationConfig",
+    "Restore-NotificationConfig",
+    "Set-NotificationConfig",
+    "Test-NotificationConfig"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

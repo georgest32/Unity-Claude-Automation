@@ -1,0 +1,56 @@
+=============================================================
+Unity-Claude CLIOrchestrator Full-Featured Test Suite v3.0.0
+=============================================================
+
+TEST 1: Loading Full-Featured Module...
+WARNING: Failed to load public function Analyze-ResponseSentiment.ps1: At 
+C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Public\ResponseAnalysis\A
+nalyze-ResponseSentiment.ps1:131 char:35
++         } elseif ($totalSentiment < -2) {
++                                   ~
+The '<' operator is reserved for future use.
+WARNING: The names of some imported commands from the module 'Unity-Claude-CLIOrchestrator-FullFeatured' include 
+unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the 
+Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+  バ. PASS: Module loaded in 295.19ms
+
+TEST 2: Function Availability Check...
+  バ. PASS: All 28 functions available
+
+TEST 3: Core Functions Basic Functionality...
+Initializing CLIOrchestrator...
+  バ. Initialize-CLIOrchestrator: Working
+  バ. Get-CLIOrchestratorInfo: Working
+  Searching for Claude Code CLI window...
+    Searching for PowerShell processes with Claude title...
+    Found 5 PowerShell/Terminal processes with windows
+    SUCCESS: Found PowerShell window with Claude title!
+    Process: pwsh (PID: 38356)
+    Title: 'Unity-Claude Subsystem - SystemMonitoring'
+    Handle: 6097650
+    Updating Claude window info in system_status.json...
+    Warning: Could not update system_status.json: A parameter cannot be found that matches parameter name 'AsHashtable'.
+  バ. Find-ClaudeWindow: Working (returned: Handle)
+
+TEST 4: Decision Engine Functions...
+[2025-08-27 23:44:44.447] [DEBUG] [DecisionEngine] Starting safety validation
+[2025-08-27 23:44:44.451] [SUCCESS] [DecisionEngine] Safety validation completed - SAFE
+  バ. Test-SafetyValidation: Working (safe content detected)
+
+=============================================================
+TEST RESULTS SUMMARY
+=============================================================
+Total Tests: 4
+Passed: 4
+Failed: 0
+Success Rate: 100%
+
+Performance Metrics:
+  Module Load Time: 295.19ms
+  Functions Available: 28
+  Architecture: Public/Private
+  Total Test Time: 0.43s
+
+Test results saved to: .\CLIOrchestrator-FullFeatured-TestResults-20250827-234444.json
+
+バ. ALL TESTS PASSED - Full-Featured CLIOrchestrator is ready!

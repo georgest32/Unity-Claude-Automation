@@ -1,0 +1,35 @@
+# CLIOrchestrator Subsystem Manifest
+# Updated to use CLIOrchestrator instead of AutonomousAgent
+# Bootstrap Orchestrator Configuration
+
+@{
+    # Required fields
+    Name = "CLIOrchestrator"
+    Version = "1.0.0"
+    Description = "CLI Orchestrator for Unity error detection and automated fixes"
+    StartScript = ".\Start-CLIOrchestrator-Fixed.ps1"
+    
+    # Dependencies
+    Dependencies = @("SystemStatus")
+    
+    # Health monitoring
+    HealthCheckFunction = "Test-CLIOrchestratorStatus"
+    HealthCheckInterval = 30  # seconds
+    
+    # Recovery policy
+    RestartPolicy = "OnFailure"  # OnFailure, Always, Never
+    MaxRestarts = 3
+    RestartDelay = 5  # seconds
+    
+    # Resource limits
+    MaxMemoryMB = 500
+    MaxCpuPercent = 25
+    
+    # Mutex for singleton enforcement
+    MutexName = "Global\UnityClaude.CLIOrchestrator"
+    
+    # Migration metadata
+    MigratedFrom = "AutonomousAgent configuration"
+    MigrationDate = "2025-08-26 12:38:20"
+    UpdatedBy = "Manual update to CLIOrchestrator"
+}

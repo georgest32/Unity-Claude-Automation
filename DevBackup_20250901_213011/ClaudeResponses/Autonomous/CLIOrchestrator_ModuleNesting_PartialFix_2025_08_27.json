@@ -1,0 +1,45 @@
+{
+  "timestamp": "2025-08-27 17:00:00",
+  "prompt_type": "Debugging",
+  "analysis_complete": true,
+  "status": "PARTIAL_FIX_IMPLEMENTED",
+  "confidence": 70,
+  "summary": {
+    "issue": "CLIOrchestrator module nesting limit exceeded preventing function access",
+    "root_cause": "Multiple nested modules with internal Import-Module calls exceeding PowerShell 5.1's 10-level limit",
+    "solution_implemented": "Converted main module to dot-sourcing pattern",
+    "remaining_issues": "Sub-components still using Import-Module internally causing continued nesting errors"
+  },
+  "fixes_applied": [
+    "Created Unity-Claude-CLIOrchestrator-Refactored-Fixed.psm1 with dot-sourcing",
+    "Created Unity-Claude-CLIOrchestrator-Fixed.psd1 with no NestedModules",
+    "Created PatternRecognitionEngine-Fixed.psm1 using dot-sourcing",
+    "Created Test-CLIOrchestrator-Fixed.ps1 for validation"
+  ],
+  "test_results": {
+    "module_import": "SUCCESS",
+    "functions_available": "PARTIAL",
+    "missing_functions": [
+      "Invoke-AutonomousDecisionMaking",
+      "Invoke-DecisionExecution"
+    ],
+    "nesting_warnings": "STILL_OCCURRING",
+    "error_messages": "Module nesting limit exceeded for RecommendationPatternEngine.psm1"
+  },
+  "next_steps": [
+    "Convert ResponseAnalysisEngine-Core.psm1 to dot-sourcing",
+    "Convert DecisionEngine.psm1 to dot-sourcing",
+    "Convert all pattern recognition sub-modules to dot-sourcing",
+    "Remove ALL Import-Module statements from Core modules",
+    "Retest with fully converted modules"
+  ],
+  "files_requiring_updates": [
+    "Core\\Components\\ResponseAnalysisEngine-Core.psm1",
+    "Core\\DecisionEngine.psm1",
+    "Core\\EntityContextEngine.psm1",
+    "Core\\ResponseClassificationEngine.psm1",
+    "Core\\BayesianConfidenceEngine.psm1"
+  ],
+  "workaround": "Can import Unity-Claude-CLIOrchestrator-Refactored-Fixed.psm1 directly to bypass manifest",
+  "RESPONSE": "RECOMMENDATION: FIX - Core modules: Convert all remaining Import-Module statements to dot-sourcing to fully resolve nesting limit"
+}

@@ -229,6 +229,69 @@ function Invoke-LegacySystemStartup {
     }
 }
 
+function Start-SubsystemInWindow {
+    <#
+    .SYNOPSIS
+    Starts a subsystem in a separate PowerShell window
+    
+    .PARAMETER SubsystemName
+    Name of the subsystem
+    
+    .PARAMETER StartScriptPath
+    Path to the startup script
+    
+    .PARAMETER WorkingDirectory
+    Working directory for the subsystem
+    
+    .PARAMETER WindowTitle
+    Title for the PowerShell window
+    #>
+    param(
+        [string]$SubsystemName,
+        [string]$StartScriptPath,
+        [string]$WorkingDirectory = $PWD.Path,
+        [string]$WindowTitle = "Unity-Claude Subsystem"
+    )
+    
+    Write-Host "  Starting $SubsystemName in separate PowerShell window..." -ForegroundColor Cyan
+    
+    # Create the command to run in the new window
+    $windowCommand = @"
+`$host.UI.RawUI.WindowTitle = "$WindowTitle - $SubsystemName"
+Set-Location -Path "$WorkingDirectory"
+`$env:PSModulePath = "$WorkingDirectory\Modules;" + `$env:PSModulePath
+Write-Host '============================================' -ForegroundColor Cyan
+Write-Host "Unity-Claude-Automation: $SubsystemName" -ForegroundColor Green
+Write-Host '============================================' -ForegroundColor Cyan
+Write-Host 'Working Directory:' `$PWD.Path -ForegroundColor Yellow
+Write-Host "Script Path: $StartScriptPath" -ForegroundColor Yellow
+Write-Host 'Starting...' -ForegroundColor Green
+Write-Host ''
+try {
+    & "$StartScriptPath"
+} catch {
+    Write-Host ''
+    Write-Host "ERROR starting ${SubsystemName}:" -ForegroundColor Red
+    Write-Host `$_.Exception.Message -ForegroundColor Red
+    Write-Host ''
+    Read-Host 'Press Enter to close window'
+}
+"@
+    
+    # Start new PowerShell window
+    $startParams = @{
+        FilePath = "C:\Program Files\PowerShell\7\pwsh.exe"
+        ArgumentList = "-ExecutionPolicy Bypass -NoExit -Command `"$windowCommand`""
+        WindowStyle = "Normal"
+        PassThru = $true
+    }
+    
+    $process = Start-Process @startParams
+    Write-Host "    Started in window (PID: $($process.Id))" -ForegroundColor Green
+    
+    return $process
+}
+
 function Invoke-ManifestBasedSystemStartup {
     <#
     .SYNOPSIS
@@ -244,13 +307,25 @@ function Invoke-ManifestBasedSystemStartup {
     .PARAMETER Debug
     Enable debug output
     
+    .PARAMETER WindowedSubsystems
+    Array of subsystem names to run in separate PowerShell windows
+    
+    .PARAMETER WindowTitle
+    Base title for windowed subsystem windows
+    
     .EXAMPLE
     Invoke-ManifestBasedSystemStartup
     Starts subsystems using manifest-based configuration
+    
+    .EXAMPLE
+    Invoke-ManifestBasedSystemStartup -WindowedSubsystems @('SystemMonitoring', 'CLIOrchestrator')
+    Start with specific subsystems in windows
     #>
     param(
         [string]$ManifestPath = ".\Manifests",
-        [switch]$Debug
+        [switch]$Debug,
+        [string[]]$WindowedSubsystems = @(),
+        [string]$WindowTitle = "Unity-Claude Subsystem"
     )
     
     Write-Host "Starting subsystems using manifest-based Bootstrap Orchestrator..." -ForegroundColor Green
@@ -301,32 +376,147 @@ function Invoke-ManifestBasedSystemStartup {
                     }
                 }
                 
-                # Use the manifest path to register
-                $result = Register-SubsystemFromManifest -ManifestPath $manifest.Path -Force
-                if ($result) {
-                    if ($result.Success) {
+                # Check if this subsystem should run in a window
+                $useWindow = $subsystemName -in $WindowedSubsystems
+                if ($useWindow) {
+                    Write-Host "  ${subsystemName}: Will run in separate window" -ForegroundColor Cyan
+                }
+                
+                # Use custom registration for windowed subsystems
+                if ($useWindow -and $manifest.Data.StartScript) {
+                    try {
+                        # Handle mutex if configured
+                        $mutexAcquired = $false
+                        if ($manifest.Data.UseMutex -or $manifest.Data.MutexName) {
+                            $mutexName = if ($manifest.Data.MutexName) { 
+                                $manifest.Data.MutexName 
+                            } else { 
+                                "Global\UnityClaudeSubsystem_$subsystemName" 
+                            }
+                            
+                            $mutexResult = New-SubsystemMutex -SubsystemName $subsystemName -MutexName $mutexName -TimeoutMs 5000
+                            
+                            if ($mutexResult.Acquired) {
+                                $mutexAcquired = $true
+                                if (-not $script:SubsystemMutexes) {
+                                    $script:SubsystemMutexes = @{}
+                                }
+                                $script:SubsystemMutexes[$subsystemName] = $mutexResult.Mutex
+                            } else {
+                                Write-Host "  ${subsystemName}: Already running (skipped)" -ForegroundColor Yellow
+                                $startedSubsystems += $subsystemName
+                                continue
+                            }
+                        }
+                        
+                        # Get script path
+                        $startScriptPath = if ([System.IO.Path]::IsPathRooted($manifest.Data.StartScript)) {
+                            $manifest.Data.StartScript
+                        } else {
+                            $projectRoot = Split-Path $manifest.Directory -Parent
+                            $testPath = Join-Path $projectRoot $manifest.Data.StartScript
+                            if (Test-Path $testPath) {
+                                $testPath
+                            } else {
+                                Join-Path $manifest.Directory $manifest.Data.StartScript
+                            }
+                        }
+                        
+                        if (-not (Test-Path $startScriptPath)) {
+                            throw "Start script not found: $startScriptPath"
+                        }
+                        
+                        # Start in window
+                        $workingDir = if ($manifest.Data.WorkingDirectory) { 
+                            $manifest.Data.WorkingDirectory 
+                        } else { 
+                            $PWD.Path 
+                        }
+                        
+                        $process = Start-SubsystemInWindow -SubsystemName $subsystemName -StartScriptPath $startScriptPath -WorkingDirectory $workingDir -WindowTitle $WindowTitle
+                        
+                        # Register with system
+                        $modulePath = if ($manifest.Data.StartScript) {
+                            $manifest.Data.StartScript
+                        } else {
+                            ".\Modules\Unity-Claude-$subsystemName\Unity-Claude-$subsystemName.psm1"
+                        }
+                        
+                        Register-Subsystem -SubsystemName $subsystemName -ModulePath $modulePath -ProcessId $process.Id
+                        
                         $startedSubsystems += $subsystemName
-                        Write-Host "  ${subsystemName}: Started successfully" -ForegroundColor Green
-                    } elseif ($result.Skipped) {
-                        Write-Host "  ${subsystemName}: Already running (skipped)" -ForegroundColor Yellow
-                        # Count as started since it's already running
-                        $startedSubsystems += $subsystemName
-                    } else {
-                        Write-Warning "  ${subsystemName}: Failed to start - $($result.Message)"
+                        Write-Host "  ${subsystemName}: Started in window successfully" -ForegroundColor Green
+                        
+                    } catch {
+                        Write-Warning "  ${subsystemName}: Failed to start in window - $($_.Exception.Message)"
+                        
+                        # Clean up mutex if acquired
+                        if ($mutexAcquired) {
+                            Remove-SubsystemMutex -SubsystemName $subsystemName
+                        }
                     }
                 } else {
-                    Write-Warning "  ${subsystemName}: Failed to start"
+                    # Use standard registration
+                    $result = Register-SubsystemFromManifest -ManifestPath $manifest.Path -Force
+                    if ($result) {
+                        if ($result.Success) {
+                            $startedSubsystems += $subsystemName
+                            Write-Host "  ${subsystemName}: Started successfully" -ForegroundColor Green
+                        } elseif ($result.Skipped) {
+                            Write-Host "  ${subsystemName}: Already running (skipped)" -ForegroundColor Yellow
+                            $startedSubsystems += $subsystemName
+                        } else {
+                            Write-Warning "  ${subsystemName}: Failed to start - $($result.Message)"
+                        }
+                    } else {
+                        Write-Warning "  ${subsystemName}: Failed to start"
+                    }
                 }
             } else {
                 Write-Warning "  ${subsystemName}: Manifest not found"
             }
         }
         
+        # Count windowed vs background subsystems
+        $windowedCount = ($WindowedSubsystems | Where-Object { $_ -in $startedSubsystems }).Count
+        $backgroundCount = $startedSubsystems.Count - $windowedCount
+        
+        # Display summary
+        if ($WindowedSubsystems.Count -gt 0) {
+            Write-Host ""
+            Write-Host "========================================" -ForegroundColor Cyan
+            Write-Host "Unity-Claude-Automation Startup Summary" -ForegroundColor Green
+            Write-Host "========================================" -ForegroundColor Cyan
+            Write-Host "Total subsystems started: $($startedSubsystems.Count)/$($manifests.Count)" -ForegroundColor White
+            Write-Host "Windowed processes: $windowedCount" -ForegroundColor Yellow
+            Write-Host "Background processes: $backgroundCount" -ForegroundColor Gray
+            
+            if ($windowedCount -gt 0) {
+                Write-Host ""
+                Write-Host "WINDOWED SUBSYSTEMS:" -ForegroundColor Yellow
+                foreach ($subsystem in $WindowedSubsystems) {
+                    if ($subsystem -in $startedSubsystems) {
+                        Write-Host "  - $subsystem (running in separate window)" -ForegroundColor Green
+                    }
+                }
+                Write-Host ""
+                Write-Host "IMPORTANT: Do not close the PowerShell windows unless you want" -ForegroundColor Yellow
+                Write-Host "to stop those subsystems. Each window runs independently." -ForegroundColor Yellow
+            }
+            Write-Host ""
+        }
+        
         return @{
             Success = $true
-            Message = "Manifest-based system startup completed"
+            Message = if ($WindowedSubsystems.Count -gt 0) { 
+                "Manifest-based system startup completed with $windowedCount windowed subsystems" 
+            } else { 
+                "Manifest-based system startup completed" 
+            }
             StartedSubsystems = $startedSubsystems
             TotalSubsystems = $manifests.Count
+            WindowedSubsystems = ($WindowedSubsystems | Where-Object { $_ -in $startedSubsystems })
+            BackgroundSubsystems = ($startedSubsystems | Where-Object { $_ -notin $WindowedSubsystems })
         }
         
     } catch {
@@ -361,6 +551,12 @@ function Start-UnityClaudeSystem {
     .PARAMETER Debug
     Enable debug output
     
+    .PARAMETER WindowedSubsystems
+    Array of subsystem names to run in separate PowerShell windows instead of background processes
+    
+    .PARAMETER WindowTitle
+    Base title for windowed subsystem windows
+    
     .EXAMPLE
     Start-UnityClaudeSystem
     Automatically choose best startup mode
@@ -372,12 +568,18 @@ function Start-UnityClaudeSystem {
     .EXAMPLE
     Start-UnityClaudeSystem -UseManifestMode
     Force manifest-based startup
+    
+    .EXAMPLE
+    Start-UnityClaudeSystem -UseManifestMode -WindowedSubsystems @('SystemMonitoring', 'CLIOrchestrator')
+    Start with SystemMonitoring and CLIOrchestrator in separate windows
     #>
     param(
         [switch]$UseLegacyMode,
         [switch]$UseManifestMode,
         [switch]$SkipAutonomousAgent,
-        [switch]$Debug
+        [switch]$Debug,
+        [string[]]$WindowedSubsystems = @(),
+        [string]$WindowTitle = "Unity-Claude Subsystem"
     )
     
     Write-Host "Unity-Claude-Automation System Startup" -ForegroundColor Cyan
@@ -428,8 +630,15 @@ function Start-UnityClaudeSystem {
     
     # Execute startup based on selected mode
     if ($useManifests) {
-        return Invoke-ManifestBasedSystemStartup -Debug:$Debug
+        if ($WindowedSubsystems.Count -gt 0) {
+            return Invoke-ManifestBasedSystemStartup -Debug:$Debug -WindowedSubsystems $WindowedSubsystems -WindowTitle $WindowTitle
+        } else {
+            return Invoke-ManifestBasedSystemStartup -Debug:$Debug
+        }
     } else {
+        if ($WindowedSubsystems.Count -gt 0) {
+            Write-Warning "Windowed subsystems are not supported in legacy mode. Use -UseManifestMode for windowed functionality."
+        }
         return Invoke-LegacySystemStartup -SkipAutonomousAgent:$SkipAutonomousAgent -Debug:$Debug
     }
 }

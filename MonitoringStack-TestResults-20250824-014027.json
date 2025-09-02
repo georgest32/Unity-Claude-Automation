@@ -1,0 +1,96 @@
+{
+  "Tests": [
+    {
+      "Message": "Component is accessible",
+      "Component": "Prometheus",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Component is accessible",
+      "Component": "Grafana",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Component is accessible",
+      "Component": "Loki",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Component is accessible",
+      "Component": "Alertmanager",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Component is accessible",
+      "Component": "cAdvisor",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Component is accessible",
+      "Component": "Node Exporter",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Service is alive",
+      "Status": "Passed",
+      "Name": "Liveness Probe"
+    },
+    {
+      "Message": "Response status code does not indicate success: 503 (Service Unavailable).",
+      "Status": "Failed",
+      "Name": "Readiness Probe"
+    },
+    {
+      "Message": "Health status: unhealthy",
+      "Status": "Passed",
+      "Name": "Service Health"
+    },
+    {
+      "Message": "Metrics retrieved successfully",
+      "Status": "Passed",
+      "Name": "Prometheus Query"
+    },
+    {
+      "Message": "Container metrics available",
+      "Status": "Passed",
+      "Name": "Container Metrics"
+    },
+    {
+      "Message": "Found 0 log entries",
+      "Status": "Passed",
+      "Name": "Loki Search"
+    },
+    {
+      "Message": "No logs found (may be normal)",
+      "Status": "Passed",
+      "Name": "Service Logs"
+    },
+    {
+      "Message": "Failed to send alert: \r\n{\r\n  \"status\": \"deprecated\",\r\n  \"error\": \"The Alertmanager v1 API was deprecated in version 0.16.0 and is removed as of version 0.28.0 - please use the equivalent route in the v2 API\"\r\n}",
+      "Status": "Failed",
+      "Name": "Send Alert"
+    },
+    {
+      "Message": "Failed to get active alerts: \r\n{\r\n  \"status\": \"deprecated\",\r\n  \"error\": \"The Alertmanager v1 API was deprecated in version 0.16.0 and is removed as of version 0.28.0 - please use the equivalent route in the v2 API\"\r\n}",
+      "Status": "Failed",
+      "Name": "Get Alerts"
+    },
+    {
+      "Message": "All datasources configured",
+      "Status": "Passed",
+      "Name": "Grafana Datasources"
+    },
+    {
+      "Message": "5 healthy targets",
+      "Status": "Passed",
+      "Name": "Metric Scraping"
+    }
+  ],
+  "Summary": {
+    "Total": 17,
+    "Passed": 14,
+    "Failed": 3
+  },
+  "Timestamp": "2025-08-24 01:40:14",
+  "TestType": "All"
+}

@@ -1,0 +1,26 @@
+# DocFX Filter Configuration for Unity Projects
+apiRules:
+- include:
+    uidRegex: ^Unity\.Claude\..*
+    type: Namespace
+- include:
+    uidRegex: ^UnityEngine\..*
+    type: Namespace
+- include:
+    uidRegex: ^Unity\..*
+    type: Namespace
+- exclude:
+    uidRegex: ^System\..*
+    type: Namespace
+- exclude:
+    uidRegex: ^Microsoft\..*
+    type: Namespace
+- exclude:
+    hasAttribute:
+      uid: System.ObsoleteAttribute
+- exclude:
+    hasAttribute:
+      uid: UnityEngine.HideInInspector
+- exclude:
+    hasAttribute:
+      uid: UnityEngine.Internal.ExcludeFromDocs

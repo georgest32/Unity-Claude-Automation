@@ -1,0 +1,85 @@
+{
+  "EndTime": "2025-08-23T16:08:46.8668058-04:00",
+  "Duration": "00:00:00.9427041",
+  "StartTime": "2025-08-23T16:08:45.9241017-04:00",
+  "TestSuite": "LangGraph State Management (Hour 6)",
+  "Summary": {
+    "FailedTests": 5,
+    "PassedTests": 5,
+    "PassRate": "50%",
+    "Duration": "00:00:00.9427041",
+    "TotalTests": 10
+  },
+  "Tests": [
+    {
+      "Details": "State management server operational",
+      "Data": null,
+      "TestName": "Server Health Check",
+      "Timestamp": "2025-08-23T16:08:45.9920337-04:00",
+      "Passed": true
+    },
+    {
+      "Details": "Exception: Cannot process argument transformation on parameter 'Body'. Cannot convert the \"{\r\n  \"state_type\": \"basic\",\r\n  \"thread_id\": \"\",\r\n  \"graph_id\": \"test-validation\",\r\n  \"state_data\": {\r\n    \"counter\": 5,\r\n    \"messages\": [\r\n      {\r\n        \"content\": \"Hello\",\r\n        \"role\": \"user\"\r\n      },\r\n      {\r\n        \"content\": \"Hi there!\",\r\n        \"role\": \"assistant\"\r\n      }\r\n    ]\r\n  }\r\n}\" value of type \"System.String\" to type \"System.Collections.Hashtable\".",
+      "Data": null,
+      "TestName": "State Validation Tests",
+      "Timestamp": "2025-08-23T16:08:46.0821993-04:00",
+      "Passed": false
+    },
+    {
+      "Details": "Exception: Cannot process argument transformation on parameter 'Body'. Cannot convert the \"{\r\n  \"state_type\": \"complex\",\r\n  \"thread_id\": \"thread-2744\",\r\n  \"graph_id\": \"state-test-20250823-160846\",\r\n  \"state_data\": {\r\n    \"counter\": 42,\r\n    \"messages\": [\r\n      {\r\n        \"content\": \"Process this complex state\",\r\n        \"role\": \"user\"\r\n      },\r\n      {\r\n        \"content\": \"Processing...\",\r\n        \"role\": \"assistant\"\r\n      }\r\n    ],\r\n    \"metadata\": {\r\n      \"version\": \"1.0\",\r\n      \"features\": [\r\n        \"state-mgmt\",\r\n        \"serialization\",\r\n        \"checkpoints\"\r\n      ],\r\n      \"timestamp\": \"2025-08-23T16:08:46.0834789-04:00\"\r\n    },\r\n    \"config\": {\r\n      \"retry_count\": 3,\r\n      \"debug_mode\": true,\r\n      \"timeout\": 300\r\n    }\r\n  }\r\n}\" value of type \"System.String\" to type \"System.Collections.Hashtable\".",
+      "Data": null,
+      "TestName": "State Processing Tests",
+      "Timestamp": "2025-08-23T16:08:46.1089362-04:00",
+      "Passed": false
+    },
+    {
+      "Details": "Exception: Cannot process argument transformation on parameter 'Body'. Cannot convert the \"{\r\n  \"state_type\": \"basic\",\r\n  \"thread_id\": \"sync-thread-6450\",\r\n  \"graph_id\": \"sync-test-20250823-160846\",\r\n  \"state_data\": {\r\n    \"counter\": 10,\r\n    \"messages\": [\r\n      {\r\n        \"content\": \"Initial state\",\r\n        \"role\": \"user\"\r\n      }\r\n    ],\r\n    \"workflow_step\": \"initialization\"\r\n  }\r\n}\" value of type \"System.String\" to type \"System.Collections.Hashtable\".",
+      "Data": null,
+      "TestName": "State Synchronization Tests",
+      "Timestamp": "2025-08-23T16:08:46.1313551-04:00",
+      "Passed": false
+    },
+    {
+      "Details": "Found 0 snapshots",
+      "Data": null,
+      "TestName": "List All Snapshots",
+      "Timestamp": "2025-08-23T16:08:46.486736-04:00",
+      "Passed": true
+    },
+    {
+      "Details": "No snapshots available to filter",
+      "Data": null,
+      "TestName": "Filter Snapshots by Graph",
+      "Timestamp": "2025-08-23T16:08:46.4877225-04:00",
+      "Passed": true
+    },
+    {
+      "Details": "No snapshots available to test",
+      "Data": null,
+      "TestName": "Get Specific Snapshot",
+      "Timestamp": "2025-08-23T16:08:46.4884371-04:00",
+      "Passed": true
+    },
+    {
+      "Details": "Total snapshots: 0, Unique graphs: 0",
+      "Data": null,
+      "TestName": "State Statistics",
+      "Timestamp": "2025-08-23T16:08:46.7647428-04:00",
+      "Passed": true
+    },
+    {
+      "Details": "Exception: Cannot process argument transformation on parameter 'Body'. Cannot convert the \"{\r\n  \"state_data\": {\r\n    \"counter\": 25,\r\n    \"messages\": [\r\n      {\r\n        \"content\": \"Python processed\",\r\n        \"role\": \"assistant\"\r\n      }\r\n    ],\r\n    \"result\": \"success\",\r\n    \"timestamp\": \"2025-08-23T16:00:00Z\"\r\n  },\r\n  \"include_metadata\": false\r\n}\" value of type \"System.String\" to type \"System.Collections.Hashtable\".",
+      "Data": null,
+      "TestName": "PowerShell State Preparation Tests",
+      "Timestamp": "2025-08-23T16:08:46.7904501-04:00",
+      "Passed": false
+    },
+    {
+      "Details": "Exception: Cannot process argument transformation on parameter 'Body'. Cannot convert the \"{\r\n  \"state_type\": \"basic\",\r\n  \"thread_id\": \"integration-thread\",\r\n  \"graph_id\": \"state-integration-20250823-160846\",\r\n  \"state_data\": {\r\n    \"counter\": 1,\r\n    \"messages\": [\r\n      {\r\n        \"content\": \"State management integration test\",\r\n        \"role\": \"user\"\r\n      }\r\n    ]\r\n  }\r\n}\" value of type \"System.String\" to type \"System.Collections.Hashtable\".",
+      "Data": null,
+      "TestName": "Integration Tests",
+      "Timestamp": "2025-08-23T16:08:46.8658723-04:00",
+      "Passed": false
+    }
+  ]
+}

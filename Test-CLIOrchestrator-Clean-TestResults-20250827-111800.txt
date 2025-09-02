@@ -1,0 +1,78 @@
+====================================
+Test Execution Report
+====================================
+
+Test Script: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-CLIOrchestrator-Clean.ps1
+Execution Time: 2025-08-27 11:18:02
+Duration: 1.19 seconds
+Exit Code: 0
+Status: SUCCESS
+
+Test Output:
+============
+================================================================
+  Unity-Claude CLIOrchestrator Quick Validation Test
+  Started: 2025-08-27 11:18:01
+================================================================
+
+Running quick validation tests...
+
+1. Testing module import...
+  FAIL: Module Import
+    Error: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\Components\ResponseAnalysisEngine-Core.psm1:315 char:25
++                 Name = "Graceful Fallback"
++                         ~~~~~~~~
+Unexpected token 'Graceful' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\Components\ResponseAnalysisEngine-Core.psm1:309 char:48
++         $errorResponse = "invalid json content {"
++                                                ~
+Missing closing '}' in statement block or type definition.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\Components\ResponseAnalysisEngine-Core.psm1:357 char:56
++                 '(?i)[a-zA-Z]:\\(?:[^\\/:*?"<>|\r\n]+\\)*[^\\/:*?"<>| ...
++                                                        ~
+Unexpected token ')' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\Components\ResponseAnalysisEngine-Core.psm1:358 char:56
++                 '(?i)[a-zA-Z]:\\(?:[^\\/:*?"<>|\r\n]+\\)*[^\\/:*?"<>| ...
++                                                        ~
+Unexpected token ')' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\Components\ResponseAnalysisEngine-Core.psm1:447 char:65
++         throw "Entity extraction failed: $($_.Exception.Message)"
++                                                                 ~
+The string is missing the terminator: ".
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\Components\ResponseAnalysisEngine-Core.psm1:498 char:1
++ 
+Missing closing ')' in expression.
+
+2. Testing function availability...
+  FAIL: Function Availability
+    Error: Missing functions: Extract-ResponseEntities, Analyze-ResponseSentiment, Find-RecommendationPatterns, Invoke-RuleBasedDecision, Test-SafetyValidation
+
+3. Testing configuration files...
+  OK: Configuration Files
+
+4. Testing basic function execution...
+  FAIL: Pattern Recognition
+    Error: The 'Find-RecommendationPatterns' command was found in the module 'Unity-Claude-CLIOrchestrator', but the module could not be loaded. For more information, run 'Import-Module Unity-Claude-CLIOrchestrator'.
+
+5. Testing decision engine...
+  FAIL: Decision Engine
+    Error: The 'Invoke-RuleBasedDecision' command was found in the module 'Unity-Claude-CLIOrchestrator', but the module could not be loaded. For more information, run 'Import-Module Unity-Claude-CLIOrchestrator'.
+
+================================================================
+  QUICK VALIDATION COMPLETE
+================================================================
+Total Tests: 5
+Passed: 1
+Failed: 4
+Success Rate: 20%
+
+CLIOrchestrator quick validation completed.
+
+====================================
+End of Test Report
+====================================

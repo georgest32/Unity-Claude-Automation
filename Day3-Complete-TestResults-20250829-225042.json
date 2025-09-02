@@ -1,0 +1,111 @@
+{
+  "StartTime": "2025-08-29T22:50:30.5255464-04:00",
+  "Tests": [
+    {
+      "Passed": true,
+      "Details": "Enhanced functions loaded: 10/10",
+      "Timestamp": "2025-08-29T22:50:30.5446341-04:00",
+      "TestName": "Enhanced Module Loading",
+      "Data": {
+        "Commands": [
+          "Add-DocumentationRequest",
+          "Get-DocumentationQualityAssessment",
+          "Get-RealTimeAnalysisStatus",
+          "Initialize-PowershAI",
+          "Invoke-PowershAIDocumentation",
+          "Optimize-DocumentationWithAI",
+          "Start-BatchDocumentationProcessing",
+          "Start-IntelligentDocumentationPipeline",
+          "Start-RealTimeAIAnalysis",
+          "Stop-RealTimeAIAnalysis"
+        ]
+      },
+      "Category": "Pipeline"
+    },
+    {
+      "Passed": true,
+      "Details": "PowershAI initialized with Ollama backend",
+      "Timestamp": "2025-08-29T22:50:30.8514921-04:00",
+      "TestName": "PowershAI Initialization",
+      "Data": {
+        "Success": true,
+        "Model": "codellama:13b",
+        "Message": "PowershAI initialized with Ollama backend",
+        "Provider": "ollama"
+      },
+      "Category": "Pipeline"
+    },
+    {
+      "Passed": true,
+      "Details": "Pipeline status: Running",
+      "Timestamp": "2025-08-29T22:50:31.4461691-04:00",
+      "TestName": "Documentation Pipeline Start",
+      "Data": {
+        "Success": true,
+        "Status": "Running",
+        "JobId": 1
+      },
+      "Category": "Pipeline"
+    },
+    {
+      "Passed": true,
+      "Details": "Request ID: 8c84fca8-f837-42d5-bd9d-0a2018dc26e0",
+      "Timestamp": "2025-08-29T22:50:31.4537135-04:00",
+      "TestName": "Documentation Request Queueing",
+      "Data": {
+        "Status": "Queued",
+        "RequestId": "8c84fca8-f837-42d5-bd9d-0a2018dc26e0"
+      },
+      "Category": "Pipeline"
+    },
+    {
+      "Passed": true,
+      "Details": "Overall score: 0/100",
+      "Timestamp": "2025-08-29T22:50:42.6415906-04:00",
+      "TestName": "Quality Assessment",
+      "Data": {
+        "Suggestions": null,
+        "Clarity": null,
+        "AssessedAt": "2025-08-29T22:50:42.6377886-04:00",
+        "Completeness": null,
+        "OverallScore": 0,
+        "MissingElements": [
+          "A description of the Get-Date cmdlet and its functionality would be helpful for users who are not familiar with it"
+        ],
+        "Accuracy": null
+      },
+      "Category": "Pipeline"
+    },
+    {
+      "Passed": true,
+      "Details": "Pipeline tests: 5/5",
+      "Timestamp": "2025-08-29T22:50:42.6756917-04:00",
+      "TestName": "Hour 3-4: Intelligent Pipeline",
+      "Data": {
+        "PassRate": 1
+      },
+      "Category": "SuccessCriteria"
+    }
+  ],
+  "EndTime": "2025-08-29T22:50:42.6763647-04:00",
+  "TestSuite": "Day 3 Complete Ollama Integration (Hours 3-8)",
+  "Summary": {
+    "FailedTests": 0,
+    "PassedTests": 6,
+    "TotalTests": 6,
+    "Categories": {
+      "Pipeline": {
+        "Total": 5,
+        "PassRate": 100.0,
+        "Passed": 5
+      },
+      "SuccessCriteria": {
+        "Total": 1,
+        "PassRate": 100.0,
+        "Passed": 1
+      }
+    },
+    "Duration": 12.1508183,
+    "PassRate": 100.0
+  }
+}

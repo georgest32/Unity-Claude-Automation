@@ -1,0 +1,68 @@
+{
+  "timestamp": "2025-08-31T23:00:00Z",
+  "session_type": "DEPLOYMENT",
+  "phase": "Docker Deployment Complete",
+  "status": "PARTIAL_SUCCESS",
+  
+  "deployment_summary": {
+    "overall_health": "50%",
+    "services_healthy": 9,
+    "services_unhealthy": 6,
+    "critical_services": "3/6 healthy"
+  },
+  
+  "working_services": {
+    "documentation_web": {
+      "url": "http://localhost:8080",
+      "status": "Running (unhealthy flag but accessible)"
+    },
+    "grafana_dashboard": {
+      "url": "http://localhost:3000",
+      "status": "Healthy"
+    },
+    "langgraph_api": {
+      "url": "http://localhost:8000",
+      "status": "Healthy"
+    },
+    "prometheus": {
+      "url": "http://localhost:9090",
+      "status": "Healthy"
+    },
+    "codeql_security": {
+      "status": "Healthy",
+      "description": "Security scanning operational"
+    }
+  },
+  
+  "failing_services": {
+    "docs_api": {
+      "port": 8091,
+      "status": "Restarting continuously",
+      "fix": "docker logs unity-claude-docs-api to diagnose"
+    },
+    "autogen": {
+      "port": 8001,
+      "status": "503 Service Unavailable",
+      "fix": "Service needs configuration"
+    },
+    "alloy": {
+      "status": "Restarting",
+      "fix": "Check configuration"
+    }
+  },
+  
+  "access_points": [
+    "Documentation: http://localhost:8080",
+    "Monitoring: http://localhost:3000",
+    "LangGraph API: http://localhost:8000",
+    "Prometheus: http://localhost:9090"
+  ],
+  
+  "next_steps": [
+    "Access working services to verify functionality",
+    "Fix failing services if needed for full functionality",
+    "Or use LocalOnly deployment for simpler setup"
+  ],
+  
+  "recommendation": "COMPLETE - Partial Deployment Success: Core services are operational. Access Documentation at http://localhost:8080 and Monitoring at http://localhost:3000. System is usable despite some service failures."
+}

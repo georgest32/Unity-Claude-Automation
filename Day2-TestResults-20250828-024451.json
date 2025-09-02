@@ -1,0 +1,163 @@
+﻿{
+    "Timestamp":  "\/Date(1756363490854)\/",
+    "Tests":  [
+                  {
+                      "Duration":  98.71820000000001,
+                      "Message":  "OK",
+                      "Name":  "Load Call Graph Builder Module",
+                      "Passed":  true
+                  },
+                  {
+                      "Duration":  109.9837,
+                      "Message":  "OK",
+                      "Name":  "Call Graph Builder Functions Available",
+                      "Passed":  true
+                  },
+                  {
+                      "Duration":  136.5967,
+                      "Message":  "The term \u0027Write-CPGDebug\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "Name":  "Build PowerShell Call Graph",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  140.5208,
+                      "Message":  "Test failed",
+                      "Name":  "Call Graph Contains Functions",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  142.82940000000002,
+                      "Message":  "Test failed",
+                      "Name":  "Call Graph Contains Edges",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  143.8778,
+                      "Message":  "Test failed",
+                      "Name":  "Detect Recursive Calls",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  149.98770000000002,
+                      "Message":  "Cannot bind argument to parameter \u0027CallGraph\u0027 because it is null.",
+                      "Name":  "Get Call Graph Metrics",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  149.98770000000002,
+                      "Message":  "Test failed",
+                      "Name":  "Metrics Show Entry Points",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  154.478,
+                      "Message":  "Test failed",
+                      "Name":  "Metrics Show Leaf Functions",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  158.7713,
+                      "Message":  "Cannot bind argument to parameter \u0027CallGraph\u0027 because it is null.",
+                      "Name":  "Export Call Graph to JSON",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  298.1019,
+                      "Message":  "OK",
+                      "Name":  "Load Data Flow Tracker Module",
+                      "Passed":  true
+                  },
+                  {
+                      "Duration":  302.0664,
+                      "Message":  "OK",
+                      "Name":  "Data Flow Tracker Functions Available",
+                      "Passed":  true
+                  },
+                  {
+                      "Duration":  322.10040000000004,
+                      "Message":  "The term \u0027Write-CPGDebug\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "Name":  "Build PowerShell Data Flow",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  326.10880000000003,
+                      "Message":  "Test failed",
+                      "Name":  "Data Flow Contains Definitions",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  326.10880000000003,
+                      "Message":  "Test failed",
+                      "Name":  "Data Flow Contains Uses",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  330.11170000000004,
+                      "Message":  "Test failed",
+                      "Name":  "Def-Use Chains Created",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  330.11170000000004,
+                      "Message":  "Test failed",
+                      "Name":  "Taint Analysis Detects Security Issues",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  334.0991,
+                      "Message":  "Test failed",
+                      "Name":  "Tainted Variables Marked",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  338.0987,
+                      "Message":  "Cannot bind argument to parameter \u0027DataFlow\u0027 because it is null.",
+                      "Name":  "Analyze Data Sensitivity",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  338.0987,
+                      "Message":  "Test failed",
+                      "Name":  "Detect Sensitive Variables",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  342.0984,
+                      "Message":  "Cannot bind argument to parameter \u0027DataFlow\u0027 because it is null.",
+                      "Name":  "Get Data Flow Metrics",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  346.093,
+                      "Message":  "Test failed",
+                      "Name":  "Metrics Show Unused Definitions",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  346.093,
+                      "Message":  "Test failed",
+                      "Name":  "Metrics Show Undefined Uses",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  350.1157,
+                      "Message":  "Cannot bind argument to parameter \u0027DataFlow\u0027 because it is null.",
+                      "Name":  "Export Data Flow to JSON",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  354.09430000000003,
+                      "Message":  "OK",
+                      "Name":  "Call Graph and Data Flow Consistency",
+                      "Passed":  true
+                  },
+                  {
+                      "Duration":  354.09430000000003,
+                      "Message":  "OK",
+                      "Name":  "Performance Within Limits",
+                      "Passed":  true
+                  }
+              ],
+    "Failed":  20,
+    "Passed":  6
+}

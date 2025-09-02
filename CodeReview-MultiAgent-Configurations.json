@@ -1,0 +1,226 @@
+{
+  "schema_version": "1.0.0",
+  "created": "2025-08-29T16:50:00Z",
+  "description": "Specialized agent configurations for multi-agent code review architecture (Week 1 Day 2 Hour 3-4)",
+  "agent_roles": {
+    "CodeReviewer": {
+      "role_type": "code_quality_specialist",
+      "description": "Specialized agent for comprehensive PowerShell code quality analysis and review",
+      "system_message": "You are a PowerShell code review specialist with expertise in PSScriptAnalyzer rules, security patterns, and best practices. Focus on code quality, potential bugs, security vulnerabilities, and adherence to PowerShell coding standards. Integrate with CodeRedundancyDetection and CodeSmellPrediction modules for comprehensive analysis.",
+      "specialization": "code_quality_analysis",
+      "integrated_modules": [
+        "CodeRedundancyDetection.psm1",
+        "CodeSmellPrediction.psm1", 
+        "PSScriptAnalyzer"
+      ],
+      "analysis_focus": [
+        "Code quality and best practices",
+        "Security vulnerability detection",
+        "Performance optimization opportunities",
+        "Code redundancy and duplication",
+        "Error handling and exception management"
+      ],
+      "tools": [
+        "PSScriptAnalyzer-Custom-Rules",
+        "Code-Smell-Detector",
+        "Security-Pattern-Analyzer",
+        "Redundancy-Detection-Engine"
+      ],
+      "configuration": {
+        "human_input_mode": "NEVER",
+        "max_consecutive_auto_reply": 3,
+        "code_execution_config": false,
+        "analysis_depth": "comprehensive",
+        "security_focus": true,
+        "performance_analysis": true
+      },
+      "collaboration_behavior": {
+        "debate_participation": "active",
+        "consensus_weight": 0.4,
+        "specialization_priority": "high",
+        "cross_domain_input": "quality_perspective"
+      }
+    },
+    "ArchitectureAnalyst": {
+      "role_type": "architecture_specialist", 
+      "description": "Specialized agent for PowerShell module architecture analysis and design pattern detection",
+      "system_message": "You are a PowerShell architecture analyst with expertise in module design, dependency analysis, and design pattern recognition. Focus on architectural quality, module relationships, design patterns, and structural improvements. Integrate with CPG-Unified and SemanticAnalysis-PatternDetector for comprehensive structural analysis.",
+      "specialization": "architecture_analysis",
+      "integrated_modules": [
+        "CPG-Unified.psm1",
+        "SemanticAnalysis-PatternDetector.psm1",
+        "CodeComplexityMetrics.psm1"
+      ],
+      "analysis_focus": [
+        "Module architecture and design patterns",
+        "Dependency analysis and module relationships", 
+        "Code structure and organization",
+        "Design principle adherence",
+        "Architectural improvement recommendations"
+      ],
+      "tools": [
+        "CPG-Graph-Builder",
+        "Pattern-Detection-Engine",
+        "Dependency-Analyzer",
+        "Architecture-Optimizer"
+      ],
+      "configuration": {
+        "human_input_mode": "NEVER",
+        "max_consecutive_auto_reply": 3,
+        "code_execution_config": false,
+        "analysis_depth": "structural",
+        "pattern_detection": true,
+        "dependency_mapping": true
+      },
+      "collaboration_behavior": {
+        "debate_participation": "active",
+        "consensus_weight": 0.35,
+        "specialization_priority": "high",
+        "cross_domain_input": "architectural_perspective"
+      }
+    },
+    "DocumentationGenerator": {
+      "role_type": "documentation_specialist",
+      "description": "Specialized agent for intelligent documentation generation and enhancement based on code analysis",
+      "system_message": "You are a PowerShell documentation specialist with expertise in generating comprehensive, accurate documentation based on code analysis. Focus on creating clear, maintainable documentation that reflects code complexity, patterns, and architectural decisions. Integrate with pattern detection and complexity metrics for intelligent documentation enhancement.",
+      "specialization": "documentation_generation",
+      "integrated_modules": [
+        "SemanticAnalysis-PatternDetector.psm1",
+        "CodeComplexityMetrics.psm1",
+        "Predictive-Maintenance.psm1"
+      ],
+      "analysis_focus": [
+        "Documentation completeness and accuracy",
+        "Code complexity explanation",
+        "Usage pattern documentation",
+        "Best practices documentation",
+        "Maintenance and troubleshooting guides"
+      ],
+      "tools": [
+        "Documentation-Generator",
+        "Complexity-Explainer",
+        "Usage-Pattern-Detector",
+        "Best-Practices-Analyzer"
+      ],
+      "configuration": {
+        "human_input_mode": "NEVER",
+        "max_consecutive_auto_reply": 3,
+        "code_execution_config": false,
+        "analysis_depth": "explanatory",
+        "documentation_focus": true,
+        "clarity_optimization": true
+      },
+      "collaboration_behavior": {
+        "debate_participation": "supportive",
+        "consensus_weight": 0.25,
+        "specialization_priority": "medium",
+        "cross_domain_input": "documentation_perspective"
+      }
+    }
+  },
+  "collaborative_framework": {
+    "decision_making_pattern": "consensus_with_weighted_voting",
+    "consensus_algorithm": "structured_debate_with_voting",
+    "voting_mechanism": {
+      "type": "score_based_voting",
+      "weights": {
+        "CodeReviewer": 0.4,
+        "ArchitectureAnalyst": 0.35,
+        "DocumentationGenerator": 0.25
+      },
+      "consensus_threshold": 0.7,
+      "debate_rounds": 3,
+      "structured_reasoning": true
+    },
+    "collaboration_workflow": {
+      "stage_1": {
+        "name": "independent_analysis",
+        "description": "Each agent performs specialized analysis independently",
+        "duration": "parallel_execution",
+        "agents": ["CodeReviewer", "ArchitectureAnalyst", "DocumentationGenerator"]
+      },
+      "stage_2": {
+        "name": "findings_presentation", 
+        "description": "Agents present their findings and recommendations",
+        "duration": "sequential_presentation",
+        "coordination": "round_robin_presentation"
+      },
+      "stage_3": {
+        "name": "collaborative_debate",
+        "description": "Structured debate and discussion of findings",
+        "duration": "iterative_rounds",
+        "max_rounds": 3,
+        "consensus_building": true
+      },
+      "stage_4": {
+        "name": "consensus_decision",
+        "description": "Voting and consensus building for final recommendations",
+        "duration": "decision_synthesis",
+        "voting_protocol": "weighted_score_aggregation"
+      },
+      "stage_5": {
+        "name": "recommendation_synthesis",
+        "description": "Synthesis of collaborative recommendations into actionable output",
+        "duration": "result_compilation",
+        "output_format": "structured_recommendations"
+      }
+    },
+    "integration_points": {
+      "langraph_orchestration": {
+        "enabled": true,
+        "integration_method": "workflow_delegation",
+        "orchestrator_role": "AutoGen_CodeReview_Orchestrator"
+      },
+      "powershell_modules": {
+        "enabled": true,
+        "integration_method": "direct_function_calls",
+        "module_bridge": "Unity-Claude-AutoGen-ModuleBridge"
+      },
+      "performance_monitoring": {
+        "enabled": true,
+        "integration_method": "existing_monitoring_framework",
+        "metrics_collection": "agent_performance_tracking"
+      }
+    }
+  },
+  "powershell_integration": {
+    "module_bridge_functions": {
+      "CodeReviewer_Integration": [
+        "Invoke-CodeRedundancyAnalysis",
+        "Get-CodeSmellPredictions", 
+        "Execute-PSScriptAnalyzer-Enhanced",
+        "Analyze-SecurityPatterns"
+      ],
+      "ArchitectureAnalyst_Integration": [
+        "Build-CPG-Graph",
+        "Detect-DesignPatterns",
+        "Analyze-ModuleDependencies",
+        "Generate-ArchitectureMetrics"
+      ],
+      "DocumentationGenerator_Integration": [
+        "Generate-ComplexityDocumentation",
+        "Create-PatternDocumentation",
+        "Build-MaintenanceGuides",
+        "Enhance-ExistingDocumentation"
+      ]
+    },
+    "consensus_coordination": {
+      "voting_aggregation_function": "Invoke-AgentConsensusVoting",
+      "debate_management_function": "Manage-AgentDebateRounds",
+      "recommendation_synthesis_function": "Synthesize-CollaborativeRecommendations",
+      "conflict_resolution_function": "Resolve-AgentConflicts"
+    }
+  },
+  "performance_targets": {
+    "analysis_completion_time": "< 45 seconds for comprehensive review",
+    "consensus_building_time": "< 15 seconds for voting and decision",
+    "module_integration_latency": "< 5 seconds for PowerShell module calls",
+    "overall_workflow_time": "< 60 seconds for complete multi-agent code review"
+  },
+  "validation_criteria": {
+    "agent_specialization": "Each agent demonstrates domain expertise through module integration",
+    "collaborative_decision": "Consensus achieved through structured debate and weighted voting",
+    "code_analysis_integration": "Seamless integration with existing CPG and semantic analysis modules",
+    "recommendation_quality": "Actionable recommendations with priority ranking and rationale"
+  }
+}

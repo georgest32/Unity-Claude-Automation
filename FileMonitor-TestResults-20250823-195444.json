@@ -1,0 +1,91 @@
+{
+  "StartTime": "2025-08-23T19:54:42.7102616-04:00",
+  "Summary": {
+    "Failed": 5,
+    "Total": 10,
+    "Passed": 5,
+    "Duration": 1.4856518
+  },
+  "Tests": [
+    {
+      "Description": "Verify module loads correctly",
+      "Duration": 4,
+      "Timestamp": "2025-08-23T19:54:42.7369714-04:00",
+      "Status": "Passed",
+      "Error": null,
+      "Name": "Module Loading"
+    },
+    {
+      "Description": "Create a new file monitor",
+      "Duration": 14,
+      "Timestamp": "2025-08-23T19:54:42.749627-04:00",
+      "Status": "Passed",
+      "Error": null,
+      "Name": "Create File Monitor"
+    },
+    {
+      "Description": "Start monitoring file changes",
+      "Duration": 13,
+      "Timestamp": "2025-08-23T19:54:42.7657131-04:00",
+      "Status": "Passed",
+      "Error": null,
+      "Name": "Start File Monitor"
+    },
+    {
+      "Description": "Detect file creation and changes",
+      "Duration": 500,
+      "Timestamp": "2025-08-23T19:54:42.7805677-04:00",
+      "Status": "Failed",
+      "Error": "Test returned false or unsuccessful result",
+      "Name": "File Change Detection"
+    },
+    {
+      "Description": "Test file type classification",
+      "Duration": 24,
+      "Timestamp": "2025-08-23T19:54:43.2832534-04:00",
+      "Status": "Failed",
+      "Error": "Test returned false or unsuccessful result",
+      "Name": "File Classification"
+    },
+    {
+      "Description": "Test debounce aggregation of rapid changes",
+      "Duration": 659,
+      "Timestamp": "2025-08-23T19:54:43.3096059-04:00",
+      "Status": "Passed",
+      "Error": null,
+      "Name": "Debouncing"
+    },
+    {
+      "Description": "Test multiple concurrent monitors",
+      "Duration": 37,
+      "Timestamp": "2025-08-23T19:54:43.9706881-04:00",
+      "Status": "Passed",
+      "Error": null,
+      "Name": "Multiple Monitors"
+    },
+    {
+      "Description": "Test change priority classification",
+      "Duration": 3,
+      "Timestamp": "2025-08-23T19:54:44.00872-04:00",
+      "Status": "Failed",
+      "Error": "Test returned false or unsuccessful result",
+      "Name": "Priority Classification"
+    },
+    {
+      "Description": "Test change queue operations",
+      "Duration": 151,
+      "Timestamp": "2025-08-23T19:54:44.0132265-04:00",
+      "Status": "Failed",
+      "Error": "Test returned false or unsuccessful result",
+      "Name": "Queue Management"
+    },
+    {
+      "Description": "Test proper resource disposal",
+      "Duration": 5,
+      "Timestamp": "2025-08-23T19:54:44.1660964-04:00",
+      "Status": "Failed",
+      "Error": "Test returned false or unsuccessful result",
+      "Name": "Resource Cleanup"
+    }
+  ]
+}

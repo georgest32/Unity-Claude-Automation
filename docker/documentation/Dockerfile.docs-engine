@@ -1,0 +1,101 @@
+# Enhanced Documentation System - Documentation Generation Engine
+# Phase 3 Day 5: Production Integration & Advanced Features
+# Base: PowerShell 7 with .NET 8 SDK for comprehensive module support
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-stage
+
+# Install PowerShell 7
+RUN apt-get update && \
+    apt-get install -y wget apt-transport-https software-properties-common && \
+    wget -q "https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb" && \
+    dpkg -i packages-microsoft-prod.deb && \
+    apt-get update && \
+    apt-get install -y powershell && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install documentation generation dependencies
+RUN pwsh -Command "Set-PSRepository -Name PSGallery -InstallationPolicy Trusted" && \
+    pwsh -Command "Install-Module -Name platyPS -Force -Scope AllUsers" && \
+    pwsh -Command "Install-Module -Name PSScriptAnalyzer -Force -Scope AllUsers" && \
+    pwsh -Command "Install-Module -Name Pester -Force -Scope AllUsers -RequiredVersion 5.7.1" && \
+    pwsh -Command "Install-Module -Name PowerShellGet -Force -Scope AllUsers"
+
+# Install CodeQL CLI
+RUN wget -q "https://github.com/github/codeql-cli-binaries/releases/latest/download/codeql-linux64.zip" -O /tmp/codeql.zip && \
+    unzip /tmp/codeql.zip -d /opt/ && \
+    chmod +x /opt/codeql/codeql && \
+    ln -s /opt/codeql/codeql /usr/local/bin/codeql && \
+    rm /tmp/codeql.zip
+
+# Production runtime stage
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS runtime
+
+# Install runtime dependencies
+RUN apt-get update && \
+    apt-get install -y wget apt-transport-https software-properties-common curl jq git && \
+    wget -q "https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb" && \
+    dpkg -i packages-microsoft-prod.deb && \
+    apt-get update && \
+    apt-get install -y powershell && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy PowerShell modules from build stage
+COPY --from=build-stage /opt/microsoft/powershell/7/Modules /opt/microsoft/powershell/7/Modules
+COPY --from=build-stage /opt/codeql /opt/codeql
+COPY --from=build-stage /usr/local/bin/codeql /usr/local/bin/codeql
+
+# Create application directories
+RUN mkdir -p /app/modules /app/scripts /docs/source /docs/generated /docs/cache /codeql/databases /codeql/queries
+
+# Set up user and permissions
+RUN groupadd -r docsuser && useradd -r -g docsuser docsuser && \
+    chown -R docsuser:docsuser /app /docs /codeql && \
+    chmod -R 755 /app /docs /codeql
+
+# Copy Enhanced Documentation System modules
+COPY Modules/ /app/modules/
+COPY scripts/ /app/scripts/
+
+# Copy startup and configuration scripts
+COPY docker/documentation/startup-docs-engine.ps1 /app/startup.ps1
+COPY docker/documentation/docs-config.json /app/config.json
+
+# Create health check script
+RUN echo '#!/bin/pwsh' > /app/healthcheck.ps1 && \
+    echo 'try {' >> /app/healthcheck.ps1 && \
+    echo '    $health = @{' >> /app/healthcheck.ps1 && \
+    echo '        status = "healthy"' >> /app/healthcheck.ps1 && \
+    echo '        timestamp = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ss")' >> /app/healthcheck.ps1 && \
+    echo '        modules = (Get-Module Unity-Claude* | Measure-Object).Count' >> /app/healthcheck.ps1 && \
+    echo '    }' >> /app/healthcheck.ps1 && \
+    echo '    $health | ConvertTo-Json | Out-File "/docs/generated/health.json" -Encoding UTF8' >> /app/healthcheck.ps1 && \
+    echo '    exit 0' >> /app/healthcheck.ps1 && \
+    echo '} catch {' >> /app/healthcheck.ps1 && \
+    echo '    Write-Error "Health check failed: $_"' >> /app/healthcheck.ps1 && \
+    echo '    exit 1' >> /app/healthcheck.ps1 && \
+    echo '}' >> /app/healthcheck.ps1 && \
+    chmod +x /app/healthcheck.ps1
+
+# Switch to non-root user
+USER docsuser
+
+# Set working directory
+WORKDIR /app
+
+# Expose metrics port
+EXPOSE 8080
+
+# Environment variables
+ENV POWERSHELL_TELEMETRY_OPTOUT=1 \
+    DOCS_OUTPUT_PATH=/docs/generated \
+    DOCS_SOURCE_PATH=/docs/source \
+    DOCS_CACHE_PATH=/docs/cache \
+    CODEQL_DB_PATH=/codeql/databases \
+    LOG_LEVEL=Information
+
+# Health check
+HEALTHCHECK --interval=60s --timeout=30s --start-period=120s --retries=3 \
+    CMD pwsh -File /app/healthcheck.ps1
+
+# Entry point
+ENTRYPOINT ["pwsh", "-File", "/app/startup.ps1"]

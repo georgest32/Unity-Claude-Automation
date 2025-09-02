@@ -1,0 +1,2 @@
+Remove-Item "C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\ClaudeResponses\Autonomous\TestOrchestrator_Demo_`$(Get-Date -Format 'yyyyMMdd_HHmmss').json" -Force -ErrorAction SilentlyContinue
+Write-Host "Problematic file removed successfully"

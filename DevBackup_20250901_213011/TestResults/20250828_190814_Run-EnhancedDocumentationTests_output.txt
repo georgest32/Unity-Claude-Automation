@@ -1,0 +1,63 @@
+=== Enhanced Documentation System Test Runner ===
+Test Script: Test-EnhancedDocumentationSystem.ps1
+Test Scope: All
+Output Path: \TestResults
+Start Time: 08/28/2025 19:08:15
+
+=== Executing Pester Tests ===
+[95m
+[95mStarting discovery in 1 files.[0m
+[91m[-] Discovery in C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1 failed with:[0m
+[91mSystem.Management.Automation.RuntimeException: Cannot index into a null array.
+[91m   at System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)
+[91m   at System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)
+[91m   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+[91m   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+[91m   at System.Management.Automation.Interpreter.Interpreter.Run(InterpretedFrame frame)
+[91m   at System.Management.Automation.Interpreter.LightLambda.RunVoid1[T0](T0 arg0)
+[91m   at System.Management.Automation.PSScriptCmdlet.RunClause(Action`1 clause, Object dollarUnderbar, Object inputToProcess)
+[91m   at System.Management.Automation.PSScriptCmdlet.DoEndProcessing()
+[91m   at System.Management.Automation.CommandProcessorBase.Complete()
+[91mat <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1: line 131
+[91mat New-Block, C:\Users\georg\Documents\PowerShell\Modules\Pester\5.7.1\Pester.psm1: line 808
+[91mat Context, C:\Users\georg\Documents\PowerShell\Modules\Pester\5.7.1\Pester.psm1: line 8406
+[91mat <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1: line 116
+[91mat New-Block, C:\Users\georg\Documents\PowerShell\Modules\Pester\5.7.1\Pester.psm1: line 808
+[91mat Describe, C:\Users\georg\Documents\PowerShell\Modules\Pester\5.7.1\Pester.psm1: line 10214
+[91mat <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1: line 74
+[91mat <ScriptBlock>, C:\Users\georg\Documents\PowerShell\Modules\Pester\5.7.1\Pester.psm1: line 3090
+[91mat Invoke-File, C:\Users\georg\Documents\PowerShell\Modules\Pester\5.7.1\Pester.psm1: line 3099
+[91mat Invoke-BlockContainer, C:\Users\georg\Documents\PowerShell\Modules\Pester\5.7.1\Pester.psm1: line 3008
+[91mat Discover-Test, C:\Users\georg\Documents\PowerShell\Modules\Pester\5.7.1\Pester.psm1: line 1480
+[91mat Invoke-Test, C:\Users\georg\Documents\PowerShell\Modules\Pester\5.7.1\Pester.psm1: line 2474
+[91mat Invoke-Pester<End>, C:\Users\georg\Documents\PowerShell\Modules\Pester\5.7.1\Pester.psm1: line 4960
+[91mat <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Run-EnhancedDocumentationTests.ps1: line 60[0m
+[95mDiscovery found 1 tests in 185ms.[0m
+[95mRunning tests.[0m
+  Initializing CPG test environment...
+[91m[-] Context Enhanced Documentation System - CPG Components.Thread-Safe Operations failed[0m
+[91m Exception: is skipped, because CPG-ThreadSafeOperations module not available[0m
+[91m[-] C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1 failed with:[0m
+[91mRuntimeException: Cannot index into a null array.
+[91mat <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1:131[0m
+[97mTests completed in 525ms[0m
+[97mTests Passed: 0, [0m[91mFailed: 1, [0m[90mSkipped: 0, [0m[90mInconclusive: 0, [0m[37m[0m[90mNotRun: 0[0m
+[91mBeforeAll \ AfterAll failed: 1[0m
+[91m  - Enhanced Documentation System - CPG Components.Thread-Safe Operations[0m
+[91mContainer failed: 1[0m
+[91m  - C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1[0m
+
+=== Test Results Summary ===
+  Total Tests: 1
+  Passed: 0
+  Failed: 1
+  Skipped: 0
+  Duration: 0.5247182 seconds
+  Success Rate: 0%
+
+=== Test Artifacts ===
+  XML Report: Path relative to the current directory where test result report is saved. (\TestResults\EnhancedDocumentationSystem-UnitTests-20250828-190815.xml, default: testResults.xml)
+  JSON Results: \TestResults\EnhancedDocumentationSystem-TestRunner-Results-20250828-190816.json
+  Test Output Directory: \TestResults
+
+[FAIL] Some tests failed. Review the detailed results above.

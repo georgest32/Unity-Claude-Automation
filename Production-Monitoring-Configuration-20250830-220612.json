@@ -1,0 +1,165 @@
+{
+  "ApplicationMetrics": {
+    "ResponseTime": {
+      "AlertDelay": 120,
+      "Threshold": {
+        "Warning": 2000,
+        "Critical": 5000
+      },
+      "CheckInterval": 30
+    },
+    "ErrorRate": {
+      "AlertDelay": 180,
+      "Threshold": {
+        "Warning": 1.0,
+        "Critical": 5.0
+      },
+      "CheckInterval": 60
+    },
+    "Availability": {
+      "AlertDelay": 60,
+      "Threshold": {
+        "Warning": 99.5,
+        "Critical": 99.0
+      },
+      "CheckInterval": 30
+    },
+    "Throughput": {
+      "AlertDelay": 300,
+      "Threshold": {
+        "Warning": 100,
+        "Critical": 50
+      },
+      "CheckInterval": 60
+    }
+  },
+  "AlertChannels": {
+    "Slack": {
+      "SeverityFilter": [
+        "Warning",
+        "Critical"
+      ],
+      "Channel": "#unity-claude-alerts",
+      "Template": "SlackAlert"
+    },
+    "Dashboard": {
+      "HistoryRetention": 90,
+      "URL": "http://monitoring.company.com/unity-claude",
+      "UpdateInterval": 30
+    },
+    "SMS": {
+      "SeverityFilter": [
+        "Critical"
+      ],
+      "Recipients": [
+        "+1234567890"
+      ],
+      "Template": "CriticalAlert"
+    },
+    "Email": {
+      "SeverityFilter": [
+        "Warning",
+        "Critical"
+      ],
+      "Recipients": [
+        "operations@company.com",
+        "oncall@company.com"
+      ],
+      "Template": "StandardAlert"
+    }
+  },
+  "BusinessMetrics": {
+    "AutoRecoverySuccess": {
+      "AlertDelay": 3600,
+      "Threshold": {
+        "Warning": 95,
+        "Critical": 90
+      },
+      "CheckInterval": 1800
+    },
+    "MLModelAccuracy": {
+      "AlertDelay": 1800,
+      "Threshold": {
+        "Warning": 0.85,
+        "Critical": 0.8
+      },
+      "CheckInterval": 3600
+    },
+    "DocumentationUpdates": {
+      "AlertDelay": 900,
+      "Threshold": {
+        "Warning": 10,
+        "Critical": 5
+      },
+      "CheckInterval": 300
+    },
+    "SystemCoordinationSuccess": {
+      "AlertDelay": 600,
+      "Threshold": {
+        "Warning": 95,
+        "Critical": 90
+      },
+      "CheckInterval": 300
+    }
+  },
+  "SystemMetrics": {
+    "Disk": {
+      "AlertDelay": 600,
+      "Threshold": {
+        "Warning": 85,
+        "Critical": 95
+      },
+      "CheckInterval": 300
+    },
+    "CPU": {
+      "AlertDelay": 300,
+      "Threshold": {
+        "Warning": 70,
+        "Critical": 85
+      },
+      "CheckInterval": 60
+    },
+    "Network": {
+      "AlertDelay": 300,
+      "Threshold": {
+        "Warning": 80,
+        "Critical": 95
+      },
+      "CheckInterval": 60
+    },
+    "Memory": {
+      "AlertDelay": 180,
+      "Threshold": {
+        "Warning": 80,
+        "Critical": 90
+      },
+      "CheckInterval": 60
+    }
+  },
+  "HealthChecks": {
+    "ReliabilityManager": {
+      "RetryCount": 3,
+      "URL": "http://localhost:8083/health",
+      "Interval": 30,
+      "Timeout": 10
+    },
+    "SystemCoordinator": {
+      "RetryCount": 3,
+      "URL": "http://localhost:8080/health",
+      "Interval": 30,
+      "Timeout": 10
+    },
+    "MachineLearning": {
+      "RetryCount": 2,
+      "URL": "http://localhost:8081/health",
+      "Interval": 60,
+      "Timeout": 15
+    },
+    "ScalabilityOptimizer": {
+      "RetryCount": 3,
+      "URL": "http://localhost:8082/health",
+      "Interval": 30,
+      "Timeout": 10
+    }
+  }
+}

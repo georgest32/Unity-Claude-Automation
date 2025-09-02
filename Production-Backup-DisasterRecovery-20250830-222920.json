@@ -1,0 +1,121 @@
+{
+  "BackupLocations": {
+    "OffSite": {
+      "Provider": "Azure Blob Storage",
+      "Type": "Cloud",
+      "Capacity": "Unlimited",
+      "GeoReplication": true,
+      "Encryption": "AES-256"
+    },
+    "Secondary": {
+      "Type": "NetworkShare",
+      "Replication": true,
+      "Capacity": "1TB",
+      "Path": "\\\\backup-server\\Unity-Claude"
+    },
+    "Primary": {
+      "Type": "Local",
+      "Capacity": "500GB",
+      "Path": "D:\\Backups\\Unity-Claude",
+      "Monitoring": true
+    }
+  },
+  "DisasterRecovery": {
+    "RTO": 30,
+    "RecoveryScenarios": {
+      "SecurityBreach": {
+        "AutomationLevel": "Manual",
+        "EstimatedTime": "120 minutes",
+        "Procedure": "Isolate, investigate, and restore"
+      },
+      "DataCorruption": {
+        "AutomationLevel": "Semi-automated",
+        "EstimatedTime": "30 minutes",
+        "Procedure": "Restore from point-in-time backup"
+      },
+      "SiteDisaster": {
+        "AutomationLevel": "Manual",
+        "EstimatedTime": "60 minutes",
+        "Procedure": "Activate disaster recovery site"
+      },
+      "HardwareFailure": {
+        "AutomationLevel": "Full",
+        "EstimatedTime": "15 minutes",
+        "Procedure": "Failover to backup hardware"
+      }
+    },
+    "TestingSchedule": {
+      "DisasterRecoveryDrill": "Quarterly",
+      "BackupRestore": "Monthly",
+      "FullDRTest": "Annually"
+    },
+    "RPO": 4
+  },
+  "BusinessContinuity": {
+    "RecoveryPriorities": [
+      {
+        "RTO": "5 minutes",
+        "Priority": 1,
+        "Service": "System Coordinator"
+      },
+      {
+        "RTO": "10 minutes",
+        "Priority": 2,
+        "Service": "Reliability Manager"
+      },
+      {
+        "RTO": "15 minutes",
+        "Priority": 3,
+        "Service": "Monitoring"
+      },
+      {
+        "RTO": "30 minutes",
+        "Priority": 4,
+        "Service": "Machine Learning"
+      },
+      {
+        "RTO": "30 minutes",
+        "Priority": 5,
+        "Service": "Scalability Optimizer"
+      }
+    ],
+    "AlternateProcesses": {
+      "Manual Documentation": "Temporary manual processes",
+      "Read-Only Access": "Limited functionality mode",
+      "Basic Monitoring": "Essential monitoring only"
+    },
+    "CommunicationPlan": {
+      "Stakeholders": "Email, Status page updates",
+      "Customers": "Status page, Email notifications",
+      "InternalTeam": "Email, Slack, Phone tree"
+    },
+    "CriticalProcesses": [
+      "Documentation Generation",
+      "System Monitoring",
+      "User Authentication",
+      "Data Backup"
+    ]
+  },
+  "BackupStrategy": {
+    "IncrementalBackup": {
+      "Frequency": "Hourly",
+      "Retention": 168,
+      "Verification": true,
+      "Compression": true
+    },
+    "ConfigurationBackup": {
+      "Frequency": "BeforeChanges",
+      "Versioning": true,
+      "Retention": 90,
+      "Approval": true
+    },
+    "FullBackup": {
+      "Frequency": "Daily",
+      "Retention": 30,
+      "Encryption": true,
+      "Compression": true,
+      "Verification": true,
+      "Time": "02:00"
+    }
+  }
+}

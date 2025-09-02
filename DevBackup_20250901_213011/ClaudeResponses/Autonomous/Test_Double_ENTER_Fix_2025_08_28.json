@@ -1,0 +1,53 @@
+{
+    "timestamp": "2025-08-28T02:30:00Z",
+    "session_id": "test-double-enter-fix",
+    "prompt_type": "Testing",
+    "task": "Test double ENTER key to handle paste confirmation dialog",
+    "priority": "CRITICAL",
+    "test_details": {
+        "test_script": ".\\Test-ENTERKeySubmission.ps1",
+        "test_purpose": "Verify double ENTER handles paste confirmation and submission",
+        "expected_duration": "3 seconds",
+        "requires_nuggetron": true,
+        "test_mode": "Double ENTER submission test"
+    },
+    "fix_description": {
+        "problem": "Paste confirmation dialog consumes first ENTER key",
+        "solution": "Send two ENTER keys with 250ms delay between them",
+        "logic": "First ENTER confirms paste, second ENTER submits prompt"
+    },
+    "expected_sequence": {
+        "step_1": "Orchestrator executes test",
+        "step_2": "Creates boilerplate prompt",
+        "step_3": "Switches to NUGGETRON",
+        "step_4": "Clears field with Ctrl+A, Delete",
+        "step_5": "Pastes with Ctrl+V",
+        "step_6": "Paste confirmation dialog appears",
+        "step_7": "First ENTER confirms paste (500ms delay)",
+        "step_8": "Second ENTER submits prompt (250ms delay)",
+        "step_9": "Claude processes submitted prompt"
+    },
+    "console_output_expected": [
+        "Executing: .\\Test-ENTERKeySubmission.ps1",
+        "Preparing for submission...",
+        "Clearing existing content...",
+        "Pasting complete prompt via Ctrl+V...",
+        "Submitting prompt (handling paste confirmation)...",
+        "Sending submission ENTER...",
+        "Prompt submitted successfully!",
+        "[SUCCESS] Boilerplate prompt submitted via clipboard!"
+    ],
+    "visual_confirmation": {
+        "after_paste": "Confirmation dialog appears briefly",
+        "after_first_enter": "Dialog closes, prompt visible in field",
+        "after_second_enter": "Prompt submitted, field clears"
+    },
+    "success_criteria": [
+        "Paste confirmation handled automatically",
+        "Prompt actually submitted to Claude",
+        "No manual intervention required",
+        "Complete end-to-end automation"
+    ],
+    "action": "EXECUTE_TEST",
+    "RESPONSE": "RECOMMENDATION: TEST - .\\Test-ENTERKeySubmission.ps1: Test the double ENTER key fix that handles the paste confirmation dialog. First ENTER (after 500ms) confirms the paste operation, second ENTER (after 250ms) submits the prompt. This ensures complete automation without the paste dialog blocking submission."
+}

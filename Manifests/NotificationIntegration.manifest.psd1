@@ -8,6 +8,7 @@
     Version = "1.0.0"
     Description = "Unified notification integration service that coordinates email and webhook notifications with autonomous agent workflow"
     StartScript = ".\Start-NotificationIntegrationService.ps1"
+    WorkingDirectory = "C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation"
     
     # Dependencies - requires SystemMonitoring and both notification services
     Dependencies = @("SystemMonitoring", "EmailNotifications", "WebhookNotifications")

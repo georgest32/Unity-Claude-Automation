@@ -1,0 +1,210 @@
+{
+  "ModulesSuccess": 11,
+  "EndTime": "2025-08-26 00:02:25",
+  "ModulesTotal": 20,
+  "Details": [
+    {
+      "LoadTime": 123,
+      "Status": "Success",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CPG\\Unity-Claude-CPG.psd1",
+      "FunctionsFound": 1,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-CPG",
+      "Error": null
+    },
+    {
+      "LoadTime": 66,
+      "Status": "Success",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-MasterOrchestrator\\Unity-Claude-MasterOrchestrator.psd1",
+      "FunctionsFound": 0,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-MasterOrchestrator",
+      "Error": null
+    },
+    {
+      "LoadTime": 70,
+      "Status": "Success",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\SafeCommandExecution\\SafeCommandExecution.psd1",
+      "FunctionsFound": 0,
+      "ExpectedFunctionsPresent": false,
+      "Module": "SafeCommandExecution",
+      "Error": null
+    },
+    {
+      "LoadTime": 0,
+      "Status": "Failed",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-UnityParallelization\\Unity-Claude-UnityParallelization.psd1",
+      "FunctionsFound": 0,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-UnityParallelization",
+      "Error": "The running command stopped because the preference variable \"ErrorActionPreference\" or common parameter is set to Stop: The term 'Write-UnityParallelLog' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again."
+    },
+    {
+      "LoadTime": 413,
+      "Status": "Success",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-IntegratedWorkflow\\Unity-Claude-IntegratedWorkflow.psd1",
+      "FunctionsFound": 0,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-IntegratedWorkflow",
+      "Error": null
+    },
+    {
+      "LoadTime": 711,
+      "Status": "Success",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-Learning\\Unity-Claude-Learning.psd1",
+      "FunctionsFound": 0,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-Learning",
+      "Error": null
+    },
+    {
+      "LoadTime": 3403,
+      "Status": "Success",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-RunspaceManagement\\Unity-Claude-RunspaceManagement.psd1",
+      "FunctionsFound": 3,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-RunspaceManagement",
+      "Error": null
+    },
+    {
+      "LoadTime": 0,
+      "Status": "Failed",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-PredictiveAnalysis\\Unity-Claude-PredictiveAnalysis-Refactored.psd1",
+      "FunctionsFound": 0,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-PredictiveAnalysis",
+      "Error": "The running command stopped because the preference variable \"ErrorActionPreference\" or common parameter is set to Stop: At C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-PredictiveAnalysis\\Core\\RiskAssessment.psm1:820 char:48\r\n+         Write-Verbose \"Error in DFS for module $ModuleId: $_\"\r\n+                                                ~~~~~~~~~~\r\nVariable reference is not valid. ':' was not followed by a valid variable name character. Consider using ${} to delimit the name.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-PredictiveAnalysis\\Core\\RiskAssessment.psm1:857 char:77\r\n+ …        Impact = 'Clients forced to depend on methods they don\\'t use'\r\n+                                                                  ~\r\nUnexpected token 't' in expression or statement.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-PredictiveAnalysis\\Core\\RiskAssessment.psm1:851 char:29\r\n+                 $flaws += @{\r\n+                             ~\r\nMissing closing '}' in statement block or type definition.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-PredictiveAnalysis\\Core\\RiskAssessment.psm1:1077 char:21\r\n+     'Get-DesignFlaws'\r\n+                     ~\r\nThe string is missing the terminator: '.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-PredictiveAnalysis\\Core\\RiskAssessment.psm1:850 char:66\r\n+             if ($publicMethods -and $publicMethods.Count -gt 15) {\r\n+                                                                  ~\r\nMissing closing '}' in statement block or type definition.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-PredictiveAnalysis\\Core\\RiskAssessment.psm1:843 char:13\r\n+         try {\r\n+             ~\r\nMissing closing '}' in statement block or type definition.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-PredictiveAnalysis\\Core\\RiskAssessment.psm1:1080 char:61\r\n+ Write-Verbose \"RiskAssessment component loaded successfully\"\r\n+                                                             ~\r\nThe Try statement is missing its Catch or Finally block.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-PredictiveAnalysis\\Core\\RiskAssessment.psm1:842 char:37\r\n+     foreach ($class in $classNodes) {\r\n+                                     ~\r\nMissing closing '}' in statement block or type definition.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-PredictiveAnalysis\\Core\\RiskAssessment.psm1:827 char:35\r\n+ function Find-InterfaceViolations {\r\n+                                   ~\r\nMissing closing '}' in statement block or type definition."
+    },
+    {
+      "LoadTime": 0,
+      "Status": "Failed",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CPG\\Unity-Claude-ObsolescenceDetection-Refactored.psd1",
+      "FunctionsFound": 0,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-ObsolescenceDetection",
+      "Error": "The running command stopped because the preference variable \"ErrorActionPreference\" or common parameter is set to Stop: At C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CPG\\Core\\DocumentationAccuracy.psm1:95 char:74\r\n+ … rbose \"Testing accuracy for node $processedNodes/$totalNodes: $($node …\r\n+                                                    ~~~~~~~~~~~~\r\nVariable reference is not valid. ':' was not followed by a valid variable name character. Consider using ${} to delimit the name.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CPG\\Core\\DocumentationAccuracy.psm1:237 char:47\r\n+ …                Write-Verbose \"Analyzing node $processedNodes: $($node …\r\n+                                                ~~~~~~~~~~~~~~~~\r\nVariable reference is not valid. ':' was not followed by a valid variable name character. Consider using ${} to delimit the name."
+    },
+    {
+      "LoadTime": 50,
+      "Status": "Failed",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AutonomousStateTracker-Enhanced\\Unity-Claude-AutonomousStateTracker-Enhanced-Refactored.psd1",
+      "FunctionsFound": 0,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-AutonomousStateTracker-Enhanced",
+      "Error": "Module imported but not found in session"
+    },
+    {
+      "LoadTime": 0,
+      "Status": "Failed",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AutonomousAgent\\IntelligentPromptEngine-Refactored.psd1",
+      "FunctionsFound": 0,
+      "ExpectedFunctionsPresent": false,
+      "Module": "IntelligentPromptEngine",
+      "Error": "The 'guid' member is not valid in the module manifest file 'C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AutonomousAgent\\IntelligentPromptEngine-Refactored.psd1': Cannot convert value \"1b2c3d4e-5f6g-7h8i-9j0k-1l2m3n4o5p6q\" to type \"System.Guid\". Error: \"Guid string should only contain hexadecimal characters.\""
+    },
+    {
+      "LoadTime": 28,
+      "Status": "Failed",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-DocumentationAutomation\\Unity-Claude-DocumentationAutomation-Refactored.psd1",
+      "FunctionsFound": 0,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-DocumentationAutomation",
+      "Error": "Module imported but not found in session"
+    },
+    {
+      "LoadTime": 2991,
+      "Status": "Success",
+      "IsRefactoredVersion": true,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CLIOrchestrator\\Unity-Claude-CLIOrchestrator-Refactored.psd1",
+      "FunctionsFound": 17,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-CLIOrchestrator",
+      "Error": null
+    },
+    {
+      "LoadTime": 20,
+      "Status": "Failed",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-ScalabilityEnhancements\\Unity-Claude-ScalabilityEnhancements-Refactored.psd1",
+      "FunctionsFound": 0,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-ScalabilityEnhancements",
+      "Error": "Module imported but not found in session"
+    },
+    {
+      "LoadTime": 0,
+      "Status": "Failed",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CLIOrchestrator\\Core\\DecisionEngine-Refactored.psd1",
+      "FunctionsFound": 0,
+      "ExpectedFunctionsPresent": false,
+      "Module": "DecisionEngine",
+      "Error": "Module manifest not found at: System.Collections.Hashtable.Path"
+    },
+    {
+      "LoadTime": 0,
+      "Status": "Failed",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CLIOrchestrator\\Core\\DecisionEngine-Bayesian-Refactored.psd1",
+      "FunctionsFound": 0,
+      "ExpectedFunctionsPresent": false,
+      "Module": "DecisionEngine-Bayesian",
+      "Error": "Module manifest not found at: System.Collections.Hashtable.Path"
+    },
+    {
+      "LoadTime": 73,
+      "Status": "Success",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-HITL\\Unity-Claude-HITL.psd1",
+      "FunctionsFound": 3,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-HITL",
+      "Error": null
+    },
+    {
+      "LoadTime": 206,
+      "Status": "Success",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-ParallelProcessor\\Unity-Claude-ParallelProcessor.psd1",
+      "FunctionsFound": 1,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-ParallelProcessor",
+      "Error": null
+    },
+    {
+      "LoadTime": 337,
+      "Status": "Success",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-PerformanceOptimizer\\Unity-Claude-PerformanceOptimizer.psd1",
+      "FunctionsFound": 9,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-PerformanceOptimizer",
+      "Error": null
+    },
+    {
+      "LoadTime": 83,
+      "Status": "Success",
+      "IsRefactoredVersion": false,
+      "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-DecisionEngine\\Unity-Claude-DecisionEngine.psd1",
+      "FunctionsFound": 4,
+      "ExpectedFunctionsPresent": false,
+      "Module": "Unity-Claude-DecisionEngine",
+      "Error": null
+    }
+  ],
+  "TestSuite": "Refactored Modules Verification",
+  "ModulesFailed": 9,
+  "StartTime": "2025-08-26 00:02:07"
+}

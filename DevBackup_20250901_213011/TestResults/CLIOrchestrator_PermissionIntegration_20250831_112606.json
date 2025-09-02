@@ -1,0 +1,56 @@
+{
+  "Timestamp": "2025-08-31T11:26:06.4113106-04:00",
+  "IntegrationStatus": {
+    "Mode": "Intelligent",
+    "Initialized": true,
+    "Components": {
+      "Interceptor": {
+        "Status": "Active",
+        "Enabled": true
+      },
+      "SafeOperations": {
+        "Status": "Active",
+        "Enabled": true
+      }
+    },
+    "Statistics": {
+      "SafeConversions": 0,
+      "PermissionsHandled": 0,
+      "PromptsProcessed": 0
+    }
+  },
+  "SuccessRate": 100.0,
+  "Results": {
+    "Warnings": 0,
+    "Details": [
+      {
+        "Details": "Initialize base orchestrator",
+        "Component": "Orchestrator Initialization",
+        "Status": "Pass"
+      },
+      {
+        "Details": "Initialize permission handling integration",
+        "Component": "Permission Integration",
+        "Status": "Pass"
+      },
+      {
+        "Details": "Test destructive command conversion",
+        "Component": "Safe Operations",
+        "Status": "Pass"
+      },
+      {
+        "Details": "Test Claude permission prompt detection",
+        "Component": "Permission Detection",
+        "Status": "Pass"
+      },
+      {
+        "Details": "Verify integration status reporting",
+        "Component": "Integration Status",
+        "Status": "Pass"
+      }
+    ],
+    "Passed": 5,
+    "Failed": 0
+  },
+  "TestType": "Standard"
+}

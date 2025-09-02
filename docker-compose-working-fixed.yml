@@ -1,0 +1,83 @@
+version: '3.8'
+
+networks:
+  docs-net:
+    driver: bridge
+
+services:
+  # Simple Documentation Web Server
+  docs-web:
+    image: nginx:alpine
+    container_name: docs-web
+    networks:
+      - docs-net
+    volumes:
+      - ./Enhanced_Documentation_System_User_Guide.md:/usr/share/nginx/html/index.html:ro
+      - ./Enhanced_Documentation_System_Release_Notes_v2.0.0.md:/usr/share/nginx/html/release-notes.html:ro
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # PowerShell Documentation Service with Fixed Syntax
+  powershell-service:
+    image: mcr.microsoft.com/dotnet/sdk:9.0
+    container_name: powershell-service
+    networks:
+      - docs-net
+    volumes:
+      - ./Modules:/opt/modules:ro
+    environment:
+      - POWERSHELL_TELEMETRY_OPTOUT=1
+      - PSModulePath=/opt/modules
+    working_dir: /opt/modules
+    command: ["pwsh", "-c", "Write-Host 'Enhanced Documentation System PowerShell Service Started'; Write-Host 'Modules available at /opt/modules'; Get-ChildItem /opt/modules -Recurse -Filter '*.psm1' | Select-Object -First 5 | Format-Table Name, Directory; while ($true) { Start-Sleep 30; Write-Host 'PowerShell service running -' $(Get-Date) }"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pwsh", "-Command", "Get-Date"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Simple API Service with Fixed Python Syntax
+  api-service:
+    image: python:3.12-slim
+    container_name: api-service
+    networks:
+      - docs-net
+    environment:
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "8091:8091"
+    command: >
+      sh -c "
+      pip install flask && 
+      python -c '
+      from flask import Flask, jsonify;
+      app = Flask(__name__);
+      
+      @app.route(\"/health\")
+      def health():
+          return jsonify({\"status\": \"healthy\", \"service\": \"Enhanced Documentation API v2.0.0\"});
+          
+      @app.route(\"/\")
+      def index():
+          return jsonify({\"service\": \"Enhanced Documentation System\", \"version\": \"2.0.0\", \"status\": \"operational\"});
+          
+      print(\"Enhanced Documentation API starting on 0.0.0.0:8091\");
+      app.run(host=\"0.0.0.0\", port=8091, debug=False)
+      '
+      "
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; s = socket.create_connection(('127.0.0.1', 8091), timeout=5); s.close()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s

@@ -1,0 +1,41 @@
+# Debug Log - Fixed
+Date: 2025-08-16
+Module: Unity-Claude-IPC-Bidirectional
+
+## Issue Found
+The queue assignment pattern in PowerShell was causing null reference errors:
+```powershell
+$queue = if ($QueueType -eq 'Message') { 
+    $script:MessageQueue 
+} else { 
+    $script:ResponseQueue 
+}
+$queue.Enqueue($Message)  # $queue was null
+```
+
+## Root Cause
+The conditional assignment wasn't properly capturing the script-scoped variable references.
+
+## Fix Applied
+Changed to direct access pattern:
+```powershell
+if ($QueueType -eq 'Message') { 
+    $script:MessageQueue.Enqueue($Message)
+    $queueCount = $script:MessageQueue.Count
+} else { 
+    $script:ResponseQueue.Enqueue($Message)
+    $queueCount = $script:ResponseQueue.Count
+}
+```
+
+## Files Modified
+- Unity-Claude-IPC-Bidirectional.psm1
+  - Fixed Add-MessageToQueue function (lines 642-650)
+  - Fixed Get-NextMessage function (lines 668-692)
+
+## Test Results
+✅ Test-Debug-Queue.ps1 - All tests passed
+✅ Test-Queues-Simple.ps1 - All tests passed
+
+## Status
+Issue resolved. Queue management system is now functional.

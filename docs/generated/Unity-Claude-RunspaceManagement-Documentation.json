@@ -1,0 +1,79 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-RunspaceManagement",
+  "Commands": [
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-RunspaceManagementStatus",
+      "Synopsis": "Gets the current status of the runspace management system",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "EnableResourceMonitoring",
+        "MaxRunspaces",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-RunspaceManagement",
+      "Synopsis": "Initializes the runspace management system with all components",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Force",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Stop-RunspaceManagement",
+      "Synopsis": "Stops all runspace pools and cleans up resources",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-RunspaceManagement",
+  "ExportedFunctions": [
+    "Get-RunspaceManagementStatus",
+    "Initialize-RunspaceManagement",
+    "Stop-RunspaceManagement"
+  ],
+  "Version": {
+    "Major": 2,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

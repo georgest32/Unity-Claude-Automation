@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unity Automation - Unity-Claude Automation &mdash; Unity-Claude-Automation 3.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=acc74ff5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2b3e50" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Unity-Claude-Automation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Unity Automation - Unity-Claude Automation</a><ul>
+<li><a class="reference internal" href="#unity-integration-learnings">🔄 Unity Integration Learnings</a><ul>
+<li><a class="reference internal" href="#domain-reload-survival-critical">16. Domain Reload Survival (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#roslyn-version-conflicts-documented">17. Roslyn Version Conflicts (📝 DOCUMENTED)</a></li>
+<li><a class="reference internal" href="#console-log-access-resolved">18. Console Log Access (✅ RESOLVED)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unity-compilation-detection">🎯 Unity Compilation Detection</a><ul>
+<li><a class="reference internal" href="#unity-batch-mode-compilation-best-practices">Unity Batch Mode Compilation Best Practices</a></li>
+<li><a class="reference internal" href="#unity-error-pattern-detection">Unity Error Pattern Detection</a></li>
+<li><a class="reference internal" href="#unity-log-export-for-powershell-processing">Unity Log Export for PowerShell Processing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unity-editor-integration-patterns">🔧 Unity Editor Integration Patterns</a><ul>
+<li><a class="reference internal" href="#unity-menu-integration-for-automation">Unity Menu Integration for Automation</a></li>
+<li><a class="reference internal" href="#unity-build-automation">Unity Build Automation</a></li>
+<li><a class="reference internal" href="#unity-project-validation">Unity Project Validation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unity-performance-monitoring">📊 Unity Performance Monitoring</a><ul>
+<li><a class="reference internal" href="#unity-editor-performance-tracking">Unity Editor Performance Tracking</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unity-safety-patterns">🛡️ Unity Safety Patterns</a><ul>
+<li><a class="reference internal" href="#safe-unity-automation-guidelines">Safe Unity Automation Guidelines</a></li>
+<li><a class="reference internal" href="#unity-editor-state-validation">Unity Editor State Validation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2b3e50" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Unity-Claude-Automation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Unity Automation - Unity-Claude Automation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/LEARNINGS_UNITY_AUTOMATION.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="unity-automation-unity-claude-automation">
+<h1>Unity Automation - Unity-Claude Automation<a class="headerlink" href="#unity-automation-unity-claude-automation" title="Link to this heading"></a></h1>
+<p><em>Unity-specific automation patterns, compilation detection, and Unity Editor integration</em>
+<em>Last Updated: 2025-08-19</em></p>
+<section id="unity-integration-learnings">
+<h2>🔄 Unity Integration Learnings<a class="headerlink" href="#unity-integration-learnings" title="Link to this heading"></a></h2>
+<section id="domain-reload-survival-critical">
+<h3>16. Domain Reload Survival (⚠️ CRITICAL)<a class="headerlink" href="#domain-reload-survival-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Unity reloads assemblies during compilation
+<strong>Discovery</strong>: Static state lost on domain reload
+<strong>Evidence</strong>: [InitializeOnLoadMethod] called after each reload
+<strong>Resolution</strong>: Use SessionState for persistence
+<strong>Critical Learning</strong>: Never rely on static state in Unity Editor scripts</p>
+</section>
+<section id="roslyn-version-conflicts-documented">
+<h3>17. Roslyn Version Conflicts (📝 DOCUMENTED)<a class="headerlink" href="#roslyn-version-conflicts-documented" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Unity crashes with Roslyn version mismatches
+<strong>Discovery</strong>: Unity limited to Microsoft.CodeAnalysis v3.8
+<strong>Evidence</strong>: Modern tools use v4.4+, causing conflicts
+<strong>Resolution</strong>: Isolate Roslyn dependencies; use Unity’s version
+<strong>Critical Learning</strong>: Check assembly versions for Unity compatibility</p>
+</section>
+<section id="console-log-access-resolved">
+<h3>18. Console Log Access (✅ RESOLVED)<a class="headerlink" href="#console-log-access-resolved" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: LogEntries is internal Unity class
+<strong>Discovery</strong>: Reflection required for console access
+<strong>Evidence</strong>: typeof(EditorWindow).Assembly.GetType(“UnityEditor.LogEntries”)
+<strong>Resolution</strong>: Use reflection with proper error handling
+<strong>Critical Learning</strong>: Unity internals change; add version checks</p>
+</section>
+</section>
+<section id="unity-compilation-detection">
+<h2>🎯 Unity Compilation Detection<a class="headerlink" href="#unity-compilation-detection" title="Link to this heading"></a></h2>
+<section id="unity-batch-mode-compilation-best-practices">
+<h3>Unity Batch Mode Compilation Best Practices<a class="headerlink" href="#unity-batch-mode-compilation-best-practices" title="Link to this heading"></a></h3>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Proper Unity compilation detection</span>
+<span class="k">using</span><span class="w"> </span><span class="nn">UnityEditor</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="nn">UnityEditor.Compilation</span><span class="p">;</span>
+
+<span class="na">[InitializeOnLoadMethod]</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">InitializeCompilationDetection</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Use CompilationPipeline events - reliable in batch mode</span>
+<span class="w">    </span><span class="n">CompilationPipeline</span><span class="p">.</span><span class="n">compilationFinished</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">OnCompilationFinished</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CompilationPipeline</span><span class="p">.</span><span class="n">compilationStarted</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">OnCompilationStarted</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// Store state in SessionState for domain reload survival</span>
+<span class="w">    </span><span class="n">SessionState</span><span class="p">.</span><span class="n">SetBool</span><span class="p">(</span><span class="s">&quot;AutomationEnabled&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">true</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnCompilationStarted</span><span class="p">(</span><span class="kt">object</span><span class="w"> </span><span class="n">obj</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Export compilation start signal</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">startTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">;</span>
+<span class="w">    </span><span class="n">SessionState</span><span class="p">.</span><span class="n">SetString</span><span class="p">(</span><span class="s">&quot;CompilationStartTime&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">startTime</span><span class="p">.</span><span class="n">ToString</span><span class="p">(</span><span class="s">&quot;O&quot;</span><span class="p">));</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// Write signal file for PowerShell detection</span>
+<span class="w">    </span><span class="n">File</span><span class="p">.</span><span class="n">WriteAllText</span><span class="p">(</span><span class="s">&quot;compilation_started.signal&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">startTime</span><span class="p">.</span><span class="n">ToString</span><span class="p">(</span><span class="s">&quot;O&quot;</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnCompilationFinished</span><span class="p">(</span><span class="kt">object</span><span class="w"> </span><span class="n">obj</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Only export if automation enabled</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">SessionState</span><span class="p">.</span><span class="n">GetBool</span><span class="p">(</span><span class="s">&quot;AutomationEnabled&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">false</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">endTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">startTimeStr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SessionState</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="s">&quot;CompilationStartTime&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// Export compilation results</span>
+<span class="w">    </span><span class="n">ExportCompilationResults</span><span class="p">(</span><span class="n">startTimeStr</span><span class="p">,</span><span class="w"> </span><span class="n">endTime</span><span class="p">.</span><span class="n">ToString</span><span class="p">(</span><span class="s">&quot;O&quot;</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unity-error-pattern-detection">
+<h3>Unity Error Pattern Detection<a class="headerlink" href="#unity-error-pattern-detection" title="Link to this heading"></a></h3>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Unity error code patterns for automation</span>
+<span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">UnityErrorPatterns</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ErrorCodeMappings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="p">{</span><span class="s">&quot;CS0246&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Type or namespace not found&quot;</span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="s">&quot;CS0103&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Name does not exist in current context&quot;</span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="s">&quot;CS1061&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Type does not contain definition&quot;</span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="s">&quot;CS0029&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Cannot implicitly convert type&quot;</span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="s">&quot;CS0117&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Type does not contain definition for member&quot;</span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="s">&quot;CS0120&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Object reference required for non-static member&quot;</span><span class="p">}</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="nf">ClassifyError</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">errorMessage</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">pattern</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">ErrorCodeMappings</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">errorMessage</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="n">pattern</span><span class="p">.</span><span class="n">Key</span><span class="p">))</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">pattern</span><span class="p">.</span><span class="n">Value</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Unknown error type&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unity-log-export-for-powershell-processing">
+<h3>Unity Log Export for PowerShell Processing<a class="headerlink" href="#unity-log-export-for-powershell-processing" title="Link to this heading"></a></h3>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="nn">System.IO</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="nn">System.Text.Json</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="nn">UnityEngine</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">UnityLogExporter</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ExportCurrentErrors</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">logEntries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetConsoleEntries</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">errorData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Timestamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">.</span><span class="n">ToString</span><span class="p">(</span><span class="s">&quot;O&quot;</span><span class="p">),</span>
+<span class="w">            </span><span class="n">ErrorCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logEntries</span><span class="p">.</span><span class="n">errors</span><span class="p">.</span><span class="n">Count</span><span class="p">,</span>
+<span class="w">            </span><span class="n">WarningCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logEntries</span><span class="p">.</span><span class="n">warnings</span><span class="p">.</span><span class="n">Count</span><span class="p">,</span>
+<span class="w">            </span><span class="n">Errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logEntries</span><span class="p">.</span><span class="n">errors</span><span class="p">,</span>
+<span class="w">            </span><span class="n">Warnings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logEntries</span><span class="p">.</span><span class="n">warnings</span><span class="p">,</span>
+<span class="w">            </span><span class="n">UnityVersion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Application</span><span class="p">.</span><span class="n">unityVersion</span><span class="p">,</span>
+<span class="w">            </span><span class="n">ProjectPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Application</span><span class="p">.</span><span class="n">dataPath</span>
+<span class="w">        </span><span class="p">};</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JsonSerializer</span><span class="p">.</span><span class="n">Serialize</span><span class="p">(</span><span class="n">errorData</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">JsonSerializerOptions</span><span class="w"> </span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span>
+<span class="w">            </span><span class="n">WriteIndented</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span><span class="w"> </span>
+<span class="w">        </span><span class="p">});</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="n">File</span><span class="p">.</span><span class="n">WriteAllText</span><span class="p">(</span><span class="s">&quot;current_errors.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">json</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Debug</span><span class="p">.</span><span class="n">Log</span><span class="p">(</span><span class="s">$&quot;Exported {logEntries.errors.Count} errors and {logEntries.warnings.Count} warnings&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nf">static</span><span class="w"> </span><span class="p">(</span><span class="n">List</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">errors</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">warnings</span><span class="p">)</span><span class="w"> </span><span class="n">GetConsoleEntries</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Use reflection to access Unity&#39;s internal LogEntries</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">logEntriesType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typeof</span><span class="p">(</span><span class="n">EditorWindow</span><span class="p">).</span><span class="n">Assembly</span><span class="p">.</span><span class="n">GetType</span><span class="p">(</span><span class="s">&quot;UnityEditor.LogEntries&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">getCountMethod</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logEntriesType</span><span class="p">.</span><span class="n">GetMethod</span><span class="p">(</span><span class="s">&quot;GetCount&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">getEntryInternalMethod</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logEntriesType</span><span class="p">.</span><span class="n">GetMethod</span><span class="p">(</span><span class="s">&quot;GetEntryInternal&quot;</span><span class="p">);</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">totalCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">getCountMethod</span><span class="p">.</span><span class="n">Invoke</span><span class="p">(</span><span class="k">null</span><span class="p">,</span><span class="w"> </span><span class="k">null</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">warnings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">totalCount</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Extract log entry details using reflection</span>
+<span class="w">            </span><span class="c1">// This is Unity version-dependent and may need updates</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">errors</span><span class="p">,</span><span class="w"> </span><span class="n">warnings</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="unity-editor-integration-patterns">
+<h2>🔧 Unity Editor Integration Patterns<a class="headerlink" href="#unity-editor-integration-patterns" title="Link to this heading"></a></h2>
+<section id="unity-menu-integration-for-automation">
+<h3>Unity Menu Integration for Automation<a class="headerlink" href="#unity-menu-integration-for-automation" title="Link to this heading"></a></h3>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">UnityClaudeAutomationMenu</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="na">[MenuItem(&quot;Tools/Claude Automation/Export Current Errors&quot;)]</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ExportErrors</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">UnityLogExporter</span><span class="p">.</span><span class="n">ExportCurrentErrors</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="na">[MenuItem(&quot;Tools/Claude Automation/Force Compilation&quot;)]</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ForceCompilation</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">CompilationPipeline</span><span class="p">.</span><span class="n">RequestScriptCompilation</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="na">[MenuItem(&quot;Tools/Claude Automation/Clear Console&quot;)]</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ClearConsole</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">logEntriesType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typeof</span><span class="p">(</span><span class="n">EditorWindow</span><span class="p">).</span><span class="n">Assembly</span><span class="p">.</span><span class="n">GetType</span><span class="p">(</span><span class="s">&quot;UnityEditor.LogEntries&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">clearMethod</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logEntriesType</span><span class="p">.</span><span class="n">GetMethod</span><span class="p">(</span><span class="s">&quot;Clear&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">clearMethod</span><span class="o">?.</span><span class="n">Invoke</span><span class="p">(</span><span class="k">null</span><span class="p">,</span><span class="w"> </span><span class="k">null</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unity-build-automation">
+<h3>Unity Build Automation<a class="headerlink" href="#unity-build-automation" title="Link to this heading"></a></h3>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">UnityBuildAutomation</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">PerformBuild</span><span class="p">(</span><span class="n">BuildTarget</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">outputPath</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">scenes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EditorBuildSettings</span><span class="p">.</span><span class="n">scenes</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">scene</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">scene</span><span class="p">.</span><span class="n">enabled</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">scene</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">scene</span><span class="p">.</span><span class="n">path</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">ToArray</span><span class="p">();</span>
+<span class="w">            </span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">buildOptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BuildOptions</span><span class="p">.</span><span class="n">None</span><span class="p">;</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">report</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BuildPipeline</span><span class="p">.</span><span class="n">BuildPlayer</span><span class="p">(</span><span class="n">scenes</span><span class="p">,</span><span class="w"> </span><span class="n">outputPath</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">buildOptions</span><span class="p">);</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="c1">// Export build results for PowerShell processing</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">buildResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Success</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">report</span><span class="p">.</span><span class="n">summary</span><span class="p">.</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BuildResult</span><span class="p">.</span><span class="n">Succeeded</span><span class="p">,</span>
+<span class="w">            </span><span class="n">Target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target</span><span class="p">.</span><span class="n">ToString</span><span class="p">(),</span>
+<span class="w">            </span><span class="n">OutputPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">outputPath</span><span class="p">,</span>
+<span class="w">            </span><span class="n">BuildTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">report</span><span class="p">.</span><span class="n">summary</span><span class="p">.</span><span class="n">buildEndedAt</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">report</span><span class="p">.</span><span class="n">summary</span><span class="p">.</span><span class="n">buildStartedAt</span><span class="p">,</span>
+<span class="w">            </span><span class="n">Errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">report</span><span class="p">.</span><span class="n">steps</span><span class="p">.</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">step</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">step</span><span class="p">.</span><span class="n">messages</span><span class="p">)</span>
+<span class="w">                          </span><span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">msg</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">msg</span><span class="p">.</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">LogType</span><span class="p">.</span><span class="n">Error</span><span class="p">)</span>
+<span class="w">                          </span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">msg</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">msg</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+<span class="w">                          </span><span class="p">.</span><span class="n">ToArray</span><span class="p">()</span>
+<span class="w">        </span><span class="p">};</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="n">File</span><span class="p">.</span><span class="n">WriteAllText</span><span class="p">(</span><span class="s">&quot;build_result.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">JsonSerializer</span><span class="p">.</span><span class="n">Serialize</span><span class="p">(</span><span class="n">buildResult</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unity-project-validation">
+<h3>Unity Project Validation<a class="headerlink" href="#unity-project-validation" title="Link to this heading"></a></h3>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">UnityProjectValidator</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">ValidationResult</span><span class="w"> </span><span class="nf">ValidateProject</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ValidationResult</span><span class="p">();</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="c1">// Check for missing references</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">allPrefabs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AssetDatabase</span><span class="p">.</span><span class="n">FindAssets</span><span class="p">(</span><span class="s">&quot;t:Prefab&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">guid</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">allPrefabs</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="kt">var</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AssetDatabase</span><span class="p">.</span><span class="n">GUIDToAssetPath</span><span class="p">(</span><span class="n">guid</span><span class="p">);</span>
+<span class="w">            </span><span class="kt">var</span><span class="w"> </span><span class="n">prefab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AssetDatabase</span><span class="p">.</span><span class="n">LoadAssetAtPath</span><span class="o">&lt;</span><span class="n">GameObject</span><span class="o">&gt;</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+<span class="w">            </span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HasMissingReferences</span><span class="p">(</span><span class="n">prefab</span><span class="p">))</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">result</span><span class="p">.</span><span class="n">MissingReferences</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="c1">// Check for compilation errors</span>
+<span class="w">        </span><span class="n">result</span><span class="p">.</span><span class="n">HasCompilationErrors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CompilationPipeline</span><span class="p">.</span><span class="n">codeOptimization</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CodeOptimization</span><span class="p">.</span><span class="n">Debug</span><span class="p">;</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="c1">// Export validation results</span>
+<span class="w">        </span><span class="n">File</span><span class="p">.</span><span class="n">WriteAllText</span><span class="p">(</span><span class="s">&quot;validation_result.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">JsonSerializer</span><span class="p">.</span><span class="n">Serialize</span><span class="p">(</span><span class="n">result</span><span class="p">));</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">HasMissingReferences</span><span class="p">(</span><span class="n">GameObject</span><span class="w"> </span><span class="n">obj</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Implement missing reference detection</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ValidationResult</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">MissingReferences</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">HasCompilationErrors</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">WarningMessages</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="unity-performance-monitoring">
+<h2>📊 Unity Performance Monitoring<a class="headerlink" href="#unity-performance-monitoring" title="Link to this heading"></a></h2>
+<section id="unity-editor-performance-tracking">
+<h3>Unity Editor Performance Tracking<a class="headerlink" href="#unity-editor-performance-tracking" title="Link to this heading"></a></h3>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">UnityPerformanceMonitor</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">DateTime</span><span class="w"> </span><span class="n">lastCheck</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="na">[InitializeOnLoadMethod]</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">StartMonitoring</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">EditorApplication</span><span class="p">.</span><span class="n">update</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">CheckPerformance</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">CheckPerformance</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">lastCheck</span><span class="p">).</span><span class="n">TotalSeconds</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">        </span><span class="n">lastCheck</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">;</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">memoryUsage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">GC</span><span class="p">.</span><span class="n">GetTotalMemory</span><span class="p">(</span><span class="k">false</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="p">;</span><span class="w"> </span><span class="c1">// MB</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">performanceData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Timestamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">.</span><span class="n">ToString</span><span class="p">(</span><span class="s">&quot;O&quot;</span><span class="p">),</span>
+<span class="w">            </span><span class="n">MemoryUsageMB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">memoryUsage</span><span class="p">,</span>
+<span class="w">            </span><span class="n">IsCompiling</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EditorApplication</span><span class="p">.</span><span class="n">isCompiling</span><span class="p">,</span>
+<span class="w">            </span><span class="n">IsPlaying</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EditorApplication</span><span class="p">.</span><span class="n">isPlaying</span><span class="p">,</span>
+<span class="w">            </span><span class="n">CurrentScene</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UnityEngine</span><span class="p">.</span><span class="n">SceneManagement</span><span class="p">.</span><span class="n">SceneManager</span><span class="p">.</span><span class="n">GetActiveScene</span><span class="p">().</span><span class="n">name</span>
+<span class="w">        </span><span class="p">};</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="c1">// Export for PowerShell monitoring</span>
+<span class="w">        </span><span class="n">File</span><span class="p">.</span><span class="n">WriteAllText</span><span class="p">(</span><span class="s">&quot;unity_performance.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">JsonSerializer</span><span class="p">.</span><span class="n">Serialize</span><span class="p">(</span><span class="n">performanceData</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="unity-safety-patterns">
+<h2>🛡️ Unity Safety Patterns<a class="headerlink" href="#unity-safety-patterns" title="Link to this heading"></a></h2>
+<section id="safe-unity-automation-guidelines">
+<h3>Safe Unity Automation Guidelines<a class="headerlink" href="#safe-unity-automation-guidelines" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Always check Unity state</strong> before performing operations</p></li>
+<li><p><strong>Use SessionState</strong> for persistence across domain reloads</p></li>
+<li><p><strong>Implement timeout mechanisms</strong> for long-running operations</p></li>
+<li><p><strong>Validate asset references</strong> before automation</p></li>
+<li><p><strong>Backup project state</strong> before automated changes</p></li>
+</ol>
+</section>
+<section id="unity-editor-state-validation">
+<h3>Unity Editor State Validation<a class="headerlink" href="#unity-editor-state-validation" title="Link to this heading"></a></h3>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">UnityStateValidator</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsSafeForAutomation</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Don&#39;t automate during compilation</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">EditorApplication</span><span class="p">.</span><span class="n">isCompiling</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">false</span><span class="p">;</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="c1">// Don&#39;t automate during play mode</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">EditorApplication</span><span class="p">.</span><span class="n">isPlaying</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">false</span><span class="p">;</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="c1">// Check for unsaved scenes</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">UnityEngine</span><span class="p">.</span><span class="n">SceneManagement</span><span class="p">.</span><span class="n">SceneManager</span><span class="p">.</span><span class="n">GetActiveScene</span><span class="p">().</span><span class="n">isDirty</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Debug</span><span class="p">.</span><span class="n">LogWarning</span><span class="p">(</span><span class="s">&quot;Scene has unsaved changes - consider saving before automation&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="c1">// Check for missing critical assets</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">criticalAssets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">[]</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;ProjectSettings/ProjectSettings.asset&quot;</span><span class="w"> </span><span class="p">};</span>
+<span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">asset</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">criticalAssets</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">File</span><span class="p">.</span><span class="n">Exists</span><span class="p">(</span><span class="n">asset</span><span class="p">))</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">Debug</span><span class="p">.</span><span class="n">LogError</span><span class="p">(</span><span class="s">$&quot;Critical asset missing: {asset}&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="k">false</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">true</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p><em>This document covers Unity-specific automation patterns.</em>
+<em>For broader system architecture, see IMPLEMENTATION_GUIDE.md</em></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Unity-Claude-Automation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

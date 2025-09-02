@@ -1,0 +1,97 @@
+{
+    "FailedTests":  6,
+    "Errors":  [
+                   "[Load NotificationIntegration Module] Failed to load NotificationIntegration module: Required function not found: Initialize-NotificationIntegration",
+                   "[Initialize NotificationIntegration] Failed to initialize NotificationIntegration: The \u0027Initialize-NotificationIntegration\u0027 command was found in the module \u0027Unity-Claude-NotificationIntegration\u0027, but the module could not be loaded. For more information, run \u0027Import-Module Unity-Claude-NotificationIntegration\u0027.",
+                   "[Multi-Channel Delivery Test] Multi-channel delivery test failed: The term \u0027Test-NotificationDeliveryMultiChannel\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                   "[End-to-End Integration Test] End-to-end integration test failed: The term \u0027Send-NotificationMultiChannel\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                   "[Performance and Scalability Test] Performance test failed: Too many errors in performance test: 10",
+                   "[Configuration Validation Test] Configuration validation failed: Critical alerts should use multiple channels. Found: 1"
+               ],
+    "OverallStatus":  "Failed",
+    "TotalDuration":  1.0377459,
+    "PassedTests":  2,
+    "TestName":  "Multi-Channel Notification Integration Test",
+    "TotalTests":  8,
+    "StartTime":  {
+                      "value":  "\/Date(1756579064875)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "Saturday, August 30, 2025 2:37:44 PM"
+                  },
+    "EndTime":  {
+                    "value":  "\/Date(1756579065913)\/",
+                    "DisplayHint":  2,
+                    "DateTime":  "Saturday, August 30, 2025 2:37:45 PM"
+                },
+    "Modules":  {
+                    "NotificationIntegration":  {
+                                                    "Status":  "Failed",
+                                                    "Tests":  {
+                                                                  "Performance and Scalability Test":  {
+                                                                                                           "Duration":  0,
+                                                                                                           "Status":  "Error",
+                                                                                                           "Result":  null,
+                                                                                                           "Error":  "Performance test failed: Too many errors in performance test: 10"
+                                                                                                       },
+                                                                  "Load NotificationIntegration Module":  {
+                                                                                                              "Duration":  0,
+                                                                                                              "Status":  "Error",
+                                                                                                              "Result":  null,
+                                                                                                              "Error":  "Failed to load NotificationIntegration module: Required function not found: Initialize-NotificationIntegration"
+                                                                                                          },
+                                                                  "Multi-Channel Delivery Test":  {
+                                                                                                      "Duration":  0,
+                                                                                                      "Status":  "Error",
+                                                                                                      "Result":  null,
+                                                                                                      "Error":  "Multi-channel delivery test failed: The term \u0027Test-NotificationDeliveryMultiChannel\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+                                                                                                  },
+                                                                  "Initialize NotificationIntegration":  {
+                                                                                                             "Duration":  0,
+                                                                                                             "Status":  "Error",
+                                                                                                             "Result":  null,
+                                                                                                             "Error":  "Failed to initialize NotificationIntegration: The \u0027Initialize-NotificationIntegration\u0027 command was found in the module \u0027Unity-Claude-NotificationIntegration\u0027, but the module could not be loaded. For more information, run \u0027Import-Module Unity-Claude-NotificationIntegration\u0027."
+                                                                                                         },
+                                                                  "End-to-End Integration Test":  {
+                                                                                                      "Duration":  0,
+                                                                                                      "Status":  "Error",
+                                                                                                      "Result":  null,
+                                                                                                      "Error":  "End-to-end integration test failed: The term \u0027Send-NotificationMultiChannel\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+                                                                                                  }
+                                                              }
+                                                },
+                    "SlackIntegration":  {
+                                             "Status":  "Pending",
+                                             "Tests":  {
+
+                                                       }
+                                         },
+                    "NotificationPreferences":  {
+                                                    "Status":  "Partial",
+                                                    "Tests":  {
+                                                                  "Load NotificationPreferences Module":  {
+                                                                                                              "Duration":  24.392300000000002,
+                                                                                                              "Status":  "Passed",
+                                                                                                              "Result":  true
+                                                                                                          },
+                                                                  "Initialize NotificationPreferences":  {
+                                                                                                             "Duration":  141.7635,
+                                                                                                             "Status":  "Passed",
+                                                                                                             "Result":  true
+                                                                                                         },
+                                                                  "Configuration Validation Test":  {
+                                                                                                        "Duration":  0,
+                                                                                                        "Status":  "Error",
+                                                                                                        "Result":  null,
+                                                                                                        "Error":  "Configuration validation failed: Critical alerts should use multiple channels. Found: 1"
+                                                                                                    }
+                                                              }
+                                                },
+                    "TeamsIntegration":  {
+                                             "Status":  "Pending",
+                                             "Tests":  {
+
+                                                       }
+                                         }
+                },
+    "SuccessRate":  25
+}

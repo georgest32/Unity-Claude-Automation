@@ -1,0 +1,26 @@
+# CODEOWNERS file for Unity-Claude-Automation repository
+# Generated on: 2025-08-23 22:20:15
+# 
+# This file defines code ownership and review requirements.
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for all files (fallback)
+# Pattern precedence: Last matching pattern takes priority
+
+* @unity-claude/admin
+
+# Specific ownership rules
+/Modules/ @unity-claude/dev-team  # PowerShell modules
+/scripts/ @unity-claude/automation-team
+/docs/ @unity-claude/docs-team
+/agents/ @unity-claude/ai-team
+/.github/ @unity-claude/devops-team  # GitHub configuration
+*.md @unity-claude/docs-team  # Documentation files
+*.json @unity-claude/config-team
+*.ps1 @unity-claude/powershell-team  # PowerShell scripts
+*.psm1 @unity-claude/powershell-team
+*.psd1 @unity-claude/powershell-team
+*test* @unity-claude/qa-team  # Test files
+
+# End of CODEOWNERS file
+# For questions about code ownership, contact the repository administrators.

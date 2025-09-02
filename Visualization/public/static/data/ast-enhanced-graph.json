@@ -1,0 +1,3701 @@
+{
+  "callGraphs": {
+    "Write-IntegrationLog": {
+      "callCount": 5,
+      "calls": [
+        "Get-Date",
+        "Write-Host",
+        "Join-Path",
+        "Add-Content",
+        "Write-Warning"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Get-CachedComputationResult": {
+      "callCount": 6,
+      "calls": [
+        null,
+        "Get-Date",
+        "Write-PerfLog",
+        null,
+        "Get-Date",
+        "Write-PerfLog"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Invoke-FeedbackCyclePhase5Generate": {
+      "callCount": 7,
+      "calls": [
+        "Update-CyclePhase",
+        "Write-IntegrationLog",
+        "Invoke-PromptTypeSelection",
+        "New-PromptTemplate",
+        "Update-CyclePhase",
+        "Write-IntegrationLog",
+        "Update-CyclePhase"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Format-ResponseSummary": {
+      "callCount": 0,
+      "calls": null,
+      "module": "Unity-Claude-ResponseMonitoring"
+    },
+    "Send-KeysToWindow": {
+      "callCount": 5,
+      "calls": [
+        "Write-CLILog",
+        "Start-Sleep",
+        "Start-Sleep",
+        "Write-CLILog",
+        "Write-CLILog"
+      ],
+      "module": "CLIAutomation"
+    },
+    "Update-SessionMetrics": {
+      "callCount": 2,
+      "calls": [
+        "Get-ConversationSession",
+        "Save-ConversationSession"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Update-IntegrationState": {
+      "callCount": 8,
+      "calls": [
+        "Get-IntegrationState",
+        "Write-IntegrationLog",
+        "Initialize-IntegrationState",
+        "ForEach-Object",
+        "Get-CurrentTimestamp",
+        "Join-Path",
+        "ConvertTo-Json",
+        "Set-Content"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Save-AgentState": {
+      "callCount": 9,
+      "calls": [
+        "Join-Path",
+        "Test-Path",
+        "Join-Path",
+        "Get-Date",
+        "Copy-Item",
+        "ConvertTo-Json",
+        "Out-File",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Invoke-ComprehensiveResourceCheck": {
+      "callCount": 12,
+      "calls": [
+        "Write-ResourceLog",
+        "Get-ResourceTimestamp",
+        "Get-MemoryUsage",
+        "Get-Item",
+        "Get-PSDrive",
+        "Write-ResourceLog",
+        "Where-Object",
+        "Get-Date",
+        "Get-Date",
+        "Get-Date",
+        "Write-ResourceLog",
+        "Write-ResourceLog"
+      ],
+      "module": "Unity-Claude-ResourceOptimizer"
+    },
+    "Restore-SessionFromCheckpoint": {
+      "callCount": 8,
+      "calls": [
+        "Get-ConversationSession",
+        "Where-Object",
+        "Select-Object",
+        "Write-SessionLog",
+        "Get-SessionTimestamp",
+        "Save-ConversationSession",
+        "Write-SessionLog",
+        "Write-SessionLog"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Get-MemoryUsage": {
+      "callCount": 4,
+      "calls": [
+        "Get-Process",
+        "Get-ResourceTimestamp",
+        "Get-CimInstance",
+        "Write-ResourceLog"
+      ],
+      "module": "Unity-Claude-ResourceOptimizer"
+    },
+    "Test-MemoryMonitoringSystem": {
+      "callCount": 13,
+      "calls": [
+        "Write-Host",
+        "Test-Path",
+        "Test-Path",
+        "Test-Path",
+        "Test-Path",
+        "Where-Object",
+        "Measure-Object",
+        "Select-Object",
+        "Write-Host",
+        "Get-UnityMemoryStatus",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-MemoryAnalysis"
+    },
+    "Invoke-UnityCommand": {
+      "callCount": 10,
+      "calls": [
+        "Write-SafeLog",
+        "Find-UnityExecutable",
+        "ForEach-Object",
+        "Remove-DangerousCharacters",
+        "ForEach-Object",
+        "Remove-DangerousCharacters",
+        "Start-Process",
+        "Get-Content",
+        "Get-Content",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Resume-FeedbackLoopSession": {
+      "callCount": 5,
+      "calls": [
+        "Get-IntegrationState",
+        "Write-IntegrationLog",
+        "Update-IntegrationState",
+        "Start-AutonomousFeedbackLoop",
+        "Write-IntegrationLog"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Switch-ToUnityWindow": {
+      "callCount": 11,
+      "calls": [
+        "Write-Host",
+        "Split-Path",
+        "Join-Path",
+        "Test-Path",
+        "Write-Host",
+        null,
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-RecompileSignaling"
+    },
+    "Test-PerformanceThresholds": {
+      "callCount": 3,
+      "calls": [
+        "Where-Object",
+        "Get-Date",
+        "Get-Date"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Deny-AgentIntervention": {
+      "callCount": 6,
+      "calls": [
+        "Update-InterventionStatus",
+        "Write-EnhancedStateLog",
+        "Get-AgentState",
+        "Save-AgentState",
+        "Set-EnhancedAutonomousState",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Get-AutonomousStateTracking": {
+      "callCount": 7,
+      "calls": [
+        "Join-Path",
+        "Test-Path",
+        "Write-StateTrackerLog",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "ForEach-Object",
+        "Write-StateTrackerLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Start-ResponsePollingTimer": {
+      "callCount": 9,
+      "calls": [
+        "New-Object",
+        "Test-ResponseFileChanged",
+        "Write-Host",
+        "Get-Module",
+        null,
+        "Process-ClaudeResponse",
+        "Register-ObjectEvent",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ResponseMonitoring"
+    },
+    "Invoke-JobCleanup": {
+      "callCount": 13,
+      "calls": [
+        "Get-Date",
+        "Write-ConcurrentLog",
+        "Sort-Object",
+        "Select-Object",
+        "Sort-Object",
+        "Select-Object",
+        "Get-Date",
+        "Get-Date",
+        "Write-ConcurrentLog",
+        "Stop-ConcurrentJob",
+        "Get-Date",
+        "Write-ConcurrentLog",
+        "Write-ConcurrentLog"
+      ],
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "Get-StateTransitionHistory": {
+      "callCount": 2,
+      "calls": [
+        "Get-AutonomousStateTracking",
+        "Select-Object"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Get-DetailedWindowInfo": {
+      "callCount": 6,
+      "calls": [
+        "Get-Process",
+        "Where-Object",
+        "ForEach-Object",
+        "Get-WmiObject",
+        "Sort-Object",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-WindowDetection"
+    },
+    "Export-UnityAnalysisData": {
+      "callCount": 19,
+      "calls": [
+        "Write-SafeLog",
+        "Join-Path",
+        "Get-Date",
+        "Get-Date",
+        "Write-SafeLog",
+        "ConvertTo-Json",
+        "Set-Content",
+        "Get-Item",
+        "Get-Date",
+        "ConvertTo-Json",
+        "Set-Content",
+        "Get-Item",
+        "Get-Date",
+        "Get-Date",
+        "Export-Csv",
+        "Set-Content",
+        "Get-Item",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Restore-AgentStateFromCheckpoint": {
+      "callCount": 13,
+      "calls": [
+        "Get-ChildItem",
+        "Sort-Object",
+        "Write-EnhancedStateLog",
+        "Where-Object",
+        "Select-Object",
+        "Select-Object",
+        "Write-EnhancedStateLog",
+        "Get-Content",
+        "ConvertTo-HashTable",
+        "ConvertFrom-Json",
+        "Get-Date",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Write-ConcurrentLog": {
+      "callCount": 7,
+      "calls": [
+        "Get-Date",
+        "Write-Host",
+        "Join-Path",
+        "Split-Path",
+        "Get-ProcessMutex",
+        "Add-Content",
+        "Write-Warning"
+      ],
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "Complete-FeedbackCycle": {
+      "callCount": 4,
+      "calls": [
+        "Get-CurrentTimestamp",
+        "Get-Date",
+        "Get-Date",
+        "Write-IntegrationLog"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Get-PerformanceReport": {
+      "callCount": 2,
+      "calls": [
+        "Get-PerfTimestamp",
+        "Select-Object"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Invoke-BuildCommand": {
+      "callCount": 14,
+      "calls": [
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "ConvertTo-Json",
+        "Write-SafeLog",
+        "Invoke-UnityPlayerBuild",
+        "Write-SafeLog",
+        "Invoke-UnityAssetImport",
+        "Write-SafeLog",
+        "Invoke-UnityCustomMethod",
+        "Write-SafeLog",
+        "Invoke-UnityProjectValidation",
+        "Write-SafeLog",
+        "Invoke-UnityScriptCompilation",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Clear-PerformanceCache": {
+      "callCount": 1,
+      "calls": "Write-PerfLog",
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Test-StateTransition": {
+      "callCount": 0,
+      "calls": null,
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Initialize-AutonomousStateTracking": {
+      "callCount": 11,
+      "calls": [
+        "New-StateTrackingId",
+        "Write-StateTrackerLog",
+        "New-StateTrackingId",
+        "Get-StateTimestamp",
+        "Get-StateTimestamp",
+        "Get-StateTimestamp",
+        "Get-StateTimestamp",
+        "Get-StateTimestamp",
+        "Save-StateTracking",
+        "Write-StateTrackerLog",
+        "Write-StateTrackerLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Process-InputQueue": {
+      "callCount": 29,
+      "calls": [
+        "Initialize-InputQueue",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Write-CLILog",
+        "Where-Object",
+        "Write-CLILog",
+        "ConvertTo-Json",
+        "Set-Content",
+        "Write-CLILog",
+        "Submit-ClaudeCLIInput",
+        "Submit-ClaudeFileInput",
+        "Submit-ClaudeFileInput",
+        "Write-CLILog",
+        "Submit-ClaudeCLIInput",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Where-Object",
+        "Add-Member",
+        "Get-Date",
+        "Write-CLILog",
+        "Add-Member",
+        "Write-CLILog",
+        "ConvertTo-Json",
+        "Set-Content",
+        "Write-CLILog",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "ConvertTo-Json",
+        "Set-Content"
+      ],
+      "module": "CLIAutomation"
+    },
+    "Set-WindowFocus": {
+      "callCount": 19,
+      "calls": [
+        "Write-CLILog",
+        "Write-CLILog",
+        "Write-CLILog",
+        "Start-Sleep",
+        "Out-Null",
+        "Start-Sleep",
+        "Out-Null",
+        "Start-Sleep",
+        "Out-Null",
+        "Get-Process",
+        "Out-Null",
+        "Out-Null",
+        "Out-Null",
+        "Start-Sleep",
+        "Write-CLILog",
+        "Write-CLILog",
+        "Start-Sleep",
+        "Write-CLILog",
+        "Start-Sleep"
+      ],
+      "module": "CLIAutomation"
+    },
+    "Get-FeedbackLoopStatus": {
+      "callCount": 1,
+      "calls": "Get-IntegrationState",
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Invoke-FeedbackCyclePhase6Submit": {
+      "callCount": 6,
+      "calls": [
+        "Update-CyclePhase",
+        "Write-IntegrationLog",
+        "Submit-ClaudeInputWithFallback",
+        "Update-CyclePhase",
+        "Write-IntegrationLog",
+        "Update-CyclePhase"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Start-FileWatcher": {
+      "callCount": 14,
+      "calls": [
+        "Split-Path",
+        "Test-Path",
+        "Write-Host",
+        "New-Item",
+        "Out-Null",
+        "New-Object",
+        "Write-Host",
+        "Get-Module",
+        null,
+        "Process-UnityErrors",
+        "Register-ObjectEvent",
+        "Register-ObjectEvent",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ReliableMonitoring"
+    },
+    "New-SessionId": {
+      "callCount": 0,
+      "calls": null,
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Test-ResponseFileChanged": {
+      "callCount": 4,
+      "calls": [
+        "Test-Path",
+        "Get-Item",
+        "Read-SafeResponseFile",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ResponseMonitoring"
+    },
+    "Write-PerfLog": {
+      "callCount": 6,
+      "calls": [
+        "Get-Date",
+        "Write-Host",
+        "Join-Path",
+        "Split-Path",
+        "Add-Content",
+        "Write-Warning"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Test-InterventionTriggers": {
+      "callCount": 2,
+      "calls": [
+        "Get-Date",
+        "Get-Date"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Stop-ReliableUnityMonitoring": {
+      "callCount": 4,
+      "calls": [
+        "Write-Host",
+        "Stop-FileWatcher",
+        "Stop-PollingTimer",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ReliableMonitoring"
+    },
+    "Invoke-EmergencyCleanup": {
+      "callCount": 13,
+      "calls": [
+        "Write-ResourceLog",
+        "Write-ResourceLog",
+        "Invoke-GarbageCollection",
+        "Write-ResourceLog",
+        "Invoke-SessionCleanup",
+        "Write-ResourceLog",
+        "Invoke-LogRotation",
+        "Get-Command",
+        "Clear-PerformanceCache",
+        "Write-ResourceLog",
+        "Write-ResourceLog",
+        "Write-ResourceLog",
+        "Write-ResourceLog"
+      ],
+      "module": "Unity-Claude-ResourceOptimizer"
+    },
+    "Invoke-TestCommand": {
+      "callCount": 4,
+      "calls": [
+        "Write-SafeLog",
+        "New-ConstrainedRunspace",
+        "Invoke-Pester",
+        "Invoke-Pester"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Test-CommandSafety": {
+      "callCount": 11,
+      "calls": [
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Start-RecompileSignalMonitoring": {
+      "callCount": 15,
+      "calls": [
+        "Write-Host",
+        "Split-Path",
+        "Test-Path",
+        "New-Item",
+        "Out-Null",
+        "New-Object",
+        "Write-Host",
+        "Get-Module",
+        null,
+        "Process-RecompileSignal",
+        null,
+        "Register-ObjectEvent",
+        "Register-ObjectEvent",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-RecompileSignaling"
+    },
+    "Invoke-UnityErrorPatternAnalysis": {
+      "callCount": 13,
+      "calls": [
+        "Write-SafeLog",
+        "Join-Path",
+        "Test-Path",
+        "Get-Date",
+        "Write-SafeLog",
+        "Get-Content",
+        "Write-SafeLog",
+        "Measure-Object",
+        "Where-Object",
+        "Sort-Object",
+        "Select-Object",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Stop-AutonomousFeedbackLoop": {
+      "callCount": 5,
+      "calls": [
+        "Write-IntegrationLog",
+        "Update-IntegrationState",
+        "Stop-ClaudeResponseMonitoring",
+        "Write-IntegrationLog",
+        "Write-IntegrationLog"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Calculate-HealthStatus": {
+      "callCount": 0,
+      "calls": null,
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Get-EnhancedAutonomousState": {
+      "callCount": 6,
+      "calls": [
+        "Get-AgentState",
+        "Get-UptimeMinutes",
+        "Select-Object",
+        "Select-Object",
+        "Get-SystemPerformanceMetrics",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Get-UnityMemoryStatus": {
+      "callCount": 5,
+      "calls": [
+        "Test-Path",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-MemoryAnalysis"
+    },
+    "Get-ResourceTimestamp": {
+      "callCount": 1,
+      "calls": "Get-Date",
+      "module": "Unity-Claude-ResourceOptimizer"
+    },
+    "Submit-ClaudeInputWithFallback": {
+      "callCount": 10,
+      "calls": [
+        "Write-CLILog",
+        "Format-ClaudePrompt",
+        "Write-CLILog",
+        "Submit-ClaudeFileInput",
+        "Submit-ClaudeCLIInput",
+        "Write-CLILog",
+        "Write-CLILog",
+        "Write-CLILog",
+        "Start-Sleep",
+        "Write-CLILog"
+      ],
+      "module": "CLIAutomation"
+    },
+    "Write-SafeLog": {
+      "callCount": 8,
+      "calls": [
+        "Join-Path",
+        "Get-Date",
+        "Add-Content",
+        "Write-Error",
+        "Write-Warning",
+        "Write-Debug",
+        "Write-Host",
+        "Write-Verbose"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Find-ClaudeCodeCLIWindow-Enhanced": {
+      "callCount": 26,
+      "calls": [
+        "Write-Host",
+        "Test-Path",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Write-Host",
+        "Get-Process",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Get-Process",
+        "Where-Object",
+        "Where-Object",
+        "Select-Object",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Get-Process",
+        "Where-Object",
+        "Select-Object",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-WindowDetection-Enhanced"
+    },
+    "Update-SharedData": {
+      "callCount": 5,
+      "calls": [
+        "Join-Path",
+        "ConvertTo-Json",
+        "Set-Content",
+        "Invoke-WithMutex",
+        null
+      ],
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "Save-ProfileData": {
+      "callCount": 8,
+      "calls": [
+        "Get-Date",
+        "Join-Path",
+        "Test-Path",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "ConvertTo-Json",
+        "Set-Content",
+        "Write-PerfLog"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Start-ClaudeResponseMonitoring": {
+      "callCount": 11,
+      "calls": [
+        "Write-Host",
+        "Read-SafeResponseFile",
+        "Test-Path",
+        "Get-Item",
+        "Start-ResponseFileWatcher",
+        "Start-ResponsePollingTimer",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ResponseMonitoring"
+    },
+    "Test-InputDelivery": {
+      "callCount": 8,
+      "calls": [
+        "Get-Date",
+        "New-TimeSpan",
+        "Get-Date",
+        "Test-Path",
+        "Get-Item",
+        "Write-CLILog",
+        "Start-Sleep",
+        "Write-CLILog"
+      ],
+      "module": "CLIAutomation"
+    },
+    "Write-EnhancedStateLog": {
+      "callCount": 7,
+      "calls": [
+        "Get-Date",
+        "ConvertTo-Json",
+        "Write-Host",
+        "Out-File",
+        "Join-Path",
+        "Write-Warning",
+        "Write-EventLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Get-SafeCommandStatus": {
+      "callCount": 5,
+      "calls": [
+        "Get-SafeCommandConfig",
+        "Get-CommandExecutionStatistics",
+        "Get-Date",
+        "Write-SafeLog",
+        "Get-Date"
+      ],
+      "module": "SafeCommandExecution"
+    },
+    "Get-SystemMetrics": {
+      "callCount": 5,
+      "calls": [
+        "Get-Process",
+        "Get-CimInstance",
+        "Measure-Object",
+        "Select-Object",
+        "Write-StateTrackerLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Get-ProcessMutex": {
+      "callCount": 1,
+      "calls": "Write-ConcurrentLog",
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "Start-AutonomousFeedbackLoop": {
+      "callCount": 21,
+      "calls": [
+        "Write-IntegrationLog",
+        "Get-IntegrationState",
+        "Initialize-IntegrationState",
+        "Update-IntegrationState",
+        "Write-IntegrationLog",
+        "Update-IntegrationState",
+        "Write-IntegrationLog",
+        "New-FeedbackCycle",
+        "Update-IntegrationState",
+        "Invoke-CompleteFeedbackCycle",
+        "Update-IntegrationState",
+        "Write-IntegrationLog",
+        "Update-IntegrationState",
+        "Write-IntegrationLog",
+        "Write-IntegrationLog",
+        "Update-IntegrationState",
+        "Start-Sleep",
+        "Write-IntegrationLog",
+        "Update-IntegrationState",
+        "Write-IntegrationLog",
+        "Update-IntegrationState"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Submit-ToClaude": {
+      "callCount": 3,
+      "calls": [
+        "Write-Host",
+        "Start-Sleep",
+        "Get-Date"
+      ],
+      "module": "Unity-Claude-CLISubmission-Enhanced"
+    },
+    "Start-UnityMemoryMonitoring": {
+      "callCount": 21,
+      "calls": [
+        "Write-Host",
+        "Add-Content",
+        "Get-Date",
+        "Split-Path",
+        "Test-Path",
+        "New-Item",
+        "Out-Null",
+        "Write-Host",
+        "New-Object",
+        "Register-ObjectEvent",
+        "Write-Host",
+        "Split-Path",
+        "Start-Sleep",
+        "Process-MemoryDataFile",
+        "Add-Content",
+        "Get-Date",
+        "Out-Null",
+        "Write-Host",
+        "Test-Path",
+        "Process-MemoryDataFile",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-MemoryAnalysis"
+    },
+    "Invoke-LogRotation": {
+      "callCount": 31,
+      "calls": [
+        "Get-Date",
+        "Write-ResourceLog",
+        "Get-ChildItem",
+        "Write-ResourceLog",
+        "Get-Date",
+        "Join-Path",
+        "Move-Item",
+        "New-Item",
+        "Out-Null",
+        "Get-ChildItem",
+        "Where-Object",
+        "Get-Date",
+        "Compress-Archive",
+        "Remove-Item",
+        "Write-ResourceLog",
+        "Write-ResourceLog",
+        "Get-Date",
+        "Get-ChildItem",
+        "Where-Object",
+        "Remove-Item",
+        "Write-ResourceLog",
+        "Write-ResourceLog",
+        "Get-ChildItem",
+        "Sort-Object",
+        "Select-Object",
+        "Remove-Item",
+        "Write-ResourceLog",
+        "Write-ResourceLog",
+        "Get-Date",
+        "Write-ResourceLog",
+        "Write-ResourceLog"
+      ],
+      "module": "Unity-Claude-ResourceOptimizer"
+    },
+    "Invoke-UnityTrendAnalysis": {
+      "callCount": 12,
+      "calls": [
+        "Write-SafeLog",
+        "Join-Path",
+        "Get-Date",
+        "Write-SafeLog",
+        "Get-Content",
+        "Sort-Object",
+        "Select-Object",
+        "Measure-Object",
+        "Sort-Object",
+        "Select-Object",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Stop-ResponsePollingTimer": {
+      "callCount": 2,
+      "calls": [
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ResponseMonitoring"
+    },
+    "Stop-OperationProfile": {
+      "callCount": 6,
+      "calls": [
+        "Get-Date",
+        "Get-Process",
+        "Update-PerformanceMetrics",
+        "Record-Bottleneck",
+        "Write-PerfLog",
+        "Save-ProfileData"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Read-SafeJsonFile": {
+      "callCount": 6,
+      "calls": [
+        "Test-Path",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Write-Host",
+        "Start-Sleep",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ReliableMonitoring"
+    },
+    "Test-CircuitBreakerState": {
+      "callCount": 5,
+      "calls": [
+        "Get-AutonomousStateTracking",
+        "Get-Date",
+        "Get-Date",
+        "Write-StateTrackerLog",
+        "Get-Date"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Record-Bottleneck": {
+      "callCount": 2,
+      "calls": [
+        "Select-Object",
+        "Write-PerfLog"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Invoke-AnalysisCommand": {
+      "callCount": 18,
+      "calls": [
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "ConvertTo-Json",
+        "Write-SafeLog",
+        "Invoke-UnityLogAnalysis",
+        "Write-SafeLog",
+        "Invoke-UnityErrorPatternAnalysis",
+        "Write-SafeLog",
+        "Invoke-UnityPerformanceAnalysis",
+        "Write-SafeLog",
+        "Invoke-UnityTrendAnalysis",
+        "Write-SafeLog",
+        "Invoke-UnityReportGeneration",
+        "Write-SafeLog",
+        "Export-UnityAnalysisData",
+        "Write-SafeLog",
+        "Get-UnityAnalyticsMetrics",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Process-ClaudeResponse": {
+      "callCount": 6,
+      "calls": [
+        "Read-SafeResponseFile",
+        "Write-Host",
+        "Write-Host",
+        null,
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ResponseMonitoring"
+    },
+    "Initialize-SafeCommandExecution": {
+      "callCount": 8,
+      "calls": [
+        "Write-Host",
+        "Set-SafeCommandConfig",
+        "Set-SafeCommandConfig",
+        "Test-SafeCommandInitialization",
+        "Write-SafeLog",
+        "Get-SafeCommandConfig",
+        "Get-Date",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution"
+    },
+    "Update-CyclePhase": {
+      "callCount": 6,
+      "calls": [
+        "Get-CurrentTimestamp",
+        "Write-IntegrationLog",
+        "Get-CurrentTimestamp",
+        "Get-Date",
+        "Get-Date",
+        "Write-IntegrationLog"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Update-ResourceMonitoring": {
+      "callCount": 8,
+      "calls": [
+        "Get-CimInstance",
+        "Measure-Object",
+        "Select-Object",
+        "Get-Process",
+        "Get-Date",
+        "Write-ConcurrentLog",
+        "Write-ConcurrentLog",
+        "Write-ConcurrentLog"
+      ],
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "Invoke-UnityReportGeneration": {
+      "callCount": 17,
+      "calls": [
+        "Write-SafeLog",
+        "Get-Date",
+        "Join-Path",
+        "Get-Date",
+        "Get-Date",
+        "Write-SafeLog",
+        "Get-Date",
+        "Set-Content",
+        "Write-SafeLog",
+        "ConvertTo-Json",
+        "Set-Content",
+        "Write-SafeLog",
+        "Export-Csv",
+        "Set-Content",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Invoke-MemoryMonitoring": {
+      "callCount": 13,
+      "calls": [
+        "Get-Date",
+        "Write-ResourceLog",
+        "Get-MemoryUsage",
+        "Select-Object",
+        "Get-Date",
+        "Write-ResourceLog",
+        "Invoke-ResourceAlert",
+        "Write-ResourceLog",
+        "Invoke-ResourceAlert",
+        "Write-ResourceLog",
+        "Invoke-GarbageCollection",
+        "Write-ResourceLog",
+        "Write-ResourceLog"
+      ],
+      "module": "Unity-Claude-ResourceOptimizer"
+    },
+    "Invoke-UnityProjectValidation": {
+      "callCount": 23,
+      "calls": [
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Test-PathSafety",
+        "Write-SafeLog",
+        "Join-Path",
+        "Test-Path",
+        "Write-SafeLog",
+        "Join-Path",
+        "Test-Path",
+        "Get-ChildItem",
+        "Measure-Object",
+        "Group-Object",
+        "Write-SafeLog",
+        "Where-Object",
+        "Measure-Object",
+        "Write-SafeLog",
+        "Join-Path",
+        "Test-Path",
+        "Join-Path",
+        "Test-Path",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "ConvertTo-HashTable": {
+      "callCount": 8,
+      "calls": [
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "ForEach-Object",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "ConvertTo-HashTable",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Test-ExecutionResult": {
+      "callCount": 1,
+      "calls": "Get-Date",
+      "module": "CommandExecution"
+    },
+    "Read-SafeResponseFile": {
+      "callCount": 6,
+      "calls": [
+        "Test-Path",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Write-Host",
+        "Start-Sleep",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ResponseMonitoring"
+    },
+    "Test-UnityBuildResult": {
+      "callCount": 13,
+      "calls": [
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Test-Path",
+        "Write-SafeLog",
+        "Get-Content",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Test-Path",
+        "Get-ChildItem",
+        "Measure-Object",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "New-JobId": {
+      "callCount": 0,
+      "calls": null,
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "Get-ClaudeWindow": {
+      "callCount": 10,
+      "calls": [
+        "Write-CLILog",
+        "Get-Process",
+        "New-Object",
+        "Out-Null",
+        "Write-CLILog",
+        "Get-Process",
+        "New-Object",
+        "Out-Null",
+        "Write-CLILog",
+        "Write-CLILog"
+      ],
+      "module": "CLIAutomation"
+    },
+    "Test-ClaudeCodeWindow": {
+      "callCount": 3,
+      "calls": [
+        "Get-Date",
+        "Get-Location",
+        "Get-ForegroundWindow"
+      ],
+      "module": "Unity-Claude-WindowDetection"
+    },
+    "Test-SafeCommandIntegration": {
+      "callCount": 9,
+      "calls": [
+        "Write-SafeLog",
+        "Get-Date",
+        "Test-SafeCommandInitialization",
+        "New-ConstrainedRunspace",
+        "Remove-ConstrainedRunspace",
+        "Test-CommandSafety",
+        "Where-Object",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution"
+    },
+    "Should-CreateBackup": {
+      "callCount": 2,
+      "calls": [
+        "Get-Date",
+        "Get-Date"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Get-UptimeMinutes": {
+      "callCount": 10,
+      "calls": [
+        "Write-EnhancedStateLog",
+        "Get-Date",
+        "Write-EnhancedStateLog",
+        "Get-SafeDateTime",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Get-SystemPerformanceMetrics": {
+      "callCount": 7,
+      "calls": [
+        "Get-Date",
+        "ForEach-Object",
+        "Get-Counter",
+        "Where-Object",
+        "Select-Object",
+        "Get-Process",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Get-ConversationSession": {
+      "callCount": 9,
+      "calls": [
+        "Write-SessionLog",
+        "Join-Path",
+        "Test-Path",
+        "Write-SessionLog",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "ForEach-Object",
+        "Write-SessionLog",
+        "Write-SessionLog"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Get-CurrentWindowTitle": {
+      "callCount": 3,
+      "calls": [
+        "Add-Type",
+        "New-Object",
+        "Out-Null"
+      ],
+      "module": "Unity-Claude-CLISubmission-Enhanced"
+    },
+    "Start-InputLockProtection": {
+      "callCount": 12,
+      "calls": [
+        "Get-InputLockConfiguration",
+        "Write-Warning",
+        "Test-Path",
+        "Write-Warning",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Start-Job",
+        null,
+        "Start-Sleep",
+        "Write-Error"
+      ],
+      "module": "Unity-Claude-CLISubmission-Enhanced"
+    },
+    "Set-SafeCommandConfiguration": {
+      "callCount": 3,
+      "calls": [
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Resume-ConversationSession": {
+      "callCount": 7,
+      "calls": [
+        "Get-ConversationSession",
+        "Write-SessionLog",
+        "Get-SessionTimestamp",
+        "Add-ConversationHistoryEntry",
+        "Write-SessionLog",
+        "Update-ConversationSession",
+        "Write-SessionLog"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Get-UnityAnalyticsMetrics": {
+      "callCount": 8,
+      "calls": [
+        "Write-SafeLog",
+        "Join-Path",
+        "Get-Date",
+        "Write-SafeLog",
+        "Test-Path",
+        "Get-Content",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Set-AutonomousState": {
+      "callCount": 13,
+      "calls": [
+        "Get-AutonomousStateTracking",
+        "Test-StateTransition",
+        "Write-StateTrackerLog",
+        "Get-StateTimestamp",
+        "Get-Date",
+        "Get-Date",
+        "Get-StateTimestamp",
+        "Get-StateTimestamp",
+        "Select-Object",
+        "Write-StateTrackerLog",
+        "Test-InterventionTriggers",
+        "Invoke-InterventionTrigger",
+        "Save-StateTracking"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Stop-ConcurrentJob": {
+      "callCount": 5,
+      "calls": [
+        "Write-ConcurrentLog",
+        "Stop-Job",
+        "Remove-Job",
+        "Get-ConcurrentTimestamp",
+        "Write-ConcurrentLog"
+      ],
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "ConvertTo-HumanReadableSize": {
+      "callCount": 0,
+      "calls": null,
+      "module": "Unity-Claude-ResourceOptimizer"
+    },
+    "Manage-CacheSize": {
+      "callCount": 3,
+      "calls": [
+        "Sort-Object",
+        "Select-Object",
+        "Write-PerfLog"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Get-StateTimestamp": {
+      "callCount": 1,
+      "calls": "Get-Date",
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Test-ErrorFileChanged": {
+      "callCount": 5,
+      "calls": [
+        "Test-Path",
+        "Get-Content",
+        "Test-Path",
+        "Get-Item",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ReliableMonitoring"
+    },
+    "New-StateTrackingId": {
+      "callCount": 0,
+      "calls": null,
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Format-ClaudePrompt": {
+      "callCount": 1,
+      "calls": "Write-CLILog",
+      "module": "CLIAutomation"
+    },
+    "Stop-EnhancedHealthMonitoring": {
+      "callCount": 6,
+      "calls": [
+        "Get-Job",
+        "Where-Object",
+        "Stop-Job",
+        "Remove-Job",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Initialize-IntegrationState": {
+      "callCount": 7,
+      "calls": [
+        "New-Guid",
+        "Write-IntegrationLog",
+        "Get-CurrentTimestamp",
+        "Get-CurrentTimestamp",
+        "Join-Path",
+        "ConvertTo-Json",
+        "Set-Content"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Test-ProcessExists": {
+      "callCount": 1,
+      "calls": "Get-Process",
+      "module": "CLIAutomation"
+    },
+    "New-UnityAssetImportScript": {
+      "callCount": 1,
+      "calls": "Write-SafeLog",
+      "module": "SafeCommandExecution-Original"
+    },
+    "Update-ConversationSession": {
+      "callCount": 2,
+      "calls": [
+        "Get-ConversationSession",
+        "Save-ConversationSession"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Set-EnhancedAutonomousState": {
+      "callCount": 10,
+      "calls": [
+        "Get-AgentState",
+        "Write-EnhancedStateLog",
+        "Get-Date",
+        "Select-Object",
+        "Write-EnhancedStateLog",
+        "Request-HumanIntervention",
+        "Request-HumanIntervention",
+        "Save-AgentState",
+        "New-StateCheckpoint",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Analyze-MemoryData": {
+      "callCount": 2,
+      "calls": [
+        "Add-Content",
+        "Get-Date"
+      ],
+      "module": "Unity-Claude-MemoryAnalysis"
+    },
+    "Invoke-FeedbackCyclePhase2Parse": {
+      "callCount": 6,
+      "calls": [
+        "Update-CyclePhase",
+        "Write-IntegrationLog",
+        "Invoke-ProcessClaudeResponse",
+        "Update-CyclePhase",
+        "Write-IntegrationLog",
+        "Update-CyclePhase"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Reset-CircuitBreaker": {
+      "callCount": 4,
+      "calls": [
+        "Get-AutonomousStateTracking",
+        "Write-StateTrackerLog",
+        "Set-AutonomousState",
+        "Save-StateTracking"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Test-SystemHealthThresholds": {
+      "callCount": 0,
+      "calls": null,
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Start-ConcurrentJob": {
+      "callCount": 8,
+      "calls": [
+        "Test-ResourceAvailability",
+        "Write-ConcurrentLog",
+        "New-JobId",
+        "Start-ThreadJob",
+        "Start-Job",
+        "Get-ConcurrentTimestamp",
+        "Write-ConcurrentLog",
+        "Write-ConcurrentLog"
+      ],
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "Invoke-ParallelFileProcessing": {
+      "callCount": 12,
+      "calls": [
+        "Write-ConcurrentLog",
+        "Update-SharedData",
+        "Test-ResourceAvailability",
+        "Write-ConcurrentLog",
+        "Start-Sleep",
+        "Split-Path",
+        "Start-ConcurrentJob",
+        "Wait-ConcurrentJob",
+        "Write-ConcurrentLog",
+        "Where-Object",
+        "Write-ConcurrentLog",
+        "Write-ConcurrentLog"
+      ],
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "Submit-ClaudeCLIInput": {
+      "callCount": 10,
+      "calls": [
+        "Write-CLILog",
+        "Get-ClaudeWindow",
+        "Write-CLILog",
+        "Set-WindowFocus",
+        "Write-CLILog",
+        "Send-KeysToWindow",
+        "Start-Sleep",
+        "Send-KeysToWindow",
+        "Write-CLILog",
+        "Get-Date"
+      ],
+      "module": "CLIAutomation"
+    },
+    "Invoke-ConversationSummarization": {
+      "callCount": 9,
+      "calls": [
+        "Select-Object",
+        "Select-Object",
+        "Group-Object",
+        "Where-Object",
+        "Select-Object",
+        "ForEach-Object",
+        "Select-Object",
+        "Write-SessionLog",
+        "Write-SessionLog"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Wait-ForResponseCompletion": {
+      "callCount": 15,
+      "calls": [
+        "Write-Host",
+        "Get-InputLockConfiguration",
+        "Get-Date",
+        "Get-Date",
+        "Test-Path",
+        "Write-Host",
+        "Remove-Item",
+        "Write-Host",
+        "Get-CurrentWindowTitle",
+        "Write-Host",
+        "Start-Sleep",
+        "Get-Date",
+        "Write-Warning",
+        "Get-Date",
+        "Write-Error"
+      ],
+      "module": "Unity-Claude-CLISubmission-Enhanced"
+    },
+    "Start-EnhancedHealthMonitoring": {
+      "callCount": 20,
+      "calls": [
+        "Write-EnhancedStateLog",
+        "Split-Path",
+        "Import-Module",
+        "Join-Path",
+        "Get-AgentState",
+        "Start-Sleep",
+        "Start-Sleep",
+        "Get-SystemPerformanceMetrics",
+        "Test-SystemHealthThresholds",
+        "Get-Date",
+        "Request-HumanIntervention",
+        "Set-EnhancedAutonomousState",
+        "Write-EnhancedStateLog",
+        "Save-AgentState",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Start-Sleep",
+        "Start-Job",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Stop-UnityErrorMonitoring": {
+      "callCount": 4,
+      "calls": [
+        "Get-Job",
+        "Stop-Job",
+        "Remove-Job",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-CLISubmission"
+    },
+    "Process-MemoryDataFile": {
+      "callCount": 14,
+      "calls": [
+        "Test-Path",
+        "Write-Host",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Add-Content",
+        "Get-Date",
+        "Split-Path",
+        "Analyze-MemoryData",
+        "Write-Host",
+        "Generate-AutonomousMemoryRecommendation",
+        "Write-Host",
+        "Write-Host",
+        "Add-Content",
+        "Get-Date"
+      ],
+      "module": "Unity-Claude-MemoryAnalysis"
+    },
+    "Submit-ClaudeFileInput": {
+      "callCount": 18,
+      "calls": [
+        "Write-CLILog",
+        "Test-Path",
+        "New-Item",
+        "Out-Null",
+        "Get-Date",
+        "Join-Path",
+        "Write-ClaudeMessageFile",
+        "Write-CLILog",
+        "New-Object",
+        "New-Object",
+        "Write-CLILog",
+        "Out-Null",
+        "Set-Content",
+        "Write-CLILog",
+        "Get-Date",
+        "Write-CLILog",
+        "Write-CLILog",
+        "Write-CLILog"
+      ],
+      "module": "CLIAutomation"
+    },
+    "Get-ConversationHistoryForContext": {
+      "callCount": 2,
+      "calls": [
+        "Get-ConversationSession",
+        "Select-Object"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Stop-PollingTimer": {
+      "callCount": 2,
+      "calls": [
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ReliableMonitoring"
+    },
+    "Invoke-UnityCustomMethod": {
+      "callCount": 15,
+      "calls": [
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Test-PathSafety",
+        "Find-UnityExecutable",
+        "Get-Date",
+        "Write-SafeLog",
+        "Get-Date",
+        "Start-Process",
+        "Get-Date",
+        "Get-Content",
+        "Get-Content",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "New-SessionCheckpoint": {
+      "callCount": 6,
+      "calls": [
+        "Get-ConversationSession",
+        "New-Guid",
+        "Get-SessionTimestamp",
+        "Select-Object",
+        "Write-SessionLog",
+        "Save-ConversationSession"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Get-ResponseMonitoringStatus": {
+      "callCount": 0,
+      "calls": null,
+      "module": "Unity-Claude-ResponseMonitoring"
+    },
+    "Invoke-UnityAssetImport": {
+      "callCount": 22,
+      "calls": [
+        "Write-SafeLog",
+        "Test-Path",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Test-PathSafety",
+        "New-UnityAssetImportScript",
+        "Join-Path",
+        "Get-Date",
+        "Set-Content",
+        "Write-SafeLog",
+        "Find-UnityExecutable",
+        "Get-Date",
+        "Write-SafeLog",
+        "Get-Date",
+        "Start-Process",
+        "Get-Date",
+        "Get-Content",
+        "Get-Content",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Test-Path",
+        "Remove-Item"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Invoke-SafeCommand": {
+      "callCount": 8,
+      "calls": [
+        "Write-SafeLog",
+        "Test-CommandSafety",
+        "Write-SafeLog",
+        "Get-Date",
+        "Test-ExecutionResult",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "CommandExecution"
+    },
+    "Write-CLILog": {
+      "callCount": 5,
+      "calls": [
+        "Get-Date",
+        "New-Object",
+        "Out-Null",
+        "Add-Content",
+        "Write-Host"
+      ],
+      "module": "CLIAutomation"
+    },
+    "Test-UnityCompilationResult": {
+      "callCount": 9,
+      "calls": [
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Test-Path",
+        "Write-SafeLog",
+        "Get-Content",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Save-StateTracking": {
+      "callCount": 5,
+      "calls": [
+        "Get-StateTimestamp",
+        "Join-Path",
+        "ConvertTo-Json",
+        "Set-Content",
+        "Write-StateTrackerLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Get-ReliableMonitoringStatus": {
+      "callCount": 0,
+      "calls": null,
+      "module": "Unity-Claude-ReliableMonitoring"
+    },
+    "Write-ResourceLog": {
+      "callCount": 5,
+      "calls": [
+        "Get-Date",
+        "Write-Host",
+        "Join-Path",
+        "Add-Content",
+        "Write-Warning"
+      ],
+      "module": "Unity-Claude-ResourceOptimizer"
+    },
+    "Wait-ConcurrentJob": {
+      "callCount": 14,
+      "calls": [
+        "Write-ConcurrentLog",
+        "Wait-Job",
+        "Receive-Job",
+        "Get-ConcurrentTimestamp",
+        "Get-Date",
+        "Get-Date",
+        "Write-ConcurrentLog",
+        "Write-ConcurrentLog",
+        "Remove-Job",
+        "Write-ConcurrentLog",
+        "Stop-Job",
+        "Remove-Job",
+        "Get-ConcurrentTimestamp",
+        "Write-ConcurrentLog"
+      ],
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "Generate-AutonomousMemoryRecommendation": {
+      "callCount": 10,
+      "calls": [
+        "Get-Date",
+        "Get-Date",
+        "ConvertTo-Json",
+        "Set-Content",
+        "Write-Host",
+        "Add-Content",
+        "Get-Date",
+        "Write-Host",
+        "Add-Content",
+        "Get-Date"
+      ],
+      "module": "Unity-Claude-MemoryAnalysis"
+    },
+    "Get-SafeDateTime": {
+      "callCount": 13,
+      "calls": [
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Update-PerformanceMetrics": {
+      "callCount": 0,
+      "calls": null,
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Start-AutomaticResourceOptimization": {
+      "callCount": 9,
+      "calls": [
+        "Write-ResourceLog",
+        "Invoke-MemoryMonitoring",
+        "Invoke-LogRotation",
+        "Invoke-SessionCleanup",
+        "Get-MemoryUsage",
+        "Write-ResourceLog",
+        "Invoke-EmergencyCleanup",
+        "Write-ResourceLog",
+        "Write-ResourceLog"
+      ],
+      "module": "Unity-Claude-ResourceOptimizer"
+    },
+    "Get-ConcurrentTimestamp": {
+      "callCount": 1,
+      "calls": "Get-Date",
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "Get-PerfTimestamp": {
+      "callCount": 1,
+      "calls": "Get-Date",
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Invoke-GarbageCollection": {
+      "callCount": 6,
+      "calls": [
+        "Get-Date",
+        "Write-ResourceLog",
+        "Get-Date",
+        "Write-ResourceLog",
+        "ConvertTo-HumanReadableSize",
+        "Write-ResourceLog"
+      ],
+      "module": "Unity-Claude-ResourceOptimizer"
+    },
+    "Test-ResourceAvailability": {
+      "callCount": 4,
+      "calls": [
+        "Get-Date",
+        "Update-ResourceMonitoring",
+        "Where-Object",
+        "Measure-Object"
+      ],
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "Measure-OperationPerformance": {
+      "callCount": 5,
+      "calls": [
+        "Start-OperationProfile",
+        null,
+        "Stop-OperationProfile",
+        "Stop-OperationProfile",
+        "Write-PerfLog"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Invoke-WithMutex": {
+      "callCount": 3,
+      "calls": [
+        "Get-ProcessMutex",
+        null,
+        null
+      ],
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "New-ConstrainedRunspace": {
+      "callCount": 8,
+      "calls": [
+        "Write-SafeLog",
+        "Get-Command",
+        "New-Object",
+        "Write-SafeLog",
+        "New-Object",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Submit-ToClaudeWithInputLock": {
+      "callCount": 17,
+      "calls": [
+        "Write-Host",
+        "Get-InputLockConfiguration",
+        "Write-Host",
+        "Write-Warning",
+        "Write-Host",
+        "Write-Warning",
+        "Write-Host",
+        "Start-InputLockProtection",
+        "Write-Host",
+        "Submit-ToClaude",
+        "Write-Host",
+        "Wait-ForResponseCompletion",
+        "Write-Host",
+        "Stop-InputLockProtection",
+        "Write-Error",
+        "Stop-InputLockProtection",
+        "Write-Warning"
+      ],
+      "module": "Unity-Claude-CLISubmission-Enhanced"
+    },
+    "New-CycleId": {
+      "callCount": 0,
+      "calls": null,
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Start-ReliableUnityMonitoring": {
+      "callCount": 8,
+      "calls": [
+        "Write-Host",
+        "Start-FileWatcher",
+        "Start-PollingTimer",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ReliableMonitoring"
+    },
+    "Get-AgentState": {
+      "callCount": 6,
+      "calls": [
+        "Join-Path",
+        "Test-Path",
+        "Get-Content",
+        "ConvertTo-HashTable",
+        "ConvertFrom-Json",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "New-ConversationSession": {
+      "callCount": 8,
+      "calls": [
+        "New-SessionId",
+        "Write-SessionLog",
+        "Get-SessionTimestamp",
+        "Get-SessionTimestamp",
+        "Get-SessionTimestamp",
+        "Save-ConversationSession",
+        "Write-SessionLog",
+        "Write-SessionLog"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Clear-ExpiredCacheEntries": {
+      "callCount": 2,
+      "calls": [
+        "Get-Date",
+        "Write-PerfLog"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Write-StateTrackerLog": {
+      "callCount": 6,
+      "calls": [
+        "Get-Date",
+        "Write-Host",
+        "Join-Path",
+        "Split-Path",
+        "Add-Content",
+        "Write-Warning"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Invoke-CompleteFeedbackCycle": {
+      "callCount": 18,
+      "calls": [
+        "Get-Date",
+        "Write-IntegrationLog",
+        "Invoke-FeedbackCyclePhase1Monitor",
+        "Complete-FeedbackCycle",
+        "Get-Date",
+        "Invoke-FeedbackCyclePhase2Parse",
+        "Complete-FeedbackCycle",
+        "Invoke-FeedbackCyclePhase3Analyze",
+        "Complete-FeedbackCycle",
+        "Invoke-FeedbackCyclePhase4Execute",
+        "Complete-FeedbackCycle",
+        "Invoke-FeedbackCyclePhase5Generate",
+        "Complete-FeedbackCycle",
+        "Invoke-FeedbackCyclePhase6Submit",
+        "Complete-FeedbackCycle",
+        "Complete-FeedbackCycle",
+        "Write-IntegrationLog",
+        "Complete-FeedbackCycle"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Invoke-UnityLogAnalysis": {
+      "callCount": 18,
+      "calls": [
+        "Write-SafeLog",
+        "Join-Path",
+        "Write-SafeLog",
+        "Test-Path",
+        "Test-PathSafety",
+        "Get-Date",
+        "Write-SafeLog",
+        "Get-Date",
+        "Get-Content",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Get-Date",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Add-ConversationHistoryEntry": {
+      "callCount": 6,
+      "calls": [
+        "Get-ConversationSession",
+        "New-Guid",
+        "Get-SessionTimestamp",
+        "Invoke-ConversationSummarization",
+        "Write-SessionLog",
+        "Save-ConversationSession"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Get-CurrentTimestamp": {
+      "callCount": 1,
+      "calls": "Get-Date",
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Read-FileDirectly": {
+      "callCount": 3,
+      "calls": [
+        "Test-Path",
+        "Get-Content",
+        "ConvertFrom-Json"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Invoke-OptimizedRegexMatch": {
+      "callCount": 4,
+      "calls": [
+        "Start-OperationProfile",
+        "Get-OptimizedRegex",
+        "Stop-OperationProfile",
+        "Stop-OperationProfile"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Write-SessionLog": {
+      "callCount": 6,
+      "calls": [
+        "Get-Date",
+        "Write-Host",
+        "Join-Path",
+        "Split-Path",
+        "Add-Content",
+        "Write-Warning"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Invoke-ResourceAlert": {
+      "callCount": 11,
+      "calls": [
+        "Get-ResourceTimestamp",
+        "Select-Object",
+        "Write-ResourceLog",
+        "Join-Path",
+        "Test-Path",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Select-Object",
+        "ConvertTo-Json",
+        "Set-Content",
+        "Write-ResourceLog"
+      ],
+      "module": "Unity-Claude-ResourceOptimizer"
+    },
+    "Invoke-UnityPerformanceAnalysis": {
+      "callCount": 18,
+      "calls": [
+        "Write-SafeLog",
+        "Join-Path",
+        "Test-Path",
+        "Get-Date",
+        "Write-SafeLog",
+        "Get-Content",
+        "Get-Date",
+        "Write-SafeLog",
+        "Get-Date",
+        "Write-SafeLog",
+        "ForEach-Object",
+        "Measure-Object",
+        "Measure-Object",
+        "Measure-Object",
+        "Measure-Object",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Add-InputToQueue": {
+      "callCount": 13,
+      "calls": [
+        "Initialize-InputQueue",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Get-Date",
+        "ForEach-Object",
+        "Write-CLILog",
+        "Sort-Object",
+        "ForEach-Object",
+        "Write-CLILog",
+        "ConvertTo-Json",
+        "Set-Content",
+        "Write-CLILog",
+        "Write-CLILog"
+      ],
+      "module": "CLIAutomation"
+    },
+    "Invoke-FeedbackCyclePhase4Execute": {
+      "callCount": 9,
+      "calls": [
+        "Update-CyclePhase",
+        "Write-IntegrationLog",
+        "Invoke-SafeRecommendedCommand",
+        "Write-IntegrationLog",
+        "Write-IntegrationLog",
+        "Where-Object",
+        "Update-CyclePhase",
+        "Write-IntegrationLog",
+        "Update-CyclePhase"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Start-ResponseFileWatcher": {
+      "callCount": 13,
+      "calls": [
+        "Split-Path",
+        "Test-Path",
+        "New-Item",
+        "Out-Null",
+        "New-Object",
+        "Write-Host",
+        "Get-Module",
+        null,
+        "Process-ClaudeResponse",
+        "Register-ObjectEvent",
+        "Register-ObjectEvent",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ResponseMonitoring"
+    },
+    "Initialize-InputQueue": {
+      "callCount": 4,
+      "calls": [
+        "Test-Path",
+        "ConvertTo-Json",
+        "Set-Content",
+        "Write-CLILog"
+      ],
+      "module": "CLIAutomation"
+    },
+    "Optimize-JsonProcessing": {
+      "callCount": 6,
+      "calls": [
+        "Start-OperationProfile",
+        "Write-PerfLog",
+        "ConvertFrom-Json",
+        "Stop-OperationProfile",
+        "Measure-Object",
+        "Stop-OperationProfile"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Test-WindowDetection": {
+      "callCount": 14,
+      "calls": [
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Get-DetailedWindowInfo",
+        "Select-Object",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Find-ClaudeCodeCLIWindow",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-WindowDetection"
+    },
+    "Get-SessionTimestamp": {
+      "callCount": 1,
+      "calls": "Get-Date",
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Initialize-EnhancedAutonomousStateTracking": {
+      "callCount": 8,
+      "calls": [
+        "Write-EnhancedStateLog",
+        "Get-Date",
+        "Restore-AgentStateFromCheckpoint",
+        "Write-EnhancedStateLog",
+        "Save-AgentState",
+        "New-StateCheckpoint",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Update-InterventionStatus": {
+      "callCount": 10,
+      "calls": [
+        "Join-Path",
+        "Test-Path",
+        "ConvertTo-HashTable",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Where-Object",
+        "Get-Date",
+        "ConvertTo-Json",
+        "Out-File",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Find-ClaudeCodeCLIWindow": {
+      "callCount": 25,
+      "calls": [
+        "Write-Host",
+        "Get-DetailedWindowInfo",
+        "Write-Host",
+        "Write-Host",
+        "Test-ClaudeCodeWindow",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Where-Object",
+        "Sort-Object",
+        "Select-Object",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Sort-Object",
+        "Select-Object",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-WindowDetection"
+    },
+    "Write-ClaudeMessageFile": {
+      "callCount": 8,
+      "calls": [
+        "Write-CLILog",
+        "Split-Path",
+        "Test-Path",
+        "New-Item",
+        "Out-Null",
+        "Set-Content",
+        "Write-CLILog",
+        "Write-CLILog"
+      ],
+      "module": "CLIAutomation"
+    },
+    "Start-ResponseMonitoring": {
+      "callCount": 12,
+      "calls": [
+        "Write-Host",
+        "Test-Path",
+        "New-Item",
+        "Out-Null",
+        "New-Object",
+        "Write-Host",
+        "Start-Sleep",
+        "Get-Content",
+        null,
+        "Write-Host",
+        "Register-ObjectEvent",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-CLISubmission"
+    },
+    "Invoke-OptimizedBatchProcessing": {
+      "callCount": 6,
+      "calls": [
+        "Start-OperationProfile",
+        "Write-PerfLog",
+        null,
+        "Start-Sleep",
+        "Stop-OperationProfile",
+        "Stop-OperationProfile"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Invoke-InterventionTrigger": {
+      "callCount": 9,
+      "calls": [
+        "New-StateTrackingId",
+        "Get-StateTimestamp",
+        "Write-StateTrackerLog",
+        "Get-StateTimestamp",
+        "Get-Date",
+        "Set-AutonomousState",
+        "Set-AutonomousState",
+        "Save-StateTracking",
+        "Write-StateTrackerLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Stop-InputLockProtection": {
+      "callCount": 16,
+      "calls": [
+        "Write-Host",
+        "Stop-Job",
+        "Remove-Job",
+        "Write-Host",
+        "Write-Warning",
+        "Get-InputLockConfiguration",
+        "Test-Path",
+        null,
+        "Write-Host",
+        "Write-Warning",
+        "Write-Host",
+        "Write-Host",
+        "Write-Error",
+        "Add-Type",
+        "Write-Host",
+        "Write-Warning"
+      ],
+      "module": "Unity-Claude-CLISubmission-Enhanced"
+    },
+    "Submit-PromptToClaudeCode": {
+      "callCount": 89,
+      "calls": [
+        "Write-Host",
+        "Test-Path",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Get-Process",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Add-Type",
+        "Write-Host",
+        "Write-Host",
+        "Get-Module",
+        "Join-Path",
+        "Test-Path",
+        "Import-Module",
+        "Write-Host",
+        "Get-Module",
+        "Write-Host",
+        "Find-ClaudeCodeCLIWindow",
+        "Get-Process",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Get-Process",
+        "Where-Object",
+        "Write-Host",
+        "Test-Path",
+        "Get-Content",
+        "Write-Host",
+        "Where-Object",
+        "Select-Object",
+        "Write-Host",
+        "Where-Object",
+        "Select-Object",
+        "Write-Host",
+        "Where-Object",
+        "Select-Object",
+        "Write-Host",
+        "Add-Content",
+        "Get-Date",
+        "Write-Host",
+        "Get-Process",
+        "Where-Object",
+        "Select-Object",
+        "Add-Content",
+        "Get-Date",
+        "Add-Content",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Get-Process",
+        "Where-Object",
+        "Select-Object",
+        "ForEach-Object",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Get-Process",
+        "Where-Object",
+        "Select-Object",
+        "ForEach-Object",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Add-Type",
+        "New-Object",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Start-Sleep",
+        "Get-Process",
+        "Where-Object",
+        "Get-Process",
+        "Start-Sleep",
+        "Start-Sleep",
+        "Start-Sleep",
+        "Start-Sleep",
+        "Start-Sleep",
+        "Write-Host",
+        "Get-Date",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-CLISubmission"
+    },
+    "Complete-ConversationSession": {
+      "callCount": 12,
+      "calls": [
+        "Get-ConversationSession",
+        "Get-SessionTimestamp",
+        "Add-ConversationHistoryEntry",
+        "New-SessionBackup",
+        "Save-ConversationSession",
+        "Join-Path",
+        "Copy-Item",
+        "Join-Path",
+        "Remove-Item",
+        "Join-Path",
+        "Write-SessionLog",
+        "Write-SessionLog"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Stop-FileWatcher": {
+      "callCount": 3,
+      "calls": [
+        "Unregister-Event",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ReliableMonitoring"
+    },
+    "Invoke-ParallelDataProcessing": {
+      "callCount": 10,
+      "calls": [
+        "Write-ConcurrentLog",
+        "Get-ConcurrentJobStatus",
+        "Wait-ConcurrentJob",
+        "Start-Sleep",
+        "Start-ConcurrentJob",
+        "Wait-ConcurrentJob",
+        "Start-Sleep",
+        "Where-Object",
+        "Write-ConcurrentLog",
+        "Write-ConcurrentLog"
+      ],
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "Get-CachedFileContent": {
+      "callCount": 8,
+      "calls": [
+        "Read-FileDirectly",
+        "Get-Item",
+        "Write-PerfLog",
+        "Read-FileDirectly",
+        "Get-Item",
+        "Get-Date",
+        "Manage-CacheSize",
+        "Write-PerfLog"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Save-ConversationSession": {
+      "callCount": 9,
+      "calls": [
+        "Get-SessionTimestamp",
+        "Should-CreateBackup",
+        "New-SessionBackup",
+        "Get-SessionTimestamp",
+        "Join-Path",
+        "ConvertTo-Json",
+        "Set-Content",
+        "Write-SessionLog",
+        "Write-SessionLog"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Get-ConcurrentJobStatus": {
+      "callCount": 0,
+      "calls": null,
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "Get-SafeCommandConfiguration": {
+      "callCount": 0,
+      "calls": null,
+      "module": "SafeCommandExecution-Original"
+    },
+    "Get-SessionAnalytics": {
+      "callCount": 5,
+      "calls": [
+        "Get-ConversationSession",
+        "Get-Date",
+        "Get-Date",
+        "Get-Date",
+        "Get-Date"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Invoke-PowerShellCommand": {
+      "callCount": 5,
+      "calls": [
+        "Write-SafeLog",
+        "New-ConstrainedRunspace",
+        "Remove-DangerousCharacters",
+        "ForEach-Object",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Stop-ResponseFileWatcher": {
+      "callCount": 3,
+      "calls": [
+        "Unregister-Event",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ResponseMonitoring"
+    },
+    "Start-PollingTimer": {
+      "callCount": 9,
+      "calls": [
+        "New-Object",
+        "Test-ErrorFileChanged",
+        "Write-Host",
+        "Get-Module",
+        null,
+        "Process-UnityErrors",
+        "Register-ObjectEvent",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ReliableMonitoring"
+    },
+    "Remove-DangerousCharacters": {
+      "callCount": 1,
+      "calls": "Write-SafeLog",
+      "module": "SafeCommandExecution-Original"
+    },
+    "Invoke-UnityPlayerBuild": {
+      "callCount": 26,
+      "calls": [
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Test-PathSafety",
+        "Join-Path",
+        "Write-SafeLog",
+        "New-UnityBuildScript",
+        "Join-Path",
+        "Get-Date",
+        "Set-Content",
+        "Write-SafeLog",
+        "Find-UnityExecutable",
+        "Get-Date",
+        "Write-SafeLog",
+        "Get-Date",
+        "Start-Process",
+        "Get-Date",
+        "Get-Content",
+        "Get-Content",
+        "Where-Object",
+        "Select-Object",
+        "Test-UnityBuildResult",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Test-Path",
+        "Remove-Item"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Get-SharedData": {
+      "callCount": 6,
+      "calls": [
+        "Join-Path",
+        "Test-Path",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Invoke-WithMutex",
+        null
+      ],
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "New-AutonomousPrompt": {
+      "callCount": 12,
+      "calls": [
+        "Write-Host",
+        "Get-Date",
+        "ForEach-Object",
+        "ForEach-Object",
+        "ForEach-Object",
+        "ForEach-Object",
+        "ForEach-Object",
+        "ForEach-Object",
+        "ForEach-Object",
+        "ForEach-Object",
+        "Write-Host",
+        "Get-Date"
+      ],
+      "module": "Unity-Claude-CLISubmission"
+    },
+    "Get-AutonomousOperationStatus": {
+      "callCount": 5,
+      "calls": [
+        "Get-AutonomousStateTracking",
+        "Get-Date",
+        "Get-Date",
+        "Get-Date",
+        "Get-Date"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Test-PathSafety": {
+      "callCount": 3,
+      "calls": [
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Invoke-UnityScriptCompilation": {
+      "callCount": 17,
+      "calls": [
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Test-PathSafety",
+        "Find-UnityExecutable",
+        "Get-Date",
+        "Write-SafeLog",
+        "Get-Date",
+        "Start-Process",
+        "Get-Date",
+        "Get-Content",
+        "Get-Content",
+        "Where-Object",
+        "Select-Object",
+        "Test-UnityCompilationResult",
+        "Write-SafeLog",
+        "Write-SafeLog",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Stop-ClaudeResponseMonitoring": {
+      "callCount": 4,
+      "calls": [
+        "Write-Host",
+        "Stop-ResponseFileWatcher",
+        "Stop-ResponsePollingTimer",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ResponseMonitoring"
+    },
+    "New-UnityBuildScript": {
+      "callCount": 1,
+      "calls": "Write-SafeLog",
+      "module": "SafeCommandExecution-Original"
+    },
+    "Invoke-SessionCleanup": {
+      "callCount": 25,
+      "calls": [
+        "Get-Date",
+        "Write-ResourceLog",
+        "Join-Path",
+        "Test-Path",
+        "Get-Date",
+        "Get-ChildItem",
+        "Where-Object",
+        "Remove-Item",
+        "Write-ResourceLog",
+        "Test-Path",
+        "Get-ChildItem",
+        "Where-Object",
+        "Get-Date",
+        "Remove-Item",
+        "Write-ResourceLog",
+        "Join-Path",
+        "Test-Path",
+        "Get-ChildItem",
+        "Where-Object",
+        "Get-Date",
+        "Remove-Item",
+        "Write-ResourceLog",
+        "Get-Date",
+        "Write-ResourceLog",
+        "Write-ResourceLog"
+      ],
+      "module": "Unity-Claude-ResourceOptimizer"
+    },
+    "Invoke-HealthCheck": {
+      "callCount": 8,
+      "calls": [
+        "Get-AutonomousStateTracking",
+        "Get-SystemMetrics",
+        "Calculate-HealthStatus",
+        "Get-StateTimestamp",
+        "Write-StateTrackerLog",
+        "Invoke-InterventionTrigger",
+        "Save-StateTracking",
+        "Write-StateTrackerLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker"
+    },
+    "Start-OperationProfile": {
+      "callCount": 5,
+      "calls": [
+        "New-PerformanceId",
+        "Get-Date",
+        "Get-PerfTimestamp",
+        "Get-Process",
+        "Write-PerfLog"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "New-SessionBackup": {
+      "callCount": 6,
+      "calls": [
+        "Get-Date",
+        "Join-Path",
+        "ConvertTo-Json",
+        "Set-Content",
+        "Write-SessionLog",
+        "Write-SessionLog"
+      ],
+      "module": "Unity-Claude-SessionManager"
+    },
+    "Get-ConcurrentProcessingReport": {
+      "callCount": 7,
+      "calls": [
+        "Update-ResourceMonitoring",
+        "Get-ConcurrentTimestamp",
+        "Select-Object",
+        "Sort-Object",
+        "Select-Object",
+        "Sort-Object",
+        "Select-Object"
+      ],
+      "module": "Unity-Claude-ConcurrentProcessor"
+    },
+    "Get-ForegroundWindow": {
+      "callCount": 4,
+      "calls": [
+        "Add-Type",
+        "Out-Null",
+        "New-Object",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-WindowDetection"
+    },
+    "Stop-RecompileSignalMonitoring": {
+      "callCount": 3,
+      "calls": [
+        "Unregister-Event",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-RecompileSignaling"
+    },
+    "New-StateCheckpoint": {
+      "callCount": 13,
+      "calls": [
+        "Get-Date",
+        "Join-Path",
+        "Get-Date",
+        "Get-SystemPerformanceMetrics",
+        "Get-Process",
+        "Get-SafeDateTime",
+        "Get-Process",
+        "ConvertTo-Json",
+        "Out-File",
+        "Get-Date",
+        "Select-Object",
+        "Write-EnhancedStateLog",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Invoke-FeedbackCyclePhase1Monitor": {
+      "callCount": 6,
+      "calls": [
+        "Update-CyclePhase",
+        "Write-IntegrationLog",
+        "Start-ClaudeResponseMonitoring",
+        "Update-CyclePhase",
+        "Write-IntegrationLog",
+        "Update-CyclePhase"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "New-PerformanceId": {
+      "callCount": 0,
+      "calls": null,
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Get-IntegrationState": {
+      "callCount": 5,
+      "calls": [
+        "Join-Path",
+        "Test-Path",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Write-IntegrationLog"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Process-UnityErrors": {
+      "callCount": 6,
+      "calls": [
+        "Read-SafeJsonFile",
+        "Write-Host",
+        "Write-Host",
+        null,
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-ReliableMonitoring"
+    },
+    "Get-InputQueueStatus": {
+      "callCount": 8,
+      "calls": [
+        "Initialize-InputQueue",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Where-Object",
+        "Where-Object",
+        "Where-Object",
+        "Where-Object",
+        "Write-CLILog"
+      ],
+      "module": "CLIAutomation"
+    },
+    "New-FeedbackCycle": {
+      "callCount": 3,
+      "calls": [
+        "New-CycleId",
+        "Get-CurrentTimestamp",
+        "Write-IntegrationLog"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Start-UnityErrorMonitoring": {
+      "callCount": 16,
+      "calls": [
+        "Write-Host",
+        "Write-Host",
+        "Split-Path",
+        "Test-Path",
+        "Write-Warning",
+        "Start-Job",
+        "Test-Path",
+        "Get-Item",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Write-Host",
+        null,
+        "Write-Host",
+        "Write-Host",
+        "Start-Sleep",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-CLISubmission"
+    },
+    "Get-OptimizedRegex": {
+      "callCount": 1,
+      "calls": "Write-PerfLog",
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Process-RecompileSignal": {
+      "callCount": 21,
+      "calls": [
+        "Test-Path",
+        "Get-Item",
+        "Write-Host",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Switch-ToUnityWindow",
+        "Write-Host",
+        "Write-Host",
+        "Remove-Item",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host",
+        "Write-Host"
+      ],
+      "module": "Unity-Claude-RecompileSignaling"
+    },
+    "Optimize-MemoryUsage": {
+      "callCount": 5,
+      "calls": [
+        "Start-OperationProfile",
+        "Clear-ExpiredCacheEntries",
+        "Stop-OperationProfile",
+        "Write-PerfLog",
+        "Stop-OperationProfile"
+      ],
+      "module": "Unity-Claude-PerformanceOptimizer"
+    },
+    "Get-CommandExecutionStatistics": {
+      "callCount": 0,
+      "calls": null,
+      "module": "CommandExecution"
+    },
+    "Request-HumanIntervention": {
+      "callCount": 15,
+      "calls": [
+        "Get-Date",
+        "New-Guid",
+        "Select-Object",
+        "Get-AgentState",
+        "Save-AgentState",
+        "Write-EnhancedStateLog",
+        "Write-Host",
+        "Join-Path",
+        "Test-Path",
+        "ConvertTo-HashTable",
+        "Get-Content",
+        "ConvertFrom-Json",
+        "ConvertTo-Json",
+        "Out-File",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    "Find-UnityExecutable": {
+      "callCount": 4,
+      "calls": [
+        "Test-Path",
+        "Write-SafeLog",
+        "Get-Command",
+        "Write-SafeLog"
+      ],
+      "module": "SafeCommandExecution-Original"
+    },
+    "Invoke-FeedbackCyclePhase3Analyze": {
+      "callCount": 6,
+      "calls": [
+        "Update-CyclePhase",
+        "Write-IntegrationLog",
+        "Invoke-CommandResultAnalysis",
+        "Update-CyclePhase",
+        "Write-IntegrationLog",
+        "Update-CyclePhase"
+      ],
+      "module": "Unity-Claude-IntegrationEngine"
+    },
+    "Approve-AgentIntervention": {
+      "callCount": 8,
+      "calls": [
+        "Update-InterventionStatus",
+        "Write-EnhancedStateLog",
+        "Get-AgentState",
+        "Save-AgentState",
+        "Set-EnhancedAutonomousState",
+        "Set-EnhancedAutonomousState",
+        "Set-EnhancedAutonomousState",
+        "Write-EnhancedStateLog"
+      ],
+      "module": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    }
+  },
+  "nodes": [
+    {
+      "functionCount": 19,
+      "importCount": 1,
+      "label": "AutonomousStateTracker-Enhanced",
+      "size": 29,
+      "color": "#4ECDC4",
+      "id": "Unity-Claude-AutonomousStateTracker-Enhanced",
+      "type": "module"
+    },
+    {
+      "functionCount": 18,
+      "importCount": 0,
+      "label": "AutonomousStateTracker",
+      "size": 28,
+      "color": "#4ECDC4",
+      "id": "Unity-Claude-AutonomousStateTracker",
+      "type": "module"
+    },
+    {
+      "functionCount": 6,
+      "importCount": 1,
+      "label": "CLISubmission-Enhanced",
+      "size": 16,
+      "color": "#4ECDC4",
+      "id": "Unity-Claude-CLISubmission-Enhanced",
+      "type": "module"
+    },
+    {
+      "functionCount": 7,
+      "importCount": 1,
+      "label": "CLISubmission",
+      "size": 17,
+      "color": "#4ECDC4",
+      "id": "Unity-Claude-CLISubmission",
+      "type": "module"
+    },
+    {
+      "functionCount": 17,
+      "importCount": 1,
+      "label": "ConcurrentProcessor",
+      "size": 27,
+      "color": "#4ECDC4",
+      "id": "Unity-Claude-ConcurrentProcessor",
+      "type": "module"
+    },
+    {
+      "functionCount": 20,
+      "importCount": 1,
+      "label": "IntegrationEngine",
+      "size": 30,
+      "color": "#4ECDC4",
+      "id": "Unity-Claude-IntegrationEngine",
+      "type": "module"
+    },
+    {
+      "functionCount": 6,
+      "importCount": 0,
+      "label": "MemoryAnalysis",
+      "size": 16,
+      "color": "#4ECDC4",
+      "id": "Unity-Claude-MemoryAnalysis",
+      "type": "module"
+    },
+    {
+      "functionCount": 22,
+      "importCount": 0,
+      "label": "PerformanceOptimizer",
+      "size": 30,
+      "color": "#4ECDC4",
+      "id": "Unity-Claude-PerformanceOptimizer",
+      "type": "module"
+    },
+    {
+      "functionCount": 4,
+      "importCount": 0,
+      "label": "RecompileSignaling",
+      "size": 14,
+      "color": "#4ECDC4",
+      "id": "Unity-Claude-RecompileSignaling",
+      "type": "module"
+    },
+    {
+      "functionCount": 10,
+      "importCount": 0,
+      "label": "ReliableMonitoring",
+      "size": 20,
+      "color": "#4ECDC4",
+      "id": "Unity-Claude-ReliableMonitoring",
+      "type": "module"
+    },
+    {
+      "functionCount": 12,
+      "importCount": 0,
+      "label": "ResourceOptimizer",
+      "size": 22,
+      "color": "#4ECDC4",
+      "id": "Unity-Claude-ResourceOptimizer",
+      "type": "module"
+    },
+    {
+      "functionCount": 11,
+      "importCount": 0,
+      "label": "ResponseMonitoring",
+      "size": 21,
+      "color": "#4ECDC4",
+      "id": "Unity-Claude-ResponseMonitoring",
+      "type": "module"
+    },
+    {
+      "functionCount": 18,
+      "importCount": 1,
+      "label": "SessionManager",
+      "size": 28,
+      "color": "#4ECDC4",
+      "id": "Unity-Claude-SessionManager",
+      "type": "module"
+    },
+    {
+      "functionCount": 1,
+      "importCount": 0,
+      "label": "WindowDetection-Enhanced",
+      "size": 11,
+      "color": "#4ECDC4",
+      "id": "Unity-Claude-WindowDetection-Enhanced",
+      "type": "module"
+    },
+    {
+      "functionCount": 5,
+      "importCount": 0,
+      "label": "WindowDetection",
+      "size": 15,
+      "color": "#4ECDC4",
+      "id": "Unity-Claude-WindowDetection",
+      "type": "module"
+    },
+    {
+      "functionCount": 15,
+      "importCount": 0,
+      "label": "CLIAutomation",
+      "size": 25,
+      "color": "#4ECDC4",
+      "id": "CLIAutomation",
+      "type": "module"
+    },
+    {
+      "functionCount": 30,
+      "importCount": 0,
+      "label": "SafeCommandExecution-Original",
+      "size": 30,
+      "color": "#4ECDC4",
+      "id": "SafeCommandExecution-Original",
+      "type": "module"
+    },
+    {
+      "functionCount": 3,
+      "importCount": 1,
+      "label": "SafeCommandExecution-Refactored",
+      "size": 13,
+      "color": "#4ECDC4",
+      "id": "SafeCommandExecution-Refactored",
+      "type": "module"
+    },
+    {
+      "functionCount": 3,
+      "importCount": 1,
+      "label": "SafeCommandExecution",
+      "size": 13,
+      "color": "#4ECDC4",
+      "id": "SafeCommandExecution",
+      "type": "module"
+    },
+    {
+      "functionCount": 3,
+      "importCount": 2,
+      "label": "CommandExecution",
+      "size": 13,
+      "color": "#4ECDC4",
+      "id": "CommandExecution",
+      "type": "module"
+    },
+    {
+      "parent": "SafeCommandExecution-Original",
+      "label": "Invoke-UnityCommand",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "SafeCommandExecution-Original::Invoke-UnityCommand",
+      "type": "function"
+    },
+    {
+      "parent": "SafeCommandExecution-Original",
+      "label": "Export-UnityAnalysisData",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "SafeCommandExecution-Original::Export-UnityAnalysisData",
+      "type": "function"
+    },
+    {
+      "parent": "SafeCommandExecution-Original",
+      "label": "Invoke-BuildCommand",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "SafeCommandExecution-Original::Invoke-BuildCommand",
+      "type": "function"
+    },
+    {
+      "parent": "SafeCommandExecution-Original",
+      "label": "Invoke-TestCommand",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "SafeCommandExecution-Original::Invoke-TestCommand",
+      "type": "function"
+    },
+    {
+      "parent": "SafeCommandExecution-Original",
+      "label": "Test-CommandSafety",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "SafeCommandExecution-Original::Test-CommandSafety",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-PerformanceOptimizer",
+      "label": "Get-CachedComputationResult",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-PerformanceOptimizer::Get-CachedComputationResult",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-PerformanceOptimizer",
+      "label": "Test-PerformanceThresholds",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-PerformanceOptimizer::Test-PerformanceThresholds",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-PerformanceOptimizer",
+      "label": "Get-PerformanceReport",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-PerformanceOptimizer::Get-PerformanceReport",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-PerformanceOptimizer",
+      "label": "Clear-PerformanceCache",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-PerformanceOptimizer::Clear-PerformanceCache",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-PerformanceOptimizer",
+      "label": "Write-PerfLog",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-PerformanceOptimizer::Write-PerfLog",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-IntegrationEngine",
+      "label": "Write-IntegrationLog",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-IntegrationEngine::Write-IntegrationLog",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-IntegrationEngine",
+      "label": "Invoke-FeedbackCyclePhase5Generate",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-IntegrationEngine::Invoke-FeedbackCyclePhase5Generate",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-IntegrationEngine",
+      "label": "Update-IntegrationState",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-IntegrationEngine::Update-IntegrationState",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-IntegrationEngine",
+      "label": "Resume-FeedbackLoopSession",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-IntegrationEngine::Resume-FeedbackLoopSession",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-IntegrationEngine",
+      "label": "Complete-FeedbackCycle",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-IntegrationEngine::Complete-FeedbackCycle",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-AutonomousStateTracker-Enhanced",
+      "label": "Save-AgentState",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-AutonomousStateTracker-Enhanced::Save-AgentState",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-AutonomousStateTracker-Enhanced",
+      "label": "Deny-AgentIntervention",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-AutonomousStateTracker-Enhanced::Deny-AgentIntervention",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-AutonomousStateTracker-Enhanced",
+      "label": "Restore-AgentStateFromCheckpoint",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-AutonomousStateTracker-Enhanced::Restore-AgentStateFromCheckpoint",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-AutonomousStateTracker-Enhanced",
+      "label": "Get-EnhancedAutonomousState",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-AutonomousStateTracker-Enhanced::Get-EnhancedAutonomousState",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-AutonomousStateTracker-Enhanced",
+      "label": "Write-EnhancedStateLog",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-AutonomousStateTracker-Enhanced::Write-EnhancedStateLog",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-AutonomousStateTracker",
+      "label": "Get-AutonomousStateTracking",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-AutonomousStateTracker::Get-AutonomousStateTracking",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-AutonomousStateTracker",
+      "label": "Get-StateTransitionHistory",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-AutonomousStateTracker::Get-StateTransitionHistory",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-AutonomousStateTracker",
+      "label": "Test-StateTransition",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-AutonomousStateTracker::Test-StateTransition",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-AutonomousStateTracker",
+      "label": "Initialize-AutonomousStateTracking",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-AutonomousStateTracker::Initialize-AutonomousStateTracking",
+      "type": "function"
+    },
+    {
+      "parent": "Unity-Claude-AutonomousStateTracker",
+      "label": "Test-InterventionTriggers",
+      "size": 8,
+      "color": "#F59E0B",
+      "id": "Unity-Claude-AutonomousStateTracker::Test-InterventionTriggers",
+      "type": "function"
+    }
+  ],
+  "links": [
+    {
+      "type": "imports",
+      "target": "ThreadJob",
+      "color": "#3B82F6",
+      "width": 1,
+      "source": "Unity-Claude-ConcurrentProcessor",
+      "strength": 0.1
+    },
+    {
+      "type": "imports",
+      "target": "SafeCommandCore",
+      "color": "#3B82F6",
+      "width": 1,
+      "source": "CommandExecution",
+      "strength": 0.0
+    },
+    {
+      "type": "imports",
+      "target": "ValidationEngine",
+      "color": "#3B82F6",
+      "width": 1,
+      "source": "CommandExecution",
+      "strength": 0.0
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "SafeCommandExecution-Original::Invoke-UnityCommand",
+      "source": "SafeCommandExecution-Original",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "SafeCommandExecution-Original::Export-UnityAnalysisData",
+      "source": "SafeCommandExecution-Original",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "SafeCommandExecution-Original::Invoke-BuildCommand",
+      "source": "SafeCommandExecution-Original",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "SafeCommandExecution-Original::Invoke-TestCommand",
+      "source": "SafeCommandExecution-Original",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "SafeCommandExecution-Original::Test-CommandSafety",
+      "source": "SafeCommandExecution-Original",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-PerformanceOptimizer::Get-CachedComputationResult",
+      "source": "Unity-Claude-PerformanceOptimizer",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-PerformanceOptimizer::Test-PerformanceThresholds",
+      "source": "Unity-Claude-PerformanceOptimizer",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-PerformanceOptimizer::Get-PerformanceReport",
+      "source": "Unity-Claude-PerformanceOptimizer",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-PerformanceOptimizer::Clear-PerformanceCache",
+      "source": "Unity-Claude-PerformanceOptimizer",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-PerformanceOptimizer::Write-PerfLog",
+      "source": "Unity-Claude-PerformanceOptimizer",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-IntegrationEngine::Write-IntegrationLog",
+      "source": "Unity-Claude-IntegrationEngine",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-IntegrationEngine::Invoke-FeedbackCyclePhase5Generate",
+      "source": "Unity-Claude-IntegrationEngine",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-IntegrationEngine::Update-IntegrationState",
+      "source": "Unity-Claude-IntegrationEngine",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-IntegrationEngine::Resume-FeedbackLoopSession",
+      "source": "Unity-Claude-IntegrationEngine",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-IntegrationEngine::Complete-FeedbackCycle",
+      "source": "Unity-Claude-IntegrationEngine",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-AutonomousStateTracker-Enhanced::Save-AgentState",
+      "source": "Unity-Claude-AutonomousStateTracker-Enhanced",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-AutonomousStateTracker-Enhanced::Deny-AgentIntervention",
+      "source": "Unity-Claude-AutonomousStateTracker-Enhanced",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-AutonomousStateTracker-Enhanced::Restore-AgentStateFromCheckpoint",
+      "source": "Unity-Claude-AutonomousStateTracker-Enhanced",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-AutonomousStateTracker-Enhanced::Get-EnhancedAutonomousState",
+      "source": "Unity-Claude-AutonomousStateTracker-Enhanced",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-AutonomousStateTracker-Enhanced::Write-EnhancedStateLog",
+      "source": "Unity-Claude-AutonomousStateTracker-Enhanced",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-AutonomousStateTracker::Get-AutonomousStateTracking",
+      "source": "Unity-Claude-AutonomousStateTracker",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-AutonomousStateTracker::Get-StateTransitionHistory",
+      "source": "Unity-Claude-AutonomousStateTracker",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-AutonomousStateTracker::Test-StateTransition",
+      "source": "Unity-Claude-AutonomousStateTracker",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-AutonomousStateTracker::Initialize-AutonomousStateTracking",
+      "source": "Unity-Claude-AutonomousStateTracker",
+      "type": "contains"
+    },
+    {
+      "width": 1,
+      "color": "#84CC16",
+      "target": "Unity-Claude-AutonomousStateTracker::Test-InterventionTriggers",
+      "source": "Unity-Claude-AutonomousStateTracker",
+      "type": "contains"
+    }
+  ],
+  "metadata": {
+    "generated": "2025-08-31 16:29:29",
+    "features": [
+      "AST Analysis",
+      "Function Call Mapping",
+      "Import/Export Analysis"
+    ],
+    "linkCount": 28,
+    "functionCount": 223,
+    "nodeCount": 45,
+    "title": "AST-Enhanced Function Call Graph"
+  }
+}

@@ -1,0 +1,37 @@
+﻿====================================
+Test Execution Report
+====================================
+
+Test Script: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\.\Test-CLIOrchestrator-Quick.ps1
+Execution Time: 2025-08-27 20:34:42
+Duration: 1.01 seconds
+Exit Code: 1
+Status: FAILED
+
+Test Output:
+============
+powershell.exe : At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-CLIOrchestrator-Quick.ps1:147 char:58
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Execute-TestInWindow.ps1:70 char:23
++ ... estOutput = & powershell.exe -NoProfile -NonInteractive -ExecutionPol ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (At C:\UnityProj...ps1:147 char:58:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
++ ... `nCLIOrchestrator quick validation completed." -ForegroundColor White
++                                                  ~~~~~~~~~~~~~~~~~~~~~~~~
+The string is missing the terminator: ".
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-CLIOrchestrator-Quick.ps1:25 char:31
++     if ($Status -eq "Passed") {
++                               ~
+Missing closing '}' in statement block or type definition.
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-CLIOrchestrator-Quick.ps1:19 char:25
++ function Add-TestResult {
++                         ~
+Missing closing '}' in statement block or type definition.
+    + CategoryInfo          : ParserError: (:) [], ParseException
+    + FullyQualifiedErrorId : TerminatorExpectedAtEndOfString
+ 
+
+====================================
+End of Test Report
+====================================

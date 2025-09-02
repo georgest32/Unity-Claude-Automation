@@ -1,0 +1,106 @@
+{
+  "EndTime": "2025-08-25T15:24:55.407-04:00",
+  "TotalDuration": 1268.8236,
+  "TestType": "All",
+  "Summary": {
+    "Slow": 0,
+    "Failed": 4,
+    "TotalTests": 8,
+    "Passed": 3,
+    "CoreEnhancementsPassed": 2,
+    "Phase7Day1_2Status": "REQUIRES_SIGNIFICANT_WORK",
+    "SuccessRate": 37.5,
+    "Errors": 5
+  },
+  "TestSuite": "Phase7-Day1-2-PatternRecognitionEnhancements",
+  "Results": [
+    {
+      "Status": "FAILED",
+      "Name": "Simple Recommendation",
+      "Duration": 214,
+      "Details": {
+        "ConfidenceScore": 0.1,
+        "PatternsFound": 0,
+        "ProcessingTime": 208,
+        "EntitiesFound": 0
+      },
+      "Error": null
+    },
+    {
+      "Status": "FAILED",
+      "Name": "Complex Multi-Entity Response",
+      "Duration": 17,
+      "Details": {
+        "ConfidenceScore": 0.1,
+        "PatternsFound": 0,
+        "ProcessingTime": 16,
+        "EntitiesFound": 0
+      },
+      "Error": null
+    },
+    {
+      "Status": "FAILED",
+      "Name": "URL and Network Context",
+      "Duration": 8,
+      "Details": {
+        "ConfidenceScore": 0.1,
+        "PatternsFound": 0,
+        "ProcessingTime": 6,
+        "EntitiesFound": 0
+      },
+      "Error": null
+    },
+    {
+      "Status": "FAILED",
+      "Name": "Bayesian Confidence Test",
+      "Duration": 14,
+      "Details": {
+        "ConfidenceScore": 0.1,
+        "PatternsFound": 0,
+        "ProcessingTime": 12,
+        "EntitiesFound": 0
+      },
+      "Error": null
+    },
+    {
+      "Status": "ERROR",
+      "Name": "Position Weight Matrix Scoring",
+      "Duration": 11,
+      "Details": null,
+      "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'."
+    },
+    {
+      "Status": "PASSED",
+      "Name": "Joint Entity Classification",
+      "Duration": 1,
+      "Details": {
+        "EntitiesFound": 2
+      },
+      "Error": null
+    },
+    {
+      "Status": "PASSED",
+      "Name": "CRPS Confidence Calibration",
+      "Duration": 4,
+      "Details": {
+        "CalibratedConfidence": 0.8075,
+        "RawConfidence": 0.85
+      },
+      "Error": null
+    },
+    {
+      "Status": "PASSED",
+      "Name": "Large Content Performance",
+      "Duration": 5.6,
+      "Details": {
+        "Target": 300,
+        "MinTime": 4.0,
+        "Iterations": 5,
+        "MaxTime": 10.0,
+        "AverageTime": 5.6
+      },
+      "Error": null
+    }
+  ],
+  "StartTime": "2025-08-25T15:24:54.139-04:00"
+}

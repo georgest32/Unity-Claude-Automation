@@ -11,6 +11,15 @@ This document serves as an index to our comprehensive learning repository. All l
 
 ### [🔧 Critical Fixes and Urgent Issues](docs/learnings/critical-fixes.md)
 **Latest critical fixes, urgent issues, and immediate solutions**
+- Learning #271: Xcode 16.0 TCA Compatibility Bug Resolution (2025-09-02)
+  - **Context**: TCA (The Composable Architecture) build failures on Codemagic with Xcode 16.0
+  - **Issue**: XCSwiftPackageProductDependency _setOwner unrecognized selector causing Status Code 74 failures
+  - **Root Cause**: Xcode 16.0 has confirmed bugs with TCA SPM integration (NOT general SPM incompatibility)
+  - **Solution**: Upgrade to Xcode 16.2 in codemagic.yaml environment configuration
+  - **TCA Maintainer Quote**: "this is not to be expected, but unfortunately it is just an Xcode bug. I am not seeing this in 16.2"
+  - **Implementation**: `xcode: 16.2` + `instance_type: mac_mini_m2` + macro validation flags
+  - **Impact**: Enables sophisticated TCA-based iOS dashboard with real-time agent monitoring
+  - **Critical**: Always use Xcode 16.2+ for TCA projects, add macro validation skips for CI/CD environments
 - Learning #270: PowerShell Here-String and Console Color Syntax Requirements (2025-08-31)
   - **Context**: Week 3 Day 15 Production Deployment and Documentation scripts
   - **Issue 1**: Parse errors with markdown checkbox syntax `- [ ]` in here-strings

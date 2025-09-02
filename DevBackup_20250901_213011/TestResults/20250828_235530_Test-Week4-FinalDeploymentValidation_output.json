@@ -1,0 +1,16 @@
+{
+  "HasOutput": true,
+  "JsonTrigger": "Test_Week4_FinalDeploymentValidation_Request.json",
+  "OutputFile": ".\\TestResults\\20250828_235530_Test-Week4-FinalDeploymentValidation_output.txt",
+  "ExitCode": 0,
+  "OutputPreview": "=== Week 4 Final Deployment Validation Suite ===\nEnvironment: Development\nTest Started: 2025-08-28 23:55:31\n\n=== COMPLETE SYSTEM VALIDATION ===\nValidation: Complete Module Ecosystem...[2025-08-28 23:55:31.611] [INFO] [Module] Loading Unified CPG Module\n[2025-08-28 23:55:31.619] [DEBUG] [Init] Initializing module-level variables\n[2025-08-28 23:55:31.623] [SUCCESS] [Init] Module variables initialized successfully\n[2025-08-28 23:55:31.631] [DEBUG] [TypeDef] Defining CPGNodeType enumeration\n[2025-08...[truncated]",
+  "HasErrors": true,
+  "Success": true,
+  "TestScript": "Test-Week4-FinalDeploymentValidation.ps1",
+  "ProcessId": 3624,
+  "StartTime": "2025-08-28 23:55:30",
+  "Duration": "15.18 seconds",
+  "ErrorFile": ".\\TestResults\\20250828_235530_Test-Week4-FinalDeploymentValidation_error.txt",
+  "EndTime": "2025-08-28 23:55:45",
+  "ErrorPreview": "At C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CPG\\Core\\TreeSitter-CSTConverter.psm1:\r\n100 char:6\r\n+     [CPGNode] ConvertToCPGNode() {\r\n+      ~~~~~~~\r\nUnable to find type [CPGNode].\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CPG\\Core\\TreeSitter-CSTConverter.psm1:\r\n113 char:21\r\n+         $cpgNode = [CPGNode]::new($this.Text, $cpgType)\r\n+                     ~~~~~~~\r\nUnable to find type [CPGNode].\r\nAt C:\\UnityProjects\\Sound...[truncated]"
+}

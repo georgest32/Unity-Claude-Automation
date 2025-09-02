@@ -1,0 +1,507 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autonomous Agents - Unity-Claude Automation &mdash; Unity-Claude-Automation 3.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=acc74ff5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2b3e50" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Unity-Claude-Automation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Autonomous Agents - Unity-Claude Automation</a><ul>
+<li><a class="reference internal" href="#phase-3-autonomous-state-management-learnings-2025-08-19">🔄 Phase 3: Autonomous State Management Learnings (2025-08-19)</a><ul>
+<li><a class="reference internal" href="#autonomous-agent-state-management-challenges-critical">134. Autonomous Agent State Management Challenges (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#powershell-state-machine-json-persistence-best-practices-documented">135. PowerShell State Machine JSON Persistence Best Practices (📝 DOCUMENTED)</a></li>
+<li><a class="reference internal" href="#human-intervention-threshold-design-for-2025-critical">136. Human Intervention Threshold Design for 2025 (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#performance-counter-integration-for-real-time-monitoring-resolved">137. Performance Counter Integration for Real-time Monitoring (✅ RESOLVED)</a></li>
+<li><a class="reference internal" href="#circuit-breaker-pattern-for-autonomous-systems-resolved">138. Circuit Breaker Pattern for Autonomous Systems (✅ RESOLVED)</a></li>
+<li><a class="reference internal" href="#checkpoint-system-design-for-state-recovery-documented">139. Checkpoint System Design for State Recovery (📝 DOCUMENTED)</a></li>
+<li><a class="reference internal" href="#enhanced-state-machine-architecture-resolved">140. Enhanced State Machine Architecture (✅ RESOLVED)</a></li>
+<li><a class="reference internal" href="#performance-monitoring-integration-best-practices-documented">141. Performance Monitoring Integration Best Practices (📝 DOCUMENTED)</a></li>
+<li><a class="reference internal" href="#json-based-state-storage-architecture-resolved">142. JSON-Based State Storage Architecture (✅ RESOLVED)</a></li>
+<li><a class="reference internal" href="#autonomous-operation-security-considerations-critical">143. Autonomous Operation Security Considerations (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#phase-3-day-15-ashashtable-compatibility-implementation-resolved">144. Phase 3 Day 15 AsHashtable Compatibility Implementation (✅ RESOLVED)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#autonomous-agent-architecture-patterns">🏗️ Autonomous Agent Architecture Patterns</a><ul>
+<li><a class="reference internal" href="#enhanced-state-machine-design">Enhanced State Machine Design</a></li>
+<li><a class="reference internal" href="#human-intervention-system">Human Intervention System</a></li>
+<li><a class="reference internal" href="#circuit-breaker-implementation">Circuit Breaker Implementation</a></li>
+<li><a class="reference internal" href="#performance-monitoring-integration">Performance Monitoring Integration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#security-and-safety-patterns">🔒 Security and Safety Patterns</a><ul>
+<li><a class="reference internal" href="#constrained-execution-environment">Constrained Execution Environment</a></li>
+<li><a class="reference internal" href="#comprehensive-audit-trail">Comprehensive Audit Trail</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#autonomous-agent-success-patterns">📊 Autonomous Agent Success Patterns</a><ul>
+<li><a class="reference internal" href="#pattern-based-decision-making">Pattern-Based Decision Making</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2b3e50" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Unity-Claude-Automation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Autonomous Agents - Unity-Claude Automation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/LEARNINGS_AUTONOMOUS_AGENTS.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="autonomous-agents-unity-claude-automation">
+<h1>Autonomous Agents - Unity-Claude Automation<a class="headerlink" href="#autonomous-agents-unity-claude-automation" title="Link to this heading"></a></h1>
+<p><em>Phase 3 autonomous agent implementation, state management, and intelligent automation</em>
+<em>Last Updated: 2025-08-19</em></p>
+<section id="phase-3-autonomous-state-management-learnings-2025-08-19">
+<h2>🔄 Phase 3: Autonomous State Management Learnings (2025-08-19)<a class="headerlink" href="#phase-3-autonomous-state-management-learnings-2025-08-19" title="Link to this heading"></a></h2>
+<section id="autonomous-agent-state-management-challenges-critical">
+<h3>134. Autonomous Agent State Management Challenges (⚠️ CRITICAL)<a class="headerlink" href="#autonomous-agent-state-management-challenges-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Current autonomous agents in 2025 still face significant state management and persistence challenges
+<strong>Discovery</strong>: Research reveals fully autonomous agents frequently get stuck in redundant task loops and drift off track
+<strong>Evidence</strong>: AutoGPT-style agents lack persistence across alerts/decisions, leading to memory loss
+<strong>Resolution</strong>: Implement scoped memory tied to specific contexts with JSON persistence and checkpoint systems
+<strong>Critical Learning</strong>: Autonomous agents need careful architectural consideration for state persistence, not just functionality</p>
+</section>
+<section id="powershell-state-machine-json-persistence-best-practices-documented">
+<h3>135. PowerShell State Machine JSON Persistence Best Practices (📝 DOCUMENTED)<a class="headerlink" href="#powershell-state-machine-json-persistence-best-practices-documented" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: State machines in PowerShell require careful design for JSON persistence and recovery
+<strong>Discovery</strong>: .NET Stateless library compatible with PowerShell provides Deactivate/Activate methods for state storage
+<strong>Evidence</strong>: Spring Framework patterns adaptable to PowerShell with StateMachinePersister interface
+<strong>Resolution</strong>: Use JSON-configured state machines with incremental checkpointing to minimize storage cost
+<strong>Critical Learning</strong>: Implement state transitions as JSON documents with backup/restore mechanisms for reliability</p>
+</section>
+<section id="human-intervention-threshold-design-for-2025-critical">
+<h3>136. Human Intervention Threshold Design for 2025 (⚠️ CRITICAL)<a class="headerlink" href="#human-intervention-threshold-design-for-2025-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Autonomous systems require human approval for high-impact actions to prevent security risks
+<strong>Discovery</strong>: Research shows attackers can exploit poor observability in autonomous systems to hide malicious behavior
+<strong>Evidence</strong>: 2025 best practices emphasize threshold-based alerts and predefined intervention triggers
+<strong>Resolution</strong>: Implement multi-level intervention: automated responses for low-risk, human approval for high-impact operations
+<strong>Critical Learning</strong>: Balance automation efficiency with human oversight - require human confirmation for actions like mass emails or financial operations</p>
+</section>
+<section id="performance-counter-integration-for-real-time-monitoring-resolved">
+<h3>137. Performance Counter Integration for Real-time Monitoring (✅ RESOLVED)<a class="headerlink" href="#performance-counter-integration-for-real-time-monitoring-resolved" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Autonomous agents need real-time system health monitoring to prevent resource exhaustion
+<strong>Discovery</strong>: PowerShell Get-Counter cmdlet provides comprehensive performance monitoring for local/remote systems
+<strong>Evidence</strong>: CPU, memory, disk I/O, network activity monitoring with threshold-based alerting proven effective
+<strong>Resolution</strong>: Implement Get-Counter-based monitoring with configurable thresholds and automated intervention triggers
+<strong>Critical Learning</strong>: Real-time performance monitoring essential for autonomous operation - monitor CPU, memory, disk, and network activity</p>
+</section>
+<section id="circuit-breaker-pattern-for-autonomous-systems-resolved">
+<h3>138. Circuit Breaker Pattern for Autonomous Systems (✅ RESOLVED)<a class="headerlink" href="#circuit-breaker-pattern-for-autonomous-systems-resolved" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Autonomous systems need protection against cascading failures and infinite error loops
+<strong>Discovery</strong>: Research shows circuit breaker patterns essential for persistent failure protection
+<strong>Evidence</strong>: Exponential backoff and selective retry logic proven effective for different error types
+<strong>Resolution</strong>: Implement circuit breaker with failure threshold, timeout periods, and recovery attempt limits
+<strong>Critical Learning</strong>: Circuit breakers prevent autonomous systems from causing system-wide issues during failures</p>
+</section>
+<section id="checkpoint-system-design-for-state-recovery-documented">
+<h3>139. Checkpoint System Design for State Recovery (📝 DOCUMENTED)<a class="headerlink" href="#checkpoint-system-design-for-state-recovery-documented" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Long-running autonomous operations need recovery points to handle interruptions and failures
+<strong>Discovery</strong>: Incremental checkpointing minimizes time and storage cost for frequent state saves
+<strong>Evidence</strong>: Research shows system state snapshots with save/restore executive state most reliable approach
+<strong>Resolution</strong>: Implement checkpoint system with incremental state saves, restoration capabilities, and 24-hour backup retention
+<strong>Critical Learning</strong>: Checkpoint systems should balance frequency (every 5 minutes) with storage efficiency (incremental saves)</p>
+</section>
+<section id="enhanced-state-machine-architecture-resolved">
+<h3>140. Enhanced State Machine Architecture (✅ RESOLVED)<a class="headerlink" href="#enhanced-state-machine-architecture-resolved" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Simple state machines insufficient for complex autonomous operation requirements
+<strong>Discovery</strong>: Enhanced state machines need 11+ states including human intervention, circuit breaker, and recovery states
+<strong>Evidence</strong>: Research shows state persistence across PowerShell session restarts requires JSON-based storage
+<strong>Resolution</strong>: Implement enhanced state machine with HumanApprovalRequired, CircuitBreakerOpen, Recovering states
+<strong>Critical Learning</strong>: State machines for autonomous systems need explicit human intervention and error recovery states</p>
+</section>
+<section id="performance-monitoring-integration-best-practices-documented">
+<h3>141. Performance Monitoring Integration Best Practices (📝 DOCUMENTED)<a class="headerlink" href="#performance-monitoring-integration-best-practices-documented" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Autonomous systems need comprehensive health monitoring beyond basic operational status
+<strong>Discovery</strong>: Multiple notification methods (Console, File, Event) increase reliability of intervention alerts
+<strong>Evidence</strong>: Integration with monitoring platforms like Nagios/Zabbix provides centralized visibility
+<strong>Resolution</strong>: Implement multi-method alerting with file-based intervention queues and event log integration
+<strong>Critical Learning</strong>: Health monitoring should use multiple channels - console alerts may be missed during autonomous operation</p>
+</section>
+<section id="json-based-state-storage-architecture-resolved">
+<h3>142. JSON-Based State Storage Architecture (✅ RESOLVED)<a class="headerlink" href="#json-based-state-storage-architecture-resolved" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Complex autonomous state requires structured storage with backup and restoration capabilities
+<strong>Discovery</strong>: JSON provides flexibility for state machine configuration changes without deployment
+<strong>Evidence</strong>: Backup rotation with 7-day retention proven effective for state recovery scenarios
+<strong>Resolution</strong>: Implement JSON storage with automatic backup rotation, compression, and integrity validation
+<strong>Critical Learning</strong>: JSON state storage should include metadata (timestamps, reasons, checksums) for debugging and audit trails</p>
+</section>
+<section id="autonomous-operation-security-considerations-critical">
+<h3>143. Autonomous Operation Security Considerations (⚠️ CRITICAL)<a class="headerlink" href="#autonomous-operation-security-considerations-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Autonomous systems create security risks if they can execute arbitrary commands without oversight
+<strong>Discovery</strong>: Research emphasizes reliable logging essential to prevent blind spots that attackers can exploit
+<strong>Evidence</strong>: Defense-in-depth strategy requires prompt hardening, input validation, and robust runtime monitoring
+<strong>Resolution</strong>: Implement constrained execution with whitelisted commands, audit trails, and human override capabilities
+<strong>Critical Learning</strong>: Never compromise security for autonomy - maintain comprehensive logging and human intervention capabilities</p>
+</section>
+<section id="phase-3-day-15-ashashtable-compatibility-implementation-resolved">
+<h3>144. Phase 3 Day 15 AsHashtable Compatibility Implementation (✅ RESOLVED)<a class="headerlink" href="#phase-3-day-15-ashashtable-compatibility-implementation-resolved" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Phase 3 Day 15 autonomous state management failing with 67% test failure rate due to AsHashtable parameter incompatibility
+<strong>Discovery</strong>: AsHashtable parameter introduced in PowerShell 6.0 causes “parameter cannot be found” errors in PowerShell 5.1
+<strong>Evidence</strong>: 4 instances of ConvertFrom-Json -AsHashtable causing complete state management system failure
+<strong>Resolution</strong>: Implemented ConvertTo-HashTable function with PSObject.Properties iteration for PowerShell 5.1 compatibility
+<strong>Critical Learning</strong>: Always implement PowerShell 5.1 compatible alternatives for newer cmdlet parameters in cross-version code
+<strong>Implementation</strong>: Added ConvertTo-HashTable function and Get-AgentState to Export-ModuleMember list
+<strong>Performance</strong>: Research shows PSObject.Properties conversion method is fastest PowerShell 5.1 compatible approach</p>
+</section>
+</section>
+<section id="autonomous-agent-architecture-patterns">
+<h2>🏗️ Autonomous Agent Architecture Patterns<a class="headerlink" href="#autonomous-agent-architecture-patterns" title="Link to this heading"></a></h2>
+<section id="enhanced-state-machine-design">
+<h3>Enhanced State Machine Design<a class="headerlink" href="#enhanced-state-machine-design" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># 12-state autonomous operation state machine</span>
+<span class="nv">$EnhancedAutonomousStates</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="s2">&quot;Idle&quot;</span> <span class="p">=</span> <span class="p">@{</span>
+        <span class="n">Description</span> <span class="p">=</span> <span class="s2">&quot;Agent is idle, awaiting triggers or initialization&quot;</span>
+        <span class="n">AllowedTransitions</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;Initializing&quot;</span><span class="p">,</span> <span class="s2">&quot;Stopped&quot;</span><span class="p">,</span> <span class="s2">&quot;Error&quot;</span><span class="p">)</span>
+        <span class="n">IsOperational</span> <span class="p">=</span> <span class="nv">$false</span>
+        <span class="n">RequiresMonitoring</span> <span class="p">=</span> <span class="nv">$false</span>
+        <span class="n">HumanInterventionRequired</span> <span class="p">=</span> <span class="nv">$false</span>
+        <span class="n">HealthCheckLevel</span> <span class="p">=</span> <span class="s2">&quot;Minimal&quot;</span>
+    <span class="p">}</span>
+    <span class="s2">&quot;Active&quot;</span> <span class="p">=</span> <span class="p">@{</span>
+        <span class="n">Description</span> <span class="p">=</span> <span class="s2">&quot;Agent is actively managing autonomous feedback loops&quot;</span>
+        <span class="n">AllowedTransitions</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;Monitoring&quot;</span><span class="p">,</span> <span class="s2">&quot;Processing&quot;</span><span class="p">,</span> <span class="s2">&quot;Paused&quot;</span><span class="p">,</span> <span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Stopped&quot;</span><span class="p">)</span>
+        <span class="n">IsOperational</span> <span class="p">=</span> <span class="nv">$true</span>
+        <span class="n">RequiresMonitoring</span> <span class="p">=</span> <span class="nv">$true</span>
+        <span class="n">HumanInterventionRequired</span> <span class="p">=</span> <span class="nv">$false</span>
+        <span class="n">HealthCheckLevel</span> <span class="p">=</span> <span class="s2">&quot;Comprehensive&quot;</span>
+    <span class="p">}</span>
+    <span class="s2">&quot;HumanApprovalRequired&quot;</span> <span class="p">=</span> <span class="p">@{</span>
+        <span class="n">Description</span> <span class="p">=</span> <span class="s2">&quot;Agent requires human approval for high-impact operations&quot;</span>
+        <span class="n">AllowedTransitions</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;Processing&quot;</span><span class="p">,</span> <span class="s2">&quot;Active&quot;</span><span class="p">,</span> <span class="s2">&quot;Paused&quot;</span><span class="p">,</span> <span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Stopped&quot;</span><span class="p">)</span>
+        <span class="n">IsOperational</span> <span class="p">=</span> <span class="nv">$false</span>
+        <span class="n">RequiresMonitoring</span> <span class="p">=</span> <span class="nv">$true</span>
+        <span class="n">HumanInterventionRequired</span> <span class="p">=</span> <span class="nv">$true</span>
+        <span class="n">HealthCheckLevel</span> <span class="p">=</span> <span class="s2">&quot;Standard&quot;</span>
+    <span class="p">}</span>
+    <span class="s2">&quot;CircuitBreakerOpen&quot;</span> <span class="p">=</span> <span class="p">@{</span>
+        <span class="n">Description</span> <span class="p">=</span> <span class="s2">&quot;Circuit breaker activated due to repeated failures&quot;</span>
+        <span class="n">AllowedTransitions</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;Recovering&quot;</span><span class="p">,</span> <span class="s2">&quot;Stopped&quot;</span><span class="p">,</span> <span class="s2">&quot;HumanApprovalRequired&quot;</span><span class="p">)</span>
+        <span class="n">IsOperational</span> <span class="p">=</span> <span class="nv">$false</span>
+        <span class="n">RequiresMonitoring</span> <span class="p">=</span> <span class="nv">$true</span>
+        <span class="n">HumanInterventionRequired</span> <span class="p">=</span> <span class="nv">$true</span>
+        <span class="n">HealthCheckLevel</span> <span class="p">=</span> <span class="s2">&quot;Diagnostic&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="human-intervention-system">
+<h3>Human Intervention System<a class="headerlink" href="#human-intervention-system" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Request-HumanIntervention</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span>
+        <span class="no">[string]</span><span class="nv">$AgentId</span><span class="p">,</span>
+        <span class="no">[string]</span><span class="nv">$Reason</span><span class="p">,</span>
+        <span class="p">[</span><span class="k">ValidateSet</span><span class="p">(</span><span class="s2">&quot;Low&quot;</span><span class="p">,</span> <span class="s2">&quot;Medium&quot;</span><span class="p">,</span> <span class="s2">&quot;High&quot;</span><span class="p">,</span> <span class="s2">&quot;Critical&quot;</span><span class="p">)]</span>
+        <span class="no">[string]</span><span class="nv">$Priority</span> <span class="p">=</span> <span class="s2">&quot;Medium&quot;</span><span class="p">,</span>
+        <span class="no">[hashtable]</span><span class="nv">$Context</span> <span class="p">=</span> <span class="p">@{}</span>
+    <span class="p">)</span>
+    
+    <span class="nv">$interventionId</span> <span class="p">=</span> <span class="nb">New-Guid</span>
+    <span class="nv">$intervention</span> <span class="p">=</span> <span class="p">@{</span>
+        <span class="n">InterventionId</span> <span class="p">=</span> <span class="nv">$interventionId</span>
+        <span class="n">AgentId</span> <span class="p">=</span> <span class="nv">$AgentId</span>
+        <span class="n">Timestamp</span> <span class="p">=</span> <span class="nb">Get-Date</span>
+        <span class="n">Reason</span> <span class="p">=</span> <span class="nv">$Reason</span>
+        <span class="n">Priority</span> <span class="p">=</span> <span class="nv">$Priority</span>
+        <span class="n">Context</span> <span class="p">=</span> <span class="nv">$Context</span>
+        <span class="n">Status</span> <span class="p">=</span> <span class="s2">&quot;Requested&quot;</span>
+        <span class="n">ResponseDeadline</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Get-Date</span><span class="p">).</span><span class="n">AddSeconds</span><span class="p">(</span><span class="n">300</span><span class="p">)</span> <span class="c"># 5 minute timeout</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Multiple notification methods for reliability</span>
+    <span class="nb">Send-ConsoleAlert</span> <span class="n">-Intervention</span> <span class="nv">$intervention</span>
+    <span class="nb">Write-FileNotification</span> <span class="n">-Intervention</span> <span class="nv">$intervention</span>
+    <span class="nb">Write-EventLogEntry</span> <span class="n">-Intervention</span> <span class="nv">$intervention</span>
+    
+    <span class="k">return</span> <span class="nv">$interventionId</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="circuit-breaker-implementation">
+<h3>Circuit Breaker Implementation<a class="headerlink" href="#circuit-breaker-implementation" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Test-CircuitBreaker</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span>
+        <span class="no">[hashtable]</span><span class="nv">$AgentState</span><span class="p">,</span>
+        <span class="no">[int]</span><span class="nv">$FailureThreshold</span> <span class="p">=</span> <span class="n">3</span><span class="p">,</span>
+        <span class="no">[int]</span><span class="nv">$TimeoutMinutes</span> <span class="p">=</span> <span class="n">5</span>
+    <span class="p">)</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$AgentState</span><span class="p">.</span><span class="n">ConsecutiveFailures</span> <span class="o">-ge</span> <span class="nv">$FailureThreshold</span> <span class="o">-and</span> 
+        <span class="nv">$AgentState</span><span class="p">.</span><span class="n">CircuitBreakerState</span> <span class="o">-eq</span> <span class="s2">&quot;Closed&quot;</span><span class="p">)</span> <span class="p">{</span>
+        
+        <span class="nb">Write-Log</span> <span class="s2">&quot;Circuit breaker opened due to consecutive failures: </span><span class="p">$(</span><span class="nv">$AgentState</span><span class="p">.</span><span class="n">ConsecutiveFailures</span><span class="p">)</span><span class="s2">&quot;</span>
+        <span class="nv">$AgentState</span><span class="p">.</span><span class="n">CircuitBreakerState</span> <span class="p">=</span> <span class="s2">&quot;Open&quot;</span>
+        <span class="nv">$AgentState</span><span class="p">.</span><span class="n">CircuitBreakerOpenTime</span> <span class="p">=</span> <span class="nb">Get-Date</span>
+        
+        <span class="c"># Request immediate human intervention</span>
+        <span class="nb">Request-HumanIntervention</span> <span class="n">-AgentId</span> <span class="nv">$AgentState</span><span class="p">.</span><span class="n">AgentId</span> <span class="n">-Reason</span> <span class="s2">&quot;Circuit breaker activated&quot;</span> <span class="n">-Priority</span> <span class="s2">&quot;High&quot;</span>
+        
+        <span class="k">return</span> <span class="nv">$true</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Check for recovery attempt</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$AgentState</span><span class="p">.</span><span class="n">CircuitBreakerState</span> <span class="o">-eq</span> <span class="s2">&quot;Open&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$timeSinceOpen</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Get-Date</span><span class="p">)</span> <span class="p">-</span> <span class="nv">$AgentState</span><span class="p">.</span><span class="n">CircuitBreakerOpenTime</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$timeSinceOpen</span><span class="p">.</span><span class="n">TotalMinutes</span> <span class="o">-ge</span> <span class="nv">$TimeoutMinutes</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$AgentState</span><span class="p">.</span><span class="n">CircuitBreakerState</span> <span class="p">=</span> <span class="s2">&quot;HalfOpen&quot;</span>
+            <span class="nb">Write-Log</span> <span class="s2">&quot;Circuit breaker attempting recovery after $TimeoutMinutes minutes&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nv">$false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="performance-monitoring-integration">
+<h3>Performance Monitoring Integration<a class="headerlink" href="#performance-monitoring-integration" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Get-SystemPerformanceMetrics</span> <span class="p">{</span>
+    <span class="nv">$metrics</span> <span class="p">=</span> <span class="p">@{}</span>
+    
+    <span class="c"># CPU, Memory, Disk monitoring using Get-Counter</span>
+    <span class="nv">$counterPaths</span> <span class="p">=</span> <span class="p">@(</span>
+        <span class="s2">&quot;\Processor(_Total)\% Processor Time&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;\Memory\% Committed Bytes In Use&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;\LogicalDisk(C:)\% Free Space&quot;</span>
+    <span class="p">)</span>
+    
+    <span class="nv">$counterData</span> <span class="p">=</span> <span class="nb">Get-Counter</span> <span class="n">-Counter</span> <span class="nv">$counterPaths</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span>
+    
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$counter</span> <span class="k">in</span> <span class="nv">$counterData</span><span class="p">.</span><span class="n">CounterSamples</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$metricName</span> <span class="p">=</span> <span class="nv">$counter</span><span class="p">.</span><span class="n">Path</span><span class="p">.</span><span class="n">Split</span><span class="p">(</span><span class="s1">&#39;\&#39;</span><span class="p">)[-</span><span class="n">1</span><span class="p">]</span>
+        <span class="nv">$value</span> <span class="p">=</span> <span class="no">[math]</span><span class="p">::</span><span class="n">Round</span><span class="p">(</span><span class="nv">$counter</span><span class="p">.</span><span class="n">CookedValue</span><span class="p">,</span> <span class="n">2</span><span class="p">)</span>
+        
+        <span class="nv">$metrics</span><span class="p">[</span><span class="nv">$metricName</span><span class="p">]</span> <span class="p">=</span> <span class="p">@{</span>
+            <span class="n">Value</span> <span class="p">=</span> <span class="nv">$value</span>
+            <span class="n">Timestamp</span> <span class="p">=</span> <span class="nb">Get-Date</span>
+            <span class="n">Status</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">-gt</span> <span class="n">80</span><span class="p">)</span> <span class="p">{</span> <span class="s2">&quot;Critical&quot;</span> <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">-gt</span> <span class="n">60</span><span class="p">)</span> <span class="p">{</span> <span class="s2">&quot;Warning&quot;</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="s2">&quot;Normal&quot;</span> <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nv">$metrics</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="security-and-safety-patterns">
+<h2>🔒 Security and Safety Patterns<a class="headerlink" href="#security-and-safety-patterns" title="Link to this heading"></a></h2>
+<section id="constrained-execution-environment">
+<h3>Constrained Execution Environment<a class="headerlink" href="#constrained-execution-environment" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Invoke-SafeAutonomousCommand</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span>
+        <span class="no">[string]</span><span class="nv">$Command</span><span class="p">,</span>
+        <span class="no">[hashtable]</span><span class="nv">$Parameters</span><span class="p">,</span>
+        <span class="no">[string[]]</span><span class="nv">$AllowedCommands</span> <span class="p">=</span> <span class="p">@(</span><span class="s2">&quot;Get-*&quot;</span><span class="p">,</span> <span class="s2">&quot;Test-*&quot;</span><span class="p">,</span> <span class="s2">&quot;Write-Host&quot;</span><span class="p">,</span> <span class="s2">&quot;Export-*&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    
+    <span class="c"># Validate command against whitelist</span>
+    <span class="nv">$isAllowed</span> <span class="p">=</span> <span class="nv">$false</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$pattern</span> <span class="k">in</span> <span class="nv">$AllowedCommands</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$Command</span> <span class="o">-like</span> <span class="nv">$pattern</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$isAllowed</span> <span class="p">=</span> <span class="nv">$true</span>
+            <span class="k">break</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$isAllowed</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Warning</span> <span class="s2">&quot;Command not allowed in autonomous mode: $Command&quot;</span>
+        <span class="nb">Request-HumanIntervention</span> <span class="n">-Reason</span> <span class="s2">&quot;Attempted execution of restricted command: $Command&quot;</span> <span class="n">-Priority</span> <span class="s2">&quot;High&quot;</span>
+        <span class="k">return</span> <span class="nv">$false</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Create constrained runspace</span>
+    <span class="nv">$sessionState</span> <span class="p">=</span> <span class="no">[System.Management.Automation.Runspaces.InitialSessionState]</span><span class="p">::</span><span class="n">CreateDefault</span><span class="p">()</span>
+    <span class="nv">$sessionState</span><span class="p">.</span><span class="n">LanguageMode</span> <span class="p">=</span> <span class="no">[System.Management.Automation.PSLanguageMode]</span><span class="p">::</span><span class="n">ConstrainedLanguage</span>
+    
+    <span class="nv">$runspace</span> <span class="p">=</span> <span class="no">[runspacefactory]</span><span class="p">::</span><span class="n">CreateRunspace</span><span class="p">(</span><span class="nv">$sessionState</span><span class="p">)</span>
+    <span class="nv">$runspace</span><span class="p">.</span><span class="n">Open</span><span class="p">()</span>
+    
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="nv">$powershell</span> <span class="p">=</span> <span class="no">[powershell]</span><span class="p">::</span><span class="n">Create</span><span class="p">()</span>
+        <span class="nv">$powershell</span><span class="p">.</span><span class="n">Runspace</span> <span class="p">=</span> <span class="nv">$runspace</span>
+        <span class="nv">$powershell</span><span class="p">.</span><span class="n">AddCommand</span><span class="p">(</span><span class="nv">$Command</span><span class="p">)</span>
+        
+        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$param</span> <span class="k">in</span> <span class="nv">$Parameters</span><span class="p">.</span><span class="n">GetEnumerator</span><span class="p">())</span> <span class="p">{</span>
+            <span class="nv">$powershell</span><span class="p">.</span><span class="n">AddParameter</span><span class="p">(</span><span class="nv">$param</span><span class="p">.</span><span class="n">Key</span><span class="p">,</span> <span class="nv">$param</span><span class="p">.</span><span class="n">Value</span><span class="p">)</span>
+        <span class="p">}</span>
+        
+        <span class="nv">$result</span> <span class="p">=</span> <span class="nv">$powershell</span><span class="p">.</span><span class="n">Invoke</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nv">$result</span>
+    <span class="p">}</span>
+    <span class="k">finally</span> <span class="p">{</span>
+        <span class="nv">$runspace</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+        <span class="nv">$runspace</span><span class="p">.</span><span class="n">Dispose</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="comprehensive-audit-trail">
+<h3>Comprehensive Audit Trail<a class="headerlink" href="#comprehensive-audit-trail" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Write-AutonomousOperationLog</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span>
+        <span class="no">[string]</span><span class="nv">$AgentId</span><span class="p">,</span>
+        <span class="no">[string]</span><span class="nv">$Operation</span><span class="p">,</span>
+        <span class="no">[string]</span><span class="nv">$Result</span><span class="p">,</span>
+        <span class="no">[hashtable]</span><span class="nv">$Context</span> <span class="p">=</span> <span class="p">@{}</span>
+    <span class="p">)</span>
+    
+    <span class="nv">$logEntry</span> <span class="p">=</span> <span class="p">@{</span>
+        <span class="n">Timestamp</span> <span class="p">=</span> <span class="nb">Get-Date</span> <span class="n">-Format</span> <span class="s2">&quot;yyyy-MM-dd HH:mm:ss.fff&quot;</span>
+        <span class="n">AgentId</span> <span class="p">=</span> <span class="nv">$AgentId</span>
+        <span class="n">Operation</span> <span class="p">=</span> <span class="nv">$Operation</span>
+        <span class="n">Result</span> <span class="p">=</span> <span class="nv">$Result</span>
+        <span class="n">Context</span> <span class="p">=</span> <span class="nv">$Context</span>
+        <span class="n">ProcessId</span> <span class="p">=</span> <span class="nv">$PID</span>
+        <span class="n">UserContext</span> <span class="p">=</span> <span class="no">[Environment]</span><span class="p">::</span><span class="n">UserName</span>
+        <span class="n">MachineContext</span> <span class="p">=</span> <span class="no">[Environment]</span><span class="p">::</span><span class="n">MachineName</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Write to centralized log</span>
+    <span class="nv">$logJson</span> <span class="p">=</span> <span class="nv">$logEntry</span> <span class="p">|</span> <span class="nb">ConvertTo-Json</span> <span class="n">-Compress</span>
+    <span class="nb">Add-Content</span> <span class="n">-Path</span> <span class="s2">&quot;autonomous_operations.log&quot;</span> <span class="n">-Value</span> <span class="nv">$logJson</span>
+    
+    <span class="c"># Write to agent-specific log</span>
+    <span class="nv">$agentLogPath</span> <span class="p">=</span> <span class="s2">&quot;SessionData\Logs\$AgentId.log&quot;</span>
+    <span class="nb">Add-Content</span> <span class="n">-Path</span> <span class="nv">$agentLogPath</span> <span class="n">-Value</span> <span class="nv">$logJson</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="autonomous-agent-success-patterns">
+<h2>📊 Autonomous Agent Success Patterns<a class="headerlink" href="#autonomous-agent-success-patterns" title="Link to this heading"></a></h2>
+<section id="pattern-based-decision-making">
+<h3>Pattern-Based Decision Making<a class="headerlink" href="#pattern-based-decision-making" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Get-AutonomousActionRecommendation</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span>
+        <span class="no">[string]</span><span class="nv">$ErrorPattern</span><span class="p">,</span>
+        <span class="no">[hashtable]</span><span class="nv">$Context</span><span class="p">,</span>
+        <span class="no">[hashtable]</span><span class="nv">$HistoricalData</span>
+    <span class="p">)</span>
+    
+    <span class="c"># Check historical success rates for similar patterns</span>
+    <span class="nv">$similarCases</span> <span class="p">=</span> <span class="nv">$HistoricalData</span><span class="p">.</span><span class="n">Cases</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> 
+        <span class="nv">$_</span><span class="p">.</span><span class="n">ErrorPattern</span> <span class="o">-eq</span> <span class="nv">$ErrorPattern</span> <span class="o">-and</span> 
+        <span class="nv">$_</span><span class="p">.</span><span class="n">Context</span><span class="p">.</span><span class="n">UnityVersion</span> <span class="o">-eq</span> <span class="nv">$Context</span><span class="p">.</span><span class="n">UnityVersion</span> 
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$similarCases</span><span class="p">.</span><span class="n">Count</span> <span class="o">-gt</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$successRate</span> <span class="p">=</span> <span class="p">(</span><span class="nv">$similarCases</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Result</span> <span class="o">-eq</span> <span class="s2">&quot;Success&quot;</span> <span class="p">}).</span><span class="n">Count</span> <span class="p">/</span> <span class="nv">$similarCases</span><span class="p">.</span><span class="n">Count</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$successRate</span> <span class="o">-gt</span> <span class="n">0</span><span class="p">.</span><span class="n">8</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="p">@{</span>
+                <span class="n">Action</span> <span class="p">=</span> <span class="s2">&quot;AutoFix&quot;</span>
+                <span class="n">Confidence</span> <span class="p">=</span> <span class="nv">$successRate</span>
+                <span class="n">Recommendation</span> <span class="p">=</span> <span class="s2">&quot;High confidence automatic fix based on historical data&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$successRate</span> <span class="o">-gt</span> <span class="n">0</span><span class="p">.</span><span class="n">5</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="p">@{</span>
+                <span class="n">Action</span> <span class="p">=</span> <span class="s2">&quot;HumanApproval&quot;</span>
+                <span class="n">Confidence</span> <span class="p">=</span> <span class="nv">$successRate</span>
+                <span class="n">Recommendation</span> <span class="p">=</span> <span class="s2">&quot;Medium confidence - request human approval&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="p">@{</span>
+        <span class="n">Action</span> <span class="p">=</span> <span class="s2">&quot;Manual&quot;</span>
+        <span class="n">Confidence</span> <span class="p">=</span> <span class="n">0</span><span class="p">.</span><span class="n">0</span>
+        <span class="n">Recommendation</span> <span class="p">=</span> <span class="s2">&quot;Insufficient data for autonomous action&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p><em>This document covers autonomous agent implementation specifics.</em>
+<em>For performance and security patterns, see LEARNINGS_PERFORMANCE_SECURITY.md</em></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Unity-Claude-Automation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

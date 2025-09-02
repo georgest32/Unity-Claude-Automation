@@ -1,0 +1,45 @@
+[INFO] 18:54:26.519 - Starting Message Passing System Tests
+[INFO] 18:54:26.520 - Test Type: All
+[INFO] 18:54:26.520 - 
+=== Running Unit Tests ===
+[INFO] 18:54:26.520 - Running test: Initialize-MessageQueue
+[SUCCESS] 18:54:26.521 - Test PASSED: Initialize-MessageQueue
+[INFO] 18:54:26.521 - Running test: Add-MessageToQueue
+[SUCCESS] 18:54:26.521 - Test PASSED: Add-MessageToQueue
+[INFO] 18:54:26.522 - Running test: Get-MessageFromQueue
+[SUCCESS] 18:54:26.522 - Test PASSED: Get-MessageFromQueue
+[INFO] 18:54:26.522 - Running test: Initialize-CircuitBreaker
+[SUCCESS] 18:54:26.532 - Test PASSED: Initialize-CircuitBreaker
+[INFO] 18:54:26.532 - Running test: CircuitBreaker-Success
+[SUCCESS] 18:54:26.533 - Test PASSED: CircuitBreaker-Success
+[INFO] 18:54:26.533 - Running test: CircuitBreaker-FailureHandling
+[SUCCESS] 18:54:26.534 - Test PASSED: CircuitBreaker-FailureHandling
+[INFO] 18:54:26.534 - Running test: Register-MessageHandler
+[SUCCESS] 18:54:26.534 - Test PASSED: Register-MessageHandler
+[INFO] 18:54:26.535 - Running test: Get-QueueStatistics
+[SUCCESS] 18:54:26.535 - Test PASSED: Get-QueueStatistics
+[INFO] 18:54:26.535 - 
+=== Running Integration Tests ===
+[INFO] 18:54:26.536 - Running test: FileSystemWatcher-Integration
+[SUCCESS] 18:54:28.847 - Test PASSED: FileSystemWatcher-Integration
+[INFO] 18:54:28.847 - Running test: Message-Processing-Pipeline
+[SUCCESS] 18:54:28.848 - Test PASSED: Message-Processing-Pipeline
+[INFO] 18:54:28.849 - Running test: Python-Bridge-Integration
+[SUCCESS] 18:54:29.021 - Test PASSED: Python-Bridge-Integration
+[INFO] 18:54:29.022 - 
+=== Running Performance Tests ===
+[INFO] 18:54:29.022 - Running test: Message-Throughput
+[INFO] 18:54:29.047 - Throughput: 40962.7894021071 messages/second
+[SUCCESS] 18:54:29.048 - Test PASSED: Message-Throughput
+[INFO] 18:54:29.048 - Running test: Concurrent-Queue-Access
+[SUCCESS] 18:54:33.190 - Test PASSED: Concurrent-Queue-Access
+[INFO] 18:54:33.192 - Running test: CircuitBreaker-Performance
+[INFO] 18:54:33.199 - Circuit Breaker Operations: 17117.7185504716 ops/second
+[SUCCESS] 18:54:33.199 - Test PASSED: CircuitBreaker-Performance
+[INFO] 18:54:33.199 - 
+=== Running Stress Tests ===
+[INFO] 18:54:33.200 - Running test: Queue-Overflow-Handling
+[SUCCESS] 18:54:33.200 - Test PASSED: Queue-Overflow-Handling
+[INFO] 18:54:33.201 - Running test: Rapid-CircuitBreaker-Changes
+[INFO] 18:54:38.723 - Success: 43, Failures: 7
+[SUCCESS] 18:54:38.724 - Test PASSED: Rapid-CircuitBreaker-Changes

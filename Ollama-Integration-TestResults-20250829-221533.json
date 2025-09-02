@@ -1,0 +1,337 @@
+﻿{
+    "Summary":  {
+                    "FailedTests":  0,
+                    "PassedTests":  12,
+                    "Day3Hour1_2SuccessCriteria":  {
+                                                       "ModuleFunctionsOperational":  true,
+                                                       "OllamaServiceOperational":  true,
+                                                       "AIDocumentationWorking":  true
+                                                   },
+                    "Duration":  "00:03:21.0527901",
+                    "Day3Hour1_2Success":  true,
+                    "PassRate":  "100%",
+                    "Categories":  {
+                                       "Integration":  {
+                                                           "Failed":  0,
+                                                           "PassRate":  100,
+                                                           "Total":  1,
+                                                           "Passed":  1
+                                                       },
+                                       "SuccessCriteria":  {
+                                                               "Failed":  0,
+                                                               "PassRate":  100,
+                                                               "Total":  3,
+                                                               "Passed":  3
+                                                           },
+                                       "Infrastructure":  {
+                                                              "Failed":  0,
+                                                              "PassRate":  100,
+                                                              "Total":  2,
+                                                              "Passed":  2
+                                                          },
+                                       "Performance":  {
+                                                           "Failed":  0,
+                                                           "PassRate":  100,
+                                                           "Total":  1,
+                                                           "Passed":  1
+                                                       },
+                                       "DocumentationGeneration":  {
+                                                                       "Failed":  0,
+                                                                       "PassRate":  100,
+                                                                       "Total":  3,
+                                                                       "Passed":  3
+                                                                   },
+                                       "ModelManagement":  {
+                                                               "Failed":  0,
+                                                               "PassRate":  100,
+                                                               "Total":  2,
+                                                               "Passed":  2
+                                                           }
+                                   },
+                    "TotalTests":  12
+                },
+    "TestSuite":  "Ollama Local AI Integration Testing (Week 1 Day 3 Hour 1-2)",
+    "Tests":  [
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "ExpectedCount":  13,
+                                   "LoadedCommands":  [
+                                                          "Export-OllamaConfiguration",
+                                                          "Format-DocumentationPrompt",
+                                                          "Get-OllamaModelInfo",
+                                                          "Get-OllamaPerformanceMetrics",
+                                                          "Invoke-OllamaCodeAnalysis",
+                                                          "Invoke-OllamaDocumentation",
+                                                          "Invoke-OllamaExplanation",
+                                                          "Invoke-OllamaRetry",
+                                                          "Set-OllamaConfiguration",
+                                                          "Start-ModelPreloading",
+                                                          "Start-OllamaService",
+                                                          "Stop-OllamaService",
+                                                          "Test-OllamaConnectivity"
+                                                      ],
+                                   "ActualCount":  13
+                               },
+                      "Details":  "Functions loaded: 13/13",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1756519932131)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 29, 2025 10:12:12 PM"
+                                    },
+                      "TestName":  "Module Loading",
+                      "Duration":  0,
+                      "Category":  "Infrastructure"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "Endpoint":  "http://localhost:11434",
+                                   "IsConnected":  true,
+                                   "Models":  [
+                                                  {
+                                                      "name":  "codellama:13b",
+                                                      "model":  "codellama:13b",
+                                                      "modified_at":  "2025-08-25T02:22:33.8334896-04:00",
+                                                      "size":  7365960935,
+                                                      "digest":  "9f438cb9cd581fc025612d27f7c1a6669ff83a8bb0ed86c94fcf4c5440555697",
+                                                      "details":  {
+                                                                      "parent_model":  "",
+                                                                      "format":  "gguf",
+                                                                      "family":  "llama",
+                                                                      "families":  null,
+                                                                      "parameter_size":  "13B",
+                                                                      "quantization_level":  "Q4_0"
+                                                                  }
+                                                  }
+                                              ],
+                                   "ModelsAvailable":  1
+                               },
+                      "Details":  "Models available: 1",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1756519934264)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 29, 2025 10:12:14 PM"
+                                    },
+                      "TestName":  "Ollama Service Connectivity",
+                      "Duration":  0,
+                      "Category":  "Infrastructure"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "HasCodeLlama":  true,
+                                   "ModelDetails":  {
+                                                        "name":  "codellama:13b",
+                                                        "model":  "codellama:13b",
+                                                        "modified_at":  "2025-08-25T02:22:33.8334896-04:00",
+                                                        "size":  7365960935,
+                                                        "digest":  "9f438cb9cd581fc025612d27f7c1a6669ff83a8bb0ed86c94fcf4c5440555697",
+                                                        "details":  {
+                                                                        "parent_model":  "",
+                                                                        "format":  "gguf",
+                                                                        "family":  "llama",
+                                                                        "families":  null,
+                                                                        "parameter_size":  "13B",
+                                                                        "quantization_level":  "Q4_0"
+                                                                    }
+                                                    },
+                                   "ModelsFound":  1
+                               },
+                      "Details":  "CodeLlama available: True",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1756519934292)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 29, 2025 10:12:14 PM"
+                                    },
+                      "TestName":  "Model Information Retrieval",
+                      "Duration":  0,
+                      "Category":  "ModelManagement"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "DefaultModel":  "codellama:13b",
+                                   "RequestTimeout":  300,
+                                   "MaxRetries":  5,
+                                   "ContextWindow":  32768
+                               },
+                      "Details":  "Context window: 32768 tokens, Timeout: 300s",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1756519934307)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 29, 2025 10:12:14 PM"
+                                    },
+                      "TestName":  "Configuration Management",
+                      "Duration":  0,
+                      "Category":  "ModelManagement"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "DocumentationGenerated":  true,
+                                   "MeetsTimeTarget":  true,
+                                   "Model":  "codellama:13b",
+                                   "ResponseTime":  27.1166296,
+                                   "DocumentationLength":  1441
+                               },
+                      "Details":  "Response time: 27.12s (target: \u003c60s)",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1756519961430)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 29, 2025 10:12:41 PM"
+                                    },
+                      "TestName":  "Basic Documentation Generation",
+                      "Duration":  27.1166296,
+                      "Category":  "DocumentationGeneration"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "AnalysisLength":  2798,
+                                   "AnalysisType":  "BestPractices",
+                                   "AnalysisGenerated":  true,
+                                   "ResponseTime":  58.730493499999994
+                               },
+                      "Details":  "Analysis response time: 58.73s",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1756520020164)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 29, 2025 10:13:40 PM"
+                                    },
+                      "TestName":  "Code Analysis Generation",
+                      "Duration":  58.730493499999994,
+                      "Category":  "DocumentationGeneration"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "ExplanationLength":  3739,
+                                   "ExplanationLevel":  "Intermediate",
+                                   "ExplanationGenerated":  true,
+                                   "ResponseTime":  75.6866539
+                               },
+                      "Details":  "Explanation response time: 75.69s",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1756520095857)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 29, 2025 10:14:55 PM"
+                                    },
+                      "TestName":  "Technical Explanation Generation",
+                      "Duration":  75.6866539,
+                      "Category":  "DocumentationGeneration"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "RequestCount":  3,
+                                   "SuccessCount":  4,
+                                   "AverageResponseTime":  53819.409866666676,
+                                   "ErrorCount":  0
+                               },
+                      "Details":  "Requests tracked: 3",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1756520095878)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 29, 2025 10:14:55 PM"
+                                    },
+                      "TestName":  "Performance Metrics Collection",
+                      "Duration":  0,
+                      "Category":  "Performance"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "FileExists":  true,
+                                   "ExportSuccess":  true,
+                                   "ExportPath":  ".\\TestResults\\ollama-test-config.json"
+                               },
+                      "Details":  "Config exported: True",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1756520095960)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 29, 2025 10:14:55 PM"
+                                    },
+                      "TestName":  "Configuration Export",
+                      "Duration":  0,
+                      "Category":  "Integration"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "ServiceRunning":  true,
+                                   "CodeLlamaDetected":  true,
+                                   "ModelsAvailable":  1
+                               },
+                      "Details":  "Service responsive with models available",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1756520098010)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 29, 2025 10:14:58 PM"
+                                    },
+                      "TestName":  "Ollama Service Operational",
+                      "Duration":  0,
+                      "Category":  "SuccessCriteria"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "AllFunctionsWorking":  true,
+                                   "AvailableFunctions":  13,
+                                   "ExpectedFunctions":  13,
+                                   "FunctionNames":  [
+                                                         "Export-OllamaConfiguration",
+                                                         "Format-DocumentationPrompt",
+                                                         "Get-OllamaModelInfo",
+                                                         "Get-OllamaPerformanceMetrics",
+                                                         "Invoke-OllamaCodeAnalysis",
+                                                         "Invoke-OllamaDocumentation",
+                                                         "Invoke-OllamaExplanation",
+                                                         "Invoke-OllamaRetry",
+                                                         "Set-OllamaConfiguration",
+                                                         "Start-ModelPreloading",
+                                                         "Start-OllamaService",
+                                                         "Stop-OllamaService",
+                                                         "Test-OllamaConnectivity"
+                                                     ]
+                               },
+                      "Details":  "Functions available: 13/13",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1756520098026)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 29, 2025 10:14:58 PM"
+                                    },
+                      "TestName":  "Module Functions Operational",
+                      "Duration":  0,
+                      "Category":  "SuccessCriteria"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "DocumentationGenerated":  true,
+                                   "GenerationWorking":  true,
+                                   "Model":  "codellama:13b",
+                                   "DocumentationLength":  1792
+                               },
+                      "Details":  "AI documentation: True",
+                      "Timestamp":  {
+                                        "value":  "\/Date(1756520133112)\/",
+                                        "DisplayHint":  2,
+                                        "DateTime":  "Friday, August 29, 2025 10:15:33 PM"
+                                    },
+                      "TestName":  "AI Documentation Generation Working",
+                      "Duration":  0,
+                      "Category":  "SuccessCriteria"
+                  }
+              ],
+    "StartTime":  {
+                      "value":  "\/Date(1756519932059)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "Friday, August 29, 2025 10:12:12 PM"
+                  },
+    "EndTime":  {
+                    "value":  "\/Date(1756520133112)\/",
+                    "DisplayHint":  2,
+                    "DateTime":  "Friday, August 29, 2025 10:15:33 PM"
+                }
+}

@@ -1,0 +1,23 @@
+Get-ExecutionPolicy : The 'Get-ExecutionPolicy' command was found in the module 'Microsoft.PowerShell.Security', but 
+the module could not be loaded. For more information, run 'Import-Module Microsoft.PowerShell.Security'.
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-Week2Day3-SemanticAnalysis.ps1:88 char:33
++ Write-Host "Execution Policy: $(Get-ExecutionPolicy)" -ForegroundColo ...
++                                 ~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Get-ExecutionPolicy:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CouldNotAutoloadMatchingModule
+ 
+Get-ExecutionPolicy : The 'Get-ExecutionPolicy' command was found in the module 'Microsoft.PowerShell.Security', but 
+the module could not be loaded. For more information, run 'Import-Module Microsoft.PowerShell.Security'.
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-Week2Day3-SemanticAnalysis.ps1:97 char:24
++     ExecutionPolicy = (Get-ExecutionPolicy).ToString()
++                        ~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Get-ExecutionPolicy:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CouldNotAutoloadMatchingModule
+ 
+Get-PowerShellAST : [AST] Failed to parse C:\NonExistent\File.ps1 : File not found: C:\NonExistent\File.ps1
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-Week2Day3-SemanticAnalysis.ps1:611 char:19
++ ...       $result = Get-PowerShellAST -FilePath "C:\NonExistent\File.ps1"
++                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException
+    + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,Get-PowerShellAST
+ 

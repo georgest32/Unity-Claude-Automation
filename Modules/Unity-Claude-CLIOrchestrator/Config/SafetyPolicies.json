@@ -1,0 +1,287 @@
+{
+  "version": "1.0.0",
+  "description": "Safety policies configuration for CLIOrchestrator secure execution",
+  "lastUpdated": "2025-08-25",
+  "safetyPolicies": {
+    "constrainedLanguageMode": {
+      "enabled": true,
+      "description": "PowerShell 5.1 Constrained Language Mode restrictions",
+      "restrictions": {
+        "com_objects": false,
+        "net_instantiation": false,
+        "class_declaration": false,
+        "dsc_configuration": false,
+        "xaml_workflows": false,
+        "invoke_expression": false,
+        "add_type": false,
+        "script_block_creation": false
+      },
+      "enforcement_level": "strict"
+    },
+    "approvedExecutionPaths": {
+      "description": "Whitelist of safe directories for file operations",
+      "paths": [
+        {
+          "path": "%TEMP%",
+          "description": "System temporary directory",
+          "operations": ["read", "write", "create", "delete"],
+          "recursive": true
+        },
+        {
+          "path": "%USERPROFILE%\\AppData\\Local\\Temp",
+          "description": "User temporary directory",
+          "operations": ["read", "write", "create", "delete"],
+          "recursive": true
+        },
+        {
+          "path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\ActionResults",
+          "description": "Action execution results directory",
+          "operations": ["read", "write", "create"],
+          "recursive": true
+        },
+        {
+          "path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\TestResults",
+          "description": "Test execution results directory",
+          "operations": ["read", "write", "create"],
+          "recursive": true
+        },
+        {
+          "path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Logs",
+          "description": "Logging directory",
+          "operations": ["read", "write", "create"],
+          "recursive": false
+        }
+      ],
+      "validation_rules": [
+        {
+          "rule": "no_parent_traversal",
+          "description": "Prevent directory traversal attacks",
+          "patterns": ["../", "..\\", "%2e%2e", "%252e%252e"]
+        },
+        {
+          "rule": "no_system_directories",
+          "description": "Block access to critical system directories",
+          "blocked_patterns": [
+            "C:\\Windows\\*",
+            "C:\\Program Files\\*",
+            "C:\\Program Files (x86)\\*",
+            "%WINDIR%\\*",
+            "%PROGRAMFILES%\\*"
+          ]
+        }
+      ]
+    },
+    "approvedCommands": {
+      "description": "Whitelist of approved PowerShell commands and patterns",
+      "categories": {
+        "core_cmdlets": [
+          "Get-*",
+          "Set-*", 
+          "New-*",
+          "Remove-*",
+          "Test-*",
+          "Start-*",
+          "Stop-*",
+          "Import-Module",
+          "Export-ModuleMember",
+          "Write-Output",
+          "Write-Host",
+          "Write-Verbose",
+          "Write-Warning",
+          "Write-Error",
+          "Write-Debug"
+        ],
+        "file_operations": [
+          "Copy-Item",
+          "Move-Item", 
+          "Rename-Item",
+          "Get-ChildItem",
+          "Get-Content",
+          "Set-Content",
+          "Add-Content",
+          "Out-File"
+        ],
+        "unity_claude_modules": [
+          "Invoke-*",
+          "Test-*",
+          "Get-*",
+          "Set-*",
+          "New-*",
+          "Start-*",
+          "Stop-*"
+        ],
+        "system_monitoring": [
+          "Get-Process",
+          "Get-Service",
+          "Get-EventLog",
+          "Get-WmiObject",
+          "Get-CimInstance"
+        ]
+      },
+      "validation_mode": "whitelist_only"
+    },
+    "blockedCommands": {
+      "description": "Blacklist of dangerous or prohibited commands",
+      "categories": {
+        "system_modification": [
+          "Remove-Computer",
+          "Restart-Computer", 
+          "Stop-Computer",
+          "Set-ExecutionPolicy",
+          "Invoke-Expression",
+          "Invoke-Command",
+          "Enable-PSRemoting",
+          "Disable-PSRemoting"
+        ],
+        "network_operations": [
+          "Invoke-WebRequest",
+          "Invoke-RestMethod",
+          "New-WebServiceProxy",
+          "Start-Job",
+          "Receive-Job",
+          "New-PSSession",
+          "Enter-PSSession"
+        ],
+        "registry_operations": [
+          "Set-ItemProperty",
+          "Remove-ItemProperty",
+          "New-ItemProperty",
+          "Remove-Item",
+          "New-Item"
+        ],
+        "service_operations": [
+          "Set-Service",
+          "Start-Service",
+          "Stop-Service",
+          "Restart-Service",
+          "New-Service",
+          "Remove-Service"
+        ],
+        "dangerous_expressions": [
+          "iex",
+          "Invoke-Expression",
+          "&",
+          "cmd",
+          "powershell",
+          "pwsh"
+        ]
+      },
+      "enforcement_level": "strict"
+    },
+    "executionLimits": {
+      "description": "Resource and time limits for safe execution",
+      "limits": {
+        "max_execution_time_seconds": 300,
+        "max_concurrent_actions": 3,
+        "max_memory_mb": 512,
+        "max_file_size_mb": 100,
+        "max_output_length": 50000,
+        "max_retry_attempts": 3
+      },
+      "circuit_breaker": {
+        "failure_threshold": 5,
+        "recovery_time_seconds": 60,
+        "half_open_test_count": 1
+      }
+    },
+    "dataClassification": {
+      "description": "Data handling and privacy protection policies",
+      "sensitive_patterns": [
+        {
+          "name": "api_keys",
+          "pattern": "(?i)(api[_-]?key|apikey)['\"]?\\s*[:=]\\s*['\"]?([a-zA-Z0-9_-]{20,})",
+          "action": "redact",
+          "replacement": "[API_KEY_REDACTED]"
+        },
+        {
+          "name": "passwords",
+          "pattern": "(?i)(password|pwd|pass)['\"]?\\s*[:=]\\s*['\"]?([^\\s'\"]{8,})",
+          "action": "redact",
+          "replacement": "[PASSWORD_REDACTED]"
+        },
+        {
+          "name": "connection_strings",
+          "pattern": "(?i)(connection[_-]?string|connectionstring)['\"]?\\s*[:=]\\s*['\"]?([^'\"]+)",
+          "action": "redact",
+          "replacement": "[CONNECTION_STRING_REDACTED]"
+        },
+        {
+          "name": "file_paths",
+          "pattern": "(?i)[a-zA-Z]:\\\\(?:[^\\\\/:*?\"<>|\\r\\n]+\\\\)*[^\\\\/:*?\"<>|\\r\\n]*",
+          "action": "validate",
+          "validation": "approved_paths_only"
+        }
+      ]
+    },
+    "auditingRequirements": {
+      "description": "Audit logging and compliance requirements",
+      "required_events": [
+        "action_execution_started",
+        "action_execution_completed", 
+        "action_execution_failed",
+        "safety_violation_detected",
+        "escalation_triggered",
+        "human_intervention_required"
+      ],
+      "log_retention_days": 90,
+      "log_encryption": true,
+      "compliance_standards": ["SOC2", "GDPR", "CCPA"]
+    },
+    "emergencyProcedures": {
+      "description": "Emergency response and recovery procedures",
+      "triggers": [
+        {
+          "condition": "system_compromise_detected",
+          "actions": [
+            "stop_all_executions",
+            "activate_circuit_breaker",
+            "notify_security_team",
+            "capture_system_state"
+          ]
+        },
+        {
+          "condition": "data_breach_suspected",
+          "actions": [
+            "stop_all_executions",
+            "secure_sensitive_data",
+            "notify_compliance_team",
+            "initiate_forensic_collection"
+          ]
+        },
+        {
+          "condition": "unauthorized_access_detected",
+          "actions": [
+            "revoke_execution_permissions",
+            "log_security_event",
+            "require_re_authentication",
+            "escalate_to_administrator"
+          ]
+        }
+      ],
+      "recovery_procedures": {
+        "validate_system_integrity": true,
+        "verify_user_permissions": true,
+        "check_configuration_changes": true,
+        "confirm_safety_policies": true
+      }
+    }
+  },
+  "complianceMatrix": {
+    "description": "Compliance mapping for regulatory requirements",
+    "standards": {
+      "NIST_Cybersecurity_Framework": {
+        "identify": ["data_classification", "approved_paths", "sensitive_patterns"],
+        "protect": ["constrained_language_mode", "approved_commands", "execution_limits"],
+        "detect": ["audit_logging", "circuit_breaker", "safety_violations"],
+        "respond": ["emergency_procedures", "escalation_rules", "human_intervention"],
+        "recover": ["recovery_procedures", "system_validation", "policy_restoration"]
+      },
+      "ISO_27001": {
+        "access_control": ["approved_commands", "execution_limits", "user_authentication"],
+        "cryptography": ["log_encryption", "data_protection"],
+        "operations_security": ["constrained_execution", "change_management"],
+        "incident_management": ["emergency_procedures", "escalation_rules"]
+      }
+    }
+  }
+}

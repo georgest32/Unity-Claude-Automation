@@ -1,0 +1,40 @@
+=== Enhanced Documentation System Test Runner ===
+Test Script: Test-EnhancedDocumentationSystem.ps1
+Test Scope: All
+Output Path: \TestResults
+Start Time: 08/28/2025 19:18:52
+
+=== Executing Pester Tests ===
+[95m
+[95mStarting discovery in 1 files.[0m
+[95mDiscovery found 28 tests in 199ms.[0m
+[95mRunning tests.[0m
+  Initializing CPG test environment...
+[91m[-] Context Enhanced Documentation System - CPG Components.Thread-Safe Operations failed[0m
+[91m RuntimeException: Cannot index into a null array.
+[91m at <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1:153[0m
+  Initializing Performance test environment...
+    Generated 50 test files
+[91m[-] Enhanced Documentation System - Performance.File Processing Performance.Should process files at 100+ files per second[0m[90m 84ms (25ms|59ms)[0m
+[91m CommandNotFoundException: The term 'Measure-TestPerformance' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[91m at <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1:684[0m
+    Cleaned up test files
+[97mTests completed in 1s[0m
+[97mTests Passed: 0, [0m[91mFailed: 4, [0m[93mSkipped: 24, [0m[90mInconclusive: 0, [0m[37m[0m[90mNotRun: 0[0m
+[91mBeforeAll \ AfterAll failed: 1[0m
+[91m  - Enhanced Documentation System - CPG Components.Thread-Safe Operations[0m
+
+=== Test Results Summary ===
+  Total Tests: 28
+  Passed: 0
+  Failed: 4
+  Skipped: 24
+  Duration: 1.0004394 seconds
+  Success Rate: 0%
+
+=== Test Artifacts ===
+  XML Report: Path relative to the current directory where test result report is saved. (\TestResults\EnhancedDocumentationSystem-UnitTests-20250828-191852.xml, default: testResults.xml)
+  JSON Results: \TestResults\EnhancedDocumentationSystem-TestRunner-Results-20250828-191854.json
+  Test Output Directory: \TestResults
+
+[FAIL] Some tests failed. Review the detailed results above.

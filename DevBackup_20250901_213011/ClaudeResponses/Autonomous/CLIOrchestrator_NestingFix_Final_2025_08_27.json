@@ -1,0 +1,84 @@
+{
+  "timestamp": "2025-08-27 17:05:00",
+  "prompt_type": "Debugging",
+  "analysis_complete": true,
+  "status": "ROOT_CAUSE_IDENTIFIED",
+  "confidence": 90,
+  "summary": {
+    "issue": "Functions Invoke-AutonomousDecisionMaking and Invoke-DecisionExecution not accessible",
+    "root_cause": "Module nesting limit prevents OrchestrationManager-Refactored from loading properly when used as NestedModule",
+    "current_state": "Partial fix implemented but still hitting nesting limit due to cascading imports"
+  },
+  "diagnosis": {
+    "nesting_chain": [
+      "Test imports Unity-Claude-CLIOrchestrator",
+      "Manifest loads 9 NestedModules",
+      "ResponseAnalysisEngine-Core imports 3 components",
+      "PatternRecognitionEngine imports 4 sub-modules",
+      "Each import increases nesting depth",
+      "Exceeds 10-level limit at RecommendationPatternEngine",
+      "OrchestrationManager-Refactored fails to load completely",
+      "Functions defined but not exported to parent scope"
+    ],
+    "evidence": [
+      "WARNING: module nesting limit has been exceeded",
+      "Functions exist in OrchestrationComponents files",
+      "OrchestrationManager-Refactored exports them correctly",
+      "But module fails to load due to nesting limit"
+    ]
+  },
+  "solutions_attempted": [
+    {
+      "approach": "Dot-sourcing in main module",
+      "status": "Partial success",
+      "issue": "Sub-modules still use Import-Module internally"
+    },
+    {
+      "approach": "Fixed ResponseAnalysisEngine-Core",
+      "status": "Created but not fully integrated",
+      "issue": "Other modules still causing nesting"
+    },
+    {
+      "approach": "Fixed PatternRecognitionEngine",
+      "status": "Created but issue persists",
+      "issue": "Import chain still too deep"
+    }
+  ],
+  "recommended_solution": {
+    "option_1": {
+      "name": "Complete Flattening",
+      "description": "Combine all Core modules into single file",
+      "pros": ["Guaranteed to work", "No nesting at all"],
+      "cons": ["Large monolithic file", "Harder to maintain"],
+      "effort": "High"
+    },
+    "option_2": {
+      "name": "Direct PSM1 Import",
+      "description": "Skip manifest, import Unity-Claude-CLIOrchestrator-Refactored-Fixed.psm1 directly",
+      "pros": ["Works immediately", "No manifest complexity"],
+      "cons": ["Loses manifest benefits", "No version control"],
+      "effort": "Low"
+    },
+    "option_3": {
+      "name": "Two-Stage Loading",
+      "description": "Load Core components globally first, then main module",
+      "pros": ["Maintains structure", "Avoids nesting"],
+      "cons": ["Complex initialization", "Order dependency"],
+      "effort": "Medium"
+    }
+  },
+  "immediate_workaround": {
+    "description": "Import the refactored module file directly without manifest",
+    "command": "Import-Module 'C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CLIOrchestrator\\Unity-Claude-CLIOrchestrator-Refactored-Fixed.psm1' -Force",
+    "expected_result": "All functions should be available without nesting limit"
+  },
+  "files_created": [
+    "Unity-Claude-CLIOrchestrator-Refactored-Fixed.psm1",
+    "Unity-Claude-CLIOrchestrator-Fixed.psd1",
+    "PatternRecognitionEngine-Fixed.psm1",
+    "ResponseAnalysisEngine-Core-Fixed.psm1",
+    "Test-CLIOrchestrator-Fixed.ps1"
+  ],
+  "test_command": "powershell -File Test-CLIOrchestrator-Fixed.ps1",
+  "RESPONSE": "RECOMMENDATION: TEST - Test-CLIOrchestrator-TestingWorkflow.ps1: Test with direct PSM1 import workaround to validate all functions are accessible"
+}

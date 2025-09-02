@@ -1,0 +1,127 @@
+{
+  "TestSuite": "HITL Interrupt Handling (Hour 7)",
+  "Duration": "00:00:00.4131940",
+  "EndTime": "2025-08-23T16:27:28.9778721-04:00",
+  "Tests": [
+    {
+      "Timestamp": "2025-08-23T16:27:28.6439081-04:00",
+      "Passed": true,
+      "Details": "HITL enhanced server operational",
+      "TestName": "Server Health Check",
+      "Data": null
+    },
+    {
+      "Timestamp": "2025-08-23T16:27:28.6675568-04:00",
+      "Passed": true,
+      "Details": "Graph ID: hitl-simple_approval-20250823-162728",
+      "TestName": "Create simple_approval Graph",
+      "Data": null
+    },
+    {
+      "Timestamp": "2025-08-23T16:27:28.7006093-04:00",
+      "Passed": true,
+      "Details": "Graph ID: hitl-detailed_approval-20250823-162728",
+      "TestName": "Create detailed_approval Graph",
+      "Data": null
+    },
+    {
+      "Timestamp": "2025-08-23T16:27:28.7140208-04:00",
+      "Passed": true,
+      "Details": "Graph ID: hitl-state_review-20250823-162728",
+      "TestName": "Create state_review Graph",
+      "Data": null
+    },
+    {
+      "Timestamp": "2025-08-23T16:27:28.7262822-04:00",
+      "Passed": true,
+      "Details": "Graph ID: hitl-conditional_interrupt-20250823-162728",
+      "TestName": "Create conditional_interrupt Graph",
+      "Data": null
+    },
+    {
+      "Timestamp": "2025-08-23T16:27:28.7775152-04:00",
+      "Passed": false,
+      "Details": "Status: completed, Thread: fbf920c3-2861-47fb-be36-dd22a48fe69d",
+      "TestName": "Simple Approval Interrupt",
+      "Data": null
+    },
+    {
+      "Timestamp": "2025-08-23T16:27:28.8196279-04:00",
+      "Passed": false,
+      "Details": "Status: completed",
+      "TestName": "Detailed Approval Interrupt",
+      "Data": null
+    },
+    {
+      "Timestamp": "2025-08-23T16:27:28.8599177-04:00",
+      "Passed": false,
+      "Details": "Status: completed",
+      "TestName": "State Review Interrupt",
+      "Data": null
+    },
+    {
+      "Timestamp": "2025-08-23T16:27:28.898916-04:00",
+      "Passed": true,
+      "Details": "Counter=3, Status: completed",
+      "TestName": "Conditional No Interrupt (Low Counter)",
+      "Data": null
+    },
+    {
+      "Timestamp": "2025-08-23T16:27:28.9254613-04:00",
+      "Passed": false,
+      "Details": "Counter=7, Status: completed",
+      "TestName": "Conditional Interrupt (High Counter)",
+      "Data": null
+    },
+    {
+      "Timestamp": "2025-08-23T16:27:28.9709976-04:00",
+      "Passed": true,
+      "Details": "Function executed without error",
+      "TestName": "Show-LangGraphInterrupt Function",
+      "Data": null
+    },
+    {
+      "Timestamp": "2025-08-23T16:27:28.9724762-04:00",
+      "Passed": true,
+      "Details": "Function exists and is properly structured",
+      "TestName": "Get-LangGraphInterruptChoice Function",
+      "Data": null
+    },
+    {
+      "Timestamp": "2025-08-23T16:27:28.9746208-04:00",
+      "Passed": true,
+      "Details": "Enhanced approval function is available",
+      "TestName": "Wait-LangGraphApprovalEnhanced Function",
+      "Data": null
+    },
+    {
+      "Timestamp": "2025-08-23T16:27:28.975923-04:00",
+      "Passed": true,
+      "Details": "Function is exported",
+      "TestName": "Export Show-LangGraphInterrupt",
+      "Data": null
+    },
+    {
+      "Timestamp": "2025-08-23T16:27:28.9769065-04:00",
+      "Passed": true,
+      "Details": "Function is exported",
+      "TestName": "Export Get-LangGraphInterruptChoice",
+      "Data": null
+    },
+    {
+      "Timestamp": "2025-08-23T16:27:28.9774296-04:00",
+      "Passed": true,
+      "Details": "Function is exported",
+      "TestName": "Export Wait-LangGraphApprovalEnhanced",
+      "Data": null
+    }
+  ],
+  "StartTime": "2025-08-23T16:27:28.5646781-04:00",
+  "Summary": {
+    "TotalTests": 16,
+    "PassRate": "75%",
+    "PassedTests": 12,
+    "Duration": "00:00:00.4131940",
+    "FailedTests": 4
+  }
+}

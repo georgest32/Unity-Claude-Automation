@@ -1,0 +1,16 @@
+{
+  "HasErrors": false,
+  "HasOutput": true,
+  "ErrorFile": ".\\TestResults\\20250827_230548_Test-WindowsAPI-Detection_error.txt",
+  "OutputPreview": "\n========================================\n  WINDOWS API DETECTION TEST\n========================================\n\n1. Getting all visible windows via Windows API...\n   Found 19 windows\n\n2. Searching for NUGGETRON...\n   [FAILED] NUGGETRON not found via Windows API\n\n3. Windows containing 'PowerShell' or 'Terminal':\n   - PID 31748: 'Administrator: Windows PowerShell'\n   - PID 38772: 'Administrator: Windows PowerShell'\n\n4. Current process info:\n   - Current PID: 31748\n   - Current Title: 'Administrato...[truncated]",
+  "ExitCode": 0,
+  "Success": true,
+  "StartTime": "2025-08-27 23:05:48",
+  "Duration": "5.07 seconds",
+  "ProcessId": 31748,
+  "EndTime": "2025-08-27 23:05:53",
+  "JsonTrigger": "test_nuggetron_orchestrator.json",
+  "TestScript": ".\\Test-WindowsAPI-Detection.ps1",
+  "ErrorPreview": null,
+  "OutputFile": ".\\TestResults\\20250827_230548_Test-WindowsAPI-Detection_output.txt"
+}

@@ -1,0 +1,41 @@
+=== Enhanced Documentation System Test Runner ===
+Test Script: Test-EnhancedDocumentationSystem.ps1
+Test Scope: All
+Output Path: \TestResults
+Start Time: 08/28/2025 19:13:21
+
+=== Executing Pester Tests ===
+[95m
+[95mStarting discovery in 1 files.[0m
+[95mDiscovery found 28 tests in 166ms.[0m
+[95mRunning tests.[0m
+  Initializing CPG test environment...
+[91m[-] Describe Enhanced Documentation System - CPG Components failed[0m
+[91m RuntimeException: Cannot index into a null array.
+[91m at <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1:127[0m
+  Initializing Performance test environment...
+[91m[-] Describe Enhanced Documentation System - Performance failed[0m
+[91m [0] ParameterBindingValidationException: Cannot bind argument to parameter 'Path' because it is null.
+[91m at <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1:733
+[91m [1] RuntimeException: Cannot index into a null array.
+[91m at <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1:571[0m
+[97mTests completed in 592ms[0m
+[97mTests Passed: 0, [0m[91mFailed: 12, [0m[93mSkipped: 16, [0m[90mInconclusive: 0, [0m[37m[0m[90mNotRun: 0[0m
+[91mBeforeAll \ AfterAll failed: 2[0m
+[91m  - Enhanced Documentation System - CPG Components
+[91m  - Enhanced Documentation System - Performance[0m
+
+=== Test Results Summary ===
+  Total Tests: 28
+  Passed: 0
+  Failed: 12
+  Skipped: 16
+  Duration: 0.5924293 seconds
+  Success Rate: 0%
+
+=== Test Artifacts ===
+  XML Report: Path relative to the current directory where test result report is saved. (\TestResults\EnhancedDocumentationSystem-UnitTests-20250828-191321.xml, default: testResults.xml)
+  JSON Results: \TestResults\EnhancedDocumentationSystem-TestRunner-Results-20250828-191322.json
+  Test Output Directory: \TestResults
+
+[FAIL] Some tests failed. Review the detailed results above.

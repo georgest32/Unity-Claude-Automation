@@ -1,0 +1,72 @@
+{
+  "Results": [
+    {
+      "Status": "Failed",
+      "Details": "",
+      "Duration": 12,
+      "Name": "Module Import and Validation",
+      "Error": "The running command stopped because the preference variable \"ErrorActionPreference\" or common parameter is set to Stop: At C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CLIOrchestrator\\Core\\ResponseAnalysisEngine.psm1:857 char:2\r\n+ \r\nMissing closing ')' in subexpression.",
+      "Timestamp": "2025-08-25T02:33:49.4511311-04:00"
+    },
+    {
+      "Status": "Failed",
+      "Details": "",
+      "Duration": 13,
+      "Name": "Response Analysis Engine",
+      "Error": "The 'Extract-ResponseEntities' command was found in the module 'Unity-Claude-CLIOrchestrator', but the module could not be loaded. For more information, run 'Import-Module Unity-Claude-CLIOrchestrator'.",
+      "Timestamp": "2025-08-25T02:33:49.4727411-04:00"
+    },
+    {
+      "Status": "Failed",
+      "Details": "",
+      "Duration": 13,
+      "Name": "Pattern Recognition Engine",
+      "Error": "The 'Find-RecommendationPatterns' command was found in the module 'Unity-Claude-CLIOrchestrator', but the module could not be loaded. For more information, run 'Import-Module Unity-Claude-CLIOrchestrator'.",
+      "Timestamp": "2025-08-25T02:33:49.4883863-04:00"
+    },
+    {
+      "Status": "Failed",
+      "Details": "",
+      "Duration": 13,
+      "Name": "Decision Engine",
+      "Error": "The 'Invoke-RuleBasedDecision' command was found in the module 'Unity-Claude-CLIOrchestrator', but the module could not be loaded. For more information, run 'Import-Module Unity-Claude-CLIOrchestrator'.",
+      "Timestamp": "2025-08-25T02:33:49.5137541-04:00"
+    },
+    {
+      "Status": "Failed",
+      "Details": "",
+      "Duration": 14,
+      "Name": "Action Execution Framework",
+      "Error": "The 'Test-SafeFilePath' command was found in the module 'Unity-Claude-CLIOrchestrator', but the module could not be loaded. For more information, run 'Import-Module Unity-Claude-CLIOrchestrator'.",
+      "Timestamp": "2025-08-25T02:33:49.5328631-04:00"
+    },
+    {
+      "Status": "Passed",
+      "Details": "Decision trees: OK, Safety policies: OK, Learning parameters: OK",
+      "Duration": 11,
+      "Name": "Configuration Loading",
+      "Error": "",
+      "Timestamp": "2025-08-25T02:33:49.5463332-04:00"
+    },
+    {
+      "Status": "Failed",
+      "Details": "",
+      "Duration": 13,
+      "Name": "End-to-End Workflow",
+      "Error": "The 'Invoke-EnhancedResponseAnalysis' command was found in the module 'Unity-Claude-CLIOrchestrator', but the module could not be loaded. For more information, run 'Import-Module Unity-Claude-CLIOrchestrator'.",
+      "Timestamp": "2025-08-25T02:33:49.5646554-04:00"
+    }
+  ],
+  "TotalDuration": 144.4835,
+  "EndTime": "2025-08-25T02:33:49.5651022-04:00",
+  "TestType": "All",
+  "StartTime": "2025-08-25T02:33:49.4206187-04:00",
+  "TestSuite": "CLIOrchestrator-Complete",
+  "Summary": {
+    "Errors": 0,
+    "Failed": 6,
+    "Skipped": 0,
+    "Total": 7,
+    "Passed": 1
+  }
+}

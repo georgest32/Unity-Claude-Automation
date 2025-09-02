@@ -1,0 +1,991 @@
+﻿<#
+.SYNOPSIS
+    Unity-Claude CLI Orchestrator - Orchestration Management Component
+    
+.DESCRIPTION
+    Manages the main CLI orchestration control including status monitoring,
+    comprehensive analysis, and autonomous decision making coordination.
+    
+.COMPONENT
+    Part of Unity-Claude-CLIOrchestrator refactored architecture
+    
+.FUNCTIONS
+    - Start-CLIOrchestration: Main orchestration startup and control
+    - Get-CLIOrchestrationStatus: Status reporting and monitoring
+    - Invoke-ComprehensiveResponseAnalysis: Advanced response analysis
+    - Invoke-AutonomousDecisionMaking: Decision making coordination
+    - Invoke-DecisionExecution: Decision execution with safety checks
+#>
+
+function Start-CLIOrchestration {
+    <#
+    .SYNOPSIS
+        Starts the main CLI orchestration system with autonomous capabilities
+        
+    .DESCRIPTION
+        Initializes and runs the complete CLI orchestration system including
+        autonomous monitoring, decision making, and response processing
+        
+    .PARAMETER AutonomousMode
+        Whether to enable autonomous operation mode
+        
+    .PARAMETER MonitoringInterval
+        Interval in seconds for monitoring checks (default: 30)
+        
+    .PARAMETER MaxExecutionTime
+        Maximum execution time in minutes before automatic shutdown (default: 60)
+        
+    .PARAMETER EnableResponseAnalysis
+        Whether to enable comprehensive response analysis
+        
+    .PARAMETER EnableDecisionMaking
+        Whether to enable autonomous decision making
+        
+    .OUTPUTS
+        PSCustomObject with orchestration results and statistics
+        
+    .EXAMPLE
+        $results = Start-CLIOrchestration -AutonomousMode -MonitoringInterval 60 -MaxExecutionTime 120
+    #>
+    [CmdletBinding()]
+    param(
+        [switch]$AutonomousMode,
+        [int]$MonitoringInterval = 30,
+        [int]$MaxExecutionTime = 60,
+        [switch]$EnableResponseAnalysis,
+        [switch]$EnableDecisionMaking
+    )
+    
+    try {
+        Write-Host ""
+        Write-Host "=====================================================================" -ForegroundColor Cyan
+        Write-Host "         Unity-Claude CLI Orchestration System v2.0" -ForegroundColor Cyan
+        Write-Host "=====================================================================" -ForegroundColor Cyan
+        Write-Host ""
+        
+        Write-Host "CONFIGURATION:" -ForegroundColor Yellow
+        Write-Host "  Autonomous Mode: $AutonomousMode" -ForegroundColor Gray
+        Write-Host "  Monitoring Interval: $MonitoringInterval seconds" -ForegroundColor Gray
+        Write-Host "  Max Execution Time: $MaxExecutionTime minutes" -ForegroundColor Gray
+        Write-Host "  Response Analysis: $EnableResponseAnalysis" -ForegroundColor Gray
+        Write-Host "  Decision Making: $EnableDecisionMaking" -ForegroundColor Gray
+        Write-Host ""
+        
+        $orchestrationResults = [PSCustomObject]@{
+            StartTime = Get-Date
+            EndTime = $null
+            Mode = if ($AutonomousMode) { "Autonomous" } else { "Manual" }
+            TotalRunTime = 0
+            MonitoringCycles = 0
+            ResponsesAnalyzed = 0
+            DecisionsMade = 0
+            ActionsExecuted = 0
+            Errors = @()
+            Status = "Running"
+        }
+        
+        # Initialize components
+        Write-Host "Initializing orchestration components..." -ForegroundColor Cyan
+        
+        # Verify Claude window is available
+        $claudeWindow = Find-ClaudeWindow
+        if (-not $claudeWindow) {
+            throw "Claude Code CLI window not found. Please ensure Claude CLI is open and visible."
+        }
+        Write-Host "  Claude CLI window detected successfully" -ForegroundColor Green
+        
+        # Initialize response directory
+        $responseDir = ".\ClaudeResponses\Autonomous"
+        if (-not (Test-Path $responseDir)) {
+            New-Item -ItemType Directory -Path $responseDir -Force | Out-Null
+        }
+        Write-Host "  Response directory initialized: $responseDir" -ForegroundColor Green
+        
+        # Start monitoring loop
+        Write-Host "Starting orchestration monitoring..." -ForegroundColor Cyan
+        $startTime = Get-Date
+        $maxRunTime = New-TimeSpan -Minutes $MaxExecutionTime
+        
+        do {
+            try {
+                $orchestrationResults.MonitoringCycles++
+                $currentTime = Get-Date
+                $elapsedTime = $currentTime - $startTime
+                
+                Write-Host "`n--- Monitoring Cycle $($orchestrationResults.MonitoringCycles) ---" -ForegroundColor Yellow
+                Write-Host "Runtime: $($elapsedTime.ToString('hh\:mm\:ss'))" -ForegroundColor Gray
+                
+                # Check for new responses if autonomous mode is enabled
+                if ($AutonomousMode) {
+                    $responseFiles = Get-ChildItem -Path $responseDir -Filter "*.json" -ErrorAction SilentlyContinue |
+                                   Where-Object { $_.LastWriteTime -gt $startTime } |
+                                   Sort-Object LastWriteTime
+                    
+                    if ($responseFiles) {
+                        Write-Host "Found $($responseFiles.Count) new response file(s)" -ForegroundColor Green
+                        
+                        foreach ($file in $responseFiles) {
+                            try {
+                                $orchestrationResults.ResponsesAnalyzed++
+                                Write-Host "Processing: $($file.Name)" -ForegroundColor Cyan
+                                
+                                if ($EnableResponseAnalysis) {
+                                    $analysisResult = Invoke-ComprehensiveResponseAnalysis -ResponseFile $file.FullName
+                                    Write-Host "  Analysis completed: $($analysisResult.Status)" -ForegroundColor Green
+                                }
+                                
+                                if ($EnableDecisionMaking) {
+                                    $decisionResult = Invoke-AutonomousDecisionMaking -ResponseFile $file.FullName
+                                    $orchestrationResults.DecisionsMade++
+                                    Write-Host "  Decision: $($decisionResult.Decision)" -ForegroundColor Yellow
+                                    
+                                    # Execute decision if it requires action
+                                    Write-Host "DEBUG Decision type: $($decisionResult.Decision)" -ForegroundColor Magenta
+                                    Write-Host "DEBUG Checking if decision requires execution..." -ForegroundColor Magenta
+                                    if ($decisionResult.Decision -in @("EXECUTE", "CONTINUE", "INVESTIGATE", "EXECUTE_TEST", "FIX", "COMPILE")) {
+                                        Write-Host "DEBUG YES - Executing decision: $($decisionResult.Decision)" -ForegroundColor Green
+                                        Write-Host "DEBUG Calling Invoke-DecisionExecution..." -ForegroundColor Cyan
+                                        $executionResult = Invoke-DecisionExecution -DecisionResult $decisionResult
+                                        Write-Host "DEBUG Invoke-DecisionExecution returned: Status=$($executionResult.ExecutionStatus)" -ForegroundColor Cyan
+                                        if ($executionResult.ExecutionStatus -eq "Success") {
+                                            $orchestrationResults.ActionsExecuted++
+                                            Write-Host "  Action executed successfully" -ForegroundColor Green
+                                        }
+                                        else {
+                                            Write-Host "  Action execution failed: $($executionResult.Errors -join '; ')" -ForegroundColor Red
+                                        }
+                                    }
+                                    else {
+                                        Write-Host "DEBUG Decision '$($decisionResult.Decision)' does not require execution" -ForegroundColor DarkGray
+                                    }
+                                }
+                                
+                            }
+                            catch {
+                                $orchestrationResults.Errors += "Error processing $($file.Name): $($_.Exception.Message)"
+                                Write-Host "  Error: $($_.Exception.Message)" -ForegroundColor Red
+                            }
+                        }
+                    }
+                    else {
+                        Write-Host "No new responses to process" -ForegroundColor Gray
+                    }
+                    
+                    # Check for test completion signal files (exclude already processed ones)
+                    Write-Host "DEBUG *** TESTING FLOW SIGNAL PROCESSING *** Checking for test completion signals..." -ForegroundColor Magenta
+                    Write-Host "DEBUG TESTING FLOW: Signal directory: $responseDir" -ForegroundColor DarkGray
+                    Write-Host "DEBUG TESTING FLOW: Start time filter: $startTime" -ForegroundColor DarkGray
+                    
+                    # Filter out already processed signal files
+                    $signalFiles = Get-ChildItem -Path $responseDir -Filter "TestComplete_*.signal" -ErrorAction SilentlyContinue |
+                                   Where-Object { 
+                                       $_.LastWriteTime -gt $startTime -and 
+                                       -not (Test-Path "$($_.FullName).processed") 
+                                   } |
+                                   Sort-Object LastWriteTime
+                    
+                    Write-Host "DEBUG TESTING FLOW: Found $($signalFiles.Count) unprocessed signal files" -ForegroundColor DarkGray
+                    
+                    if ($signalFiles) {
+                        Write-Host "DEBUG TESTING FLOW: âœ… Found $($signalFiles.Count) test completion signal(s)" -ForegroundColor Cyan
+                        
+                        foreach ($signalFile in $signalFiles) {
+                            try {
+                                Write-Host "DEBUG TESTING FLOW: SIGNAL Processing signal: $($signalFile.Name)" -ForegroundColor Yellow
+                                Write-Host "DEBUG TESTING FLOW: Signal file path: $($signalFile.FullName)" -ForegroundColor DarkYellow
+                                Write-Host "DEBUG TESTING FLOW: Signal last modified: $($signalFile.LastWriteTime)" -ForegroundColor DarkYellow
+                                
+                                # Read the signal file
+                                Write-Host "DEBUG TESTING FLOW: READ Reading signal file contents..." -ForegroundColor Yellow
+                                $signalData = Get-Content $signalFile.FullName -Raw | ConvertFrom-Json
+                                
+                                Write-Host "DEBUG TESTING FLOW: DONE Test completed: $($signalData.TestPath)" -ForegroundColor Green
+                                Write-Host "DEBUG TESTING FLOW: Test status: $($signalData.Status)" -ForegroundColor $(if($signalData.Status -eq "SUCCESS"){"Green"}else{"Red"})
+                                Write-Host "DEBUG TESTING FLOW: Exit code: $($signalData.ExitCode)" -ForegroundColor Gray
+                                
+                                # Mark signal file as processed to prevent re-processing
+                                $processedMarkerFile = "$($signalFile.FullName).processed"
+                                Write-Host "DEBUG TESTING FLOW: Marking signal as processed: $processedMarkerFile" -ForegroundColor DarkGray
+                                "Processed at $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" | Set-Content -Path $processedMarkerFile -Force
+                                Write-Host "DEBUG TESTING FLOW: Result file: $($signalData.ResultFile)" -ForegroundColor Gray
+                                Write-Host "DEBUG TESTING FLOW: Signal timestamp: $($signalData.Timestamp)" -ForegroundColor Gray
+                                
+                                # Read test results
+                                Write-Host "DEBUG TESTING FLOW: ðŸ“„ Reading test results from: $($signalData.ResultFile)" -ForegroundColor Yellow
+                                $testResults = if (Test-Path $signalData.ResultFile) {
+                                    $results = Get-Content $signalData.ResultFile -Raw
+                                    Write-Host "DEBUG TESTING FLOW: âœ… Test results file found, size: $($results.Length) characters" -ForegroundColor Green
+                                    $results
+                                } else {
+                                    Write-Host "DEBUG TESTING FLOW: âŒ Test results file not found: $($signalData.ResultFile)" -ForegroundColor Red
+                                    "Test results file not found: $($signalData.ResultFile)"
+                                }
+                                
+                                # Build prompt for Claude
+                                Write-Host "DEBUG Preparing Claude submission..." -ForegroundColor Cyan
+                                $boilerplatePath = "C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\CLAUDE_PROMPT_DIRECTIVES_COMPLETE_UCA.txt"
+                                $boilerplate = if (Test-Path $boilerplatePath) { 
+                                    Get-Content $boilerplatePath -Raw 
+                                } else { 
+                                    "Please review the following test results and provide analysis." 
+                                }
+                                
+                                $promptText = @"
+$boilerplate
+
+***END OF BOILERPLATE***
+
+//Prompt type, additional instructions, and parameters below:
+Prompt-type: Test Results
+Test Path: $($signalData.TestPath)
+Test Status: $($signalData.Status)
+Exit Code: $($signalData.ExitCode)
+Result File: $($signalData.ResultFile)
+Execution Time: $($signalData.Timestamp)
+
+Test Results:
+=============
+$testResults
+"@
+                                
+                                # Submit to Claude
+                                Write-Host "DEBUG TESTING FLOW: ðŸ”„ Switching to Claude CLI window and submitting results..." -ForegroundColor Green
+                                Write-Host "DEBUG TESTING FLOW: Prompt text length: $($promptText.Length) characters" -ForegroundColor DarkGreen
+                                Write-Host "DEBUG TESTING FLOW: Prompt preview (first 200 chars):" -ForegroundColor DarkGreen
+                                Write-Host "$($promptText.Substring(0, [Math]::Min(200, $promptText.Length)))..." -ForegroundColor DarkGreen
+                                
+                                try {
+                                    Write-Host "DEBUG TESTING FLOW: ðŸš€ Calling Submit-ToClaudeViaTypeKeys..." -ForegroundColor Green
+                                    $submissionResult = Submit-ToClaudeViaTypeKeys -PromptText $promptText
+                                    
+                                    if ($submissionResult) {
+                                        Write-Host "DEBUG TESTING FLOW: âœ… Successfully submitted test results to Claude" -ForegroundColor Green
+                                        Write-Host "DEBUG TESTING FLOW: ðŸ“ˆ Incrementing actions executed counter" -ForegroundColor Green
+                                        $orchestrationResults.ActionsExecuted++
+                                        
+                                        # Log submission success details
+                                        Write-Host "DEBUG TESTING FLOW: Submission details:" -ForegroundColor DarkGreen
+                                        Write-Host "  - Test Path: $($signalData.TestPath)" -ForegroundColor DarkGreen
+                                        Write-Host "  - Test Status: $($signalData.Status)" -ForegroundColor DarkGreen
+                                        Write-Host "  - Exit Code: $($signalData.ExitCode)" -ForegroundColor DarkGreen
+                                        Write-Host "  - Submission Time: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" -ForegroundColor DarkGreen
+                                    }
+                                    else {
+                                        Write-Host "DEBUG TESTING FLOW: ERROR Failed to submit to Claude" -ForegroundColor Red
+                                        Write-Host "DEBUG TESTING FLOW: Submit-ToClaudeViaTypeKeys returned false/null" -ForegroundColor Red
+                                    }
+                                }
+                                catch {
+                                    Write-Host "DEBUG TESTING FLOW: EXCEPTION Exception during Claude submission: $($_.Exception.Message)" -ForegroundColor Red
+                                    Write-Host "DEBUG TESTING FLOW: Stack trace: $($_.ScriptStackTrace)" -ForegroundColor Red
+                                    Write-Host "DEBUG TESTING FLOW: Error category: $($_.CategoryInfo.Category)" -ForegroundColor Red
+                                }
+                                
+                                # Archive the signal file
+                                Write-Host "DEBUG TESTING FLOW: ARCHIVE Archiving processed signal file..." -ForegroundColor Gray
+                                $archivePath = "$($signalFile.FullName).processed"
+                                
+                                try {
+                                    Move-Item -Path $signalFile.FullName -Destination $archivePath -Force
+                                    Write-Host "DEBUG TESTING FLOW: âœ… Signal file archived: $($archivePath)" -ForegroundColor Gray
+                                }
+                                catch {
+                                    Write-Host "DEBUG TESTING FLOW: âš ï¸ Warning: Failed to archive signal file: $($_.Exception.Message)" -ForegroundColor Yellow
+                                }
+                                
+                            }
+                            catch {
+                                Write-Warning "Error processing signal file: $($_.Exception.Message)"
+                            }
+                        }
+                    }
+                }
+                
+                # Display current status
+                Write-Host "Status: Responses: $($orchestrationResults.ResponsesAnalyzed), Decisions: $($orchestrationResults.DecisionsMade), Actions: $($orchestrationResults.ActionsExecuted)" -ForegroundColor Cyan
+                
+                # Check for exit conditions
+                if ($elapsedTime -gt $maxRunTime) {
+                    Write-Host "Maximum execution time reached. Shutting down..." -ForegroundColor Yellow
+                    break
+                }
+                
+                # Wait for next cycle
+                Start-Sleep -Seconds $MonitoringInterval
+                
+            }
+            catch {
+                $orchestrationResults.Errors += "Monitoring cycle error: $($_.Exception.Message)"
+                Write-Host "Monitoring cycle error: $($_.Exception.Message)" -ForegroundColor Red
+                Start-Sleep -Seconds 5  # Brief pause before retrying
+            }
+            
+        } while ($true)
+        
+        # Finalize results
+        $orchestrationResults.EndTime = Get-Date
+        $orchestrationResults.TotalRunTime = ($orchestrationResults.EndTime - $orchestrationResults.StartTime).TotalMinutes
+        $orchestrationResults.Status = "Completed"
+        
+        Write-Host "`n=====================================================================" -ForegroundColor Cyan
+        Write-Host "         CLI Orchestration Session Complete" -ForegroundColor Cyan
+        Write-Host "=====================================================================" -ForegroundColor Cyan
+        Write-Host "Runtime: $($orchestrationResults.TotalRunTime.ToString('F1')) minutes" -ForegroundColor Gray
+        Write-Host "Cycles: $($orchestrationResults.MonitoringCycles)" -ForegroundColor Gray
+        Write-Host "Responses Analyzed: $($orchestrationResults.ResponsesAnalyzed)" -ForegroundColor Gray
+        Write-Host "Decisions Made: $($orchestrationResults.DecisionsMade)" -ForegroundColor Gray
+        Write-Host "Actions Executed: $($orchestrationResults.ActionsExecuted)" -ForegroundColor Gray
+        Write-Host "Errors: $($orchestrationResults.Errors.Count)" -ForegroundColor Gray
+        
+        if ($orchestrationResults.Errors.Count -gt 0) {
+            Write-Host "`nErrors encountered:" -ForegroundColor Red
+            $orchestrationResults.Errors | ForEach-Object { Write-Host "  $_" -ForegroundColor Red }
+        }
+        
+        return $orchestrationResults
+    }
+    catch {
+        Write-Host "CRITICAL ERROR: CLI orchestration failed: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "Press Enter to close this window..." -ForegroundColor Yellow
+        Read-Host
+        throw
+    }
+}
+
+function Get-CLIOrchestrationStatus {
+    <#
+    .SYNOPSIS
+        Gets the current status of CLI orchestration components
+        
+    .DESCRIPTION
+        Returns status information about the orchestration system including
+        component health, active sessions, and performance metrics
+        
+    .OUTPUTS
+        PSCustomObject with status information
+    #>
+    [CmdletBinding()]
+    param()
+    
+    $status = [PSCustomObject]@{
+        Timestamp = Get-Date
+        ClaudeWindow = $null
+        ComponentsLoaded = @()
+        ActiveSessions = 0
+        ResponseDirectory = ".\ClaudeResponses\Autonomous"
+        SystemHealth = "Unknown"
+    }
+    
+    try {
+        # Check Claude window
+        $status.ClaudeWindow = Find-ClaudeWindow -ErrorAction SilentlyContinue
+        
+        # Check loaded components
+        $loadedModules = Get-Module -Name "*Claude*"
+        $status.ComponentsLoaded = $loadedModules | Select-Object Name, Version
+        
+        # Check response directory
+        if (Test-Path $status.ResponseDirectory) {
+            $recentFiles = Get-ChildItem -Path $status.ResponseDirectory -Filter "*.json" |
+                          Where-Object { $_.LastWriteTime -gt (Get-Date).AddHours(-1) }
+            $status.ActiveSessions = $recentFiles.Count
+        }
+        
+        # Determine overall health
+        if ($status.ClaudeWindow -and $status.ComponentsLoaded.Count -gt 0) {
+            $status.SystemHealth = "Healthy"
+        }
+        elseif ($status.ComponentsLoaded.Count -gt 0) {
+            $status.SystemHealth = "Partial"
+        }
+        else {
+            $status.SystemHealth = "Critical"
+        }
+        
+        return $status
+    }
+    catch {
+        $status.SystemHealth = "Error"
+        return $status
+    }
+}
+
+function Invoke-ComprehensiveResponseAnalysis {
+    <#
+    .SYNOPSIS
+        Performs comprehensive analysis of Claude responses
+        
+    .DESCRIPTION
+        Analyzes response files for patterns, recommendations, and actionable insights
+        
+    .PARAMETER ResponseFile
+        Path to the response file to analyze
+        
+    .OUTPUTS
+        PSCustomObject with analysis results
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ResponseFile
+    )
+    
+    try {
+        if (-not (Test-Path $ResponseFile)) {
+            throw "Response file not found: $ResponseFile"
+        }
+        
+        $content = Get-Content -Path $ResponseFile -Raw | ConvertFrom-Json
+        
+        $analysisResults = [PSCustomObject]@{
+            Timestamp = Get-Date
+            ResponseFile = $ResponseFile
+            ResponseType = "Unknown"
+            Confidence = 0
+            RecommendationTypes = @{}
+            ActionableInsights = @()
+            Status = "Analyzed"
+        }
+        
+        # Basic response analysis
+        if ($content.RESPONSE) {
+            $responseText = $content.RESPONSE
+            
+            # Classify response type
+            if ($responseText -match "RECOMMENDATION:|TEST:|ERROR:|SUCCESS:") {
+                $analysisResults.ResponseType = "Actionable"
+                $analysisResults.Confidence = 85
+            }
+            elseif ($responseText -match "COMPLETE|IMPLEMENTED|FIXED") {
+                $analysisResults.ResponseType = "Status Update"
+                $analysisResults.Confidence = 90
+            }
+            else {
+                $analysisResults.ResponseType = "Informational"
+                $analysisResults.Confidence = 70
+            }
+            
+            # Extract recommendations
+            $recommendations = [regex]::Matches($responseText, "RECOMMENDATION:\s*(.+)")
+            foreach ($match in $recommendations) {
+                $recType = $match.Groups[1].Value
+                if ($analysisResults.RecommendationTypes.ContainsKey($recType)) {
+                    $analysisResults.RecommendationTypes[$recType]++
+                }
+                else {
+                    $analysisResults.RecommendationTypes[$recType] = 1
+                }
+            }
+            
+            # Generate insights
+            if ($analysisResults.RecommendationTypes.Count -gt 0) {
+                $topRecommendation = $analysisResults.RecommendationTypes.GetEnumerator() | 
+                                   Sort-Object Value -Descending | 
+                                   Select-Object -First 1
+                
+                if ($topRecommendation) {
+                    $analysisResults.ActionableInsights += "Most common recommendation: $($topRecommendation.Name) - $($topRecommendation.Value) occurrences"
+                }
+            }
+        }
+        
+        return $analysisResults
+    }
+    catch {
+        throw "Analysis failed: $($_.Exception.Message)"
+    }
+}
+
+function Invoke-AutonomousDecisionMaking {
+    <#
+    .SYNOPSIS
+        Makes autonomous decisions based on response analysis
+        
+    .DESCRIPTION
+        Analyzes responses and makes decisions about appropriate actions to take
+        
+    .PARAMETER ResponseFile
+        Path to the response file to analyze for decision making
+        
+    .OUTPUTS
+        PSCustomObject with decision results
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ResponseFile
+    )
+    
+    try {
+        Write-Host "DEBUG Invoke-AutonomousDecisionMaking: Reading file: $ResponseFile" -ForegroundColor DarkGray
+        $content = Get-Content -Path $ResponseFile -Raw | ConvertFrom-Json
+        
+        $decisionResult = [PSCustomObject]@{
+            Timestamp = Get-Date
+            ResponseFile = $ResponseFile
+            Decision = "CONTINUE"
+            Confidence = 50
+            Reasoning = @()
+            Actions = @()
+            SafetyChecks = $true
+            PromptType = "Unknown"
+            TestPath = $null
+            ResponseText = $null
+        }
+        
+        # Enhanced parsing - check for prompt_type field
+        if ($content.prompt_type) {
+            $decisionResult.PromptType = $content.prompt_type
+            Write-Host "DEBUG Detected prompt_type: $($content.prompt_type)" -ForegroundColor DarkGray
+            $decisionResult.Reasoning += "Prompt type identified: $($content.prompt_type)"
+        }
+        
+        # Check both response and RESPONSE fields
+        $responseText = if ($content.response) { $content.response } elseif ($content.RESPONSE) { $content.RESPONSE } else { $null }
+        
+        if ($responseText) {
+            $decisionResult.ResponseText = $responseText
+            Write-Host "DEBUG Response text found: $($responseText.Substring(0, [Math]::Min(100, $responseText.Length)))..." -ForegroundColor DarkGray
+            
+            # Enhanced decision logic based on prompt type
+            Write-Host "DEBUG *** TESTING FLOW TRACE *** Starting prompt-type decision logic" -ForegroundColor Magenta
+            Write-Host "DEBUG TESTING FLOW: Prompt type = '$($decisionResult.PromptType)'" -ForegroundColor Magenta
+            
+            switch ($decisionResult.PromptType) {
+                "Testing" {
+                    Write-Host "DEBUG *** TESTING FLOW *** Processing Testing prompt-type" -ForegroundColor Magenta
+                    Write-Host "DEBUG TESTING FLOW: Setting decision to EXECUTE_TEST" -ForegroundColor Magenta
+                    $decisionResult.Decision = "EXECUTE_TEST"
+                    $decisionResult.Confidence = 95
+                    $decisionResult.Reasoning += "Testing prompt-type requires test execution"
+                    
+                    # Enhanced test path extraction with multiple patterns
+                    Write-Host "DEBUG TESTING FLOW: Attempting to extract test path from response text" -ForegroundColor Magenta
+                    Write-Host "DEBUG TESTING FLOW: Response text snippet: $($responseText.Substring(0, [Math]::Min(200, $responseText.Length)))..." -ForegroundColor DarkGray
+                    
+                    $testPathPatterns = @(
+                        "Testing\s*[-:]\s*(.+\.ps1)"  # Testing: path.ps1
+                        "Test\s*Path:\s*(.+\.ps1)"  # Test Path: path.ps1
+                        "TEST\s*[-:]\s*(.+\.ps1)"     # TEST - path.ps1
+                        "(\w+\.ps1)"          # Any .ps1 file
+                        "run.*?(\w+\.ps1)"  # run something.ps1
+                    )
+                    
+                    $testPathFound = $false
+                    foreach ($pattern in $testPathPatterns) {
+                        if ($responseText -match $pattern) {
+                            $decisionResult.TestPath = $matches[1]
+                            $testPathFound = $true
+                            Write-Host "DEBUG TESTING FLOW: Test path extracted with pattern '$pattern': $($decisionResult.TestPath)" -ForegroundColor Green
+                            $decisionResult.Actions += "Execute test: $($decisionResult.TestPath)"
+                            break
+                        }
+                    }
+                    
+                    if (-not $testPathFound) {
+                        Write-Host "DEBUG TESTING FLOW: Warning - No test path found in response text" -ForegroundColor Yellow
+                        Write-Host "DEBUG TESTING FLOW: Full response text for analysis:" -ForegroundColor Yellow
+                        Write-Host "$responseText" -ForegroundColor DarkYellow
+                        
+                        # Try to find any .ps1 files mentioned
+                        $ps1Matches = [regex]::Matches($responseText, "(\w+\.ps1)", "IgnoreCase")
+                        if ($ps1Matches.Count -gt 0) {
+                            $decisionResult.TestPath = $ps1Matches[0].Groups[1].Value
+                            Write-Host "DEBUG TESTING FLOW: Fallback - Found .ps1 file: $($decisionResult.TestPath)" -ForegroundColor Cyan
+                            $decisionResult.Actions += "Execute test (fallback): $($decisionResult.TestPath)"
+                        }
+                        else {
+                            Write-Host "DEBUG TESTING FLOW: ERROR - No .ps1 files found at all in response" -ForegroundColor Red
+                            $decisionResult.Reasoning += "Warning: No test path could be extracted from response"
+                        }
+                    }
+                }
+                "System Test Request" {
+                    Write-Host "DEBUG *** TESTING FLOW *** Processing System Test Request prompt-type" -ForegroundColor Magenta
+                    $decisionResult.Decision = "EXECUTE_TEST"
+                    $decisionResult.Confidence = 95
+                    $decisionResult.Reasoning += "System Test Request requires test execution"
+                    
+                    # Extract test path from recommendation using same enhanced logic as Testing
+                    Write-Host "DEBUG TESTING FLOW: Extracting test path for System Test Request" -ForegroundColor Magenta
+                    $testPathPatterns = @(
+                        "Testing\s*[-:]\s*(.+\.ps1)",
+                        "Test\s*Path:\s*(.+\.ps1)",
+                        "TEST\s*[-:]\s*(.+\.ps1)",
+                        "(\w+\.ps1)",
+                        "run.*?(\w+\.ps1)"
+                    )
+                    
+                    $testPathFound = $false
+                    foreach ($pattern in $testPathPatterns) {
+                        if ($responseText -match $pattern) {
+                            $decisionResult.TestPath = $matches[1]
+                            $testPathFound = $true
+                            Write-Host "DEBUG TESTING FLOW: System test path extracted: $($decisionResult.TestPath)" -ForegroundColor Green
+                            $decisionResult.Actions += "Execute test: $($decisionResult.TestPath)"
+                            break
+                        }
+                    }
+                    
+                    if (-not $testPathFound) {
+                        Write-Host "DEBUG TESTING FLOW: Warning - No test path found for System Test Request" -ForegroundColor Yellow
+                    }
+                }
+                "Debugging" {
+                    $decisionResult.Decision = "DEBUG"
+                    $decisionResult.Confidence = 85
+                    $decisionResult.Reasoning += "Debugging prompt-type requires investigation"
+                }
+                "Continue" {
+                    $decisionResult.Decision = "CONTINUE"
+                    $decisionResult.Confidence = 90
+                    $decisionResult.Reasoning += "Continue prompt-type"
+                }
+                default {
+                    # Fallback to pattern-based decision
+                    if ($responseText -match "RECOMMENDATION:\s*(TEST|Testing)") {
+                        Write-Host "DEBUG Pattern match found TEST recommendation" -ForegroundColor DarkGray
+                        $decisionResult.Decision = "EXECUTE_TEST"
+                        $decisionResult.Confidence = 80
+                        $decisionResult.Reasoning += "Contains test recommendation"
+                        
+                        # Try to extract test path
+                        if ($responseText -match "(\S+\.ps1)") {
+                            $decisionResult.TestPath = $matches[1]
+                            Write-Host "DEBUG Extracted test path from pattern: $($decisionResult.TestPath)" -ForegroundColor DarkGray
+                        }
+                    }
+                    elseif ($responseText -match "ERROR|FAIL|CRITICAL") {
+                        $decisionResult.Decision = "INVESTIGATE"
+                        $decisionResult.Confidence = 75
+                        $decisionResult.Reasoning += "Contains error indicators"
+                    }
+                    elseif ($responseText -match "COMPLETE|SUCCESS|IMPLEMENTED") {
+                        $decisionResult.Decision = "CONTINUE"
+                        $decisionResult.Confidence = 90
+                        $decisionResult.Reasoning += "Task appears complete"
+                    }
+                }
+            }
+            
+            # Safety validation
+            $unsafePatterns = @("rm -rf", "Remove-Item -Recurse -Force", "format", "shutdown")
+            foreach ($pattern in $unsafePatterns) {
+                if ($responseText -match $pattern) {
+                    $decisionResult.SafetyChecks = $false
+                    $decisionResult.Decision = "BLOCK"
+                    $decisionResult.Reasoning += "Contains potentially unsafe operation: $pattern"
+                    Write-Host "DEBUG SAFETY BLOCK: Detected unsafe pattern: $pattern" -ForegroundColor Red
+                    break
+                }
+            }
+        }
+        else {
+            Write-Host "DEBUG WARNING: No response text found in JSON" -ForegroundColor Yellow
+        }
+        
+        Write-Host "DEBUG Decision Result: $($decisionResult.Decision) (Confidence: $($decisionResult.Confidence)%)" -ForegroundColor Cyan
+        return $decisionResult
+    }
+    catch {
+        Write-Host "DEBUG ERROR in Invoke-AutonomousDecisionMaking: $($_.Exception.Message)" -ForegroundColor Red
+        throw "Decision making failed: $($_.Exception.Message)"
+    }
+}
+
+function Invoke-DecisionExecution {
+    <#
+    .SYNOPSIS
+        Executes decisions with safety checks and validation
+        
+    .DESCRIPTION
+        Takes a decision result and safely executes the recommended actions
+        
+    .PARAMETER DecisionResult
+        The decision result object from Invoke-AutonomousDecisionMaking
+        
+    .OUTPUTS
+        PSCustomObject with execution results
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [PSCustomObject]$DecisionResult
+    )
+    
+    try {
+        Write-Host "DEBUG Invoke-DecisionExecution: Processing decision: $($DecisionResult.Decision)" -ForegroundColor DarkGray
+        
+        $executionResult = [PSCustomObject]@{
+            Timestamp = Get-Date
+            Decision = $DecisionResult.Decision
+            ExecutionStatus = "Not Executed"
+            Actions = @()
+            Errors = @()
+            TestResults = $null
+        }
+        
+        # Safety check
+        if (-not $DecisionResult.SafetyChecks) {
+            Write-Host "DEBUG SAFETY CHECK FAILED - Blocking execution" -ForegroundColor Red
+            $executionResult.ExecutionStatus = "Blocked - Safety Check Failed"
+            $executionResult.Errors += "Execution blocked due to failed safety validation"
+            return $executionResult
+        }
+        
+        # Execute based on decision
+        switch ($DecisionResult.Decision) {
+            "EXECUTE_TEST" {
+                Write-Host "DEBUG *** TESTING FLOW EXECUTION *** EXECUTE_TEST CASE REACHED ***" -ForegroundColor Magenta
+                Write-Host "DEBUG TESTING FLOW: Starting test execution phase" -ForegroundColor Cyan
+                Write-Host "DEBUG TESTING FLOW: TestPath from decision: '$($DecisionResult.TestPath)'" -ForegroundColor Cyan
+                Write-Host "DEBUG TESTING FLOW: Decision confidence: $($DecisionResult.Confidence)%" -ForegroundColor Cyan
+                
+                if (-not $DecisionResult.TestPath) {
+                    Write-Host "DEBUG TESTING FLOW: âŒ CRITICAL ERROR: No test path found in decision" -ForegroundColor Red
+                    Write-Host "DEBUG TESTING FLOW: Decision object contents:" -ForegroundColor Red
+                    Write-Host "$($DecisionResult | ConvertTo-Json -Depth 3)" -ForegroundColor DarkRed
+                    $executionResult.ExecutionStatus = "Failed"
+                    $executionResult.Errors += "No test path specified in decision result"
+                    return $executionResult
+                }
+                
+                Write-Host "DEBUG TESTING FLOW: âœ… Test path validation successful" -ForegroundColor Green
+                
+                # Execute the test
+                try {
+                    Write-Host "DEBUG TESTING FLOW: ðŸš€ Starting test execution for: $($DecisionResult.TestPath)" -ForegroundColor Yellow
+                    $testPath = $DecisionResult.TestPath
+                    
+                    # Normalize and validate test path
+                    if (-not [System.IO.Path]::IsPathRooted($testPath)) {
+                        $testPath = Join-Path (Get-Location) $testPath
+                        Write-Host "DEBUG TESTING FLOW: ðŸ“ Normalized relative path to: $testPath" -ForegroundColor DarkGray
+                    }
+                    
+                    # Check if test file exists
+                    Write-Host "DEBUG TESTING FLOW: ðŸ” Checking if test file exists: $testPath" -ForegroundColor DarkGray
+                    if (-not (Test-Path $testPath)) {
+                        Write-Host "DEBUG TESTING FLOW: âŒ Test file not found: $testPath" -ForegroundColor Red
+                        Write-Host "DEBUG TESTING FLOW: Current directory: $(Get-Location)" -ForegroundColor Red
+                        Write-Host "DEBUG TESTING FLOW: Available .ps1 files in current directory:" -ForegroundColor Red
+                        Get-ChildItem -Filter "*.ps1" | Select-Object Name | ForEach-Object { Write-Host "  - $($_.Name)" -ForegroundColor DarkRed }
+                        $executionResult.ExecutionStatus = "Failed"
+                        $executionResult.Errors += "Test file not found: $testPath"
+                        return $executionResult
+                    }
+                    
+                    Write-Host "DEBUG TESTING FLOW: âœ… Test file exists and is accessible" -ForegroundColor Green
+                    
+                    # Generate result file name
+                    $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
+                    $testName = [System.IO.Path]::GetFileNameWithoutExtension($testPath)
+                    $resultFile = ".\{0}-TestResults-{1}.txt" -f $testName, $timestamp
+                    Write-Host "DEBUG TESTING FLOW: ðŸ“Š Test results will be saved to: $resultFile" -ForegroundColor DarkGray
+                    Write-Host "DEBUG TESTING FLOW: Test name extracted: '$testName'" -ForegroundColor DarkGray
+                    Write-Host "DEBUG TESTING FLOW: Timestamp: $timestamp" -ForegroundColor DarkGray
+                    
+                    # Execute test in new window
+                    Write-Host "DEBUG TESTING FLOW: ðŸ•°ï¸ Opening new PowerShell window for test execution..." -ForegroundColor Cyan
+                    $testRunnerPath = ".\Execute-TestInWindow.ps1"
+                    
+                    Write-Host "DEBUG TESTING FLOW: ðŸ” Checking for test runner script: $testRunnerPath" -ForegroundColor DarkGray
+                    if (-not (Test-Path $testRunnerPath)) {
+                        Write-Host "DEBUG TESTING FLOW: âš ï¸ Test runner script not found, falling back to inline execution" -ForegroundColor Yellow
+                        Write-Host "DEBUG TESTING FLOW: ðŸ”„ Executing test inline with powershell.exe" -ForegroundColor Yellow
+                        
+                        # Fallback to inline execution with comprehensive logging
+                        Write-Host "DEBUG TESTING FLOW: Command: powershell.exe -ExecutionPolicy Bypass -File '$testPath'" -ForegroundColor DarkYellow
+                        $testOutput = & powershell.exe -ExecutionPolicy Bypass -File $testPath 2>&1
+                        $exitCode = $LASTEXITCODE
+                        
+                        Write-Host "DEBUG TESTING FLOW: ðŸ“Š Inline execution completed" -ForegroundColor Green
+                        Write-Host "DEBUG TESTING FLOW: Exit code: $exitCode" -ForegroundColor Green
+                        Write-Host "DEBUG TESTING FLOW: Output lines: $($testOutput.Count)" -ForegroundColor Green
+                        
+                        # Save test results
+                        $testResultContent = @"
+Test Execution Report
+====================
+Test Script: $testPath
+Execution Time: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
+Exit Code: $exitCode
+
+Test Output:
+============
+$($testOutput -join "`n")
+"@
+                        
+                        $testResultContent | Out-File -FilePath $resultFile -Encoding UTF8
+                        Write-Host "DEBUG Test results saved to: $resultFile" -ForegroundColor Green
+                        
+                        $executionResult.ExecutionStatus = "Success"
+                        $executionResult.Actions += "Executed test: $testPath"
+                        $executionResult.Actions += "Results saved to: $resultFile"
+                        $executionResult.TestResults = $resultFile
+                        
+                        # Now submit results to Claude
+                        Write-Host "DEBUG Preparing to submit test results to Claude..." -ForegroundColor Cyan
+                        
+                        # Build the prompt for Claude
+                        $boilerplatePath = "C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\CLAUDE_PROMPT_DIRECTIVES_COMPLETE_UCA.txt"
+                        $boilerplate = if (Test-Path $boilerplatePath) { 
+                            Get-Content $boilerplatePath -Raw 
+                        } else { 
+                            "Please review the following test results and provide analysis." 
+                        }
+                        
+                        $promptText = @"
+$boilerplate
+
+***END OF BOILERPLATE***
+
+//Prompt type, additional instructions, and parameters below:
+Prompt-type: Testing
+Test Results File: $resultFile
+
+The test has been executed. Please review the test results file at $resultFile.
+Exit Code: $exitCode
+
+Test Output Summary:
+$($testOutput | Select-Object -First 50 | Out-String)
+"@
+                        
+                        Write-Host "DEBUG Attempting to submit prompt to Claude..." -ForegroundColor DarkGray
+                        
+                        # Submit to Claude
+                        try {
+                            $submissionResult = Submit-ToClaudeViaTypeKeys -PromptText $promptText
+                            if ($submissionResult) {
+                                Write-Host "DEBUG Successfully submitted test results to Claude" -ForegroundColor Green
+                                $executionResult.Actions += "Submitted test results to Claude"
+                            }
+                            else {
+                                Write-Host "DEBUG Failed to submit test results to Claude" -ForegroundColor Red
+                                $executionResult.Errors += "Failed to submit test results to Claude"
+                            }
+                        }
+                        catch {
+                            Write-Host "DEBUG Exception during Claude submission: $_" -ForegroundColor Red
+                            $executionResult.Errors += "Claude submission error: $_"
+                        }
+                    } else {
+                        # Start test in new window
+                        Write-Host "DEBUG TESTING FLOW: âœ… Test runner script found, using windowed execution" -ForegroundColor Green
+                        Write-Host "DEBUG TESTING FLOW: ðŸ“ Building arguments for test runner" -ForegroundColor Green
+                        
+                        $arguments = @(
+                            "-NoProfile",
+                            "-ExecutionPolicy", "Bypass",
+                            "-File", $testRunnerPath,
+                            "-TestPath", $testPath,
+                            "-ResultFile", $resultFile
+                        )
+                        
+                        Write-Host "DEBUG TESTING FLOW: Arguments: $($arguments -join ' ')" -ForegroundColor DarkGreen
+                        Write-Host "DEBUG TESTING FLOW: ðŸš€ Launching test process..." -ForegroundColor Green
+                        
+                        $process = Start-Process -FilePath "powershell.exe" -ArgumentList $arguments -PassThru
+                        Write-Host "DEBUG TESTING FLOW: âœ… Test window launched with process ID: $($process.Id)" -ForegroundColor Cyan
+                        Write-Host "DEBUG TESTING FLOW: Process name: $($process.ProcessName)" -ForegroundColor Cyan
+                        Write-Host "DEBUG TESTING FLOW: Start time: $($process.StartTime)" -ForegroundColor Cyan
+                        
+                        # Don't wait for completion - let it run async and check for signal file
+                        $executionResult.ExecutionStatus = "Success"
+                        $executionResult.Actions += "Launched test in new window: $testPath"
+                        $executionResult.Actions += "Test process ID: $($process.Id)"
+                        $executionResult.TestResults = $resultFile
+                        
+                        Write-Host "DEBUG TESTING FLOW: âœ… Test launched successfully in new window" -ForegroundColor Green
+                        Write-Host "DEBUG TESTING FLOW: ðŸ“¡ Test will signal completion via signal file" -ForegroundColor Yellow
+                        Write-Host "DEBUG TESTING FLOW: ðŸ”„ The orchestrator will pick up the signal file in the next monitoring cycle" -ForegroundColor Yellow
+                        
+                        # The orchestrator will pick up the signal file in the next monitoring cycle
+                        return $executionResult
+                    }
+                }
+                catch {
+                    Write-Host "DEBUG ERROR executing test (inner): $_" -ForegroundColor Red
+                    $executionResult.ExecutionStatus = "Failed"
+                    $executionResult.Errors += "Test execution error: $_"
+                }
+                } catch {
+                    Write-Host "DEBUG ERROR executing test (outer): $_" -ForegroundColor Red
+                    $executionResult.ExecutionStatus = "Failed"
+                    $executionResult.Errors += "Test execution failed: $_"
+                }
+            }
+            "DEBUG" {
+                Write-Host "DEBUG Processing DEBUG decision" -ForegroundColor Yellow
+                $executionResult.ExecutionStatus = "Investigating"
+                $executionResult.Actions += "Flagged for debugging investigation"
+            }
+            "EXECUTE" {
+                Write-Host "DEBUG Processing EXECUTE decision" -ForegroundColor Yellow
+                $executionResult.ExecutionStatus = "Simulated"  # Safe simulation for now
+                $executionResult.Actions += "Would execute recommended action (simulated)"
+            }
+            "INVESTIGATE" {
+                Write-Host "DEBUG Processing INVESTIGATE decision" -ForegroundColor Yellow
+                $executionResult.ExecutionStatus = "Investigating"
+                $executionResult.Actions += "Flagged for investigation"
+            }
+            "CONTINUE" {
+                Write-Host "DEBUG Processing CONTINUE decision" -ForegroundColor Yellow
+                # Extract the recommendation from the response file and submit to Claude
+                try {
+                    if ($DecisionResult.ResponseText) {
+                        Write-Host "DEBUG Submitting continuation to Claude..." -ForegroundColor DarkGray
+                        $submissionResult = Submit-ToClaudeViaTypeKeys -PromptText $DecisionResult.ResponseText
+                        if ($submissionResult) {
+                            $executionResult.ExecutionStatus = "Success"
+                            $executionResult.Actions += "Successfully submitted continuation to Claude"
+                            Write-Host "DEBUG Continuation submitted successfully" -ForegroundColor Green
+                        }
+                        else {
+                            $executionResult.ExecutionStatus = "Failed"
+                            $executionResult.Errors += "Failed to submit prompt to Claude"
+                            Write-Host "DEBUG Failed to submit continuation" -ForegroundColor Red
+                        }
+                    }
+                    else {
+                        $executionResult.ExecutionStatus = "No Action Required"
+                        $executionResult.Actions += "No recommendation found in response"
+                        Write-Host "DEBUG No recommendation to continue with" -ForegroundColor Gray
+                    }
+                }
+                catch {
+                    $executionResult.ExecutionStatus = "Failed"
+                    $executionResult.Errors += "Error processing CONTINUE decision: $($_.Exception.Message)"
+                    Write-Host "DEBUG ERROR in CONTINUE: $_" -ForegroundColor Red
+                }
+            }
+            "BLOCK" {
+                Write-Host "DEBUG Processing BLOCK decision" -ForegroundColor Red
+                $executionResult.ExecutionStatus = "Blocked"
+                $executionResult.Actions += "Action blocked for safety"
+            }
+            default {
+                Write-Host "DEBUG Unknown decision type: $($DecisionResult.Decision)" -ForegroundColor Red
+                $executionResult.ExecutionStatus = "Unknown Decision"
+                $executionResult.Errors += "Unknown decision type: $($DecisionResult.Decision)"
+            }
+        }
+        
+        Write-Host "DEBUG Execution Result: $($executionResult.ExecutionStatus)" -ForegroundColor Cyan
+        return $executionResult
+    }
+    catch {
+        Write-Host "DEBUG CRITICAL ERROR in Invoke-DecisionExecution: $_" -ForegroundColor Red
+        throw "Execution failed: $($_.Exception.Message)"
+    }
+}
+
+# Export functions
+Export-ModuleMember -Function @(
+    'Start-CLIOrchestration',
+    'Get-CLIOrchestrationStatus',
+    'Invoke-ComprehensiveResponseAnalysis',
+    'Invoke-AutonomousDecisionMaking',
+    'Invoke-DecisionExecution'
+)

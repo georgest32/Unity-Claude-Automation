@@ -116,6 +116,64 @@ Run the comprehensive test suite:
 .\Test-EventLogIntegration.ps1 -AllTests
 ```
 
+## Documentation
+
+### Building Documentation
+
+The project uses MkDocs with Material theme for documentation. To work with documentation:
+
+#### Using Wrapper Scripts (Recommended)
+
+We provide PowerShell wrapper scripts that automatically use the correct virtual environment versions:
+
+```powershell
+# Build documentation locally
+.\mkdocs.ps1 build
+
+# Serve documentation for preview (hot-reload enabled)
+.\mkdocs.ps1 serve
+
+# Deploy versioned documentation
+.\mike.ps1 deploy 1.0 latest --push
+.\mike.ps1 set-default latest
+
+# List deployed versions
+.\mike.ps1 list
+```
+
+#### When to Use These Wrappers
+
+- **Always use wrappers** instead of direct `mkdocs` or `mike` commands
+- They ensure you're using the virtual environment versions (avoiding conflicts)
+- No need to activate virtual environment manually
+- Prevents Python dependency issues between projects
+
+#### Direct Virtual Environment Method (Alternative)
+
+If you prefer working directly in the virtual environment:
+
+```powershell
+# Activate virtual environment
+.\.venv\Scripts\Activate.ps1
+
+# Now use mkdocs/mike directly
+mkdocs build
+mike deploy 1.0 latest
+```
+
+### Testing Documentation
+
+```powershell
+# Run documentation CI/CD tests
+.\Test-DocumentationCICD.ps1 -TestType All
+
+# Test only build
+.\Test-DocumentationCICD.ps1 -TestType Build
+
+# Test quality checks
+.\Test-DocumentationCICD.ps1 -TestType Quality
+```
+
 ## Contributing
 
 Contributions are welcome! Please read our contributing guidelines for details.

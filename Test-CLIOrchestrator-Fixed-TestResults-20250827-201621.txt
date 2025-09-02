@@ -1,0 +1,37 @@
+﻿====================================
+Test Execution Report
+====================================
+
+Test Script: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\.\Test-CLIOrchestrator-Fixed.ps1
+Execution Time: 2025-08-27 20:16:23
+Duration: 0.99 seconds
+Exit Code: 1
+Status: FAILED
+
+Test Output:
+============
+powershell.exe : At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-CLIOrchestrator-Fixed.ps1:188 char:77
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Execute-TestInWindow.ps1:70 char:23
++ ... estOutput = & powershell.exe -NoProfile -NonInteractive -ExecutionPol ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (At C:\UnityProj...ps1:188 char:77:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
++ ... ==============================================" -ForegroundColor Cyan
++                                                   ~~~~~~~~~~~~~~~~~~~~~~~
+The string is missing the terminator: ".
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-CLIOrchestrator-Fixed.ps1:149 char:20
++     if ($decision) {
++                    ~
+Missing closing '}' in statement block or type definition.
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-CLIOrchestrator-Fixed.ps1:53 char:39
++ foreach ($func in $criticalFunctions) {
++                                       ~
+Missing closing '}' in statement block or type definition.
+    + CategoryInfo          : ParserError: (:) [], ParseException
+    + FullyQualifiedErrorId : TerminatorExpectedAtEndOfString
+ 
+
+====================================
+End of Test Report
+====================================

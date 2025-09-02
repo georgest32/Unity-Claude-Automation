@@ -1,0 +1,72 @@
+{
+  "StartTime": "2025-08-25T02:35:06.4624303-04:00",
+  "Results": [
+    {
+      "Status": "Passed",
+      "Error": "",
+      "Duration": 1302,
+      "Name": "Module Import and Validation",
+      "Timestamp": "2025-08-25T02:35:07.7874789-04:00",
+      "Details": "All core modules and functions loaded successfully"
+    },
+    {
+      "Status": "Passed",
+      "Error": "",
+      "Duration": 128,
+      "Name": "Response Analysis Engine",
+      "Timestamp": "2025-08-25T02:35:07.9326635-04:00",
+      "Details": "Entities: 10, Sentiment: Negative (0.45), Relevance: 0.09"
+    },
+    {
+      "Status": "Failed",
+      "Error": "TEST pattern file path not correctly extracted",
+      "Duration": 46,
+      "Name": "Pattern Recognition Engine",
+      "Timestamp": "2025-08-25T02:35:07.9842885-04:00",
+      "Details": ""
+    },
+    {
+      "Status": "Failed",
+      "Error": "Decision engine returned unexpected decision: BLOCK",
+      "Duration": 42,
+      "Name": "Decision Engine",
+      "Timestamp": "2025-08-25T02:35:08.0342163-04:00",
+      "Details": ""
+    },
+    {
+      "Status": "Passed",
+      "Error": "",
+      "Duration": 65,
+      "Name": "Action Execution Framework",
+      "Timestamp": "2025-08-25T02:35:08.1054418-04:00",
+      "Details": "Path validation: OK, Command validation: OK, Action safety: OK, Queue operations: OK"
+    },
+    {
+      "Status": "Passed",
+      "Error": "",
+      "Duration": 25,
+      "Name": "Configuration Loading",
+      "Timestamp": "2025-08-25T02:35:08.135503-04:00",
+      "Details": "Decision trees: OK, Safety policies: OK, Learning parameters: OK"
+    },
+    {
+      "Status": "Failed",
+      "Error": "Response analysis failed: Schema validation failed",
+      "Duration": 2139,
+      "Name": "End-to-End Workflow",
+      "Timestamp": "2025-08-25T02:35:10.2799487-04:00",
+      "Details": ""
+    }
+  ],
+  "TestType": "All",
+  "TestSuite": "CLIOrchestrator-Complete",
+  "Summary": {
+    "Failed": 3,
+    "Skipped": 0,
+    "Passed": 4,
+    "Errors": 0,
+    "Total": 7
+  },
+  "TotalDuration": 3818.3624,
+  "EndTime": "2025-08-25T02:35:10.2807927-04:00"
+}

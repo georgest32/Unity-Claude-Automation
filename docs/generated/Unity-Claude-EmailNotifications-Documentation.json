@@ -1,0 +1,179 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-EmailNotifications",
+  "Commands": [
+    {
+      "Parameters": [
+        "TemplateName",
+        "Variables",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Format-NotificationContent",
+      "Synopsis": "Formats notification content using template and variable substitution",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ConfigurationName",
+        "IncludeCredentials",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-EmailConfiguration",
+      "Synopsis": "Retrieves email configuration details",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Load-MailKitAssemblies",
+      "Synopsis": "\r\nLoad-MailKitAssemblies [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ConfigurationName",
+        "SMTPServer",
+        "Port",
+        "EnableTLS",
+        "FromAddress",
+        "FromDisplayName",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "New-EmailConfiguration",
+      "Synopsis": "Creates a new email configuration for Unity-Claude notification system",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "TemplateName",
+        "Subject",
+        "BodyText",
+        "BodyHTML",
+        "Severity",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "New-EmailTemplate",
+      "Synopsis": "Creates a new email template for notifications",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ConfigurationName",
+        "Username",
+        "Password",
+        "SecurePassword",
+        "Credential",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Set-EmailCredentials",
+      "Synopsis": "Sets secure credentials for email configuration using SecureString",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ConfigurationName",
+        "SendTestEmail",
+        "TestRecipient",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-EmailConfiguration",
+      "Synopsis": "Tests email configuration by attempting SMTP connection",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-EmailNotifications",
+  "ExportedFunctions": [
+    "Format-NotificationContent",
+    "Get-EmailConfiguration",
+    "Load-MailKitAssemblies",
+    "New-EmailConfiguration",
+    "New-EmailTemplate",
+    "Set-EmailCredentials",
+    "Test-EmailConfiguration"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

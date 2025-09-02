@@ -1,0 +1,231 @@
+# Custom network for service isolation
+networks:
+  unity-claude-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# Named volumes for data persistence
+volumes:
+  module-data:
+    driver: local
+  langgraph-data:
+    driver: local
+  monitoring-logs:
+    driver: local
+  shared-config:
+    driver: local
+  # Phase 3 Day 5: Enhanced Documentation System volumes
+  codeql-databases:
+    driver: local
+  docs-generated:
+    driver: local
+  docs-cache:
+    driver: local
+
+# Service definitions
+services:
+  # PowerShell Module Service
+  powershell-modules:
+    image: ghcr.io/georgest32/unity-claude-powershell-modules:0.0.1
+    container_name: unity-claude-powershell
+    networks:
+      - unity-claude-net
+    volumes:
+      - module-data:/opt/modules
+      - shared-config:/app/config:ro
+      - ./Modules:/opt/modules:ro
+    environment:
+      - POWERSHELL_TELEMETRY_OPTOUT=1
+      - PSModulePath=/opt/modules:/usr/local/share/powershell/Modules
+    ports:
+      - "5985:5985"
+      - "5986:5986"
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # LangGraph REST API Service
+  langgraph-api:
+    image: ghcr.io/georgest32/unity-claude-langgraph-api:0.0.1
+    container_name: unity-claude-langgraph
+    networks:
+      - unity-claude-net
+    volumes:
+      - langgraph-data:/app/data
+      - shared-config:/app/config:ro
+      - ./agents:/app/agents:ro
+    environment:
+      - LANGGRAPH_DB_PATH=/app/data/langgraph.db
+      - PYTHONUNBUFFERED=1
+      - API_KEY=${LANGGRAPH_API_KEY}
+    ports:
+      - "8000:8000"
+    depends_on:
+      - powershell-modules
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # AutoGen GroupChat Service
+  autogen-groupchat:
+    image: ghcr.io/georgest32/unity-claude-autogen-groupchat:0.0.1
+    container_name: unity-claude-autogen
+    networks:
+      - unity-claude-net
+    volumes:
+      - shared-config:/app/config:ro
+      - ./agents:/app/agents:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+      - AUTOGEN_USE_DOCKER=0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    ports:
+      - "8001:8001"
+    depends_on:
+      - langgraph-api
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Documentation Server
+  docs-server:
+    image: ghcr.io/georgest32/unity-claude-docs-server:0.0.1
+    container_name: unity-claude-docs
+    networks:
+      - unity-claude-net
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+  # File Monitoring Service
+  file-monitor:
+    image: ghcr.io/georgest32/unity-claude-file-monitor:0.0.1
+    container_name: unity-claude-monitor
+    networks:
+      - unity-claude-net
+    volumes:
+      - ./:/watch:ro
+      - monitoring-logs:/var/log/monitoring
+      - shared-config:/app/config:ro
+    environment:
+      - WATCH_PATH=/watch
+      - LOG_PATH=/var/log/monitoring
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  # Phase 3 Day 5: CodeQL Security Analysis Service
+  codeql-security:
+    build:
+      context: .
+      dockerfile: docker/documentation/Dockerfile.codeql
+    container_name: unity-claude-codeql
+    networks:
+      - unity-claude-net
+    volumes:
+      - ./:/source:ro
+      - codeql-databases:/codeql/databases
+      - docs-generated:/docs/generated
+      - shared-config:/app/config:ro
+    environment:
+      - CODEQL_DB_PATH=/codeql/databases
+      - SOURCE_PATH=/source
+      - RESULTS_PATH=/docs/generated/security
+      - SCAN_INTERVAL=3600
+      - LOG_LEVEL=INFO
+    depends_on:
+      - powershell-modules
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "test", "-f", "/codeql/databases/health.txt"]
+      interval: 120s
+      timeout: 60s
+      retries: 2
+      start_period: 300s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "15m"
+        max-file: "3"
+
+  # Phase 3 Day 5: Enhanced Documentation API Service
+  docs-api:
+    build:
+      context: .
+      dockerfile: docker/documentation/Dockerfile.docs-api
+    container_name: unity-claude-docs-api
+    networks:
+      - unity-claude-net
+    volumes:
+      - ./Modules:/app/modules:ro
+      - docs-generated:/docs/generated
+      - docs-cache:/docs/cache
+      - shared-config:/app/config:ro
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8091
+      - DOCS_PATH=/docs/generated
+      - CACHE_PATH=/docs/cache
+      - MODULES_PATH=/app/modules
+      - ENABLE_CORS=true
+      - LOG_LEVEL=INFO
+    ports:
+      - "8091:8091"
+    depends_on:
+      - powershell-modules
+      - docs-server
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8091/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# Secrets configuration (for production use)
+secrets:
+  api_key:
+    file: ./secrets/api_key.txt
+  github_token:
+    file: ./secrets/github_token.txt

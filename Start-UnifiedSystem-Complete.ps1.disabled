@@ -1,0 +1,696 @@
+# Start-UnifiedSystem-Complete.ps1
+# Complete unified system startup that launches everything from one script
+# Date: 2025-08-20
+# Updated: 2025-08-22 (Added Bootstrap Orchestrator support)
+
+
+# PowerShell 7 Self-Elevation
+
+param(
+    [switch]$SkipCLIOrchestrator = $false,
+    [switch]$UseLegacyMode = $false,        # NEW: Force legacy hardcoded configuration
+    [switch]$UseManifestMode = $false,      # NEW: Force manifest-based Bootstrap Orchestrator
+    [switch]$Debug = $false
+)
+
+if ($PSVersionTable.PSVersion.Major -lt 7) {
+    $pwsh7 = "C:\Program Files\PowerShell\7\pwsh.exe"
+    if (Test-Path $pwsh7) {
+        Write-Host "Upgrading to PowerShell 7..." -ForegroundColor Yellow
+        $arguments = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $MyInvocation.MyCommand.Path) + $args
+        Start-Process -FilePath $pwsh7 -ArgumentList $arguments -NoNewWindow -Wait
+        exit
+    } else {
+        Write-Warning "PowerShell 7 not found. Running in PowerShell $($PSVersionTable.PSVersion)"
+    }
+}
+
+$ErrorActionPreference = "Continue"
+
+# Change to script directory
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+if ($scriptDir) {
+    Set-Location $scriptDir
+}
+
+# Try to load compatibility layer for enhanced features
+$compatibilityAvailable = $false
+try {
+    if (Test-Path ".\Migration\Legacy-Compatibility.psm1") {
+        Import-Module ".\Migration\Legacy-Compatibility.psm1" -Force
+        $compatibilityAvailable = $true
+        Write-Host "Bootstrap Orchestrator compatibility layer loaded" -ForegroundColor Green
+    }
+} catch {
+    Write-Host "Compatibility layer not available, using legacy mode only" -ForegroundColor Yellow
+    $UseLegacyMode = $true
+}
+
+Write-Host "==================================================" -ForegroundColor Cyan
+Write-Host "Unity-Claude Complete Unified System Startup" -ForegroundColor Cyan
+Write-Host "$(if ($compatibilityAvailable) { '(Bootstrap Orchestrator Ready)' } else { '(Legacy Mode Only)' })" -ForegroundColor Cyan
+Write-Host "==================================================" -ForegroundColor Cyan
+Write-Host "Starting at: $(Get-Date)" -ForegroundColor Cyan
+Write-Host ""
+
+# Show migration status if compatibility is available
+if ($compatibilityAvailable -and -not $UseLegacyMode -and -not $UseManifestMode) {
+    $migrationStatus = Test-MigrationStatus
+    Write-Host "Migration Status: $($migrationStatus.Status)" -ForegroundColor Cyan
+    
+    if ($migrationStatus.Status -eq "Pre-Migration") {
+        Write-Host "TIP: You can upgrade to manifest-based system for better features" -ForegroundColor Yellow
+        Write-Host "     Run: .\Migration\Migrate-ToManifestSystem.ps1" -ForegroundColor Gray
+    } elseif ($migrationStatus.Status -eq "Migration Complete") {
+        Write-Host "Using manifest-based Bootstrap Orchestrator" -ForegroundColor Green
+        $UseManifestMode = $true
+    }
+    Write-Host ""
+}
+
+# Step 1: Find and register Claude Code CLI
+Write-Host "Step 1: Finding Claude Code CLI..." -ForegroundColor Yellow
+
+$claudePID = $null
+try {
+    $claudePID = & ".\Get-ClaudeCodePID.ps1"
+    if ($claudePID) {
+        Write-Host "  Claude Code CLI found: PID $claudePID" -ForegroundColor Green
+    } else {
+        Write-Host "  Claude Code CLI not found (will continue anyway)" -ForegroundColor Yellow
+    }
+} catch {
+    Write-Host "  Error finding Claude Code CLI: $($_.Exception.Message)" -ForegroundColor Yellow
+}
+
+# Step 2: Choose monitoring approach
+Write-Host ""
+Write-Host "Step 2: Starting SystemStatus monitoring..." -ForegroundColor Yellow
+
+# Option to sign scripts first (recommended)
+$signScripts = Read-Host "Sign all scripts to avoid execution policy issues? (Y/N) [Default: N]"
+if ($signScripts -eq "Y") {
+    Write-Host "  Signing all PowerShell scripts..." -ForegroundColor Cyan
+    & .\Sign-PowerShellScripts.ps1
+    Write-Host "  Scripts signed successfully" -ForegroundColor Green
+}
+
+# Determine startup approach based on mode
+if ($compatibilityAvailable -and ($UseManifestMode -or ($migrationStatus.Status -eq "Migration Complete"))) {
+    # USE MANIFEST-BASED BOOTSTRAP ORCHESTRATOR
+    Write-Host "=== MANIFEST-BASED STARTUP ===" -ForegroundColor Green
+    
+    try {
+        $result = Start-UnityClaudeSystem -UseManifestMode -Debug:$Debug
+        
+        if ($result.Success) {
+            Write-Host "Manifest-based system started successfully!" -ForegroundColor Green
+            Write-Host "Started subsystems: $($result.StartedSubsystems -join ', ')" -ForegroundColor Cyan
+            
+            # Keep monitoring
+            Write-Host "System is running with Bootstrap Orchestrator management" -ForegroundColor Green
+            Write-Host "Press Ctrl+C to stop" -ForegroundColor Gray
+            
+            try {
+                while ($true) { Start-Sleep -Seconds 30 }
+            } catch {
+                Write-Host "System stopped: $($_.Exception.Message)" -ForegroundColor Yellow
+            }
+            
+            exit 0
+        } else {
+            Write-Warning "Manifest-based startup failed: $($result.Message)"
+            Write-Host "Falling back to legacy mode..." -ForegroundColor Yellow
+            $UseLegacyMode = $true
+        }
+    } catch {
+        Write-Error "Manifest-based startup error: $($_.Exception.Message)"
+        Write-Host "Falling back to legacy mode..." -ForegroundColor Yellow
+        $UseLegacyMode = $true
+    }
+}
+
+# LEGACY MODE STARTUP
+Write-Host "=== LEGACY MODE STARTUP ===" -ForegroundColor Yellow
+if ($compatibilityAvailable) {
+    Show-DeprecationWarning -FunctionName "Legacy System Startup" -Replacement "Manifest-based Bootstrap Orchestrator"
+}
+
+# Choose monitoring approach
+$useWindow = Read-Host "Run monitoring in separate window (recommended) or background job? (W/J) [Default: W]"
+
+if ($useWindow -ne "J") {
+    # OPTION 1: Run in separate window (RECOMMENDED)
+    Write-Host "  Starting monitoring in separate window..." -ForegroundColor Cyan
+    if (Test-Path ".\Start-SystemStatusMonitoring-Window.ps1") {
+        & .\Start-SystemStatusMonitoring-Window.ps1 -CheckIntervalSeconds 30
+    } elseif (Test-Path ".\Start-SystemStatusMonitoring.ps1") {
+        & .\Start-SystemStatusMonitoring.ps1 -CheckIntervalSeconds 30
+    } else {
+        Write-Host "  Warning: No SystemStatus monitoring script found" -ForegroundColor Yellow
+    }
+    
+    $systemStatusJob = $null  # Set to null since we're using window
+    Start-Sleep -Seconds 3
+    
+    # Check if window started
+    if (Test-Path ".\monitoring_window_info.json") {
+        $windowInfo = Get-Content ".\monitoring_window_info.json" | ConvertFrom-Json
+        Write-Host "  Monitoring window started: PID $($windowInfo.ProcessId)" -ForegroundColor Green
+    }
+} else {
+    # OPTION 2: Run as background job (original approach)
+    Write-Host "  Starting monitoring as background job..." -ForegroundColor Yellow
+    
+    $systemStatusJob = $null
+    
+    # Clean up any existing jobs
+    Get-Job -Name "SystemStatusMonitoring" -ErrorAction SilentlyContinue | Remove-Job -Force
+    
+    # Start the monitoring in a background job
+    $systemStatusJob = Start-Job -Name "SystemStatusMonitoring" -ScriptBlock {
+    Set-Location $WorkingDir
+    
+    # Run the working version directly in this job
+    $ErrorActionPreference = "Continue"
+    
+    # Create log file
+    $logTimestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+    $logFile = ".\SystemStatusMonitoring_Job_$logTimestamp.log"
+    
+    function Write-JobLog {
+        $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff"
+        $logMessage = "[$timestamp] [$Level] $Message"
+        Add-Content -Path $logFile -Value $logMessage
+    }
+    
+    Write-JobLog "SystemStatusMonitoring Job Started"
+    Write-JobLog "Working Directory: $WorkingDir"
+    Write-JobLog "Process ID: $PID"
+    
+    try {
+        # Set execution policy for this session to bypass restrictions
+        Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+        Write-JobLog "Set ExecutionPolicy to Bypass for this job"
+        
+        # Load the module
+        $modulePath = ".\Modules\Unity-Claude-SystemStatus\Unity-Claude-SystemStatus.psd1"
+        Import-Module $modulePath -Force -Global
+        Write-JobLog "Module loaded successfully"
+        
+        # Verify our critical functions are available
+        if (Get-Command Test-CLIOrchestratorStatus -ErrorAction SilentlyContinue) {
+            Write-JobLog "Test-CLIOrchestratorStatus function is available"
+        } else {
+            Write-JobLog "WARNING: Test-CLIOrchestratorStatus function NOT available!" "WARN"
+        }
+        
+        if (Get-Command Start-CLIOrchestratorSafe -ErrorAction SilentlyContinue) {
+            Write-JobLog "Start-CLIOrchestratorSafe function is available"
+        } else {
+            Write-JobLog "WARNING: Start-CLIOrchestratorSafe function NOT available!" "WARN"
+        }
+        
+        # Initialize monitoring
+        Initialize-SystemStatusMonitoring
+        Write-JobLog "Monitoring initialized"
+        
+        # Register core subsystems
+        Register-Subsystem -SubsystemName "Unity-Claude-Core" -ModulePath ".\Modules\Unity-Claude-Core" -HealthCheckLevel "Standard"
+        Register-Subsystem -SubsystemName "Unity-Claude-SystemStatus" -ModulePath ".\Modules\Unity-Claude-SystemStatus" -HealthCheckLevel "Standard"
+        Write-JobLog "Subsystems registered"
+        
+        # Start file watcher
+        Start-SystemStatusFileWatcher
+        Write-JobLog "File watcher started"
+        
+        # Create timer for heartbeats WITHOUT -Action
+        $heartbeatTimer = New-Object System.Timers.Timer
+        $heartbeatTimer.Interval = 60000  # 60 seconds
+        $heartbeatTimer.AutoReset = $true
+        
+        # Register event to queue (not action)
+        Register-ObjectEvent -InputObject $heartbeatTimer -EventName Elapsed -SourceIdentifier "JobHeartbeat"
+        $heartbeatTimer.Start()
+        Write-JobLog "Heartbeat timer started"
+        
+        # Update status to show we're running
+        $status = Read-SystemStatus
+        if ($status -and $status.Subsystems) {
+            if (-not $status.Subsystems.ContainsKey("SystemStatusMonitoring")) {
+                $status.Subsystems["SystemStatusMonitoring"] = @{}
+            }
+            $status.Subsystems["SystemStatusMonitoring"]["ProcessId"] = $PID
+            $status.Subsystems["SystemStatusMonitoring"]["Status"] = "Running"
+            $status.Subsystems["SystemStatusMonitoring"]["LastHeartbeat"] = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss.fff')
+            Write-SystemStatus -StatusData $status
+        }
+        
+        # Main event loop
+        $running = $true
+        $eventCount = 0
+        
+        Write-JobLog "Entering main event loop"
+        
+        while ($running) {
+            # Wait for events with timeout
+            $event = Wait-Event -SourceIdentifier "JobHeartbeat" -Timeout 5
+            
+            if ($event) {
+                $eventCount++
+                Write-JobLog "Processing heartbeat event #$eventCount"
+                
+                try {
+                    # Send heartbeats
+                    Send-HeartbeatRequest -SubsystemName "SystemStatusMonitoring"
+                    Send-HeartbeatRequest -SubsystemName "Unity-Claude-SystemStatus"
+                    
+                    # Always check CLIOrchestrator status directly
+                    Write-JobLog "============ AGENT CHECK START ============" "DEBUG"
+                    Write-JobLog "Checking CLIOrchestrator status at $(Get-Date -Format 'HH:mm:ss.fff')..." "DEBUG"
+                    
+                    try {
+                        # Check if function exists
+                        if (Get-Command Test-CLIOrchestratorStatus -ErrorAction SilentlyContinue) {
+                            Write-JobLog "Test-CLIOrchestratorStatus function found" "DEBUG"
+                        } else {
+                            Write-JobLog "Test-CLIOrchestratorStatus function NOT FOUND!" "ERROR"
+                            Write-JobLog "Available functions: $(Get-Command -Module Unity-Claude-SystemStatus | Select-Object -ExpandProperty Name -First 10)" "ERROR"
+                        }
+                        
+                        $agentStatus = Test-CLIOrchestratorStatus
+                        Write-JobLog "Agent status check returned: $agentStatus" "INFO"
+                        
+                        if (-not $agentStatus) {
+                            Write-JobLog "CLI Orchestrator is NOT running - will attempt restart" "WARN"
+                            
+                            # Check if restart function exists
+                            if (Get-Command Start-CLIOrchestratorSafe -ErrorAction SilentlyContinue) {
+                                Write-JobLog "Start-CLIOrchestratorSafe function found" "DEBUG"
+                            } else {
+                                Write-JobLog "Start-CLIOrchestratorSafe function NOT FOUND!" "ERROR"
+                            }
+                            
+                            Write-JobLog "Calling Start-CLIOrchestratorSafe..." "INFO"
+                            $restartResult = Start-CLIOrchestratorSafe
+                            Write-JobLog "Start-CLIOrchestratorSafe returned: $restartResult" "INFO"
+                            
+                            if ($restartResult) {
+                                Write-JobLog "CLI Orchestrator RESTARTED SUCCESSFULLY" "INFO"
+                            } else {
+                                Write-JobLog "FAILED to restart CLI Orchestrator" "ERROR"
+                            }
+                        } else {
+                            Write-JobLog "CLI Orchestrator is RUNNING normally" "DEBUG"
+                        }
+                    } catch {
+                        Write-JobLog "EXCEPTION in agent check/restart: $_" "ERROR"
+                        Write-JobLog "Exception type: $($_.Exception.GetType().FullName)" "ERROR"
+                        Write-JobLog "Stack trace: $($_.ScriptStackTrace)" "ERROR"
+                        Write-JobLog "Inner exception: $($_.Exception.InnerException)" "ERROR"
+                    }
+                    
+                    Write-JobLog "============ AGENT CHECK END ============" "DEBUG"
+                    
+                    # Test all subsystems
+                    $healthStatus = Test-AllSubsystemHeartbeats
+                    if ($healthStatus -and $healthStatus.UnhealthySubsystems.Count -gt 0) {
+                        Write-JobLog "Unhealthy subsystems: $($healthStatus.UnhealthySubsystems -join ', ')" "WARN"
+                    }
+                    
+                    # Update our heartbeat
+                    $status = Read-SystemStatus
+                    if ($status -and $status.Subsystems -and $status.Subsystems.ContainsKey("SystemStatusMonitoring")) {
+                        $status.Subsystems["SystemStatusMonitoring"]["LastHeartbeat"] = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss.fff')
+                        $status.Subsystems["SystemStatusMonitoring"]["Status"] = "Running"
+                        Write-SystemStatus -StatusData $status
+                    }
+                    
+                    Write-JobLog "Heartbeat processing complete"
+                } catch {
+                    Write-JobLog "Error processing heartbeat: $_" "ERROR"
+                }
+                
+                # Remove event from queue
+                Remove-Event -SourceIdentifier "JobHeartbeat" -ErrorAction SilentlyContinue
+            }
+            
+            # Check for stop signal
+            if (Test-Path ".\STOP_MONITORING.txt") {
+                Write-JobLog "Stop signal detected - exiting"
+                Remove-Item ".\STOP_MONITORING.txt" -Force
+                $running = $false
+            }
+        }
+        
+        Write-JobLog "Exiting main loop"
+    } catch {
+        Write-JobLog "Critical error: $_" "ERROR"
+        Write-JobLog "Stack trace: $($_.ScriptStackTrace)" "ERROR"
+    } finally {
+        # Cleanup
+        if ($heartbeatTimer) {
+            $heartbeatTimer.Stop()
+            $heartbeatTimer.Dispose()
+        }
+        Unregister-Event -SourceIdentifier "JobHeartbeat" -ErrorAction SilentlyContinue
+        try { Stop-SystemStatusMonitoring } catch {}
+        Write-JobLog "Cleanup complete"
+    }
+} -ArgumentList $PWD.Path
+
+    if ($systemStatusJob) {
+        Write-Host "  SystemStatusMonitoring job started: ID $($systemStatusJob.Id)" -ForegroundColor Green
+        
+        # Give it time to initialize
+        Write-Host "  Waiting for initialization..." -ForegroundColor Gray
+        Start-Sleep -Seconds 3
+        
+        # Check if it's still running
+        $systemStatusJob = Get-Job -Id $systemStatusJob.Id
+        if ($systemStatusJob.State -eq "Running") {
+            Write-Host "  SystemStatusMonitoring is running successfully!" -ForegroundColor Green
+        } else {
+            Write-Host "  WARNING: SystemStatusMonitoring job stopped with state: $($systemStatusJob.State)" -ForegroundColor Red
+            $jobOutput = Receive-Job -Job $systemStatusJob
+            if ($jobOutput) {
+                Write-Host "  Job output: $jobOutput" -ForegroundColor Yellow
+            }
+        }
+    } else {
+        Write-Host "  Failed to start SystemStatusMonitoring job" -ForegroundColor Red
+    }
+}  # This closes the else block from line 61
+
+# Step 3: Load SystemStatus module in main session for communication
+Write-Host ""
+Write-Host "Step 3: Loading SystemStatus module in main session..." -ForegroundColor Yellow
+
+try {
+    $modulePath = ".\Modules\Unity-Claude-SystemStatus\Unity-Claude-SystemStatus.psd1"
+    if (Test-Path $modulePath) {
+        Import-Module $modulePath -Force -Global
+        Write-Host "  SystemStatus module loaded" -ForegroundColor Green
+        
+        # Verify communication
+        Start-Sleep -Seconds 1
+        try {
+            $status = Read-SystemStatus
+            if ($status) {
+                Write-Host "  Communication with SystemStatus confirmed" -ForegroundColor Green
+                Write-Host "  Subsystems registered: $($status.subsystems.Count)" -ForegroundColor Gray
+            }
+        } catch {
+            Write-Host "  Warning: Cannot read system status yet" -ForegroundColor Yellow
+        }
+    } else {
+        Write-Host "  SystemStatus module not found" -ForegroundColor Red
+    }
+} catch {
+    Write-Host "  Error loading SystemStatus module: $($_.Exception.Message)" -ForegroundColor Red
+}
+
+# Step 4: Start CLIOrchestrator
+if (-not $SkipCLIOrchestrator) {
+    Write-Host ""
+    Write-Host "Step 4: Starting CLI Orchestrator..." -ForegroundColor Yellow
+    
+    Start-Sleep -Seconds 2  # Give SystemStatus time to stabilize
+    
+    try {
+        # Check if already running via SystemStatus registration
+        $existingAgent = $null
+        try {
+            $systemStatus = Get-SystemStatus -ErrorAction SilentlyContinue
+            if ($systemStatus -and $systemStatus.subsystems -and $systemStatus.subsystems.CLIOrchestrator) {
+                $agentInfo = $systemStatus.subsystems.CLIOrchestrator
+                # Check if the process is still alive (handle both naming conventions)
+                $agentPID = if ($agentInfo.ProcessId) { $agentInfo.ProcessId } else { $agentInfo.process_id }
+                $agentProcess = Get-Process -Id $agentPID -ErrorAction SilentlyContinue
+                if ($agentProcess) {
+                    $existingAgent = $agentInfo
+                    Write-Host "  CLI Orchestrator already registered and running (PID: $agentPID)" -ForegroundColor Green
+                } else {
+                    Write-Host "  CLI Orchestrator registered but process dead - will restart" -ForegroundColor Yellow
+                }
+            }
+        } catch {
+            Write-Host "  Could not check SystemStatus for existing agent: $_" -ForegroundColor Yellow
+        }
+        
+        if ($existingAgent -and $agentProcess) {
+            Write-Host "  Skipping CLI Orchestrator startup - already active" -ForegroundColor Green
+        } else {
+            # Start monitoring in new window
+            $monitoringScript = ".\Start-CLIOrchestrator-Fixed.ps1"
+            if (Test-Path $monitoringScript) {
+                Write-Host "  Starting autonomous monitoring in new window..." -ForegroundColor Gray
+                
+                $agentArgs = @{
+                    FilePath = "pwsh.exe"
+                    ArgumentList = @(
+                        "-NoExit",
+                        "-ExecutionPolicy", "Bypass",
+                        "-File", $monitoringScript
+                    )
+                    WindowStyle = "Normal"
+                    PassThru = $true
+                }
+                
+                $agentProcess = Start-Process @agentArgs
+                
+                if ($agentProcess -and $agentProcess.Id) {
+                    Write-Host "  CLI Orchestrator monitoring started: PID $($agentProcess.Id)" -ForegroundColor Green
+                    
+                    # Update SystemStatus with the PID
+                    try {
+                        Start-Sleep -Seconds 2
+                        $statusData = Read-SystemStatus
+                        if ($statusData -and $statusData.subsystems) {
+                            if (-not $statusData.subsystems.ContainsKey("Unity-Claude-CLIOrchestrator")) {
+                                $statusData.subsystems["Unity-Claude-CLIOrchestrator"] = @{}
+                            }
+                            $statusData.subsystems["Unity-Claude-CLIOrchestrator"]["ProcessId"] = $agentProcess.Id
+                            $statusData.subsystems["Unity-Claude-CLIOrchestrator"]["Status"] = "Running"
+                            $statusData.subsystems["Unity-Claude-CLIOrchestrator"]["LastHeartbeat"] = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss.fff')
+                            Write-SystemStatus -StatusData $statusData
+                            Write-Host "  Registered CLIOrchestrator PID with SystemStatus" -ForegroundColor Green
+                        }
+                    } catch {
+                        Write-Host "  Warning: Could not update SystemStatus: $($_.Exception.Message)" -ForegroundColor Yellow
+                    }
+                } else {
+                    Write-Host "  Failed to start CLI Orchestrator monitoring" -ForegroundColor Red
+                }
+            } else {
+                Write-Host "  CLI Orchestrator monitoring script not found" -ForegroundColor Yellow
+            }
+        }
+    } catch {
+        Write-Host "  Error starting CLIOrchestrator: $($_.Exception.Message)" -ForegroundColor Red
+    }
+} else {
+    Write-Host ""
+    Write-Host "Step 4: Skipping CLI Orchestrator (as requested)" -ForegroundColor Gray
+}
+
+# Step 5: Start Docker Services (if available)
+Write-Host ""
+Write-Host "Step 5: Checking Docker services..." -ForegroundColor Yellow
+
+$dockerAvailable = $false
+try {
+    $dockerVersion = docker version 2>&1
+    if ($LASTEXITCODE -eq 0) {
+        $dockerAvailable = $true
+        Write-Host "  Docker is available" -ForegroundColor Green
+    }
+} catch {
+    Write-Host "  Docker is not available or not running" -ForegroundColor Yellow
+}
+
+if ($dockerAvailable) {
+    Write-Host "  Starting Docker services..." -ForegroundColor Gray
+    
+    # Check for port conflicts with local MkDocs
+    $mkdocsProcess = Get-Process -Name "python*" -ErrorAction SilentlyContinue | Where-Object {
+        $_.CommandLine -like "*mkdocs*serve*" -or
+        $_.CommandLine -like "*mike*serve*"
+    }
+    
+    if ($mkdocsProcess) {
+        Write-Host "  WARNING: MkDocs is running on port 8000 (PID: $($mkdocsProcess.Id))" -ForegroundColor Yellow
+        Write-Host "  This conflicts with LangGraph API. Stopping MkDocs..." -ForegroundColor Yellow
+        Stop-Process -Id $mkdocsProcess.Id -Force -ErrorAction SilentlyContinue
+        Start-Sleep -Seconds 2
+    }
+    
+    # Start Docker Compose services
+    try {
+        docker-compose up -d 2>&1 | Out-String | Write-Debug
+        Write-Host "  Docker services started" -ForegroundColor Green
+        
+        # List running containers
+        $containers = docker ps --format "table {{.Names}}\t{{.Ports}}" 2>&1
+        if ($containers) {
+            Write-Host "  Running containers:" -ForegroundColor Gray
+            $containers | ForEach-Object { Write-Host "    $_" -ForegroundColor Gray }
+        }
+    } catch {
+        Write-Host "  Error starting Docker services: $_" -ForegroundColor Red
+    }
+} else {
+    Write-Host "  Skipping Docker services (Docker not available)" -ForegroundColor Gray
+    Write-Host "  To enable Docker services, install Docker Desktop" -ForegroundColor Gray
+}
+
+# Step 6: Final status report
+Write-Host ""
+Write-Host "==================================================" -ForegroundColor Cyan
+Write-Host "System Startup Complete!" -ForegroundColor Green
+Write-Host "==================================================" -ForegroundColor Cyan
+Write-Host ""
+
+# Display running components
+Write-Host "Running Components:" -ForegroundColor Yellow
+
+if ($claudePID) {
+    Write-Host "  [+] Claude Code CLI: PID $claudePID" -ForegroundColor Green
+} else {
+    Write-Host "  [-] Claude Code CLI: Not found" -ForegroundColor Yellow
+}
+
+# Check monitoring status based on method used
+if ($systemStatusJob -and $systemStatusJob.State -eq "Running") {
+    Write-Host "  [+] SystemStatusMonitoring: Job ID $($systemStatusJob.Id) (Running in background)" -ForegroundColor Green
+    Write-Host "      View output: Receive-Job -Id $($systemStatusJob.Id) -Keep" -ForegroundColor Gray
+    Write-Host "      View logs: Get-Content .\SystemStatusMonitoring_Job_*.log -Tail 20" -ForegroundColor Gray
+} elseif (Test-Path ".\monitoring_window_info.json") {
+    $windowInfo = Get-Content ".\monitoring_window_info.json" | ConvertFrom-Json
+    $monitorProcess = Get-Process -Id $windowInfo.ProcessId -ErrorAction SilentlyContinue
+    if ($monitorProcess) {
+        Write-Host "  [+] SystemStatusMonitoring: PID $($windowInfo.ProcessId) (Running in window)" -ForegroundColor Green
+        Write-Host "      View window for real-time status" -ForegroundColor Gray
+        Write-Host "      View restart log: Get-Content .\agent_restart_log.txt -Tail 10" -ForegroundColor Gray
+    } else {
+        Write-Host "  [-] SystemStatusMonitoring: Window closed" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "  [-] SystemStatusMonitoring: Not running" -ForegroundColor Red
+}
+
+if (-not $SkipCLIOrchestrator) {
+    $agent = Get-WmiObject Win32_Process | Where-Object {
+        $_.CommandLine -like "*CLIOrchestrator*.ps1*" -or
+        $_.CommandLine -like "*CLIOrchestrator*.ps1*"
+    } | Select-Object -First 1
+    if ($agent) {
+        Write-Host "  [+] CLI Orchestrator: PID $($agent.ProcessId) (Running in separate window)" -ForegroundColor Green
+    } else {
+        Write-Host "  [-] CLI Orchestrator: Not running" -ForegroundColor Yellow
+    }
+}
+
+# Show system status summary
+Write-Host ""
+Write-Host "System Status Summary:" -ForegroundColor Yellow
+try {
+    $status = Read-SystemStatus
+    if ($status -and $status.subsystems) {
+        $runningCount = 0
+        $totalCount = $status.subsystems.Count
+        
+        foreach ($subsystem in $status.subsystems.Keys) {
+            $sub = $status.subsystems[$subsystem]
+            if ($sub.Status -eq "Running") {
+                $runningCount++
+            }
+        }
+        
+        Write-Host "  Total Subsystems: $totalCount" -ForegroundColor Gray
+        Write-Host "  Running: $runningCount" -ForegroundColor Green
+        Write-Host "  Not Running: $($totalCount - $runningCount)" -ForegroundColor Yellow
+        
+        if ($status.Alerts -and $status.Alerts.Count -gt 0) {
+            Write-Host "  Active Alerts: $($status.Alerts.Count)" -ForegroundColor Red
+        } else {
+            Write-Host "  Active Alerts: 0" -ForegroundColor Green
+        }
+    } else {
+        Write-Host "  No status data available yet" -ForegroundColor Gray
+    }
+} catch {
+    Write-Host "  Could not read system status: $($_.Exception.Message)" -ForegroundColor Yellow
+}
+
+Write-Host ""
+Write-Host "==================================================" -ForegroundColor Cyan
+Write-Host "All systems launched successfully!" -ForegroundColor Green
+Write-Host ""
+Write-Host "SystemStatusMonitoring is running in the background and will:" -ForegroundColor Cyan
+Write-Host "  - Send heartbeats every 60 seconds" -ForegroundColor Gray
+Write-Host "  - Monitor all registered subsystems" -ForegroundColor Gray
+Write-Host "  - Restart failed subsystems automatically" -ForegroundColor Gray
+Write-Host ""
+Write-Host "To stop all systems:" -ForegroundColor Yellow
+if ($systemStatusJob) {
+    Write-Host "  1. Create file: New-Item .\STOP_MONITORING.txt" -ForegroundColor Gray
+    Write-Host "  2. Stop job: Stop-Job -Name SystemStatusMonitoring" -ForegroundColor Gray
+    Write-Host "  3. Close CLI Orchestrator window manually" -ForegroundColor Gray
+} else {
+    Write-Host "  1. Create file: New-Item .\STOP_MONITORING_WINDOW.txt" -ForegroundColor Gray
+    Write-Host "  2. Or close the monitoring window" -ForegroundColor Gray
+    Write-Host "  3. Close CLI Orchestrator window manually" -ForegroundColor Gray
+}
+Write-Host ""
+Write-Host "To view monitoring logs:" -ForegroundColor Yellow
+Write-Host "  Get-Content .\SystemStatusMonitoring_Job_*.log -Tail 20" -ForegroundColor Gray
+Write-Host ""
+
+# Show service URLs if Docker is running
+if ($dockerAvailable) {
+    Write-Host "Service URLs:" -ForegroundColor Yellow
+    Write-Host "  LangGraph API:       http://localhost:8000" -ForegroundColor Gray
+    Write-Host "  AutoGen GroupChat:   http://localhost:8001" -ForegroundColor Gray
+    Write-Host "  Documentation:       http://localhost:8080" -ForegroundColor Gray
+    Write-Host ""
+}
+
+Write-Host "For consolidated service management, use:" -ForegroundColor Yellow
+Write-Host "  .\Start-AllServices.ps1 -Status    # View all service status" -ForegroundColor Gray
+Write-Host "  .\Start-AllServices.ps1 -StopAll   # Stop all services" -ForegroundColor Gray
+Write-Host ""
+# SIG # Begin signature block
+# MIIFzgYJKoZIhvcNAQcCoIIFvzCCBbsCAQExDzANBglghkgBZQMEAgEFADB5Bgor
+# BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCDkMsJfyVHwQSWi
+# hJTuBVYAkK1zscputptJPOPvP0q0laCCAzAwggMsMIICFKADAgECAhB1HRbZIqgr
+# lUTwkh3hnGtFMA0GCSqGSIb3DQEBCwUAMC4xLDAqBgNVBAMMI1VuaXR5LUNsYXVk
+# ZS1BdXRvbWF0aW9uLURldmVsb3BtZW50MB4XDTI1MDgyMDIxMTUxN1oXDTI2MDgy
+# MDIxMzUxN1owLjEsMCoGA1UEAwwjVW5pdHktQ2xhdWRlLUF1dG9tYXRpb24tRGV2
+# ZWxvcG1lbnQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCx4feqKdUQ
+# 6GufY4umNzlM1Pi8aHUGR8HlfhIWFjsrRAxCxhieRlWbHe0Hw+pVBeX76X57e5Pu
+# 4Kxxzu+MxMry0NJYf3yOLRTfhYskHBcLraXUCtrMwqnhPKvul6Sx6Lu8vilk605W
+# ADJNifl3WFuexVCYJJM9G2mfuYIDN+rZ5zmpn0qCXum49bm629h+HyJ205Zrn9aB
+# hIrA4i/JlrAh1kosWnCo62psl7ixbNVqFqwWEt+gAqSeIo4ChwkOQl7GHmk78Q5I
+# oRneY4JTVlKzhdZEYhJGFXeoZml/5jcmUcox4UNYrKdokE7z8ZTmyowBOUNS+sHI
+# G1TY5DZSb8vdAgMBAAGjRjBEMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUEDDAKBggr
+# BgEFBQcDAzAdBgNVHQ4EFgQUfDms7LrGVboHjmwlSyIjYD/JLQwwDQYJKoZIhvcN
+# AQELBQADggEBABRMsfT7DzKy+aFi4HDg0MpxmbjQxOH1lzUzanaECRiyA0sn7+sA
+# /4jvis1+qC5NjDGkLKOTCuDzIXnBWLCCBugukXbIO7g392ANqKdHjBHw1WlLvMVk
+# 4WSmY096lzpvDd3jJApr/Alcp4KmRGNLnQ3vv+F9Uj58Uo1qjs85vt6fl9xe5lo3
+# rFahNHL4ngjgyF8emNm7FItJeNtVe08PhFn0caOX0FTzXrZxGGO6Ov8tzf91j/qK
+# QdBifG7Fx3FF7DifNqoBBo55a7q0anz30k8p+V0zllrLkgGXfOzXmA1L37Qmt3QB
+# FCdJVigjQMuHcrJsWd8rg857Og0un91tfZIxggH0MIIB8AIBATBCMC4xLDAqBgNV
+# BAMMI1VuaXR5LUNsYXVkZS1BdXRvbWF0aW9uLURldmVsb3BtZW50AhB1HRbZIqgr
+# lUTwkh3hnGtFMA0GCWCGSAFlAwQCAQUAoIGEMBgGCisGAQQBgjcCAQwxCjAIoAKA
+# AKECgAAwGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEO
+# MAwGCisGAQQBgjcCARUwLwYJKoZIhvcNAQkEMSIEILVn+uXpvKxvfYj3XFaD86t4
+# V1YGzePjwEmt8yNg67GNMA0GCSqGSIb3DQEBAQUABIIBAJY+XHHhE6nWjztVFZs2
+# Z1W7+vjCkhZY4ZeJgq+LfQaMR/VBckpCrxe3Jrfgwz9keLkFvPP+Saf33dhn5zFx
+# v8aaA1tawGvot+5OMQxdc77l1T7OwgGJKSQHwYzzVlgjKCLLbPWg3Q30ihH2GTMo
+# ucsYqSDhYKtPJu3TMjUdJCon3H9i9wYrpDTCoB6v03Fzv6GBWz4gYk+A76Zu8QYh
+# aPkgpS4V77ann6zTEybEYLAEDoVY3k4dw8WBa4lfxCIU/nxvsKQ5poS5izSE5E5b
+# 3li3pewvyn/LFku/HXJ7F6uGWBKgc52zk4L/hja+xN1F4K0zq5jC7evw8KWMtJiP
+# T8I=
+# SIG # End signature block

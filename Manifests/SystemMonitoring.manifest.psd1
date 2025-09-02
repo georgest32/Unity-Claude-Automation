@@ -7,7 +7,8 @@
     Name = "SystemMonitoring"
     Version = "1.0.0"
     Description = "Core system status monitoring and health tracking subsystem"
-    StartScript = ".\Start-SystemStatusMonitoring-Enhanced.ps1"
+    StartScript = ".\Start-SystemStatusMonitoring-Working.ps1"
+    WorkingDirectory = "C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation"
     
     # Dependencies
     Dependencies = @()
@@ -24,6 +25,9 @@
     # Resource limits
     MaxMemoryMB = 300
     MaxCpuPercent = 20
+    
+    # Window visibility
+    WindowStyle = "Normal"  # Normal, Hidden, Minimized, Maximized
     
     # Mutex for singleton enforcement
     MutexName = "Global\UnityClaudeSystemMonitoring"

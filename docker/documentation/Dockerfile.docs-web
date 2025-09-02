@@ -1,0 +1,712 @@
+# Enhanced Documentation System - Web Interface
+# Phase 3 Day 5: Production Integration & Advanced Features
+# Base: nginx with custom documentation viewer
+
+FROM nginx:1.25-alpine AS base
+
+# Install dependencies
+RUN apk add --no-cache \
+    curl \
+    jq \
+    nodejs \
+    npm
+
+# Create application directories
+RUN mkdir -p /usr/share/nginx/html/docs \
+             /usr/share/nginx/html/dashboard \
+             /usr/share/nginx/html/assets \
+             /etc/nginx/templates
+
+# Copy nginx configuration
+COPY docker/documentation/nginx.conf /etc/nginx/nginx.conf
+
+# Build documentation viewer frontend
+FROM node:18-alpine AS build-frontend
+
+WORKDIR /app
+
+# Create package.json for documentation viewer
+RUN cat > package.json << 'EOF'
+{
+  "name": "unity-claude-docs-viewer",
+  "version": "1.0.0",
+  "description": "Enhanced Documentation System Web Viewer",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack serve --mode development"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.0",
+    "jquery": "^3.7.0",
+    "prismjs": "^1.29.0",
+    "markdown-it": "^14.0.0",
+    "lunr": "^2.3.9"
+  },
+  "devDependencies": {
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.0",
+    "webpack-dev-server": "^4.15.0",
+    "css-loader": "^6.8.0",
+    "style-loader": "^3.3.0",
+    "html-webpack-plugin": "^5.5.0"
+  }
+}
+EOF
+
+# Install dependencies
+RUN npm install
+
+# Create documentation viewer application
+RUN mkdir -p src
+
+# Main application JavaScript
+RUN cat > src/index.js << 'EOF'
+// Enhanced Documentation System - Web Viewer
+// Phase 3 Day 5: Production Integration & Advanced Features
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'prismjs/themes/prism-tomorrow.css';
+import './styles.css';
+
+import $ from 'jquery';
+import 'bootstrap';
+import Prism from 'prismjs';
+import MarkdownIt from 'markdown-it';
+import lunr from 'lunr';
+
+// Import PowerShell syntax highlighting
+import 'prismjs/components/prism-powershell';
+import 'prismjs/components/prism-csharp';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-yaml';
+
+class DocumentationViewer {
+    constructor() {
+        this.apiBaseUrl = window.DOCS_API_URL || '/api';
+        this.searchIndex = null;
+        this.searchData = [];
+        this.currentModule = null;
+        this.md = new MarkdownIt({
+            html: true,
+            linkify: true,
+            typographer: true,
+            highlight: (str, lang) => {
+                if (lang && Prism.languages[lang]) {
+                    return Prism.highlight(str, Prism.languages[lang], lang);
+                }
+                return '';
+            }
+        });
+        
+        this.init();
+    }
+    
+    async init() {
+        this.setupEventListeners();
+        await this.loadModuleIndex();
+        await this.buildSearchIndex();
+        this.setupSearch();
+        this.loadInitialContent();
+    }
+    
+    setupEventListeners() {
+        // Module navigation
+        $(document).on('click', '.module-nav-item', (e) => {
+            e.preventDefault();
+            const moduleId = $(e.target).data('module-id');
+            this.loadModule(moduleId);
+        });
+        
+        // Function navigation
+        $(document).on('click', '.function-nav-item', (e) => {
+            e.preventDefault();
+            const functionId = $(e.target).data('function-id');
+            this.scrollToFunction(functionId);
+        });
+        
+        // Search functionality
+        $('#search-input').on('input', (e) => {
+            this.performSearch(e.target.value);
+        });
+        
+        // Responsive sidebar toggle
+        $('#sidebar-toggle').on('click', () => {
+            $('#sidebar').toggleClass('collapsed');
+        });
+    }
+    
+    async loadModuleIndex() {
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/modules`);
+            const modules = await response.json();
+            this.renderModuleNavigation(modules);
+        } catch (error) {
+            console.error('Failed to load module index:', error);
+            this.showError('Failed to load documentation index');
+        }
+    }
+    
+    renderModuleNavigation(modules) {
+        const nav = $('#module-navigation');
+        nav.empty();
+        
+        modules.forEach(module => {
+            const item = $(`
+                <div class="module-nav-item" data-module-id="${module.id}">
+                    <i class="fas fa-cube"></i>
+                    <span>${module.name}</span>
+                    <span class="badge bg-secondary">${module.functionCount}</span>
+                </div>
+            `);
+            nav.append(item);
+        });
+    }
+    
+    async loadModule(moduleId) {
+        try {
+            this.showLoading();
+            const response = await fetch(`${this.apiBaseUrl}/modules/${moduleId}`);
+            const moduleData = await response.json();
+            
+            this.currentModule = moduleData;
+            this.renderModuleContent(moduleData);
+            this.updateUrlHash(moduleId);
+            
+            // Update active navigation
+            $('.module-nav-item').removeClass('active');
+            $(`.module-nav-item[data-module-id="${moduleId}"]`).addClass('active');
+            
+        } catch (error) {
+            console.error('Failed to load module:', error);
+            this.showError(`Failed to load module: ${moduleId}`);
+        }
+    }
+    
+    renderModuleContent(moduleData) {
+        const content = $('#main-content');
+        
+        let html = `
+            <div class="module-header">
+                <h1>${moduleData.name}</h1>
+                <p class="lead">${moduleData.description || ''}</p>
+                <div class="module-meta">
+                    <span class="badge bg-primary">Version: ${moduleData.version}</span>
+                    <span class="badge bg-info">Functions: ${moduleData.functions.length}</span>
+                    <span class="badge bg-success">Author: ${moduleData.author}</span>
+                </div>
+            </div>
+        `;
+        
+        if (moduleData.functions && moduleData.functions.length > 0) {
+            html += '<div class="functions-container">';
+            
+            moduleData.functions.forEach(func => {
+                html += this.renderFunction(func);
+            });
+            
+            html += '</div>';
+        }
+        
+        content.html(html);
+        
+        // Highlight code blocks
+        Prism.highlightAll();
+        this.hideLoading();
+    }
+    
+    renderFunction(func) {
+        let html = `
+            <div class="function-documentation" id="func-${func.name}">
+                <h3>${func.name}</h3>
+                <p>${func.description || 'No description available'}</p>
+        `;
+        
+        if (func.syntax) {
+            html += `
+                <div class="syntax-block">
+                    <h5>Syntax</h5>
+                    <pre><code class="language-powershell">${func.syntax}</code></pre>
+                </div>
+            `;
+        }
+        
+        if (func.parameters && func.parameters.length > 0) {
+            html += '<div class="parameters-section"><h5>Parameters</h5><div class="table-responsive">';
+            html += '<table class="table table-striped"><thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody>';
+            
+            func.parameters.forEach(param => {
+                html += `
+                    <tr>
+                        <td><code>${param.name}</code></td>
+                        <td>${param.type || 'Object'}</td>
+                        <td>${param.required ? '<span class="badge bg-warning">Yes</span>' : '<span class="badge bg-secondary">No</span>'}</td>
+                        <td>${param.description || ''}</td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table></div></div>';
+        }
+        
+        if (func.examples && func.examples.length > 0) {
+            html += '<div class="examples-section"><h5>Examples</h5>';
+            
+            func.examples.forEach((example, index) => {
+                html += `
+                    <div class="example">
+                        <h6>Example ${index + 1}</h6>
+                        <pre><code class="language-powershell">${example.code}</code></pre>
+                        ${example.description ? `<p class="example-description">${example.description}</p>` : ''}
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+        }
+        
+        html += '</div>';
+        return html;
+    }
+    
+    async buildSearchIndex() {
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/search-data`);
+            this.searchData = await response.json();
+            
+            this.searchIndex = lunr(function() {
+                this.field('name', { boost: 10 });
+                this.field('description', { boost: 5 });
+                this.field('module');
+                this.ref('id');
+                
+                this.searchData.forEach(doc => this.add(doc));
+            });
+        } catch (error) {
+            console.error('Failed to build search index:', error);
+        }
+    }
+    
+    performSearch(query) {
+        if (!query.trim() || !this.searchIndex) {
+            $('#search-results').hide();
+            return;
+        }
+        
+        const results = this.searchIndex.search(query);
+        const searchResults = results.map(result => {
+            return this.searchData.find(doc => doc.id === result.ref);
+        }).filter(Boolean);
+        
+        this.renderSearchResults(searchResults);
+    }
+    
+    renderSearchResults(results) {
+        const container = $('#search-results');
+        
+        if (results.length === 0) {
+            container.html('<div class="no-results">No results found</div>').show();
+            return;
+        }
+        
+        let html = '';
+        results.forEach(result => {
+            html += `
+                <div class="search-result" data-module-id="${result.moduleId}" data-function-id="${result.id}">
+                    <h6>${result.name}</h6>
+                    <p class="text-muted">${result.description}</p>
+                    <small class="badge bg-light text-dark">${result.module}</small>
+                </div>
+            `;
+        });
+        
+        container.html(html).show();
+    }
+    
+    showLoading() {
+        $('#main-content').html('<div class="loading-spinner"><i class="fas fa-spinner fa-spin fa-2x"></i><p>Loading...</p></div>');
+    }
+    
+    hideLoading() {
+        $('.loading-spinner').remove();
+    }
+    
+    showError(message) {
+        $('#main-content').html(`<div class="alert alert-danger">${message}</div>`);
+    }
+    
+    updateUrlHash(moduleId) {
+        window.location.hash = `#module-${moduleId}`;
+    }
+    
+    loadInitialContent() {
+        const hash = window.location.hash;
+        if (hash.startsWith('#module-')) {
+            const moduleId = hash.substring(8);
+            this.loadModule(moduleId);
+        } else {
+            // Load welcome content
+            this.loadWelcomeContent();
+        }
+    }
+    
+    loadWelcomeContent() {
+        $('#main-content').html(`
+            <div class="welcome-content">
+                <h1>Enhanced Documentation System</h1>
+                <p class="lead">Welcome to the Unity-Claude Enhanced Documentation System</p>
+                <p>This system provides comprehensive API documentation with intelligent relationship mapping, 
+                   semantic analysis, and advanced search capabilities.</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Modules</h5>
+                                <p class="card-text">Browse documentation for all PowerShell modules</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Search</h5>
+                                <p class="card-text">Use the search bar to find functions and modules quickly</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Security</h5>
+                                <p class="card-text">View security analysis and vulnerability reports</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+    }
+}
+
+// Initialize the application when DOM is ready
+$(document).ready(() => {
+    new DocumentationViewer();
+});
+EOF
+
+# CSS styles
+RUN cat > src/styles.css << 'EOF'
+/* Enhanced Documentation System - Styles */
+
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-color);
+}
+
+#sidebar {
+    background-color: #fff;
+    border-right: 1px solid #dee2e6;
+    height: 100vh;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+}
+
+#sidebar.collapsed {
+    transform: translateX(-100%);
+}
+
+.module-nav-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #f8f9fa;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.module-nav-item:hover {
+    background-color: #f8f9fa;
+}
+
+.module-nav-item.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.module-nav-item i {
+    margin-right: 0.5rem;
+}
+
+#main-content {
+    padding: 2rem;
+    background-color: #fff;
+    margin-left: 0;
+    min-height: 100vh;
+}
+
+.module-header {
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+.module-meta {
+    margin-top: 1rem;
+}
+
+.module-meta .badge {
+    margin-right: 0.5rem;
+}
+
+.function-documentation {
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    background-color: #fff;
+}
+
+.function-documentation h3 {
+    color: var(--primary-color);
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.syntax-block {
+    margin: 1rem 0;
+}
+
+.syntax-block pre {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 1rem;
+}
+
+.parameters-section, .examples-section {
+    margin-top: 1.5rem;
+}
+
+.example {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 0.375rem;
+}
+
+.example pre {
+    margin-bottom: 0.5rem;
+}
+
+.example-description {
+    font-style: italic;
+    color: var(--secondary-color);
+    margin-bottom: 0;
+}
+
+#search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    border-radius: 0 0 0.375rem 0.375rem;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.search-result {
+    padding: 0.75rem;
+    border-bottom: 1px solid #f8f9fa;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.search-result:hover {
+    background-color: #f8f9fa;
+}
+
+.search-result:last-child {
+    border-bottom: none;
+}
+
+.no-results {
+    padding: 1rem;
+    text-align: center;
+    color: var(--secondary-color);
+}
+
+.loading-spinner {
+    text-align: center;
+    padding: 3rem;
+    color: var(--secondary-color);
+}
+
+.loading-spinner i {
+    margin-bottom: 1rem;
+}
+
+.welcome-content {
+    text-align: center;
+    padding: 2rem;
+}
+
+.welcome-content .card {
+    height: 100%;
+    transition: transform 0.2s ease;
+}
+
+.welcome-content .card:hover {
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        position: fixed;
+        z-index: 1050;
+        width: 280px;
+    }
+    
+    #main-content {
+        margin-left: 0;
+    }
+    
+    .sidebar-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1040;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+}
+
+/* Prism.js code highlighting overrides */
+.token.keyword {
+    color: var(--primary-color);
+}
+
+.token.string {
+    color: var(--success-color);
+}
+
+.token.comment {
+    color: var(--secondary-color);
+}
+EOF
+
+# Webpack configuration
+RUN cat > webpack.config.js << 'EOF'
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+    entry: './src/index.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.[contenthash].js',
+        clean: true
+    },
+    module: {
+        rules: [
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader']
+            }
+        ]
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'src/index.html',
+            title: 'Enhanced Documentation System'
+        })
+    ]
+};
+EOF
+
+# HTML template
+RUN mkdir -p src && cat > src/index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Documentation System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        window.DOCS_API_URL = '<%= process.env.DOCS_API_URL || "/api" %>';
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2">
+                <div class="sidebar-header p-3">
+                    <h4>Documentation</h4>
+                    <div class="search-container position-relative">
+                        <input type="text" id="search-input" class="form-control" placeholder="Search...">
+                        <div id="search-results"></div>
+                    </div>
+                </div>
+                <div class="sidebar-content">
+                    <div id="module-navigation"></div>
+                </div>
+            </nav>
+            
+            <!-- Main content -->
+            <main class="col-md-9 col-lg-10">
+                <div class="d-md-none">
+                    <button id="sidebar-toggle" class="btn btn-outline-secondary mb-3">
+                        <i class="fas fa-bars"></i> Toggle Navigation
+                    </button>
+                </div>
+                <div id="main-content">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
+EOF
+
+# Build the frontend
+RUN npm run build
+
+# Final production stage
+FROM base AS production
+
+# Copy built frontend assets
+COPY --from=build-frontend /app/dist /usr/share/nginx/html/
+
+# Create health check endpoint
+RUN echo '{"status":"healthy","service":"docs-web","timestamp":"'$(date -Iseconds)'"}' > /usr/share/nginx/html/health
+
+# Expose port
+EXPOSE 80
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 --start-period=40s \
+    CMD curl -f http://localhost/health || exit 1
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]

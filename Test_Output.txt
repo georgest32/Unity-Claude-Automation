@@ -1,0 +1,1218 @@
+PS C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation> pwsh ./Test-AllRefactoredModules.ps1
+
+========================================
+  REFACTORED MODULES VERIFICATION TEST
+========================================
+
+Test Configuration:
+  - Test Type: Quick
+  - Total Modules: 20
+  - Save Results: False
+
+
+[1/20] Testing Unity-Claude-CPG...✅ LOADING REFACTORED VERSION: Unity-Claude-CPG-Refactored.psm1 with 6 modular components
+📦 Components: DataStructures, BasicOperations, QueryOperations, AnalysisOperations, SerializationOperations + ASTConverter
+✅ LOADING REFACTORED VERSION: Unity-Claude-CPG-Refactored.psm1 with 6 modular components
+📦 Components: DataStructures, BasicOperations, QueryOperations, AnalysisOperations, SerializationOperations + ASTConverter
+ PASS
+    Functions: 1 | Load Time: 123ms | Version: Standard
+[2/20] Testing Unity-Claude-MasterOrchestrator...✅ LOADING REFACTORED VERSION: Unity-Claude-MasterOrchestrator-Refactored.psm1 with 6 modular components
+📦 Components: OrchestratorCore, ModuleIntegration, EventProcessing, DecisionExecution, AutonomousFeedbackLoop, OrchestratorManagement
+Loaded component: OrchestratorCore
+Loaded component: ModuleIntegration
+Loaded component: EventProcessing
+Loaded component: DecisionExecution
+Loaded component: AutonomousFeedbackLoop
+Loaded component: OrchestratorManagement
+✅ LOADING REFACTORED VERSION: Unity-Claude-MasterOrchestrator-Refactored.psm1 with 6 modular components
+📦 Components: OrchestratorCore, ModuleIntegration, EventProcessing, DecisionExecution, AutonomousFeedbackLoop, OrchestratorManagement
+Loaded component: OrchestratorCore
+Loaded component: ModuleIntegration
+Loaded component: EventProcessing
+Loaded component: DecisionExecution
+Loaded component: AutonomousFeedbackLoop
+Loaded component: OrchestratorManagement
+ PASS
+    Functions: 0 | Load Time: 58ms | Version: Standard
+[3/20] Testing SafeCommandExecution...✅ LOADING REFACTORED VERSION: SafeCommandExecution-Refactored.psm1 with 10 modular components
+📦 Components: Core, Runspace, Validation, Execution, Handlers, Unity Build/Project/Analysis/Performance/Reporting
+Loaded component: SafeCommandCore
+Loaded component: RunspaceManagement
+Loaded component: ValidationEngine
+Loaded component: CommandExecution
+Loaded component: CommandTypeHandlers
+Loaded component: UnityBuildOperations
+Loaded component: UnityProjectOperations
+Loaded component: UnityLogAnalysis
+Loaded component: UnityPerformanceAnalysis
+Loaded component: UnityReportingOperations
+Successfully loaded 10/10 components
+✅ LOADING REFACTORED VERSION: SafeCommandExecution-Refactored.psm1 with 10 modular components
+📦 Components: Core, Runspace, Validation, Execution, Handlers, Unity Build/Project/Analysis/Performance/Reporting
+Loaded component: SafeCommandCore
+Loaded component: RunspaceManagement
+Loaded component: ValidationEngine
+Loaded component: CommandExecution
+Loaded component: CommandTypeHandlers
+Loaded component: UnityBuildOperations
+Loaded component: UnityProjectOperations
+Loaded component: UnityLogAnalysis
+Loaded component: UnityPerformanceAnalysis
+Loaded component: UnityReportingOperations
+Successfully loaded 10/10 components
+ PASS
+    Functions: 0 | Load Time: 79ms | Version: Standard
+[4/20] Testing Unity-Claude-UnityParallelization...[Unity-Claude-RunspaceManagement] Loading REFACTORED VERSION (modular)
+WARNING:   [FAILED] Could not load component RunspaceCore.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component SessionStateConfiguration.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ModuleVariablePreloading.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component VariableSharing.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component RunspacePoolManagement.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ProductionRunspacePool.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ThrottlingResourceControl.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[Unity-Claude-RunspaceManagement] Component loading complete:
+  Loaded: 0/7 components
+WARNING:   Failed components: RunspaceCore.psm1, SessionStateConfiguration.psm1, ModuleVariablePreloading.psm1, VariableSharing.psm1, RunspacePoolManagement.psm1, ProductionRunspacePool.psm1, ThrottlingResourceControl.psm1
+WARNING:   Some functionality may be limited
+[Unity-Claude-RunspaceManagement] Loading REFACTORED VERSION (modular)
+WARNING:   [FAILED] Could not load component RunspaceCore.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component SessionStateConfiguration.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ModuleVariablePreloading.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component VariableSharing.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component RunspacePoolManagement.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ProductionRunspacePool.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ThrottlingResourceControl.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[Unity-Claude-RunspaceManagement] Component loading complete:
+  Loaded: 0/7 components
+WARNING:   Failed components: RunspaceCore.psm1, SessionStateConfiguration.psm1, ModuleVariablePreloading.psm1, VariableSharing.psm1, RunspacePoolManagement.psm1, ProductionRunspacePool.psm1, ThrottlingResourceControl.psm1
+WARNING:   Some functionality may be limited
+[Unity-Claude-RunspaceManagement] Loading REFACTORED VERSION (modular)
+WARNING:   [FAILED] Could not load component RunspaceCore.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component SessionStateConfiguration.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\RunspaceCore.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component ModuleVariablePreloading.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\RunspaceCore.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component VariableSharing.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\RunspaceCore.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component RunspacePoolManagement.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\RunspaceCore.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component ProductionRunspacePool.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\RunspaceCore.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component ThrottlingResourceControl.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\RunspaceCore.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+[Unity-Claude-RunspaceManagement] Component loading complete:
+  Loaded: 0/7 components
+WARNING:   Failed components: RunspaceCore.psm1, SessionStateConfiguration.psm1, ModuleVariablePreloading.psm1, VariableSharing.psm1, RunspacePoolManagement.psm1, ProductionRunspacePool.psm1, ThrottlingResourceControl.psm1
+WARNING:   Some functionality may be limited
+[Unity-Claude-RunspaceManagement] Module loaded with 3 functions
+[Unity-Claude-RunspaceManagement] Module loaded with 3 functions
+[Unity-Claude-RunspaceManagement] Module loaded with 3 functions
+[DEBUG] [StatePreservation] Loaded Unity-Claude-RunspaceManagement module
+[2025-08-25 23:31:01.306] [DEBUG] [ParallelProcessing] Loading Unity-Claude-ParallelProcessing module...
+[2025-08-25 23:31:01.307] [SUCCESS] [ParallelProcessing] Unity-Claude-ParallelProcessing module loaded successfully (Synchronized data structures, Status management, Thread-safe operations available)
+[DEBUG] [StatePreservation] Loaded Unity-Claude-ParallelProcessing module
+[2025-08-25 23:31:01.326] [DEBUG] [UnityParallelization] Unity-Claude-UnityParallelization Core module loaded
+[DEBUG] [StatePreservation] Unity-Claude-RunspaceManagement already loaded, preserving state
+[DEBUG] [StatePreservation] Loaded Unity-Claude-ParallelProcessing module
+[2025-08-25 23:31:01.351] [DEBUG] [UnityParallelization] Unity-Claude-UnityParallelization Core module loaded
+[DEBUG] [StatePreservation] Unity-Claude-RunspaceManagement already loaded, preserving state
+[DEBUG] [StatePreservation] Loaded Unity-Claude-ParallelProcessing module
+[2025-08-25 23:31:01.376] [DEBUG] [UnityParallelization] Unity-Claude-UnityParallelization Core module loaded
+[DEBUG] [StatePreservation] Unity-Claude-RunspaceManagement already loaded, preserving state
+[DEBUG] [StatePreservation] Loaded Unity-Claude-ParallelProcessing module
+[2025-08-25 23:31:01.399] [DEBUG] [UnityParallelization] Unity-Claude-UnityParallelization Core module loaded
+[DEBUG] [StatePreservation] Unity-Claude-RunspaceManagement already loaded, preserving state
+[DEBUG] [StatePreservation] Loaded Unity-Claude-ParallelProcessing module
+[2025-08-25 23:31:01.428] [DEBUG] [UnityParallelization] Unity-Claude-UnityParallelization Core module loaded
+[DEBUG] [StatePreservation] Unity-Claude-RunspaceManagement already loaded, preserving state
+[DEBUG] [StatePreservation] Loaded Unity-Claude-ParallelProcessing module
+[2025-08-25 23:31:01.453] [DEBUG] [UnityParallelization] Unity-Claude-UnityParallelization Core module loaded
+[DEBUG] [StatePreservation] Unity-Claude-RunspaceManagement already loaded, preserving state
+[DEBUG] [StatePreservation] Loaded Unity-Claude-ParallelProcessing module
+[2025-08-25 23:31:01.491] [DEBUG] [UnityParallelization] Unity-Claude-UnityParallelization Core module loaded
+[DEBUG] [StatePreservation] Unity-Claude-RunspaceManagement already loaded, preserving state
+[DEBUG] [StatePreservation] Loaded Unity-Claude-ParallelProcessing module
+[2025-08-25 23:31:01.516] [DEBUG] [UnityParallelization] Unity-Claude-UnityParallelization Core module loaded
+WARNING: The names of some imported commands from the module 'ErrorDetection' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+[DEBUG] [StatePreservation] Unity-Claude-RunspaceManagement already loaded, preserving state
+[DEBUG] [StatePreservation] Loaded Unity-Claude-ParallelProcessing module
+[2025-08-25 23:31:01.543] [DEBUG] [UnityParallelization] Unity-Claude-UnityParallelization Core module loaded
+[DEBUG] [StatePreservation] Unity-Claude-RunspaceManagement already loaded, preserving state
+[DEBUG] [StatePreservation] Loaded Unity-Claude-ParallelProcessing module
+[2025-08-25 23:31:01.570] [DEBUG] [UnityParallelization] Unity-Claude-UnityParallelization Core module loaded
+[DEBUG] [StatePreservation] Unity-Claude-RunspaceManagement already loaded, preserving state
+[DEBUG] [StatePreservation] Loaded Unity-Claude-ParallelProcessing module
+[2025-08-25 23:31:01.594] [DEBUG] [UnityParallelization] Unity-Claude-UnityParallelization Core module loaded
+WARNING: The names of some imported commands from the module 'ErrorDetection' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+[DEBUG] [StatePreservation] Unity-Claude-RunspaceManagement already loaded, preserving state
+[DEBUG] [StatePreservation] Loaded Unity-Claude-ParallelProcessing module
+[2025-08-25 23:31:01.619] [DEBUG] [UnityParallelization] Unity-Claude-UnityParallelization Core module loaded
+[DEBUG] [StatePreservation] Unity-Claude-RunspaceManagement already loaded, preserving state
+[DEBUG] [StatePreservation] Loaded Unity-Claude-ParallelProcessing module
+[2025-08-25 23:31:01.643] [DEBUG] [UnityParallelization] Unity-Claude-UnityParallelization Core module loaded
+ FAIL
+    Error: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term 'Initialize-ModuleDependencies' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[5/20] Testing Unity-Claude-IntegratedWorkflow...[Unity-Claude-IntegratedWorkflow] Loading REFACTORED VERSION 2.0.0 with modular components...
+[2025-08-25 23:31:01.676] [DEBUG] [IntegratedWorkflow] [DEBUG] [IntegratedWorkflow] WorkflowCore component loaded successfully
+VERBOSE: IntegratedWorkflow Debug: WorkflowCore component loaded successfully
+  [✓] Loaded component: WorkflowCore.psm1
+[2025-08-25 23:31:01.684] [DEBUG] [IntegratedWorkflow] [DEBUG] [IntegratedWorkflow] WorkflowCore component loaded successfully
+VERBOSE: IntegratedWorkflow Debug: WorkflowCore component loaded successfully
+[2025-08-25 23:31:01.686] [DEBUG] [IntegratedWorkflow] [DEBUG] [IntegratedWorkflow] DependencyManagement component loaded successfully
+VERBOSE: IntegratedWorkflow Debug: DependencyManagement component loaded successfully
+  [✓] Loaded component: DependencyManagement.psm1
+[2025-08-25 23:31:01.693] [DEBUG] [IntegratedWorkflow] [DEBUG] [IntegratedWorkflow] WorkflowCore component loaded successfully
+VERBOSE: IntegratedWorkflow Debug: WorkflowCore component loaded successfully
+[2025-08-25 23:31:01.697] [DEBUG] [IntegratedWorkflow] [DEBUG] [IntegratedWorkflow] WorkflowCore component loaded successfully
+VERBOSE: IntegratedWorkflow Debug: WorkflowCore component loaded successfully
+[2025-08-25 23:31:01.698] [DEBUG] [IntegratedWorkflow] [DEBUG] [IntegratedWorkflow] DependencyManagement component loaded successfully
+VERBOSE: IntegratedWorkflow Debug: DependencyManagement component loaded successfully
+[2025-08-25 23:31:01.699] [DEBUG] [IntegratedWorkflow] [DEBUG] [IntegratedWorkflow] WorkflowOrchestration component loaded successfully
+VERBOSE: IntegratedWorkflow Debug: WorkflowOrchestration component loaded successfully
+  [✓] Loaded component: WorkflowOrchestration.psm1
+[2025-08-25 23:31:01.706] [DEBUG] [IntegratedWorkflow] [DEBUG] [IntegratedWorkflow] WorkflowCore component loaded successfully
+VERBOSE: IntegratedWorkflow Debug: WorkflowCore component loaded successfully
+[2025-08-25 23:31:01.707] [DEBUG] [IntegratedWorkflow] [DEBUG] [IntegratedWorkflow] WorkflowMonitoring component loaded successfully
+VERBOSE: IntegratedWorkflow Debug: WorkflowMonitoring component loaded successfully
+  [✓] Loaded component: WorkflowMonitoring.psm1
+[2025-08-25 23:31:01.728] [DEBUG] [IntegratedWorkflow] [DEBUG] [IntegratedWorkflow] WorkflowCore component loaded successfully
+VERBOSE: IntegratedWorkflow Debug: WorkflowCore component loaded successfully
+[2025-08-25 23:31:01.730] [DEBUG] [IntegratedWorkflow] [DEBUG] [IntegratedWorkflow] PerformanceOptimization component loaded successfully
+VERBOSE: IntegratedWorkflow Debug: PerformanceOptimization component loaded successfully
+  [✓] Loaded component: PerformanceOptimization.psm1
+[2025-08-25 23:31:01.736] [DEBUG] [IntegratedWorkflow] [DEBUG] [IntegratedWorkflow] WorkflowCore component loaded successfully
+VERBOSE: IntegratedWorkflow Debug: WorkflowCore component loaded successfully
+[2025-08-25 23:31:01.737] [DEBUG] [IntegratedWorkflow] [DEBUG] [IntegratedWorkflow] PerformanceAnalysis component loaded successfully
+VERBOSE: IntegratedWorkflow Debug: PerformanceAnalysis component loaded successfully
+  [✓] Loaded component: PerformanceAnalysis.psm1
+
+[Unity-Claude-IntegratedWorkflow] Component Loading Summary:
+  Loaded: 6/6 components
+WARNING: [Unity-Claude-IntegratedWorkflow] Dependency management functions not available - some features may be limited
+[Unity-Claude-IntegratedWorkflow] Loading module (logging function not yet available)...
+ FAIL
+    Error: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term 'Write-IntegratedWorkflowLog' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[6/20] Testing Unity-Claude-Learning...[Unity-Claude-Learning] Loading REFACTORED VERSION 2.0.0 with modular components...
+WARNING:   [✗] Failed to load component: LearningCore.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: DatabaseManagement.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: StringSimilarity.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: ASTAnalysis.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: PatternRecognition.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: SelfPatching.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: SuccessTracking.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: MetricsCollection.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: ConfigurationManagement.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+
+[Unity-Claude-Learning] Component Loading Summary:
+  Loaded: 0/9 components
+WARNING:   Failed components:
+WARNING:     - LearningCore.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - DatabaseManagement.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - StringSimilarity.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - ASTAnalysis.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - PatternRecognition.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - SelfPatching.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - SuccessTracking.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - MetricsCollection.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - ConfigurationManagement.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+[Unity-Claude-Learning] Loading module (logging function not yet available)...
+
+================================================================
+Unity-Claude-Learning Module (REFACTORED)
+================================================================
+Version: 2.0.0 (Modular Architecture)
+Components Loaded: 0/9
+Functions Exported: 0
+Status: PARTIALLY LOADED
+================================================================
+
+[Unity-Claude-Learning] Loading REFACTORED VERSION 2.0.0 with modular components...
+WARNING:   [✗] Failed to load component: LearningCore.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: DatabaseManagement.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: StringSimilarity.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: ASTAnalysis.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: PatternRecognition.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: SelfPatching.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: SuccessTracking.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: MetricsCollection.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:   [✗] Failed to load component: ConfigurationManagement.psm1 - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+
+[Unity-Claude-Learning] Component Loading Summary:
+  Loaded: 0/9 components
+WARNING:   Failed components:
+WARNING:     - LearningCore.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - DatabaseManagement.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - StringSimilarity.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - ASTAnalysis.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - PatternRecognition.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - SelfPatching.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - SuccessTracking.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - MetricsCollection.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+WARNING:     - ConfigurationManagement.psm1: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:2
++ , Write-ModuleLog, Get-LearningConfiguration
++  ~
+Missing expression after unary operator ','.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:3
++ , Write-ModuleLog, Get-LearningConfiguration
++   ~~~~~~~~~~~~~~~
+Unexpected token 'Write-ModuleLog' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-Learning\Core\LearningCore.psm1:209 char:18
++ , Write-ModuleLog, Get-LearningConfiguration
++                  ~
+Missing argument in parameter list.
+[Unity-Claude-Learning] Loading module (logging function not yet available)...
+
+================================================================
+Unity-Claude-Learning Module (REFACTORED)
+================================================================
+Version: 2.0.0 (Modular Architecture)
+Components Loaded: 0/9
+Functions Exported: 0
+Status: PARTIALLY LOADED
+================================================================
+
+ PASS
+    Functions: 0 | Load Time: 488ms | Version: Standard
+[7/20] Testing Unity-Claude-RunspaceManagement...[Unity-Claude-RunspaceManagement] Loading REFACTORED VERSION (modular)
+WARNING:   [FAILED] Could not load component RunspaceCore.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component SessionStateConfiguration.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ModuleVariablePreloading.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component VariableSharing.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component RunspacePoolManagement.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ProductionRunspacePool.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ThrottlingResourceControl.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[Unity-Claude-RunspaceManagement] Component loading complete:
+  Loaded: 0/7 components
+WARNING:   Failed components: RunspaceCore.psm1, SessionStateConfiguration.psm1, ModuleVariablePreloading.psm1, VariableSharing.psm1, RunspacePoolManagement.psm1, ProductionRunspacePool.psm1, ThrottlingResourceControl.psm1
+WARNING:   Some functionality may be limited
+[Unity-Claude-RunspaceManagement] Loading REFACTORED VERSION (modular)
+WARNING:   [FAILED] Could not load component RunspaceCore.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component SessionStateConfiguration.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ModuleVariablePreloading.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component VariableSharing.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component RunspacePoolManagement.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ProductionRunspacePool.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ThrottlingResourceControl.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[Unity-Claude-RunspaceManagement] Component loading complete:
+  Loaded: 0/7 components
+WARNING:   Failed components: RunspaceCore.psm1, SessionStateConfiguration.psm1, ModuleVariablePreloading.psm1, VariableSharing.psm1, RunspacePoolManagement.psm1, ProductionRunspacePool.psm1, ThrottlingResourceControl.psm1
+WARNING:   Some functionality may be limited
+[Unity-Claude-RunspaceManagement] Loading REFACTORED VERSION (modular)
+WARNING:   [FAILED] Could not load component RunspaceCore.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component SessionStateConfiguration.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ModuleVariablePreloading.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component VariableSharing.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component RunspacePoolManagement.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ProductionRunspacePool.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ThrottlingResourceControl.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[Unity-Claude-RunspaceManagement] Component loading complete:
+  Loaded: 0/7 components
+WARNING:   Failed components: RunspaceCore.psm1, SessionStateConfiguration.psm1, ModuleVariablePreloading.psm1, VariableSharing.psm1, RunspacePoolManagement.psm1, ProductionRunspacePool.psm1, ThrottlingResourceControl.psm1
+WARNING:   Some functionality may be limited
+[Unity-Claude-RunspaceManagement] Loading REFACTORED VERSION (modular)
+WARNING:   [FAILED] Could not load component RunspaceCore.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component SessionStateConfiguration.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ModuleVariablePreloading.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component VariableSharing.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component RunspacePoolManagement.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ProductionRunspacePool.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ThrottlingResourceControl.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[Unity-Claude-RunspaceManagement] Component loading complete:
+  Loaded: 0/7 components
+WARNING:   Failed components: RunspaceCore.psm1, SessionStateConfiguration.psm1, ModuleVariablePreloading.psm1, VariableSharing.psm1, RunspacePoolManagement.psm1, ProductionRunspacePool.psm1, ThrottlingResourceControl.psm1
+WARNING:   Some functionality may be limited
+[Unity-Claude-RunspaceManagement] Loading REFACTORED VERSION (modular)
+WARNING:   [FAILED] Could not load component RunspaceCore.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\RunspaceCore.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component SessionStateConfiguration.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\SessionStateConfiguration.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component ModuleVariablePreloading.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\ModuleVariablePreloading.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component VariableSharing.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\VariableSharing.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component RunspacePoolManagement.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\RunspacePoolManagement.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component ProductionRunspacePool.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\ProductionRunspacePool.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component ThrottlingResourceControl.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\ThrottlingResourceControl.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+[Unity-Claude-RunspaceManagement] Component loading complete:
+  Loaded: 0/7 components
+WARNING:   Failed components: RunspaceCore.psm1, SessionStateConfiguration.psm1, ModuleVariablePreloading.psm1, VariableSharing.psm1, RunspacePoolManagement.psm1, ProductionRunspacePool.psm1, ThrottlingResourceControl.psm1
+WARNING:   Some functionality may be limited
+[Unity-Claude-RunspaceManagement] Module loaded with 3 functions
+[Unity-Claude-RunspaceManagement] Module loaded with 3 functions
+[Unity-Claude-RunspaceManagement] Module loaded with 3 functions
+[Unity-Claude-RunspaceManagement] Module loaded with 3 functions
+[Unity-Claude-RunspaceManagement] Module loaded with 3 functions
+[Unity-Claude-RunspaceManagement] Loading REFACTORED VERSION (modular)
+WARNING:   [FAILED] Could not load component RunspaceCore.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component SessionStateConfiguration.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ModuleVariablePreloading.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component VariableSharing.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component RunspacePoolManagement.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ProductionRunspacePool.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ThrottlingResourceControl.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[Unity-Claude-RunspaceManagement] Component loading complete:
+  Loaded: 0/7 components
+WARNING:   Failed components: RunspaceCore.psm1, SessionStateConfiguration.psm1, ModuleVariablePreloading.psm1, VariableSharing.psm1, RunspacePoolManagement.psm1, ProductionRunspacePool.psm1, ThrottlingResourceControl.psm1
+WARNING:   Some functionality may be limited
+[Unity-Claude-RunspaceManagement] Loading REFACTORED VERSION (modular)
+WARNING:   [FAILED] Could not load component RunspaceCore.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component SessionStateConfiguration.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ModuleVariablePreloading.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component VariableSharing.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component RunspacePoolManagement.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ProductionRunspacePool.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ThrottlingResourceControl.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[Unity-Claude-RunspaceManagement] Component loading complete:
+  Loaded: 0/7 components
+WARNING:   Failed components: RunspaceCore.psm1, SessionStateConfiguration.psm1, ModuleVariablePreloading.psm1, VariableSharing.psm1, RunspacePoolManagement.psm1, ProductionRunspacePool.psm1, ThrottlingResourceControl.psm1
+WARNING:   Some functionality may be limited
+[Unity-Claude-RunspaceManagement] Loading REFACTORED VERSION (modular)
+WARNING:   [FAILED] Could not load component RunspaceCore.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component SessionStateConfiguration.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ModuleVariablePreloading.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component VariableSharing.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component RunspacePoolManagement.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ProductionRunspacePool.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ThrottlingResourceControl.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[Unity-Claude-RunspaceManagement] Component loading complete:
+  Loaded: 0/7 components
+WARNING:   Failed components: RunspaceCore.psm1, SessionStateConfiguration.psm1, ModuleVariablePreloading.psm1, VariableSharing.psm1, RunspacePoolManagement.psm1, ProductionRunspacePool.psm1, ThrottlingResourceControl.psm1
+WARNING:   Some functionality may be limited
+[Unity-Claude-RunspaceManagement] Loading REFACTORED VERSION (modular)
+WARNING:   [FAILED] Could not load component RunspaceCore.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component SessionStateConfiguration.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ModuleVariablePreloading.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component VariableSharing.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component RunspacePoolManagement.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ProductionRunspacePool.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+WARNING:   [FAILED] Could not load component ThrottlingResourceControl.psm1 : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term '\' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[Unity-Claude-RunspaceManagement] Component loading complete:
+  Loaded: 0/7 components
+WARNING:   Failed components: RunspaceCore.psm1, SessionStateConfiguration.psm1, ModuleVariablePreloading.psm1, VariableSharing.psm1, RunspacePoolManagement.psm1, ProductionRunspacePool.psm1, ThrottlingResourceControl.psm1
+WARNING:   Some functionality may be limited
+[Unity-Claude-RunspaceManagement] Loading REFACTORED VERSION (modular)
+WARNING:   [FAILED] Could not load component RunspaceCore.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\RunspaceCore.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component SessionStateConfiguration.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\SessionStateConfiguration.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component ModuleVariablePreloading.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\ModuleVariablePreloading.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component VariableSharing.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\VariableSharing.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component RunspacePoolManagement.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\RunspacePoolManagement.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component ProductionRunspacePool.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\ProductionRunspacePool.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+WARNING:   [FAILED] Could not load component ThrottlingResourceControl.psm1 : Cannot load the module 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-RunspaceManagement\Core\ThrottlingResourceControl.psm1' because the module nesting limit has been exceeded. Modules can only be nested to 10 levels. Evaluate and change the order in which you are loading modules to prevent exceeding the nesting limit, and then try running your script again.
+[Unity-Claude-RunspaceManagement] Component loading complete:
+  Loaded: 0/7 components
+WARNING:   Failed components: RunspaceCore.psm1, SessionStateConfiguration.psm1, ModuleVariablePreloading.psm1, VariableSharing.psm1, RunspacePoolManagement.psm1, ProductionRunspacePool.psm1, ThrottlingResourceControl.psm1
+WARNING:   Some functionality may be limited
+[Unity-Claude-RunspaceManagement] Module loaded with 3 functions
+[Unity-Claude-RunspaceManagement] Module loaded with 3 functions
+[Unity-Claude-RunspaceManagement] Module loaded with 3 functions
+[Unity-Claude-RunspaceManagement] Module loaded with 3 functions
+[Unity-Claude-RunspaceManagement] Module loaded with 3 functions
+ PASS
+    Functions: 3 | Load Time: 2915ms | Version: Standard
+[8/20] Testing Unity-Claude-PredictiveAnalysis...WARNING: The names of some imported commands from the module 'RefactoringDetection' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+WARNING: The names of some imported commands from the module 'MaintenancePrediction' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+WARNING: The names of some imported commands from the module 'RefactoringDetection' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+WARNING: The names of some imported commands from the module 'RefactoringDetection' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+WARNING: The names of some imported commands from the module 'CodeSmellPrediction' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+ FAIL
+    Error: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:820 char:48
++         Write-Verbose "Error in DFS for module $ModuleId: $_"
++                                                ~~~~~~~~~~
+Variable reference is not valid. ':' was not followed by a valid variable name character. Consider using ${} to delimit the name.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:857 char:77
++ …        Impact = 'Clients forced to depend on methods they don\'t use'
++                                                                  ~
+Unexpected token 't' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:851 char:29
++                 $flaws += @{
++                             ~
+Missing closing '}' in statement block or type definition.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:1077 char:21
++     'Get-DesignFlaws'
++                     ~
+The string is missing the terminator: '.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:850 char:66
++             if ($publicMethods -and $publicMethods.Count -gt 15) {
++                                                                  ~
+Missing closing '}' in statement block or type definition.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:843 char:13
++         try {
++             ~
+Missing closing '}' in statement block or type definition.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:1080 char:61
++ Write-Verbose "RiskAssessment component loaded successfully"
++                                                             ~
+The Try statement is missing its Catch or Finally block.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:842 char:37
++     foreach ($class in $classNodes) {
++                                     ~
+Missing closing '}' in statement block or type definition.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:827 char:35
++ function Find-InterfaceViolations {
++                                   ~
+Missing closing '}' in statement block or type definition.
+[9/20] Testing Unity-Claude-ObsolescenceDetection...✅ LOADING REFACTORED VERSION: Unity-Claude-CPG-Refactored.psm1 with 6 modular components
+📦 Components: DataStructures, BasicOperations, QueryOperations, AnalysisOperations, SerializationOperations + ASTConverter
+✅ LOADING REFACTORED VERSION: Unity-Claude-CPG-Refactored.psm1 with 6 modular components
+📦 Components: DataStructures, BasicOperations, QueryOperations, AnalysisOperations, SerializationOperations + ASTConverter
+✅ LOADING REFACTORED VERSION: Unity-Claude-CPG-Refactored.psm1 with 6 modular components
+📦 Components: DataStructures, BasicOperations, QueryOperations, AnalysisOperations, SerializationOperations + ASTConverter
+✅ LOADING REFACTORED VERSION: Unity-Claude-CPG-Refactored.psm1 with 6 modular components
+📦 Components: DataStructures, BasicOperations, QueryOperations, AnalysisOperations, SerializationOperations + ASTConverter
+✅ LOADING REFACTORED VERSION: Unity-Claude-CPG-Refactored.psm1 with 6 modular components
+📦 Components: DataStructures, BasicOperations, QueryOperations, AnalysisOperations, SerializationOperations + ASTConverter
+ FAIL
+    Error: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CPG\Core\DocumentationAccuracy.psm1:95 char:74
++ … rbose "Testing accuracy for node $processedNodes/$totalNodes: $($node …
++                                                    ~~~~~~~~~~~~
+Variable reference is not valid. ':' was not followed by a valid variable name character. Consider using ${} to delimit the name.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CPG\Core\DocumentationAccuracy.psm1:237 char:47
++ …                Write-Verbose "Analyzing node $processedNodes: $($node …
++                                                ~~~~~~~~~~~~~~~~
+Variable reference is not valid. ':' was not followed by a valid variable name character. Consider using ${} to delimit the name.
+[10/20] Testing Unity-Claude-AutonomousStateTracker-Enhanced...[StateConfiguration] Loading autonomous state configuration...
+[Enhanced-StateTracker-Refactored] Loading Phase 3 autonomous state management v2.0.0...
+[StateConfiguration] Loading autonomous state configuration...
+[Enhanced-StateTracker] Loaded component: StateConfiguration
+[Enhanced-StateTracker] Loaded component: CoreUtilities
+[Enhanced-StateTracker] Loaded component: StateMachineCore
+[Enhanced-StateTracker] Loaded component: StatePersistence
+[Enhanced-StateTracker] Loaded component: HumanIntervention
+[Enhanced-StateTracker] Loaded component: HealthMonitoring
+[Enhanced-StateTracker-Refactored] Phase 3 autonomous state management v2.0.0 loaded successfully
+[Enhanced-StateTracker-Refactored] Features: Component-based architecture, enhanced orchestration, comprehensive health testing
+[Enhanced-StateTracker-Refactored] Components: 6 modular components (all under 800 lines), improved maintainability
+ FAIL
+    Error: Module imported but not found in session
+[11/20] Testing IntelligentPromptEngine... FAIL
+    Error: The 'guid' member is not valid in the module manifest file 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-AutonomousAgent\IntelligentPromptEngine-Refactored.psd1': Cannot convert value "1b2c3d4e-5f6g-7h8i-9j0k-1l2m3n4o5p6q" to type "System.Guid". Error: "Guid string should only contain hexadecimal characters."
+[12/20] Testing Unity-Claude-DocumentationAutomation...WARNING: The names of some imported commands from the module 'TriggerSystem' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+WARNING: The names of some imported commands from the module 'BackupIntegration' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+ FAIL
+    Error: Module imported but not found in session
+[13/20] Testing Unity-Claude-CLIOrchestrator...WARNING: The names of some imported commands from the module 'PromptSubmissionEngine' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+WARNING: The names of some imported commands from the module 'AutonomousOperations' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+  Searching for Claude Code CLI window...
+    Found Claude info in system_status.json
+    Checking registered PID: 33332
+    Trying stored window handle: 1378720
+    Checking all running processes with windows...
+    Found 17 processes with windows
+    No match for pattern: Claude Code CLI environment
+    No match for pattern: *Claude Code CLI*
+    No match for pattern: *claude*code*cli*
+    No match for pattern: *claude*code*environment*
+    No match for pattern: *Administrator: Windows PowerShell*claude*
+    No match for pattern: *Windows PowerShell*claude*
+    No match for pattern: *PowerShell*claude*code*
+    No match for pattern: *pwsh*claude*
+    No match for pattern: *Terminal*claude*
+    CRITICAL: No suitable windows found!
+    Please ensure the Claude Code CLI window is open and visible
+✅ LOADING REFACTORED VERSION: ResponseAnalysisEngine-Core.psm1 with 3 modular components
+📦 Components: AnalysisLogging, CircuitBreaker, JsonProcessing
+Loaded component: AnalysisLogging
+Loaded component: CircuitBreaker
+Loaded component: JsonProcessing
+WARNING: The names of some imported commands from the module 'EntityContextEngine' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+WARNING: The names of some imported commands from the module 'ResponseClassificationEngine' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+WARNING: The names of some imported commands from the module 'BayesianConfidenceEngine' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+All pattern recognition sub-modules imported successfully
+[WARN] Loading DecisionEngine.psm1 (MONOLITHIC VERSION - Consider using DecisionEngine-Refactored.psm1)
+[2025-08-25 23:31:10.574] [SUCCESS] [DecisionEngine] DecisionEngine module loaded successfully
+[2025-08-25 23:31:10.577] [INFO] [DecisionEngine] Configuration: 7 decision types, 10 max queue size
+WARNING: The names of some imported commands from the module 'PromptSubmissionEngine' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+WARNING: The names of some imported commands from the module 'AutonomousOperations' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+  Searching for Claude Code CLI window...
+    Found Claude info in system_status.json
+    Checking registered PID: 33332
+    Trying stored window handle: 1378720
+    Checking all running processes with windows...
+    Found 17 processes with windows
+    No match for pattern: Claude Code CLI environment
+    No match for pattern: *Claude Code CLI*
+    No match for pattern: *claude*code*cli*
+    No match for pattern: *claude*code*environment*
+    No match for pattern: *Administrator: Windows PowerShell*claude*
+    No match for pattern: *Windows PowerShell*claude*
+    No match for pattern: *PowerShell*claude*code*
+    No match for pattern: *pwsh*claude*
+    No match for pattern: *Terminal*claude*
+    CRITICAL: No suitable windows found!
+    Please ensure the Claude Code CLI window is open and visible
+ PASS
+    Functions: 17 | Load Time: 2510ms | Version: REFACTORED
+[14/20] Testing Unity-Claude-ScalabilityEnhancements...WARNING: The names of some imported commands from the module 'PaginationProvider' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+WARNING: The names of some imported commands from the module 'ProgressTracker' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+WARNING: The names of some imported commands from the module 'MemoryManager' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+WARNING: The names of some imported commands from the module 'HorizontalScaling' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+WARNING: The names of some imported commands from the module 'Unity-Claude-ScalabilityEnhancements-Refactored' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+ FAIL
+    Error: Module imported but not found in session
+[15/20] Testing DecisionEngine... FAIL
+    Error: Module manifest not found at: System.Collections.Hashtable.Path
+[16/20] Testing DecisionEngine-Bayesian... FAIL
+    Error: Module manifest not found at: System.Collections.Hashtable.Path
+[17/20] Testing Unity-Claude-HITL...REFACTORED VERSION - Unity-Claude-HITL module initializing...
+Unity-Claude-HITL (REFACTORED) module loaded successfully.
+📦 Components: 6 | Functions: 26 | Architecture: Modular
+REFACTORED VERSION - Unity-Claude-HITL module initializing...
+Unity-Claude-HITL (REFACTORED) module loaded successfully.
+📦 Components: 6 | Functions: 26 | Architecture: Modular
+ PASS
+    Functions: 3 | Load Time: 70ms | Version: Standard
+[18/20] Testing Unity-Claude-ParallelProcessor...Unity-Claude-ParallelProcessor (Refactored v2.0.0-Refactored) - Modular parallel processing framework
+Unity-Claude-ParallelProcessor (Refactored v2.0.0-Refactored) - Modular parallel processing framework
+ PASS
+    Functions: 1 | Load Time: 216ms | Version: Standard
+[19/20] Testing Unity-Claude-PerformanceOptimizer...[Unity-Claude-PerformanceOptimizer] Loading REFACTORED modular version
+Unity-Claude-ParallelProcessor (Refactored v2.0.0-Refactored) - Modular parallel processing framework
+✅ LOADING REFACTORED VERSION: Unity-Claude-CPG-Refactored.psm1 with 6 modular components
+📦 Components: DataStructures, BasicOperations, QueryOperations, AnalysisOperations, SerializationOperations + ASTConverter
+[Unity-Claude-PerformanceOptimizer] Loading REFACTORED modular version
+Unity-Claude-ParallelProcessor (Refactored v2.0.0-Refactored) - Modular parallel processing framework
+✅ LOADING REFACTORED VERSION: Unity-Claude-CPG-Refactored.psm1 with 6 modular components
+📦 Components: DataStructures, BasicOperations, QueryOperations, AnalysisOperations, SerializationOperations + ASTConverter
+ PASS
+    Functions: 9 | Load Time: 354ms | Version: Standard
+[20/20] Testing Unity-Claude-DecisionEngine...[DecisionEngine] Loading REFACTORED version with modular components
+[DecisionEngine] Components: DecisionEngineCore, ResponseAnalysis, DecisionMaking, IntegrationManagement
+[INFO] Unity-Claude-ResponseMonitor module loading
+[INFO] Unity-Claude-ResponseMonitor module loaded successfully
+[INFO] Attempting to connect to IntelligentPromptEngine
+WARNING: Required module 'IntelligentPromptEngine' not loaded
+[INFO] Attempting to connect to ConversationStateManager
+WARNING: Required module 'ConversationStateManager' not loaded
+[DecisionEngine] Module loaded successfully with 33 functions
+[DecisionEngine] Loading REFACTORED version with modular components
+[DecisionEngine] Components: DecisionEngineCore, ResponseAnalysis, DecisionMaking, IntegrationManagement
+[INFO] Unity-Claude-ResponseMonitor module loading
+[INFO] Unity-Claude-ResponseMonitor module loaded successfully
+[INFO] Attempting to connect to IntelligentPromptEngine
+WARNING: Required module 'IntelligentPromptEngine' not loaded
+[INFO] Attempting to connect to ConversationStateManager
+WARNING: Required module 'ConversationStateManager' not loaded
+[DecisionEngine] Module loaded successfully with 33 functions
+ PASS
+    Functions: 4 | Load Time: 103ms | Version: Standard
+
+========================================
+           TEST SUMMARY
+========================================
+
+Results:
+  Total Modules: 20
+  Successful: 10
+  Failed: 10
+  Success Rate: 50%
+
+Failed Modules:
+  - Unity-Claude-UnityParallelization: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term 'Initialize-ModuleDependencies' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+  - Unity-Claude-IntegratedWorkflow: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The term 'Write-IntegratedWorkflowLog' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+  - Unity-Claude-PredictiveAnalysis: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:820 char:48
++         Write-Verbose "Error in DFS for module $ModuleId: $_"
++                                                ~~~~~~~~~~
+Variable reference is not valid. ':' was not followed by a valid variable name character. Consider using ${} to delimit the name.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:857 char:77
++ …        Impact = 'Clients forced to depend on methods they don\'t use'
++                                                                  ~
+Unexpected token 't' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:851 char:29
++                 $flaws += @{
++                             ~
+Missing closing '}' in statement block or type definition.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:1077 char:21
++     'Get-DesignFlaws'
++                     ~
+The string is missing the terminator: '.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:850 char:66
++             if ($publicMethods -and $publicMethods.Count -gt 15) {
++                                                                  ~
+Missing closing '}' in statement block or type definition.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:843 char:13
++         try {
++             ~
+Missing closing '}' in statement block or type definition.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:1080 char:61
++ Write-Verbose "RiskAssessment component loaded successfully"
++                                                             ~
+The Try statement is missing its Catch or Finally block.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:842 char:37
++     foreach ($class in $classNodes) {
++                                     ~
+Missing closing '}' in statement block or type definition.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-PredictiveAnalysis\Core\RiskAssessment.psm1:827 char:35
++ function Find-InterfaceViolations {
++                                   ~
+Missing closing '}' in statement block or type definition.
+  - Unity-Claude-ObsolescenceDetection: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CPG\Core\DocumentationAccuracy.psm1:95 char:74
++ … rbose "Testing accuracy for node $processedNodes/$totalNodes: $($node …
++                                                    ~~~~~~~~~~~~
+Variable reference is not valid. ':' was not followed by a valid variable name character. Consider using ${} to delimit the name.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CPG\Core\DocumentationAccuracy.psm1:237 char:47
++ …                Write-Verbose "Analyzing node $processedNodes: $($node …
++                                                ~~~~~~~~~~~~~~~~
+Variable reference is not valid. ':' was not followed by a valid variable name character. Consider using ${} to delimit the name.
+  - Unity-Claude-AutonomousStateTracker-Enhanced: Module imported but not found in session
+  - IntelligentPromptEngine: The 'guid' member is not valid in the module manifest file 'C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-AutonomousAgent\IntelligentPromptEngine-Refactored.psd1': Cannot convert value "1b2c3d4e-5f6g-7h8i-9j0k-1l2m3n4o5p6q" to type "System.Guid". Error: "Guid string should only contain hexadecimal characters."
+  - Unity-Claude-DocumentationAutomation: Module imported but not found in session
+  - Unity-Claude-ScalabilityEnhancements: Module imported but not found in session
+  - DecisionEngine: Module manifest not found at: System.Collections.Hashtable.Path
+  - DecisionEngine-Bayesian: Module manifest not found at: System.Collections.Hashtable.Path
+
+Modules Not Using Refactored Version:
+  - Unity-Claude-CPG
+  - Unity-Claude-MasterOrchestrator
+  - SafeCommandExecution
+  - Unity-Claude-Learning
+  - Unity-Claude-RunspaceManagement
+  - Unity-Claude-HITL
+  - Unity-Claude-ParallelProcessor
+  - Unity-Claude-PerformanceOptimizer
+  - Unity-Claude-DecisionEngine
+
+✗ SOME MODULES FAILED - REVIEW REQUIRED
+
+========================================
+
+False

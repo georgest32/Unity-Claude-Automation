@@ -1,0 +1,333 @@
+=== WEEK 2 DAY 3 SEMANTIC ANALYSIS TEST SUITE ===
+Testing pattern detection and quality metrics implementations
+
+=== POWERSHELL ENVIRONMENT INFORMATION ===
+PowerShell Version: 5.1.22621.5697
+PowerShell Edition: Desktop
+PowerShell Host: ConsoleHost
+Operating System: 
+Platform: 
+Execution Policy: Restricted
+Debug Preference: SilentlyContinue
+Debug Preference: Continue
+
+=== LOADING SEMANTIC ANALYSIS MODULES ===
+DEBUG: [TEST] Starting: Load PatternDetector module
+[PASS] Load PatternDetector module
+DEBUG: [TEST] Starting: Load Metrics module
+[PASS] Load Metrics module
+
+=== TESTING PATTERN DETECTION FUNCTIONS ===
+DEBUG: [TEST] Starting: PowerShell 5.1 function syntax validation
+DEBUG: [TEST] Testing simple function syntax with PowerShell 5.1.22621.5697
+DEBUG: [TEST] Function content: function Get-TestInstance {
+    param()
+    if (-not $script:Instance) {
+        $script:Instance = "TestInstance"
+    }
+    return $script:Instance
+}
+
+function New-TestObject {
+    param([string] $Type)
+    return @{ Type = $Type; Created = Get-Date }
+}
+DEBUG: [TEST] Direct AST parsing successful - nodes: 39
+[PASS] PowerShell 5.1 function syntax validation
+DEBUG: [TEST] Starting: PowerShell AST parsing functionality
+DEBUG: [TEST] File-based AST test - PowerShell Version: 5.1.22621.5697
+DEBUG: [TEST] Content to write: class TestSingleton {
+    hidden static [TestSingleton] $Instance
+    
+    hidden TestSingleton() {}
+    
+    static [TestSingleton] GetInstance() {
+        if (-not [TestSingleton]::Instance) {
+            [TestSingleton]::Instance = [TestSingleton]::new()
+        }
+        return [TestSingleton]::Instance
+    }
+}
+DEBUG: [TEST] File written successfully, size: 329 bytes
+DEBUG: [TEST] File content matches: False
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestClass.ps1
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestClass.ps1 - AST nodes: 39
+DEBUG: [TEST] AST Result: AST=True, ParseErrors=0
+[PASS] PowerShell AST parsing functionality
+DEBUG: [TEST] Starting: PowerShell 5.1 compatible pattern detection
+DEBUG: [TEST] Testing PowerShell 5.1 compatible pattern detection
+DEBUG: [PATTERN] PS5.1 - Starting function-based pattern detection for: dummy.ps1
+DEBUG: [PATTERN] PS5.1 - Testing with simple function syntax instead of classes
+DEBUG: [AST] PS5.1 Compatible - Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestFunctions.ps1
+DEBUG: [AST] PS5.1 - Content length: 409 characters
+DEBUG: [AST] PS5.1 - PowerShell Version: 5.1.22621.5697
+DEBUG: [AST] PS5.1 - Successfully parsed C:\Users\georg\AppData\Local\Temp\TestFunctions.ps1 - AST nodes: 72
+DEBUG: [AST] PS5.1 - Finding function definitions using function-based approach
+DEBUG: [AST] PS5.1 - Found function: Get-TestInstance at lines 1-7
+DEBUG: [AST] PS5.1 - Found function: New-TestObject at lines 9-16
+DEBUG: [PATTERN] PS5.1 - Found 2 functions for analysis
+DEBUG: [PATTERN] PS5.1 - Testing Singleton pattern for function-based analysis
+DEBUG: [PATTERN] PS5.1 - Found singleton-like function: 
+DEBUG: [PATTERN] PS5.1 - Found instance-like variable usage
+DEBUG: [PATTERN] PS5.1 - Singleton pattern confidence: 1
+DEBUG: [PATTERN] Created function-based pattern match for Singleton at Function-based analysis with 100% confidence
+DEBUG: [PATTERN] PS5.1 - Detected Singleton with confidence 1
+DEBUG: [PATTERN] PS5.1 - Pattern detection complete: 1 patterns detected
+DEBUG: [TEST] Pattern detection completed, found 8 patterns
+[PASS] PowerShell 5.1 compatible pattern detection
+DEBUG: [TEST] Starting: Factory pattern detection
+DEBUG: [PATTERN] Starting pattern detection for: C:\Users\georg\AppData\Local\Temp\TestFactory.ps1
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestFactory.ps1
+WARNING: [AST] Parse errors found in C:\Users\georg\AppData\Local\Temp\TestFactory.ps1
+DEBUG: [AST] PowerShell Version: 5.1.22621.5697 Edition: Desktop
+DEBUG: [AST] File content length: 418 characters
+DEBUG: [AST] First 200 characters of content: class CarFactory {
+    static [object] CreateCar([string] $type) {
+        switch ($type) {
+            "Sedan" { return [Sedan]::new() }
+            "SUV" { return [SUV]::new() }
+            def
+DEBUG: [AST] Parse error: Unable to find type [Vehicle]. at line 11 column 17
+DEBUG: [AST] Error extent: Vehicle
+DEBUG: [AST] Parse error: Not all code path returns value within method. at line 2 column 21
+DEBUG: [AST] Error extent: CreateCar
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestFactory.ps1 - AST nodes: 58
+DEBUG: [AST] Finding class definitions in AST
+DEBUG: [AST] Found class: CarFactory with 2 methods, 0 properties
+DEBUG: [AST] Found class: Car with 0 methods, 0 properties
+DEBUG: [AST] Found class: Sedan with 0 methods, 0 properties
+DEBUG: [AST] Found class: SUV with 0 methods, 0 properties
+DEBUG: [AST] Finding function definitions in AST
+DEBUG: [AST] Found function: CreateCar at lines 2-8
+DEBUG: [AST] Found function: NewVehicle at lines 10-12
+DEBUG: [PATTERN] Found 4 classes and 2 functions
+DEBUG: [PATTERN] Analyzing class: CarFactory
+DEBUG: [PATTERN] Testing Factory pattern for class: CarFactory
+DEBUG: [PATTERN] Factory: Found 2 creation methods
+DEBUG: [PATTERN] Factory: Found polymorphic return patterns
+DEBUG: [PATTERN] Created pattern match for Factory at CarFactory with 69.9999988079071% confidence
+DEBUG: [PATTERN] Detected Factory pattern in CarFactory with confidence 0.7
+DEBUG: [PATTERN] Analyzing class: Car
+DEBUG: [PATTERN] Testing Factory pattern for class: Car
+DEBUG: [PATTERN] Created pattern match for Factory at Car with 0% confidence
+DEBUG: [PATTERN] Analyzing class: Sedan
+DEBUG: [PATTERN] Testing Factory pattern for class: Sedan
+DEBUG: [PATTERN] Created pattern match for Factory at Sedan with 0% confidence
+DEBUG: [PATTERN] Analyzing class: SUV
+DEBUG: [PATTERN] Testing Factory pattern for class: SUV
+DEBUG: [PATTERN] Created pattern match for Factory at SUV with 0% confidence
+DEBUG: [PATTERN] Pattern detection complete: 1 patterns detected
+[PASS] Factory pattern detection
+
+=== TESTING QUALITY METRICS FUNCTIONS ===
+DEBUG: [TEST] Starting: CHM cohesion calculation
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestCohesion.ps1
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestCohesion.ps1 - AST nodes: 94
+DEBUG: [AST] Finding class definitions in AST
+DEBUG: [AST] Found class: Calculator with 4 methods, 0 properties
+WARNING: [CHM] Null ClassInfo parameter received - returning default cohesion value
+[PASS] CHM cohesion calculation
+DEBUG: [TEST] Starting: CHD domain cohesion calculation
+DEBUG: [METRICS] Calculating CHD (Cohesion at Domain Level) for module with 5 functions
+DEBUG: [METRICS] CHD calculated: 0.8 (Domain: 4/5, Entropy: 1.186)
+[PASS] CHD domain cohesion calculation
+DEBUG: [TEST] Starting: CBO coupling analysis
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestCoupling.ps1
+WARNING: [AST] Parse errors found in C:\Users\georg\AppData\Local\Temp\TestCoupling.ps1
+DEBUG: [AST] PowerShell Version: 5.1.22621.5697 Edition: Desktop
+DEBUG: [AST] File content length: 443 characters
+DEBUG: [AST] First 200 characters of content: class OrderService {
+    [Customer] $customer
+    [PaymentProcessor] $paymentProcessor
+    
+    [bool] ProcessOrder([Order] $order) {
+        $customer = [Customer]::new()
+        $processor = [
+DEBUG: [AST] Parse error: Unable to find type [Order]. at line 5 column 26
+DEBUG: [AST] Error extent: Order
+DEBUG: [AST] Parse error: Cannot assign property, use '$this.customer'. at line 6 column 9
+DEBUG: [AST] Error extent: $customer
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestCoupling.ps1 - AST nodes: 52
+DEBUG: [AST] Finding class definitions in AST
+DEBUG: [AST] Found class: OrderService with 1 methods, 2 properties
+DEBUG: [AST] Found class: Customer with 0 methods, 1 properties
+DEBUG: [AST] Found class: PaymentProcessor with 1 methods, 0 properties
+DEBUG: [METRICS] Calculating CBO (Coupling Between Objects) for class: OrderService
+DEBUG: [METRICS] CBO: Found efferent coupling to Customer
+DEBUG: [METRICS] CBO: Found efferent coupling to PaymentProcessor
+DEBUG: [METRICS] CBO completed: Total=2, Efferent=2, Afferent=0, Instability=1
+[PASS] CBO coupling analysis
+DEBUG: [TEST] Starting: Enhanced Maintainability Index
+DEBUG: [METRICS] Calculating Enhanced Maintainability Index
+DEBUG: [METRICS] Maintainability Index: Standard=83, Enhanced=89
+[PASS] Enhanced Maintainability Index
+DEBUG: [TEST] Starting: Comprehensive quality analysis
+DEBUG: [METRICS] Starting comprehensive quality analysis for: C:\Users\georg\AppData\Local\Temp\TestQuality.ps1
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestQuality.ps1
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestQuality.ps1 - AST nodes: 105
+DEBUG: [AST] Finding class definitions in AST
+DEBUG: [AST] Found class: DataManager with 3 methods, 2 properties
+DEBUG: [AST] Finding function definitions in AST
+DEBUG: [AST] Found function: DataManager at lines 5-8
+DEBUG: [AST] Found function: GetData at lines 10-17
+DEBUG: [AST] Found function: FetchFromDatabase at lines 19-21
+DEBUG: [AST] Found function: ClearCache at lines 23-25
+DEBUG: [AST] Found function: Get-DataManagerInstance at lines 28-30
+DEBUG: [METRICS] Analysis scope: 8 classes, 5 functions
+DEBUG: [METRICS] Analyzing class: DataManager
+DEBUG: [METRICS] Calculating CHM (Cohesion at Message Level) for class: DataManager
+DEBUG: [METRICS] CHM: Analyzing method GetData for internal calls
+DEBUG: [METRICS] CHM: Found 1 explicit 'this' calls and 1 potential internal calls
+DEBUG: [METRICS] CHM: Found confirmed internal method call from GetData to FetchFromDatabase via 'this'
+DEBUG: [METRICS] CHM: Analyzing method FetchFromDatabase for internal calls
+DEBUG: [METRICS] CHM: Found 0 explicit 'this' calls and 0 potential internal calls
+DEBUG: [METRICS] CHM: Analyzing method ClearCache for internal calls
+DEBUG: [METRICS] CHM: Found 0 explicit 'this' calls and 1 potential internal calls
+DEBUG: [METRICS] CHM calculated: 0.333 (Internal: 1, Total: 3)
+DEBUG: [METRICS] Calculating LCOM (Lack of Cohesion in Methods) for class: DataManager
+DEBUG: [METRICS] LCOM: Method GetData accesses property cache
+DEBUG: [METRICS] LCOM: Method GetData accesses property FetchFromDatabase
+DEBUG: [METRICS] LCOM: Method ClearCache accesses property cache
+DEBUG: [METRICS] LCOM: Methods GetData and ClearCache share 1 attributes
+DEBUG: [METRICS] LCOM calculated: 1 (normalized: 0.333) from 3 method pairs
+DEBUG: [METRICS] Calculating CBO (Coupling Between Objects) for class: DataManager
+DEBUG: [METRICS] CBO completed: Total=0, Efferent=0, Afferent=0, Instability=0
+DEBUG: [METRICS] Calculating Enhanced Maintainability Index
+DEBUG: [METRICS] Maintainability Index: Standard=81, Enhanced=91
+DEBUG: [METRICS] Calculating CHD (Cohesion at Domain Level) for module with 5 functions
+DEBUG: [METRICS] CHD calculated: 0.2 (Domain: 1/5, Entropy: 0)
+DEBUG: [METRICS] Quality analysis complete for C:\Users\georg\AppData\Local\Temp\TestQuality.ps1 in 0.066363 seconds
+[PASS] Comprehensive quality analysis
+
+=== TESTING CONFIGURATION AND UTILITIES ===
+DEBUG: [TEST] Starting: Pattern detection configuration
+DEBUG: [PATTERN] Updated confidence thresholds
+DEBUG: [PATTERN] Debug logging enabled: True
+[PASS] Pattern detection configuration
+DEBUG: [TEST] Starting: Quality metrics configuration
+DEBUG: [METRICS] Detailed logging enabled: True
+[PASS] Quality metrics configuration
+
+=== TESTING INTEGRATION WITH EXISTING INFRASTRUCTURE ===
+DEBUG: [TEST] Starting: CPG infrastructure integration
+[2025-08-28 15:52:00.105] [INFO] [Module] Loading Unified CPG Module
+[2025-08-28 15:52:00.106] [DEBUG] [Init] Initializing module-level variables
+[2025-08-28 15:52:00.108] [SUCCESS] [Init] Module variables initialized successfully
+[2025-08-28 15:52:00.110] [DEBUG] [TypeDef] Defining CPGNodeType enumeration
+[2025-08-28 15:52:00.110] [DEBUG] [TypeDef] Defining CPGNode class
+[2025-08-28 15:52:00.111] [DEBUG] [TypeDef] Defining DataFlowEdge class (inherits from CPGEdge)
+[2025-08-28 15:52:00.111] [DEBUG] [Factory] Defining factory function: New-CPGNode
+[2025-08-28 15:52:00.111] [DEBUG] [Factory] Defining factory function: New-DataFlowEdge
+[2025-08-28 15:52:00.112] [DEBUG] [Factory] Defining factory function: New-CPGraph
+[2025-08-28 15:52:00.114] [INFO] [Module] Exporting module members
+[2025-08-28 15:52:00.114] [SUCCESS] [Module] Unified CPG Module loaded successfully
+[2025-08-28 15:52:00.115] [INFO] [Module] Total types defined: 8 classes, 4 enumerations
+[2025-08-28 15:52:00.115] [INFO] [Module] Total functions exported: 12
+[PASS] CPG infrastructure integration
+DEBUG: [TEST] Starting: Error handling with invalid input
+DEBUG: [AST] Parsing PowerShell file: C:\NonExistent\File.ps1
+[PASS] Error handling with invalid input
+DEBUG: [TEST] Starting: Performance with simulated large codebase
+DEBUG: [PATTERN] Starting pattern detection for: C:\Users\georg\AppData\Local\Temp\TestPerf1.ps1
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestPerf1.ps1
+WARNING: [AST] Parse errors found in C:\Users\georg\AppData\Local\Temp\TestPerf1.ps1
+DEBUG: [AST] PowerShell Version: 5.1.22621.5697 Edition: Desktop
+DEBUG: [AST] File content length: 120 characters
+DEBUG: [AST] First 200 characters of content: class TestClass$i {
+    [string] $property$i
+    
+    [void] Method$i() {
+        Write-Host "Method $i"
+    }
+}
+DEBUG: [AST] Parse error: Missing 'class' body in 'class' declaration. at line 1 column 16
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Unexpected token '{' in expression or statement. at line 1 column 19
+DEBUG: [AST] Error extent: {
+DEBUG: [AST] Parse error: Unexpected token '$i' in expression or statement. at line 2 column 23
+DEBUG: [AST] Error extent: $i
+DEBUG: [AST] Parse error: Unexpected token 'Method$i' in expression or statement. at line 4 column 12
+DEBUG: [AST] Error extent: Method$i
+DEBUG: [AST] Parse error: An expression was expected after '('. at line 4 column 21
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestPerf1.ps1 - AST nodes: 35
+DEBUG: [AST] Finding class definitions in AST
+DEBUG: [AST] Finding function definitions in AST
+DEBUG: [PATTERN] Found 0 classes and 0 functions
+DEBUG: [PATTERN] Pattern detection complete: 0 patterns detected
+DEBUG: [PATTERN] Starting pattern detection for: C:\Users\georg\AppData\Local\Temp\TestPerf2.ps1
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestPerf2.ps1
+WARNING: [AST] Parse errors found in C:\Users\georg\AppData\Local\Temp\TestPerf2.ps1
+DEBUG: [AST] PowerShell Version: 5.1.22621.5697 Edition: Desktop
+DEBUG: [AST] File content length: 120 characters
+DEBUG: [AST] First 200 characters of content: class TestClass$i {
+    [string] $property$i
+    
+    [void] Method$i() {
+        Write-Host "Method $i"
+    }
+}
+DEBUG: [AST] Parse error: Missing 'class' body in 'class' declaration. at line 1 column 16
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Unexpected token '{' in expression or statement. at line 1 column 19
+DEBUG: [AST] Error extent: {
+DEBUG: [AST] Parse error: Unexpected token '$i' in expression or statement. at line 2 column 23
+DEBUG: [AST] Error extent: $i
+DEBUG: [AST] Parse error: Unexpected token 'Method$i' in expression or statement. at line 4 column 12
+DEBUG: [AST] Error extent: Method$i
+DEBUG: [AST] Parse error: An expression was expected after '('. at line 4 column 21
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestPerf2.ps1 - AST nodes: 35
+DEBUG: [AST] Finding class definitions in AST
+DEBUG: [AST] Finding function definitions in AST
+DEBUG: [PATTERN] Found 0 classes and 0 functions
+DEBUG: [PATTERN] Pattern detection complete: 0 patterns detected
+DEBUG: [PATTERN] Starting pattern detection for: C:\Users\georg\AppData\Local\Temp\TestPerf3.ps1
+DEBUG: [AST] Parsing PowerShell file: C:\Users\georg\AppData\Local\Temp\TestPerf3.ps1
+WARNING: [AST] Parse errors found in C:\Users\georg\AppData\Local\Temp\TestPerf3.ps1
+DEBUG: [AST] PowerShell Version: 5.1.22621.5697 Edition: Desktop
+DEBUG: [AST] File content length: 120 characters
+DEBUG: [AST] First 200 characters of content: class TestClass$i {
+    [string] $property$i
+    
+    [void] Method$i() {
+        Write-Host "Method $i"
+    }
+}
+DEBUG: [AST] Parse error: Missing 'class' body in 'class' declaration. at line 1 column 16
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Parse error: Unexpected token '{' in expression or statement. at line 1 column 19
+DEBUG: [AST] Error extent: {
+DEBUG: [AST] Parse error: Unexpected token '$i' in expression or statement. at line 2 column 23
+DEBUG: [AST] Error extent: $i
+DEBUG: [AST] Parse error: Unexpected token 'Method$i' in expression or statement. at line 4 column 12
+DEBUG: [AST] Error extent: Method$i
+DEBUG: [AST] Parse error: An expression was expected after '('. at line 4 column 21
+DEBUG: [AST] Error extent: 
+DEBUG: [AST] Successfully parsed C:\Users\georg\AppData\Local\Temp\TestPerf3.ps1 - AST nodes: 35
+DEBUG: [AST] Finding class definitions in AST
+DEBUG: [AST] Finding function definitions in AST
+DEBUG: [PATTERN] Found 0 classes and 0 functions
+DEBUG: [PATTERN] Pattern detection complete: 0 patterns detected
+[PASS] Performance with simulated large codebase
+
+=== TEST SUMMARY ===
+Total Tests: 16
+Passed: 16
+Failed: 0
+Success Rate: 100%
+Duration: 1.18 seconds
+
+Detailed results saved to: Week2Day3-SemanticAnalysis-TestResults-20250828-155159.json
+
+=== IMPLEMENTATION ACHIEVEMENTS ===
+1. AST-based pattern detection with confidence scoring
+2. Custom CHM/CHD cohesion metrics implementation
+3. Enhanced maintainability index with cohesion/coupling integration
+4. Comprehensive quality analysis framework
+5. Integration with existing CPG infrastructure
+
+[SUCCESS] Achieved 95%+ pass rate - Week 2 Day 3 implementation validated!
+
+Week 2 Day 3 Semantic Analysis implementation complete.
+Ready to proceed with Week 2 Day 4-5: D3.js Visualization Foundation

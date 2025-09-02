@@ -1,0 +1,155 @@
+{
+  "TestType": "All",
+  "Duration": 13.0417886,
+  "TotalTests": 16,
+  "Timestamp": "2025-08-23 18:43:36",
+  "Failed": 1,
+  "Details": [
+    {
+      "StartTime": "2025-08-23T18:43:36.2508281-04:00",
+      "Category": "Unit",
+      "Error": null,
+      "EndTime": "2025-08-23T18:43:36.2512403-04:00",
+      "Duration": 0.4122,
+      "Status": "Passed",
+      "Name": "Initialize-MessageQueue"
+    },
+    {
+      "StartTime": "2025-08-23T18:43:36.2515604-04:00",
+      "Category": "Unit",
+      "Error": null,
+      "EndTime": "2025-08-23T18:43:36.2519526-04:00",
+      "Duration": 0.3922,
+      "Status": "Passed",
+      "Name": "Add-MessageToQueue"
+    },
+    {
+      "StartTime": "2025-08-23T18:43:36.2523-04:00",
+      "Category": "Unit",
+      "Error": null,
+      "EndTime": "2025-08-23T18:43:36.2533989-04:00",
+      "Duration": 1.0989,
+      "Status": "Passed",
+      "Name": "Get-MessageFromQueue"
+    },
+    {
+      "StartTime": "2025-08-23T18:43:36.2634666-04:00",
+      "Category": "Unit",
+      "Error": null,
+      "EndTime": "2025-08-23T18:43:36.2638466-04:00",
+      "Duration": 0.38,
+      "Status": "Passed",
+      "Name": "Initialize-CircuitBreaker"
+    },
+    {
+      "StartTime": "2025-08-23T18:43:36.2641463-04:00",
+      "Category": "Unit",
+      "Error": null,
+      "EndTime": "2025-08-23T18:43:36.2645368-04:00",
+      "Duration": 0.3905,
+      "Status": "Passed",
+      "Name": "CircuitBreaker-Success"
+    },
+    {
+      "StartTime": "2025-08-23T18:43:36.2648476-04:00",
+      "Category": "Unit",
+      "Error": null,
+      "EndTime": "2025-08-23T18:43:36.2657435-04:00",
+      "Duration": 0.8959,
+      "Status": "Passed",
+      "Name": "CircuitBreaker-FailureHandling"
+    },
+    {
+      "StartTime": "2025-08-23T18:43:36.2660771-04:00",
+      "Category": "Unit",
+      "Error": null,
+      "EndTime": "2025-08-23T18:43:36.2663907-04:00",
+      "Duration": 0.3136,
+      "Status": "Passed",
+      "Name": "Register-MessageHandler"
+    },
+    {
+      "StartTime": "2025-08-23T18:43:36.26666-04:00",
+      "Category": "Unit",
+      "Error": null,
+      "EndTime": "2025-08-23T18:43:36.2670181-04:00",
+      "Duration": 0.3581,
+      "Status": "Passed",
+      "Name": "Get-QueueStatistics"
+    },
+    {
+      "StartTime": "2025-08-23T18:43:36.2675438-04:00",
+      "Category": "Integration",
+      "Error": null,
+      "EndTime": "2025-08-23T18:43:38.5830691-04:00",
+      "Duration": 2315.5253,
+      "Status": "Passed",
+      "Name": "FileSystemWatcher-Integration"
+    },
+    {
+      "StartTime": "2025-08-23T18:43:38.583458-04:00",
+      "Category": "Integration",
+      "Error": "A parameter cannot be found that matches parameter name 'QueueName'.",
+      "EndTime": "2025-08-23T18:43:38.5842696-04:00",
+      "Duration": 0.8116,
+      "Status": "Failed",
+      "Name": "Message-Processing-Pipeline"
+    },
+    {
+      "StartTime": "2025-08-23T18:43:38.5845929-04:00",
+      "Category": "Integration",
+      "Error": null,
+      "EndTime": "2025-08-23T18:43:38.8055501-04:00",
+      "Duration": 220.9572,
+      "Status": "Passed",
+      "Name": "Python-Bridge-Integration"
+    },
+    {
+      "StartTime": "2025-08-23T18:43:38.8061662-04:00",
+      "Category": "Performance",
+      "Error": null,
+      "EndTime": "2025-08-23T18:43:38.8360909-04:00",
+      "Duration": 29.9247,
+      "Status": "Passed",
+      "Name": "Message-Throughput"
+    },
+    {
+      "StartTime": "2025-08-23T18:43:38.836393-04:00",
+      "Category": "Performance",
+      "Error": null,
+      "EndTime": "2025-08-23T18:43:43.5300621-04:00",
+      "Duration": 4693.6691,
+      "Status": "Passed",
+      "Name": "Concurrent-Queue-Access"
+    },
+    {
+      "StartTime": "2025-08-23T18:43:43.5306769-04:00",
+      "Category": "Performance",
+      "Error": null,
+      "EndTime": "2025-08-23T18:43:43.5384921-04:00",
+      "Duration": 7.8152,
+      "Status": "Passed",
+      "Name": "CircuitBreaker-Performance"
+    },
+    {
+      "StartTime": "2025-08-23T18:43:43.5395702-04:00",
+      "Category": "Stress",
+      "Error": null,
+      "EndTime": "2025-08-23T18:43:43.5417028-04:00",
+      "Duration": 2.1326,
+      "Status": "Passed",
+      "Name": "Queue-Overflow-Handling"
+    },
+    {
+      "StartTime": "2025-08-23T18:43:43.5422579-04:00",
+      "Category": "Stress",
+      "Error": null,
+      "EndTime": "2025-08-23T18:43:49.0417037-04:00",
+      "Duration": 5499.4458,
+      "Status": "Passed",
+      "Name": "Rapid-CircuitBreaker-Changes"
+    }
+  ],
+  "Passed": 15,
+  "SuccessRate": 93.75
+}

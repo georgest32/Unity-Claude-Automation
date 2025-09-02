@@ -1,0 +1,524 @@
+name: Documentation Automation
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - '**.ps1'
+      - '**.psm1'
+      - '**.cs'
+      - '**.py'
+      - 'docs/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.ps1'
+      - '**.psm1'
+      - '**.cs'
+      - '**.py'
+      - 'docs/**'
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: 'Force documentation update regardless of changes'
+        required: false
+        default: 'false'
+        type: boolean
+      update_type:
+        description: 'Type of documentation update'
+        required: false
+        default: 'auto'
+        type: choice
+        options:
+        - auto
+        - full
+        - templates
+        - api-only
+
+env:
+  POWERSHELL_TELEMETRY_OPTOUT: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      docs-changed: ${{ steps.changes.outputs.docs }}
+      code-changed: ${{ steps.changes.outputs.code }}
+      templates-changed: ${{ steps.changes.outputs.templates }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
+    
+    - uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        filters: |
+          docs:
+            - 'docs/**'
+            - '*.md'
+          code:
+            - '**.ps1'
+            - '**.psm1'
+            - '**.cs'
+            - '**.py'
+          templates:
+            - 'templates/**'
+            - '.github/workflows/**'
+
+  documentation-sync:
+    needs: detect-changes
+    runs-on: windows-latest
+    if: needs.detect-changes.outputs.code-changed == 'true' || github.event.inputs.force_update == 'true' || github.event_name == 'schedule'
+    
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: read
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Setup PowerShell
+      uses: actions/setup-powershell@v1
+    
+    - name: Configure Git
+      run: |
+        git config --global user.name "Documentation Bot"
+        git config --global user.email "docs-bot@unity-claude.local"
+    
+    - name: Install required PowerShell modules
+      run: |
+        Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
+        Write-Host "PowerShell modules installed"
+    
+    - name: Load Documentation Automation Module
+      run: |
+        try {
+          Import-Module "./Modules/Unity-Claude-DocumentationAutomation/Unity-Claude-DocumentationAutomation.psd1" -Force
+          Write-Host "Documentation automation module loaded successfully"
+        } catch {
+          Write-Error "Failed to load documentation automation module: $_"
+          exit 1
+        }
+    
+    - name: Check documentation sync status
+      id: sync-status
+      run: |
+        try {
+          $syncResult = Test-DocumentationSync -Path "." -Detailed -FileTypes @('*.ps1', '*.psm1', '*.cs', '*.py')
+          
+          $syncPercent = if ($syncResult.Details.SyncPercentage) { $syncResult.Details.SyncPercentage } else { 0 }
+          $needsUpdate = -not $syncResult.InSync -or $syncPercent -lt 90
+          
+          Write-Host "Documentation sync status:"
+          Write-Host "  In Sync: $($syncResult.InSync)"
+          Write-Host "  Sync Percentage: $syncPercent%"
+          Write-Host "  Missing Docs: $($syncResult.MissingDocs.Count)"
+          Write-Host "  Out of Sync: $($syncResult.OutOfSyncFiles.Count)"
+          Write-Host "  Needs Update: $needsUpdate"
+          
+          # Set output for next step
+          echo "needs_update=$needsUpdate" >> $env:GITHUB_OUTPUT
+          echo "sync_percentage=$syncPercent" >> $env:GITHUB_OUTPUT
+          echo "missing_count=$($syncResult.MissingDocs.Count)" >> $env:GITHUB_OUTPUT
+          echo "outofdate_count=$($syncResult.OutOfSyncFiles.Count)" >> $env:GITHUB_OUTPUT
+          
+        } catch {
+          Write-Error "Failed to check sync status: $_"
+          echo "needs_update=true" >> $env:GITHUB_OUTPUT
+          echo "sync_percentage=0" >> $env:GITHUB_OUTPUT
+        }
+    
+    - name: Register file change triggers
+      if: steps.sync-status.outputs.needs_update == 'true'
+      run: |
+        try {
+          # Register triggers for different file types
+          Register-DocumentationTrigger -Name "PowerShellModules" -Type "FileChange" -Condition "*.psm1" -Action "UpdateAPIDocs" -Priority 1
+          Register-DocumentationTrigger -Name "PowerShellScripts" -Type "FileChange" -Condition "*.ps1" -Action "UpdateAPIDocs" -Priority 2
+          Register-DocumentationTrigger -Name "CSharpFiles" -Type "FileChange" -Condition "*.cs" -Action "UpdateAPIDocs" -Priority 2
+          Register-DocumentationTrigger -Name "PythonFiles" -Type "FileChange" -Condition "*.py" -Action "UpdateAPIDocs" -Priority 3
+          
+          Write-Host "Documentation triggers registered successfully"
+          
+        } catch {
+          Write-Error "Failed to register triggers: $_"
+          exit 1
+        }
+    
+    - name: Create documentation backup
+      if: steps.sync-status.outputs.needs_update == 'true'
+      run: |
+        try {
+          $backup = New-DocumentationBackup -Reason "Pre-automation update (GitHub Action)" -Paths @('docs', 'README.md') -Compress
+          Write-Host "Backup created: $($backup.Id)"
+          echo "backup_id=$($backup.Id)" >> $env:GITHUB_OUTPUT
+        } catch {
+          Write-Error "Failed to create backup: $_"
+          exit 1
+        }
+      id: backup
+    
+    - name: Generate updated documentation
+      if: steps.sync-status.outputs.needs_update == 'true'
+      run: |
+        try {
+          $updateType = "${{ github.event.inputs.update_type }}"
+          if (-not $updateType -or $updateType -eq '') { $updateType = 'auto' }
+          
+          Write-Host "Generating documentation updates (Type: $updateType)..."
+          
+          # Invoke documentation update for each registered trigger
+          $triggers = Get-DocumentationTriggers -EnabledOnly
+          $allChanges = @()
+          
+          foreach ($trigger in $triggers) {
+            try {
+              Write-Host "Processing trigger: $($trigger.Name)"
+              $changes = Invoke-DocumentationUpdate -TriggerName $trigger.Name -Force
+              if ($changes) {
+                $allChanges += $changes
+                Write-Host "  Generated $($changes.Count) changes"
+              }
+            } catch {
+              Write-Warning "Trigger $($trigger.Name) failed: $_"
+            }
+          }
+          
+          Write-Host "Total documentation changes: $($allChanges.Count)"
+          
+          if ($allChanges.Count -gt 0) {
+            echo "has_changes=true" >> $env:GITHUB_OUTPUT
+            echo "change_count=$($allChanges.Count)" >> $env:GITHUB_OUTPUT
+          } else {
+            echo "has_changes=false" >> $env:GITHUB_OUTPUT
+            echo "change_count=0" >> $env:GITHUB_OUTPUT
+          }
+          
+        } catch {
+          Write-Error "Failed to generate documentation: $_"
+          
+          # Attempt to restore from backup
+          if ("${{ steps.backup.outputs.backup_id }}" -ne "") {
+            try {
+              Write-Host "Attempting to restore from backup..."
+              Restore-DocumentationBackup -BackupId "${{ steps.backup.outputs.backup_id }}" -Force
+              Write-Host "Restored from backup successfully"
+            } catch {
+              Write-Error "Failed to restore from backup: $_"
+            }
+          }
+          
+          exit 1
+        }
+      id: generate
+    
+    - name: Create documentation update PR
+      if: steps.generate.outputs.has_changes == 'true' && github.event_name != 'pull_request'
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        try {
+          $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
+          $branchName = "docs/auto-update-$timestamp"
+          $prTitle = "📚 Auto-update documentation ($timestamp)"
+          
+          # Check if there are actual git changes
+          $gitStatus = git status --porcelain
+          if (-not $gitStatus) {
+            Write-Host "No git changes detected, skipping PR creation"
+            exit 0
+          }
+          
+          Write-Host "Creating documentation update PR..."
+          Write-Host "Branch: $branchName"
+          Write-Host "Title: $prTitle"
+          
+          # Create and switch to new branch
+          git checkout -b $branchName
+          
+          # Add all documentation changes
+          git add docs/ *.md
+          
+          # Commit changes
+          $commitMessage = @"
+docs: Auto-update documentation
+          
+- Updated documentation for ${{ steps.generate.outputs.change_count }} changes
+- Sync percentage: ${{ steps.sync-status.outputs.sync_percentage }}%
+- Missing docs: ${{ steps.sync-status.outputs.missing_count }}
+- Out of date: ${{ steps.sync-status.outputs.outofdate_count }}
+          
+Generated by GitHub Actions documentation automation
+Workflow: ${{ github.workflow }}
+Run ID: ${{ github.run_id }}
+          
+🤖 Generated with Unity-Claude Documentation Automation
+"@
+          
+          git commit -m $commitMessage
+          
+          # Push branch
+          git push origin $branchName
+          
+          # Create PR body
+          $prBody = @"
+## 📚 Automated Documentation Update
+          
+This PR contains automated documentation updates based on recent code changes.
+          
+### 📊 Summary
+- **Changes**: ${{ steps.generate.outputs.change_count }} files updated
+- **Sync Status**: ${{ steps.sync-status.outputs.sync_percentage }}% synchronized
+- **Missing Docs**: ${{ steps.sync-status.outputs.missing_count }} files need documentation
+- **Out of Date**: ${{ steps.sync-status.outputs.outofdate_count }} files need updates
+          
+### 🔧 Generated From
+- **Workflow**: ${{ github.workflow }}
+- **Trigger**: ${{ github.event_name }}
+- **Commit**: ${{ github.sha }}
+- **Run ID**: ${{ github.run_id }}
+          
+### 📋 Review Checklist
+- [ ] Documentation accuracy verified
+- [ ] No sensitive information exposed
+- [ ] Formatting and links are correct
+- [ ] All examples are valid and tested
+          
+---
+*This PR was automatically created by the Unity-Claude Documentation Automation system.*
+*Review the changes and merge when ready.*
+          
+🤖 **Auto-generated** | 📅 **$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss UTC')**
+"@
+          
+          # Create PR using GitHub CLI
+          gh pr create \
+            --title "$prTitle" \
+            --body "$prBody" \
+            --base main \
+            --head $branchName \
+            --label "documentation,auto-generated" \
+            --assignee "@me"
+          
+          Write-Host "Documentation PR created successfully"
+          
+        } catch {
+          Write-Error "Failed to create documentation PR: $_"
+          
+          # Clean up branch on failure
+          git checkout main 2>$null
+          git branch -D $branchName 2>$null
+          git push origin --delete $branchName 2>$null
+          
+          exit 1
+        }
+    
+    - name: Update issue comments (if applicable)
+      if: github.event_name == 'pull_request' && steps.generate.outputs.has_changes == 'true'
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        try {
+          $prNumber = "${{ github.event.number }}"
+          $comment = @"
+## 📚 Documentation Auto-Update Results
+          
+The documentation automation system has processed this PR:
+          
+- **Status**: ✅ Documentation updated
+- **Changes**: ${{ steps.generate.outputs.change_count }} files processed
+- **Sync**: ${{ steps.sync-status.outputs.sync_percentage }}% synchronized
+          
+The documentation has been automatically updated to reflect the code changes in this PR.
+          
+---
+*Updated by Unity-Claude Documentation Automation*
+"@
+          
+          gh pr comment $prNumber --body "$comment"
+          Write-Host "Added documentation update comment to PR #$prNumber"
+          
+        } catch {
+          Write-Warning "Failed to update PR comment: $_"
+        }
+    
+    - name: Generate documentation report
+      if: always()
+      run: |
+        try {
+          $reportPath = "./docs/automation-report.html"
+          $report = Export-DocumentationReport -OutputPath $reportPath -Format HTML
+          
+          Write-Host "Documentation automation report generated: $reportPath"
+          
+          # Upload as artifact
+          echo "report_path=$reportPath" >> $env:GITHUB_OUTPUT
+          
+        } catch {
+          Write-Warning "Failed to generate documentation report: $_"
+        }
+      id: report
+    
+    - name: Upload documentation report
+      if: steps.report.outputs.report_path != ''
+      uses: actions/upload-artifact@v4
+      with:
+        name: documentation-automation-report
+        path: ${{ steps.report.outputs.report_path }}
+        retention-days: 30
+    
+    - name: Cleanup on failure
+      if: failure()
+      run: |
+        try {
+          # Restore from backup if it exists
+          $backupId = "${{ steps.backup.outputs.backup_id }}"
+          if ($backupId -and $backupId -ne "") {
+            Write-Host "Attempting to restore from backup: $backupId"
+            Restore-DocumentationBackup -BackupId $backupId -Force
+            Write-Host "Restored from backup successfully"
+          }
+        } catch {
+          Write-Warning "Cleanup failed: $_"
+        }
+
+  template-validation:
+    needs: detect-changes
+    runs-on: windows-latest
+    if: needs.detect-changes.outputs.templates-changed == 'true'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Setup PowerShell
+      uses: actions/setup-powershell@v1
+    
+    - name: Validate documentation templates
+      run: |
+        try {
+          Import-Module "./Modules/Unity-Claude-DocumentationAutomation/Unity-Claude-DocumentationAutomation.psd1" -Force
+          
+          Write-Host "Validating documentation templates..."
+          
+          $templates = Get-DocumentationTemplates -Type All
+          $validationResults = @()
+          
+          foreach ($template in $templates) {
+            $result = @{
+              Name = $template.Name
+              Type = $template.Type
+              Valid = $true
+              Issues = @()
+            }
+            
+            # Basic validation checks
+            if (-not $template.Template -or $template.Template.Length -lt 10) {
+              $result.Valid = $false
+              $result.Issues += "Template content too short or missing"
+            }
+            
+            if (-not $template.Name -or $template.Name.Length -lt 3) {
+              $result.Valid = $false
+              $result.Issues += "Template name too short or missing"
+            }
+            
+            # Check for required placeholders based on type
+            $requiredPlaceholders = switch ($template.Type) {
+              'Function' { @('{{FunctionName}}', '{{Synopsis}}') }
+              'Class' { @('{{ClassName}}', '{{Description}}') }
+              'Module' { @('{{ModuleName}}', '{{Description}}') }
+              default { @() }
+            }
+            
+            foreach ($placeholder in $requiredPlaceholders) {
+              if ($template.Template -notlike "*$placeholder*") {
+                $result.Issues += "Missing required placeholder: $placeholder"
+              }
+            }
+            
+            $validationResults += $result
+          }
+          
+          $invalidTemplates = $validationResults | Where-Object { -not $_.Valid }
+          
+          if ($invalidTemplates.Count -eq 0) {
+            Write-Host "✅ All templates are valid ($($templates.Count) templates checked)"
+          } else {
+            Write-Host "❌ Found $($invalidTemplates.Count) invalid templates:"
+            foreach ($invalid in $invalidTemplates) {
+              Write-Host "  - $($invalid.Name): $($invalid.Issues -join ', ')"
+            }
+            exit 1
+          }
+          
+        } catch {
+          Write-Error "Template validation failed: $_"
+          exit 1
+        }
+
+  security-scan:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Scan for sensitive information in docs
+      run: |
+        echo "🔍 Scanning documentation for sensitive information..."
+        
+        # Define patterns to look for
+        patterns=(
+          "password[[:space:]]*[:=][[:space:]]*['\"][^'\"]*['\"]"
+          "api[_-]?key[[:space:]]*[:=][[:space:]]*['\"][^'\"]*['\"]"
+          "secret[[:space:]]*[:=][[:space:]]*['\"][^'\"]*['\"]"
+          "token[[:space:]]*[:=][[:space:]]*['\"][^'\"]*['\"]"
+          "[0-9a-fA-F]{32,}"
+          "sk-[a-zA-Z0-9]{32,}"
+          "ghp_[a-zA-Z0-9]{36}"
+          "ghs_[a-zA-Z0-9]{36}"
+        )
+        
+        found_issues=false
+        
+        # Scan documentation files
+        for pattern in "${patterns[@]}"; do
+          results=$(grep -r -i -E "$pattern" docs/ --include="*.md" --include="*.txt" 2>/dev/null || true)
+          if [ -n "$results" ]; then
+            echo "⚠️ Potential sensitive information found:"
+            echo "$results"
+            found_issues=true
+          fi
+        done
+        
+        if [ "$found_issues" = true ]; then
+          echo "❌ Security scan failed - sensitive information detected"
+          exit 1
+        else
+          echo "✅ Security scan passed - no sensitive information detected"
+        fi
+    
+    - name: Check for hardcoded paths
+      run: |
+        echo "🔍 Checking for hardcoded Windows paths in documentation..."
+        
+        results=$(grep -r -E "C:\\\\[A-Za-z]" docs/ --include="*.md" 2>/dev/null || true)
+        if [ -n "$results" ]; then
+          echo "⚠️ Hardcoded Windows paths found in documentation:"
+          echo "$results"
+          echo "💡 Consider using relative paths or environment variables"
+        else
+          echo "✅ No hardcoded paths detected"
+        fi

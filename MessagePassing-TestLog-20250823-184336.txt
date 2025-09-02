@@ -1,0 +1,45 @@
+[INFO] 18:43:36.249 - Starting Message Passing System Tests
+[INFO] 18:43:36.249 - Test Type: All
+[INFO] 18:43:36.249 - 
+=== Running Unit Tests ===
+[INFO] 18:43:36.250 - Running test: Initialize-MessageQueue
+[SUCCESS] 18:43:36.250 - Test PASSED: Initialize-MessageQueue
+[INFO] 18:43:36.251 - Running test: Add-MessageToQueue
+[SUCCESS] 18:43:36.251 - Test PASSED: Add-MessageToQueue
+[INFO] 18:43:36.252 - Running test: Get-MessageFromQueue
+[SUCCESS] 18:43:36.253 - Test PASSED: Get-MessageFromQueue
+[INFO] 18:43:36.253 - Running test: Initialize-CircuitBreaker
+[SUCCESS] 18:43:36.263 - Test PASSED: Initialize-CircuitBreaker
+[INFO] 18:43:36.263 - Running test: CircuitBreaker-Success
+[SUCCESS] 18:43:36.264 - Test PASSED: CircuitBreaker-Success
+[INFO] 18:43:36.264 - Running test: CircuitBreaker-FailureHandling
+[SUCCESS] 18:43:36.265 - Test PASSED: CircuitBreaker-FailureHandling
+[INFO] 18:43:36.265 - Running test: Register-MessageHandler
+[SUCCESS] 18:43:36.266 - Test PASSED: Register-MessageHandler
+[INFO] 18:43:36.266 - Running test: Get-QueueStatistics
+[SUCCESS] 18:43:36.266 - Test PASSED: Get-QueueStatistics
+[INFO] 18:43:36.267 - 
+=== Running Integration Tests ===
+[INFO] 18:43:36.267 - Running test: FileSystemWatcher-Integration
+[SUCCESS] 18:43:38.582 - Test PASSED: FileSystemWatcher-Integration
+[INFO] 18:43:38.583 - Running test: Message-Processing-Pipeline
+[ERROR] 18:43:38.583 - Test FAILED with error: Message-Processing-Pipeline - A parameter cannot be found that matches parameter name 'QueueName'.
+[INFO] 18:43:38.584 - Running test: Python-Bridge-Integration
+[SUCCESS] 18:43:38.805 - Test PASSED: Python-Bridge-Integration
+[INFO] 18:43:38.805 - 
+=== Running Performance Tests ===
+[INFO] 18:43:38.805 - Running test: Message-Throughput
+[INFO] 18:43:38.835 - Throughput: 34491.4409489285 messages/second
+[SUCCESS] 18:43:38.835 - Test PASSED: Message-Throughput
+[INFO] 18:43:38.836 - Running test: Concurrent-Queue-Access
+[SUCCESS] 18:43:43.529 - Test PASSED: Concurrent-Queue-Access
+[INFO] 18:43:43.530 - Running test: CircuitBreaker-Performance
+[INFO] 18:43:43.537 - Circuit Breaker Operations: 15422.1029579593 ops/second
+[SUCCESS] 18:43:43.538 - Test PASSED: CircuitBreaker-Performance
+[INFO] 18:43:43.538 - 
+=== Running Stress Tests ===
+[INFO] 18:43:43.539 - Running test: Queue-Overflow-Handling
+[SUCCESS] 18:43:43.541 - Test PASSED: Queue-Overflow-Handling
+[INFO] 18:43:43.541 - Running test: Rapid-CircuitBreaker-Changes
+[INFO] 18:43:49.040 - Success: 44, Failures: 6
+[SUCCESS] 18:43:49.041 - Test PASSED: Rapid-CircuitBreaker-Changes

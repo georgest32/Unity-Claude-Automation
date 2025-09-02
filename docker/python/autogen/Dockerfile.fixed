@@ -1,0 +1,69 @@
+# Fixed AutoGen Dockerfile with correct build context  
+# Build context: Project root (.)
+# Date: 2025-08-29
+
+# Stage 1: Build dependencies
+FROM python:3.12 AS builder
+
+# Install UV for fast package management
+RUN pip install uv
+
+# Create virtual environment
+RUN uv venv /opt/venv
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Install dependencies
+RUN uv pip install pyautogen fastapi uvicorn pydantic httpx
+
+# Stage 2: Runtime
+FROM python:3.12-slim
+
+# Install runtime dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user
+RUN useradd -m -s /bin/bash agentuser
+
+# Copy virtual environment from builder
+COPY --from=builder /opt/venv /opt/venv
+
+# Set environment variables for proper binding (research-validated)
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+ENV PYTHONUNBUFFERED=1
+ENV AUTOGEN_USE_DOCKER=0
+ENV HOST=0.0.0.0
+ENV PORT=8001
+
+# Create working directory
+WORKDIR /app
+
+# Copy application code from correct paths (build context is project root)
+COPY agents/autogen_groupchat_server.py /app/
+COPY agents/autogen_groupchat_config.py /app/
+COPY agents/autogen_supervisor_config.py /app/
+COPY agents/test_agent_interactions.py /app/
+COPY agents/powershell_autogen_bridge.py /app/
+COPY agents/message_queue_handler.py /app/
+COPY agents/agent_message_protocol.py /app/
+
+# Set proper permissions
+RUN chown -R agentuser:agentuser /app
+
+# Research-validated health check with proper binding
+HEALTHCHECK --interval=45s --timeout=20s --start-period=180s --retries=3 \
+    CMD curl -f http://0.0.0.0:8001/health || exit 1
+
+# Switch to non-root user
+USER agentuser
+
+# Expose port
+EXPOSE 8001
+
+# Run the application with research-validated 0.0.0.0 binding
+CMD ["uvicorn", "autogen_groupchat_server:app", "--host", "0.0.0.0", "--port", "8001"]

@@ -1,0 +1,55 @@
+{
+    "timestamp": "2025-08-28T02:35:00Z",
+    "session_id": "test-extended-delays",
+    "prompt_type": "Testing",
+    "task": "Test with extended delays for paste confirmation handling",
+    "priority": "CRITICAL",
+    "test_details": {
+        "test_script": ".\\Test-ENTERKeySubmission.ps1",
+        "test_purpose": "Verify longer delays properly handle paste dialog and submission",
+        "expected_duration": "5 seconds",
+        "requires_nuggetron": true,
+        "test_mode": "Extended delay submission test"
+    },
+    "timing_adjustments": {
+        "after_paste": "1000ms (was 300ms) - Allow paste dialog to fully appear",
+        "before_first_enter": "800ms (was 500ms) - Ensure dialog is ready",
+        "between_enters": "1000ms (was 250ms) - Allow dialog to fully close",
+        "total_submission_time": "~2.8 seconds for submission sequence"
+    },
+    "detailed_sequence": {
+        "step_1": "Paste with Ctrl+V",
+        "step_2": "Wait 1000ms for paste to complete and dialog to appear",
+        "step_3": "Wait additional 800ms to ensure dialog is ready",
+        "step_4": "Send first ENTER to confirm paste",
+        "step_5": "Wait 1000ms for dialog to close completely",
+        "step_6": "Send second ENTER to submit prompt",
+        "step_7": "Prompt submitted to Claude"
+    },
+    "expected_console": [
+        "Pasting complete prompt via Ctrl+V...",
+        "[1 second pause]",
+        "Submitting prompt (handling paste confirmation)...",
+        "[0.8 second pause]",
+        "Sending first ENTER (paste confirmation)...",
+        "[1 second pause]",
+        "Sending second ENTER (submit prompt)...",
+        "Prompt submitted successfully!"
+    ],
+    "troubleshooting": {
+        "if_still_fails": [
+            "Paste dialog might not be appearing",
+            "Single ENTER might be sufficient",
+            "Different dialog type might be present",
+            "Manual testing might be needed to observe behavior"
+        ]
+    },
+    "success_indicators": [
+        "Prompt appears in NUGGETRON",
+        "Paste confirmation handled",
+        "Prompt submitted to Claude",
+        "Input field clears after submission"
+    ],
+    "action": "EXECUTE_TEST",
+    "RESPONSE": "RECOMMENDATION: TEST - .\\Test-ENTERKeySubmission.ps1: Test extended delays for paste confirmation handling. Increased delays: 1000ms after paste (was 300ms), 800ms before first ENTER (was 500ms), 1000ms between ENTERs (was 250ms). This gives the paste confirmation dialog sufficient time to appear, be confirmed, and close before the submission ENTER."
+}

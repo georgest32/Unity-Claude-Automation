@@ -1,0 +1,62 @@
+{
+  "timestamp": "2025-12-28T12:30:00Z",
+  "session_id": "cli-orchestrator-serialization-fix",
+  "prompt_type": "Debugging",
+  "task": "Fix CLIOrchestrator Path Corruption Issue",
+  "problem_identified": {
+    "issue": "CLIOrchestrator submitting corrupted path data to Claude Code CLI",
+    "symptom": "Paths showing as @{week_1_priorities=System.Object[]} instead of actual file paths",
+    "root_cause": "PowerShell ToString() on hashtables returns type info not content",
+    "location": "Unity-Claude-CLIOrchestrator-Original.psm1 line 559"
+  },
+  "solution_implemented": {
+    "approach": "Added Convert-ToSerializedString helper function",
+    "features": [
+      "Type detection for strings, hashtables, PSObjects, arrays",
+      "Path property extraction from complex objects",
+      "Fallback to JSON serialization for unknown structures",
+      "Special handling for implementation plan objects"
+    ],
+    "files_modified": [
+      "Unity-Claude-CLIOrchestrator-Original.psm1",
+      "docs/learnings/powershell-learnings.md"
+    ],
+    "files_created": [
+      "Test-CLIOrchestrator-Serialization.ps1",
+      "CLIOrchestrator_Path_Corruption_Analysis_2025_12_28.md"
+    ]
+  },
+  "research_conducted": {
+    "queries_performed": 5,
+    "key_findings": [
+      "PowerShell string interpolation calls ToString() on objects",
+      "Default ConvertTo-Json depth of 2 causes System.Object[] issues",
+      "Use -is operator for type checking in PowerShell",
+      "Subexpression operator $() needed for property access in strings",
+      "Select-Object -ExpandProperty extracts string values from PSObjects"
+    ]
+  },
+  "testing_approach": {
+    "test_script": "Test-CLIOrchestrator-Serialization.ps1",
+    "test_cases": [
+      "String ActionDetails",
+      "Hashtable with file path",
+      "Complex hashtable with week priorities",
+      "PSObject with FilePath property",
+      "Array with file paths"
+    ],
+    "validation": "Each test verifies expected content present and unwanted patterns absent"
+  },
+  "critical_learnings": {
+    "learning_number": 233,
+    "title": "PowerShell Object-to-String Interpolation Corruption",
+    "documented_in": "docs/learnings/powershell-learnings.md",
+    "key_takeaway": "Never directly embed complex objects in strings without proper serialization"
+  },
+  "next_steps": [
+    "Run Test-CLIOrchestrator-Serialization.ps1 to validate fix",
+    "Apply same fix to other CLIOrchestrator module variants if needed",
+    "Monitor for similar serialization issues in other modules"
+  ],
+  "RESPONSE": "DEBUGGING - CLIOrchestrator path corruption issue has been fixed. The problem was PowerShell's default ToString() method on hashtables returning type information instead of content. Implemented Convert-ToSerializedString helper function to properly extract file paths and serialize complex objects before string interpolation. Test script created at Test-CLIOrchestrator-Serialization.ps1 to validate the fix works correctly with various object types."
+}

@@ -1,0 +1,170 @@
+# Alertmanager Configuration
+# Unity-Claude Automation Alert Routing
+# Version: 2025-08-24
+
+global:
+  # ResolveTimeout is the time after which an alert is declared resolved
+  # if it has not been updated.
+  resolve_timeout: 5m
+  
+  # SMTP configuration for email alerts
+  smtp_smarthost: 'smtp.gmail.com:587'
+  smtp_from: 'unity-claude-alerts@example.com'
+  smtp_auth_username: '${SMTP_USERNAME}'
+  smtp_auth_password: '${SMTP_PASSWORD}'
+  smtp_require_tls: true
+  
+  # Slack configuration
+  slack_api_url: '${SLACK_WEBHOOK_URL}'
+  
+  # PagerDuty configuration
+  pagerduty_url: 'https://events.pagerduty.com/v2/enqueue'
+
+# Templates for alert messages
+templates:
+  - '/etc/alertmanager/templates/*.tmpl'
+
+# The root route on which each incoming alert enters
+route:
+  # Default receiver
+  receiver: 'default'
+  
+  # Group alerts by these labels
+  group_by: ['alertname', 'cluster', 'service']
+  
+  # Wait before sending notifications for a group
+  group_wait: 10s
+  
+  # Wait before sending notifications about new alerts in a group
+  group_interval: 10s
+  
+  # Wait before resending notifications
+  repeat_interval: 1h
+  
+  # Child routes for specific routing
+  routes:
+    # Critical alerts go to PagerDuty
+    - match:
+        severity: critical
+      receiver: pagerduty
+      continue: true
+      
+    # Infrastructure alerts
+    - match:
+        team: infrastructure
+      receiver: infrastructure-team
+      routes:
+        - match:
+            severity: critical
+          receiver: infrastructure-critical
+      
+    # AI Platform alerts
+    - match:
+        team: ai-platform
+      receiver: ai-platform-team
+      
+    # Platform alerts
+    - match:
+        team: platform
+      receiver: platform-team
+      
+    # Development environment alerts (less noisy)
+    - match:
+        environment: development
+      receiver: dev-slack
+      repeat_interval: 4h
+
+# Receivers configuration
+receivers:
+  # Default receiver - sends to Slack
+  - name: 'default'
+    slack_configs:
+      - channel: '#alerts'
+        title: 'Unity-Claude Alert'
+        text: '{{ range .Alerts }}{{ .Annotations.summary }}\n{{ .Annotations.description }}{{ end }}'
+        send_resolved: true
+        color: '{{ if eq .Status "firing" }}danger{{ else }}good{{ end }}'
+        actions:
+          - type: button
+            text: 'View in Grafana'
+            url: 'http://localhost:3000/explore'
+          - type: button
+            text: 'Silence Alert'
+            url: '{{ .SilenceURL }}'
+
+  # PagerDuty for critical alerts
+  - name: 'pagerduty'
+    pagerduty_configs:
+      - routing_key: '${PAGERDUTY_ROUTING_KEY}'
+        description: '{{ .GroupLabels.alertname }}'
+        details:
+          firing: '{{ range .Alerts.Firing }}{{ .Annotations.description }}{{ end }}'
+          resolved: '{{ range .Alerts.Resolved }}{{ .Annotations.description }}{{ end }}'
+          num_firing: '{{ .Alerts.Firing | len }}'
+          num_resolved: '{{ .Alerts.Resolved | len }}'
+
+  # Infrastructure team
+  - name: 'infrastructure-team'
+    email_configs:
+      - to: 'infrastructure@example.com'
+        headers:
+          Subject: '[Unity-Claude] Infrastructure Alert: {{ .GroupLabels.alertname }}'
+    slack_configs:
+      - channel: '#infrastructure'
+        title: 'Infrastructure Alert'
+        text: '{{ .CommonAnnotations.summary }}'
+
+  # Infrastructure critical
+  - name: 'infrastructure-critical'
+    pagerduty_configs:
+      - routing_key: '${PAGERDUTY_INFRA_KEY}'
+    slack_configs:
+      - channel: '#infrastructure-critical'
+        title: '🚨 CRITICAL Infrastructure Alert'
+        text: '{{ .CommonAnnotations.summary }}'
+        color: 'danger'
+
+  # AI Platform team
+  - name: 'ai-platform-team'
+    slack_configs:
+      - channel: '#ai-platform'
+        title: 'AI Platform Alert'
+        text: '{{ range .Alerts }}*{{ .Labels.service }}*: {{ .Annotations.summary }}{{ end }}'
+        send_resolved: true
+
+  # Platform team
+  - name: 'platform-team'
+    slack_configs:
+      - channel: '#platform'
+        title: 'Platform Alert'
+        text: '{{ .CommonAnnotations.summary }}'
+
+  # Development Slack (less frequent)
+  - name: 'dev-slack'
+    slack_configs:
+      - channel: '#dev-alerts'
+        title: 'Dev Environment Alert'
+        text: '{{ .CommonAnnotations.summary }}'
+        send_resolved: false
+
+  # Webhook receiver for custom integrations
+  - name: 'webhook'
+    webhook_configs:
+      - url: 'http://localhost:5001/webhook'
+        send_resolved: true
+
+# Inhibition rules to suppress alerts
+inhibit_rules:
+  # Inhibit less severe alerts if critical alert is firing
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'cluster', 'service']
+    
+  # Inhibit container alerts if node is down
+  - source_match:
+      alertname: 'NodeDown'
+    target_match_re:
+      alertname: 'Container.*'
+    equal: ['instance']

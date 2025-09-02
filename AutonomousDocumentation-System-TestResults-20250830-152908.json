@@ -1,0 +1,99 @@
+{
+  "TotalDuration": 166.7284797,
+  "TotalTests": 10,
+  "TestName": "Autonomous Documentation System Comprehensive Test",
+  "SuccessRate": 60.0,
+  "StartTime": "2025-08-30T15:26:21.5805149-04:00",
+  "Errors": [
+    "[Load DocumentationVersioning Module] Failed to load DocumentationVersioning: The term 'Initialize-DocumentationVersioning' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+    "[DocumentationVersioning System Test] DocumentationVersioning test failed: The term 'Test-DocumentationVersioning' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+    "[End-to-End Autonomous Documentation Workflow] End-to-end autonomous documentation workflow failed: The term 'Create-DocumentationVersion' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+    "[Performance and Scalability Test] Performance test failed: Performance target not met. Average time: 13599.11576ms per update"
+  ],
+  "OverallStatus": "Failed",
+  "EndTime": "2025-08-30T15:29:08.3089946-04:00",
+  "PassedTests": 6,
+  "FailedTests": 4,
+  "Performance": {
+    "TriggerEvaluationTime": 150.9013,
+    "EngineInitializationTime": 103.8839,
+    "VersioningTime": 0,
+    "IntegrationTime": 0
+  },
+  "Modules": {
+    "IntelligentDocumentationTriggers": {
+      "Status": "Passed",
+      "Tests": {
+        "IntelligentDocumentationTriggers System Test": {
+          "Status": "Passed",
+          "Duration": 152.2857,
+          "Result": true
+        },
+        "Load IntelligentDocumentationTriggers Module": {
+          "Status": "Passed",
+          "Duration": 11.9474,
+          "Result": true
+        }
+      }
+    },
+    "SystemIntegration": {
+      "Status": "Passed",
+      "Tests": {
+        "End-to-End Autonomous Documentation Workflow": {
+          "Status": "Error",
+          "Duration": 0,
+          "Error": "End-to-end autonomous documentation workflow failed: The term 'Create-DocumentationVersion' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+          "Result": null
+        },
+        "Performance and Scalability Test": {
+          "Status": "Error",
+          "Duration": 0,
+          "Error": "Performance test failed: Performance target not met. Average time: 13599.11576ms per update",
+          "Result": null
+        },
+        "Existing System Integration Validation": {
+          "Status": "Passed",
+          "Duration": 7.5381,
+          "Result": true
+        }
+      }
+    },
+    "AutonomousDocumentationEngine": {
+      "Status": "Passed",
+      "Tests": {
+        "Load AutonomousDocumentationEngine Module": {
+          "Status": "Passed",
+          "Duration": 45.2834,
+          "Result": true
+        },
+        "AutonomousDocumentationEngine System Test": {
+          "Status": "Passed",
+          "Duration": 15083.4634,
+          "Result": true
+        },
+        "Initialize AutonomousDocumentationEngine": {
+          "Status": "Passed",
+          "Duration": 105.2877,
+          "Result": true
+        }
+      }
+    },
+    "DocumentationVersioning": {
+      "Status": "Failed",
+      "Tests": {
+        "Load DocumentationVersioning Module": {
+          "Status": "Error",
+          "Duration": 0,
+          "Error": "Failed to load DocumentationVersioning: The term 'Initialize-DocumentationVersioning' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+          "Result": null
+        },
+        "DocumentationVersioning System Test": {
+          "Status": "Error",
+          "Duration": 0,
+          "Error": "DocumentationVersioning test failed: The term 'Test-DocumentationVersioning' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+          "Result": null
+        }
+      }
+    }
+  }
+}

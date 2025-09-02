@@ -1,0 +1,106 @@
+{
+  "EndTime": "2025-08-25T15:20:00.423-04:00",
+  "TotalDuration": 1204.9478,
+  "TestSuite": "Phase7-Day1-2-PatternRecognitionEnhancements",
+  "StartTime": "2025-08-25T15:19:59.218-04:00",
+  "Results": [
+    {
+      "Duration": 138,
+      "Details": {
+        "PatternsFound": 0,
+        "ConfidenceScore": 0.1,
+        "ProcessingTime": 131,
+        "EntitiesFound": 0
+      },
+      "Error": null,
+      "Name": "Simple Recommendation",
+      "Status": "FAILED"
+    },
+    {
+      "Duration": 36,
+      "Details": {
+        "PatternsFound": 0,
+        "ConfidenceScore": 0.1,
+        "ProcessingTime": 35,
+        "EntitiesFound": 0
+      },
+      "Error": null,
+      "Name": "Complex Multi-Entity Response",
+      "Status": "FAILED"
+    },
+    {
+      "Duration": 26,
+      "Details": {
+        "PatternsFound": 0,
+        "ConfidenceScore": 0.1,
+        "ProcessingTime": 25,
+        "EntitiesFound": 0
+      },
+      "Error": null,
+      "Name": "URL and Network Context",
+      "Status": "FAILED"
+    },
+    {
+      "Duration": 62,
+      "Details": {
+        "PatternsFound": 0,
+        "ConfidenceScore": 0.1,
+        "ProcessingTime": 61,
+        "EntitiesFound": 0
+      },
+      "Error": null,
+      "Name": "Bayesian Confidence Test",
+      "Status": "FAILED"
+    },
+    {
+      "Duration": 12,
+      "Details": null,
+      "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+      "Name": "Position Weight Matrix Scoring",
+      "Status": "ERROR"
+    },
+    {
+      "Duration": 1,
+      "Details": {
+        "EntitiesFound": 2
+      },
+      "Error": null,
+      "Name": "Joint Entity Classification",
+      "Status": "PASSED"
+    },
+    {
+      "Duration": 4,
+      "Details": {
+        "CalibratedConfidence": 0.8075,
+        "RawConfidence": 0.85
+      },
+      "Error": null,
+      "Name": "CRPS Confidence Calibration",
+      "Status": "PASSED"
+    },
+    {
+      "Duration": 23.4,
+      "Details": {
+        "Iterations": 5,
+        "MaxTime": 25.0,
+        "AverageTime": 23.4,
+        "Target": 300,
+        "MinTime": 22.0
+      },
+      "Error": null,
+      "Name": "Large Content Performance",
+      "Status": "PASSED"
+    }
+  ],
+  "Summary": {
+    "Slow": 0,
+    "Errors": 5,
+    "Phase7Day1_2Status": "REQUIRES_SIGNIFICANT_WORK",
+    "CoreEnhancementsPassed": 2,
+    "Passed": 3,
+    "TotalTests": 8,
+    "SuccessRate": 37.5,
+    "Failed": 4
+  },
+  "TestType": "All"
+}

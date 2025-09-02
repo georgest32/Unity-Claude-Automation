@@ -1,0 +1,43 @@
+CLIOrchestrator Serialization Test Results
+Test Date: 2025-08-28 12:30:37
+============================================================
+
+Module Import: SUCCESS
+
+----------------------------------------
+Test: String ActionDetails
+Result: PASSED
+  - Expected content found: Enhanced_Documentation_Second_Pass_Implementation_2025_08_28.md
+  - No unwanted patterns detected
+
+----------------------------------------
+Test: Hashtable with file path
+Result: PASSED
+  - Expected content found: Implementation.md
+  - No unwanted patterns detected
+
+----------------------------------------
+Test: Complex hashtable (week priorities)
+Result: PASSED
+  - Expected content found: Week1.md
+  - No unwanted patterns detected
+
+----------------------------------------
+Test: PSObject with FilePath property
+Result: ERROR - Method invocation failed because [System.Management.Automation.PSCustomObject] does not contain a method named 'ContainsKey'.
+
+----------------------------------------
+Test: Array with file paths
+Result: PASSED
+  - Expected content found: File1.md
+  - No unwanted patterns detected
+
+============================================================
+TEST SUMMARY
+Total Tests: 5
+Passed: 4
+Failed: 1
+Success Rate: 80%
+Direct Serialization Test: PASSED - String
+Direct Serialization Test: PASSED - Hashtable
+Direct Serialization Test: PASSED - Hashtable

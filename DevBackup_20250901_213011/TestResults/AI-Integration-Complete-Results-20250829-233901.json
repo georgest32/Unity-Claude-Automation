@@ -1,0 +1,498 @@
+{
+  "StartTime": "2025-08-29T23:33:40.2187999-04:00",
+  "TestSuite": "AI Integration Complete Test Suite (Day 4 Hour 1-2)",
+  "Environment": {
+    "OS": "Microsoft Windows 10.0.22631",
+    "PowerShellVersion": "7.5.2",
+    "Platform": "Win32NT",
+    "Timestamp": "2025-08-29T23:33:40.2234919-04:00"
+  },
+  "EndTime": "2025-08-29T23:39:01.3896563-04:00",
+  "Tests": [
+    {
+      "TestName": "Core Ollama Module Loading",
+      "Details": "Loaded 13/13 functions",
+      "Category": "ModuleLoading",
+      "Timestamp": "2025-08-29T23:33:40.2670681-04:00",
+      "Duration": 0.0257959,
+      "Passed": true,
+      "Data": {
+        "Functions": [
+          "Export-OllamaConfiguration",
+          "Format-DocumentationPrompt",
+          "Get-OllamaModelInfo",
+          "Get-OllamaPerformanceMetrics",
+          "Invoke-OllamaCodeAnalysis",
+          "Invoke-OllamaDocumentation",
+          "Invoke-OllamaExplanation",
+          "Invoke-OllamaRetry",
+          "Set-OllamaConfiguration",
+          "Start-ModelPreloading",
+          "Start-OllamaService",
+          "Stop-OllamaService",
+          "Test-OllamaConnectivity"
+        ]
+      }
+    },
+    {
+      "TestName": "Enhanced Module Loading",
+      "Details": "Loaded 10/10 enhanced functions",
+      "Category": "ModuleLoading",
+      "Timestamp": "2025-08-29T23:33:40.2884435-04:00",
+      "Duration": 0.0094918,
+      "Passed": true,
+      "Data": {
+        "Functions": [
+          "Add-DocumentationRequest",
+          "Get-DocumentationQualityAssessment",
+          "Get-RealTimeAnalysisStatus",
+          "Initialize-PowershAI",
+          "Invoke-PowershAIDocumentation",
+          "Optimize-DocumentationWithAI",
+          "Start-BatchDocumentationProcessing",
+          "Start-IntelligentDocumentationPipeline",
+          "Start-RealTimeAIAnalysis",
+          "Stop-RealTimeAIAnalysis"
+        ]
+      }
+    },
+    {
+      "TestName": "PowershAI Module Availability",
+      "Details": "PowershAI v0.7.3 available",
+      "Category": "ModuleLoading",
+      "Timestamp": "2025-08-29T23:33:40.3235633-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {
+        "Version": {
+          "Major": 0,
+          "Minor": 7,
+          "Build": 3,
+          "Revision": -1,
+          "MajorRevision": -1,
+          "MinorRevision": -1
+        }
+      }
+    },
+    {
+      "TestName": "LangGraph Module Check (Placeholder)",
+      "Details": "LangGraph integration pending (Day 1 implementation)",
+      "Category": "ModuleLoading",
+      "Timestamp": "2025-08-29T23:33:40.3259501-04:00",
+      "Duration": 0.0,
+      "Passed": false,
+      "Data": {
+        "Status": "NotImplemented"
+      }
+    },
+    {
+      "TestName": "AutoGen Module Check (Placeholder)",
+      "Details": "AutoGen integration pending (Day 2 implementation)",
+      "Category": "ModuleLoading",
+      "Timestamp": "2025-08-29T23:33:40.3271747-04:00",
+      "Duration": 0.0,
+      "Passed": false,
+      "Data": {
+        "Status": "NotImplemented"
+      }
+    },
+    {
+      "TestName": "Ollama Service Connectivity",
+      "Details": "Service running with 1 models",
+      "Category": "ServiceConnectivity",
+      "Timestamp": "2025-08-29T23:33:42.6665688-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {
+        "IsConnected": true,
+        "Endpoint": "http://localhost:11434",
+        "Models": [
+          {
+            "name": "codellama:13b",
+            "model": "codellama:13b",
+            "modified_at": "2025-08-29T22:50:24.5528519-04:00",
+            "size": 7365960935,
+            "digest": "9f438cb9cd581fc025612d27f7c1a6669ff83a8bb0ed86c94fcf4c5440555697",
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "llama",
+              "families": null,
+              "parameter_size": "13B",
+              "quantization_level": "Q4_0"
+            }
+          }
+        ],
+        "Timestamp": "2025-08-29T23:33:42.6648341-04:00",
+        "ModelsAvailable": 1
+      }
+    },
+    {
+      "TestName": "CodeLlama Model Availability",
+      "Details": "CodeLlama model available",
+      "Category": "ServiceConnectivity",
+      "Timestamp": "2025-08-29T23:33:44.7100931-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {
+        "Models": "codellama:13b"
+      }
+    },
+    {
+      "TestName": "PowershAI Initialization",
+      "Details": "PowershAI initialized with Ollama backend",
+      "Category": "ServiceConnectivity",
+      "Timestamp": "2025-08-29T23:33:45.0037566-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {
+        "Model": "codellama:13b",
+        "Provider": "ollama",
+        "Success": true,
+        "Message": "PowershAI initialized with Ollama backend"
+      }
+    },
+    {
+      "TestName": "Network Connectivity",
+      "Details": "Network connectivity verified",
+      "Category": "ServiceConnectivity",
+      "Timestamp": "2025-08-29T23:33:45.0115151-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {}
+    },
+    {
+      "TestName": "Ollama Port Availability (11434)",
+      "Details": "Port 11434 accessible",
+      "Category": "ServiceConnectivity",
+      "Timestamp": "2025-08-29T23:33:47.0470702-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {}
+    },
+    {
+      "TestName": "Basic Documentation Generation",
+      "Details": "Generated 1446 chars in 32.08s (target: <30s)",
+      "Category": "DocumentationGeneration",
+      "Timestamp": "2025-08-29T23:34:19.1339351-04:00",
+      "Duration": 32.0792754,
+      "Passed": true,
+      "Data": {
+        "MeetsTarget": false,
+        "Length": 1446
+      }
+    },
+    {
+      "TestName": "Code Analysis Generation",
+      "Details": "Analysis generated: 4393 chars",
+      "Category": "DocumentationGeneration",
+      "Timestamp": "2025-08-29T23:35:58.2147469-04:00",
+      "Duration": 99.0758993,
+      "Passed": true,
+      "Data": {
+        "AnalysisLength": 4393
+      }
+    },
+    {
+      "TestName": "Documentation Quality Assessment",
+      "Details": "Quality score: 0/100",
+      "Category": "DocumentationGeneration",
+      "Timestamp": "2025-08-29T23:36:06.3957275-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {
+        "OverallScore": 0,
+        "Accuracy": null,
+        "Completeness": null,
+        "MissingElements": null,
+        "AssessedAt": "2025-08-29T23:36:06.3931588-04:00",
+        "Clarity": null,
+        "Suggestions": null
+      }
+    },
+    {
+      "TestName": "Documentation Optimization",
+      "Details": "Optimization increased length from 14 to 1607 chars",
+      "Category": "DocumentationGeneration",
+      "Timestamp": "2025-08-29T23:36:45.4431102-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {
+        "OriginalLength": 14,
+        "OptimizedLength": 1607
+      }
+    },
+    {
+      "TestName": "Batch Documentation Processing",
+      "Details": "Processed 3/3 files",
+      "Category": "DocumentationGeneration",
+      "Timestamp": "2025-08-29T23:38:54.2584145-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {
+        "Batches": 2.0,
+        "TotalFiles": 3,
+        "BatchSize": 2,
+        "Successful": 3,
+        "Failed": 0,
+        "Results": [
+          {
+            "Success": true,
+            "FilePath": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\TestResults\\BatchTest\\test1.ps1",
+            "Documentation": {
+              "Model": "codellama:13b",
+              "Timestamp": "2025-08-29T23:37:31.7137535-04:00",
+              "DocumentationType": "Complete",
+              "GeneratedLength": 1856,
+              "CodeLength": 29,
+              "Documentation": "\n---\n\nFunction: Test1\n================\n\nThis function is used to return the integer value 1. It has no parameters and can be used as a simple example of a PowerShell function.\n\n---\n\nComprehensive Function Description\n-----------------------------\n\nThe `Test1` function returns the integer value 1, which can be useful for testing or demonstration purposes.\n\n---\n\nFull Parameter Documentation\n-------------------------\n\nThis function has no parameters.\n\n---\n\nDetailed Examples and Use Cases\n------------------------------\n\nHere are some examples of how you might use the `Test1` function:\n```powershell\n# Simple example\nPS > Test1\n1\n\n# Assigning to a variable\nPS > $result = Test1\nPS > $result\n1\n\n# Using with other functions\nPS > (Test1) + 2\n3\n```\n---\n\nBest Practices and Optimization Tips\n----------------------------------\n\nThere are no specific best practices or optimization tips for this function. However, it's a good idea to be consistent in your use of brackets and parentheses when using functions with multiple arguments. For example:\n```powershell\n# Use bracket notation if you have multiple parameters\nPS > Test1 -Param1 'value1' -Param2 'value2'\n1\n\n# Omit brackets for single-argument functions\nPS > Test1 'value'\n1\n```\n---\n\nIntegration Guidance\n--------------------\n\nTo use this function in your PowerShell scripts, you can simply import the module and call the function as needed. Here is an example:\n```powershell\nImport-Module MyModule\nTest1\n```\n---\n\nTroubleshooting Information\n-------------------------\n\nThere are no known issues with this function. However, if you encounter any problems, please submit a bug report to our issue tracker.\n\n---\n\nPerformance Considerations\n-----------------------\n\nThis function has no performance considerations. It is designed to be simple and easy to use, rather than optimized for speed or efficiency."
+            },
+            "PSComputerName": "localhost",
+            "RunspaceId": "8fe627a0-81ff-416e-93d0-d29e50e9324a",
+            "PSShowComputerName": false
+          },
+          {
+            "Success": true,
+            "FilePath": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\TestResults\\BatchTest\\test2.ps1",
+            "Documentation": {
+              "Timestamp": "2025-08-29T23:38:05.3448073-04:00",
+              "Model": "codellama:13b",
+              "DocumentationType": "Complete",
+              "GeneratedLength": 1681,
+              "CodeLength": 29,
+              "Documentation": "Function: Test2\n=================\n\nThe Test2 function returns the value 2. This function is a simple example of how to create and document a PowerShell function.\n\nSyntax\n------\n```powershell\nTest2 [<CommonParameters>]\n```\nParameters\n----------\nThere are no parameters for this function.\n\nExamples\n--------\n### Example 1: Basic usage\n```powershell\nPS > Test2\n2\n```\nBest Practices\n-------------\n* Use consistent naming conventions for functions and parameters. In this example, the function is named \"Test2\" and does not have any parameters.\n* Use meaningful descriptions for each parameter to provide context and help developers understand what data should be passed in.\n* Provide examples of how to use the function and how it can be integrated into existing code.\n* Use consistent formatting and style throughout the documentation.\n\nPerformance Considerations\n-------------------------\nThere are no performance considerations for this simple example. However, in larger, more complex functions, it is important to consider factors such as memory usage, processing time, and network I/O.\n\nTroubleshooting\n---------------\nThere are no known issues with this function. However, if you encounter any problems using the function, please refer to the troubleshooting section for assistance.\n\nIntegration\n-----------\nThis function can be used as a standalone command or integrated into larger scripts and workflows. To use it in a script, simply call the function at the appropriate point. For example:\n```powershell\n$result = Test2\nWrite-Host $result\n```\nIn this example, the result of the function is stored in the variable `$result` and then printed to the console using `Write-Host`."
+            },
+            "PSComputerName": "localhost",
+            "RunspaceId": "685939bf-70e8-4153-a932-6351eeadab25",
+            "PSShowComputerName": false
+          },
+          {
+            "Success": true,
+            "FilePath": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\TestResults\\BatchTest\\test3.ps1",
+            "Documentation": {
+              "Model": "codellama:13b",
+              "Timestamp": "2025-08-29T23:38:54.2458174-04:00",
+              "DocumentationType": "Complete",
+              "GeneratedLength": 2294,
+              "CodeLength": 29,
+              "Documentation": "Function Name: Test3\n\nOverview:\nThe Test3 function returns the integer 3. This function is intended for testing purposes and does not perform any meaningful actions in a production environment.\n\nParameters:\nThe Test3 function does not accept any parameters.\n\nReturn Value:\nThe Test3 function returns the integer value of 3.\n\nExamples:\nThe following examples demonstrate how to use the Test3 function in a PowerShell script:\n```powershell\n$result = Test3\nWrite-Host \"Result: $result\"\n```\nIn this example, the Test3 function is called and its return value is stored in the $result variable. The result of the function is then output to the console using Write-Host.\n\nBest Practices and Optimization Tips:\nTo optimize the performance of the Test3 function, ensure that it is not being used for unnecessary testing purposes. If this function is being used for testing in a production environment, consider refactoring the code to reduce the number of calls to the function or using alternative methods for testing. Additionally, use the PowerShell profile to store frequently used commands and avoid redundant code execution.\n\nIntegration Guidance:\nThe Test3 function can be integrated into other PowerShell scripts by calling it as a separate process using the Start-Process cmdlet. For example:\n```powershell\nStart-Process -FilePath \".\\Test3.ps1\"\n```\nThis command starts a new PowerShell session and runs the Test3 function in that session. The output of the function is then returned to the calling script.\n\nTroubleshooting Information:\nIf the Test3 function does not work as expected, try checking for any errors or issues with the code execution. Ensure that the function is being called correctly and that there are no syntax errors in the code. Also, consider using a debugging tool such as PowerShell's built-in debugger to trace the flow of execution and identify any issues with the code.\n\nPerformance Considerations:\nThe Test3 function has a very low computational complexity, making it suitable for use in production environments. The function is designed to be fast and efficient, even when called multiple times within a script. However, if the function is being used for large-scale testing or other resource-intensive operations, consider optimizing the code for better performance."
+            },
+            "PSComputerName": "localhost",
+            "RunspaceId": "a578b234-49c1-4680-89f2-ed86bba49f21",
+            "PSShowComputerName": false
+          }
+        ]
+      }
+    },
+    {
+      "TestName": "Documentation Pipeline Initialization",
+      "Details": "Pipeline status: Running",
+      "Category": "PipelineManagement",
+      "Timestamp": "2025-08-29T23:38:54.854648-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {
+        "JobId": 7,
+        "Status": "Running",
+        "Success": true
+      }
+    },
+    {
+      "TestName": "Documentation Request Queueing",
+      "Details": "Queued 3 requests with different priorities",
+      "Category": "PipelineManagement",
+      "Timestamp": "2025-08-29T23:38:54.8602924-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {
+        "RequestIds": [
+          "859dc4ee-52e3-4965-a96c-2af7eca08c2e",
+          "230221e5-2c5e-445f-9c65-cde7785cc5c3",
+          "f5bdfff6-6db7-4db8-9c24-6e499924f8d7"
+        ]
+      }
+    },
+    {
+      "TestName": "Priority Queue Ordering",
+      "Details": "First request priority: ",
+      "Category": "PipelineManagement",
+      "Timestamp": "2025-08-29T23:38:54.8639824-04:00",
+      "Duration": 0.0,
+      "Passed": false,
+      "Data": {
+        "QueueOrder": null
+      }
+    },
+    {
+      "TestName": "Background Job Management",
+      "Details": "Job state: Completed",
+      "Category": "PipelineManagement",
+      "Timestamp": "2025-08-29T23:38:57.5365021-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {
+        "JobId": 9,
+        "State": "Completed"
+      }
+    },
+    {
+      "TestName": "Pipeline Status Monitoring",
+      "Details": "Monitoring active: False, Queued: 6",
+      "Category": "PipelineManagement",
+      "Timestamp": "2025-08-29T23:38:57.54309-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {
+        "WatchPath": null,
+        "ProcessedCount": 0,
+        "QueuedRequests": 6,
+        "MonitoringActive": false,
+        "ActiveJobs": [
+          {
+            "HasData": true,
+            "State": "Running",
+            "Id": 7
+          }
+        ]
+      }
+    },
+    {
+      "TestName": "Real-Time Monitoring Initialization",
+      "Details": "Error: Cannot process argument transformation on parameter 'Data'. Cannot convert the \"System.Object[]\" value of type \"System.Object[]\" to type \"System.Collections.Hashtable\".",
+      "Category": "RealTimeAnalysis",
+      "Timestamp": "2025-08-29T23:38:57.5623513-04:00",
+      "Duration": 0.0,
+      "Passed": false,
+      "Data": {}
+    },
+    {
+      "TestName": "File Change Detection",
+      "Details": "File changes simulated",
+      "Category": "RealTimeAnalysis",
+      "Timestamp": "2025-08-29T23:39:01.3804062-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {
+        "FilePath": ".\\TestResults\\RealTimeTest\\change-test.ps1"
+      }
+    },
+    {
+      "TestName": "Real-Time Status Verification",
+      "Details": "Status retrieved successfully",
+      "Category": "RealTimeAnalysis",
+      "Timestamp": "2025-08-29T23:39:01.3850776-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {
+        "WatchPath": ".\\TestResults\\RealTimeTest",
+        "ProcessedCount": 0,
+        "QueuedRequests": 6,
+        "MonitoringActive": true,
+        "ActiveJobs": [
+          {
+            "HasData": true,
+            "State": "Running",
+            "Id": 7
+          }
+        ]
+      }
+    },
+    {
+      "TestName": "Real-Time Monitoring Shutdown",
+      "Details": "Real-time monitoring stopped successfully",
+      "Category": "RealTimeAnalysis",
+      "Timestamp": "2025-08-29T23:39:01.3873231-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {
+        "Message": "Real-time monitoring stopped successfully",
+        "Success": true
+      }
+    },
+    {
+      "TestName": "Event Handler Registration",
+      "Details": "Event handlers registered",
+      "Category": "RealTimeAnalysis",
+      "Timestamp": "2025-08-29T23:39:01.388778-04:00",
+      "Duration": 0.0,
+      "Passed": true,
+      "Data": {}
+    }
+  ],
+  "Categories": {
+    "ServiceConnectivity": {
+      "Failed": 0,
+      "Tests": [
+        "Ollama Service Connectivity",
+        "CodeLlama Model Availability",
+        "PowershAI Initialization",
+        "Network Connectivity",
+        "Ollama Port Availability (11434)"
+      ],
+      "Passed": 5,
+      "Total": 5
+    },
+    "ModuleLoading": {
+      "Failed": 2,
+      "Tests": [
+        "Core Ollama Module Loading",
+        "Enhanced Module Loading",
+        "PowershAI Module Availability",
+        "LangGraph Module Check (Placeholder)",
+        "AutoGen Module Check (Placeholder)"
+      ],
+      "Passed": 3,
+      "Total": 5
+    },
+    "DocumentationGeneration": {
+      "Failed": 0,
+      "Tests": [
+        "Basic Documentation Generation",
+        "Code Analysis Generation",
+        "Documentation Quality Assessment",
+        "Documentation Optimization",
+        "Batch Documentation Processing"
+      ],
+      "Passed": 5,
+      "Total": 5
+    },
+    "RealTimeAnalysis": {
+      "Failed": 1,
+      "Tests": [
+        "Real-Time Monitoring Initialization",
+        "File Change Detection",
+        "Real-Time Status Verification",
+        "Real-Time Monitoring Shutdown",
+        "Event Handler Registration"
+      ],
+      "Passed": 4,
+      "Total": 5
+    },
+    "PipelineManagement": {
+      "Failed": 1,
+      "Tests": [
+        "Documentation Pipeline Initialization",
+        "Documentation Request Queueing",
+        "Priority Queue Ordering",
+        "Background Job Management",
+        "Pipeline Status Monitoring"
+      ],
+      "Passed": 4,
+      "Total": 5
+    }
+  },
+  "Performance": {
+    "ResponseTimes": [],
+    "MemoryUsage": [],
+    "CPUUsage": []
+  },
+  "Summary": {
+    "Duration": 321.1708564,
+    "PassRate": 84.0,
+    "MeetsTarget": false,
+    "TotalTests": 25,
+    "PassedTests": 21,
+    "FailedTests": 4
+  },
+  "Duration": 321.1708564
+}

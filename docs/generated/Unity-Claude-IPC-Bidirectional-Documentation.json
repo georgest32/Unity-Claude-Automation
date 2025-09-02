@@ -1,0 +1,233 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-IPC-Bidirectional",
+  "Commands": [
+    {
+      "Parameters": [
+        "Message",
+        "QueueType",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Add-MessageToQueue",
+      "Synopsis": "Adds a message to the processing queue",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "QueueType",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Clear-MessageQueue",
+      "Synopsis": "Clears all messages from a queue",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "QueueType",
+        "Wait",
+        "TimeoutMs",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-NextMessage",
+      "Synopsis": "Gets the next message from the queue",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-QueueStatus",
+      "Synopsis": "Gets the status of all queues",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-MessageQueues",
+      "Synopsis": "Initializes thread-safe message queues",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "PipeName",
+        "Message",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Send-PipeMessage",
+      "Synopsis": "Sends a message to a named pipe server",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "PipeName",
+        "HttpPort",
+        "LocalOnly",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Start-BidirectionalServers",
+      "Synopsis": "Starts all bidirectional communication servers",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Port",
+        "Prefix",
+        "LocalOnly",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Start-HttpApiServer",
+      "Synopsis": "Starts an HTTP REST API server",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "PipeName",
+        "MaxConnections",
+        "Async",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Start-NamedPipeServer",
+      "Synopsis": "Starts a named pipe server for IPC (simplified synchronous version)",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Stop-BidirectionalServers",
+      "Synopsis": "Stops all bidirectional communication servers",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-IPC-Bidirectional",
+  "ExportedFunctions": [
+    "Add-MessageToQueue",
+    "Clear-MessageQueue",
+    "Get-NextMessage",
+    "Get-QueueStatus",
+    "Initialize-MessageQueues",
+    "Send-PipeMessage",
+    "Start-BidirectionalServers",
+    "Start-HttpApiServer",
+    "Start-NamedPipeServer",
+    "Stop-BidirectionalServers"
+  ],
+  "Version": {
+    "Major": 2,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

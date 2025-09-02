@@ -1,0 +1,56 @@
+{
+  "TestType": "Standard",
+  "SuccessRate": 80.0,
+  "Results": {
+    "Failed": 1,
+    "Warnings": 0,
+    "Details": [
+      {
+        "Details": "Initialize base orchestrator",
+        "Status": "Pass",
+        "Component": "Orchestrator Initialization"
+      },
+      {
+        "Details": "Initialize permission handling integration",
+        "Status": "Pass",
+        "Component": "Permission Integration"
+      },
+      {
+        "Details": "Test destructive command conversion",
+        "Status": "Pass",
+        "Component": "Safe Operations"
+      },
+      {
+        "Details": "A parameter cannot be found that matches parameter name 'TestText'.",
+        "Status": "Error",
+        "Component": "Permission Detection"
+      },
+      {
+        "Details": "Verify integration status reporting",
+        "Status": "Pass",
+        "Component": "Integration Status"
+      }
+    ],
+    "Passed": 4
+  },
+  "Timestamp": "2025-08-31T11:25:34.2034813-04:00",
+  "IntegrationStatus": {
+    "Statistics": {
+      "PromptsProcessed": 0,
+      "PermissionsHandled": 0,
+      "SafeConversions": 0
+    },
+    "Mode": "Intelligent",
+    "Components": {
+      "Interceptor": {
+        "Status": "Active",
+        "Enabled": true
+      },
+      "SafeOperations": {
+        "Status": "Active",
+        "Enabled": true
+      }
+    },
+    "Initialized": true
+  }
+}

@@ -1,0 +1,75 @@
+====================================
+Test Execution Report
+====================================
+
+Test Script: ./Test-CLIOrchestrator-Simple.ps1
+Execution Time: 2025-08-27 14:34:49
+Duration: 0.89 seconds
+Exit Code: 0
+Status: SUCCESS
+
+Test Output:
+============
+================================================================
+  Unity-Claude CLIOrchestrator Simple Test
+  Started: 2025-08-27 14:34:48
+================================================================
+
+Importing Unity-Claude-CLIOrchestrator module...
+ERROR: Failed to import CLIOrchestrator module
+Error: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:265 char:54
++                                         Write-Host "[DEBUG] TESTING F ...
++                                                      ~
+Array index expression is missing or not valid.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:271 char:50
++                                     Write-Host "[DEBUG] TESTING FLOW: ...
++                                                  ~
+Array index expression is missing or not valid.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:272 char:50
++                                     Write-Host "[DEBUG] TESTING FLOW: ...
++                                                  ~
+Array index expression is missing or not valid.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:276 char:46
++                                 Write-Host "[DEBUG] TESTING FLOW: [AR ...
++                                              ~
+Array index expression is missing or not valid.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:284 char:50
++                                     Write-Host "[DEBUG] TESTING FLOW: ...
++                                                  ~
+Array index expression is missing or not valid.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:460 char:85
++ ... tions = [regex]::Matches($responseText, "RECOMMENDATION:\s*([^\r\n]+) ...
++                                                                  ~
+Missing type name after '['.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:478 char:145
++ ... $($topRecommendation.Name) ($($topRecommendation.Value) occurrences)"
++                                                             ~~~~~~~~~~~
+Unexpected token 'occurrences' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:478 char:144
++ ... tion: $($topRecommendation.Name) ($($topRecommendation.Value) occurre ...
++                                                                  ~
+Missing closing ')' in expression.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:252 char:60
++                                     if ($submissionResult) {
++                                                            ~
+Missing closing '}' in statement block or type definition.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:248 char:37
++                                 try {
++                                     ~
+Missing closing '}' in statement block or type definition.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+False
+
+====================================
+End of Test Report
+====================================

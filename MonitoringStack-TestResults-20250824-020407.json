@@ -1,0 +1,96 @@
+{
+  "Tests": [
+    {
+      "Message": "Component is accessible",
+      "Component": "Prometheus",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Component is accessible",
+      "Component": "Grafana",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Component is accessible",
+      "Component": "Loki",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Component is accessible",
+      "Component": "Alertmanager",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Component is accessible",
+      "Component": "cAdvisor",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Component is accessible",
+      "Component": "Node Exporter",
+      "Status": "Passed"
+    },
+    {
+      "Name": "Liveness Probe",
+      "Message": "Service is alive",
+      "Status": "Passed"
+    },
+    {
+      "Name": "Readiness Probe",
+      "Message": "Method invocation failed because [System.Net.Http.HttpResponseMessage] does not contain a method named 'GetResponseStream'.",
+      "Status": "Failed"
+    },
+    {
+      "Name": "Service Health",
+      "Message": "Health status: unhealthy",
+      "Status": "Passed"
+    },
+    {
+      "Name": "Prometheus Query",
+      "Message": "Metrics retrieved successfully",
+      "Status": "Passed"
+    },
+    {
+      "Name": "Container Metrics",
+      "Message": "Container metrics available",
+      "Status": "Passed"
+    },
+    {
+      "Name": "Loki Search",
+      "Message": "Found 0 log entries",
+      "Status": "Passed"
+    },
+    {
+      "Name": "Service Logs",
+      "Message": "No logs found (may be normal)",
+      "Status": "Passed"
+    },
+    {
+      "Name": "Send Alert",
+      "Message": "Alert sent successfully",
+      "Status": "Passed"
+    },
+    {
+      "Name": "Get Alerts",
+      "Message": "Found 42 active alerts",
+      "Status": "Passed"
+    },
+    {
+      "Name": "Grafana Datasources",
+      "Message": "All datasources configured",
+      "Status": "Passed"
+    },
+    {
+      "Name": "Metric Scraping",
+      "Message": "5 healthy targets",
+      "Status": "Passed"
+    }
+  ],
+  "Summary": {
+    "Total": 17,
+    "Passed": 16,
+    "Failed": 3
+  },
+  "Timestamp": "2025-08-24 02:03:55",
+  "TestType": "All"
+}

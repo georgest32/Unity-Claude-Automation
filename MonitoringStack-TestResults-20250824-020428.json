@@ -1,0 +1,56 @@
+{
+  "TestType": "Health",
+  "Tests": [
+    {
+      "Component": "Prometheus",
+      "Message": "Component is accessible",
+      "Status": "Passed"
+    },
+    {
+      "Component": "Grafana",
+      "Message": "Component is accessible",
+      "Status": "Passed"
+    },
+    {
+      "Component": "Loki",
+      "Message": "Component is accessible",
+      "Status": "Passed"
+    },
+    {
+      "Component": "Alertmanager",
+      "Message": "Component is accessible",
+      "Status": "Passed"
+    },
+    {
+      "Component": "cAdvisor",
+      "Message": "Component is accessible",
+      "Status": "Passed"
+    },
+    {
+      "Component": "Node Exporter",
+      "Message": "Component is accessible",
+      "Status": "Passed"
+    },
+    {
+      "Name": "Liveness Probe",
+      "Message": "Service is alive",
+      "Status": "Passed"
+    },
+    {
+      "Name": "Readiness Probe",
+      "Message": "Invalid response - HTTP 503, status: unhealthy",
+      "Status": "Failed"
+    },
+    {
+      "Name": "Service Health",
+      "Message": "Health status: unhealthy",
+      "Status": "Passed"
+    }
+  ],
+  "Summary": {
+    "Total": 9,
+    "Failed": 3,
+    "Passed": 8
+  },
+  "Timestamp": "2025-08-24 02:04:28"
+}

@@ -1,0 +1,212 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CodeQL",
+  "Commands": [
+    {
+      "Parameters": [
+        "Results",
+        "OutputPath",
+        "Format",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Export-CodeQLResults",
+      "Synopsis": "Exports CodeQL results in various formats for integration",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-CodeQLVersion",
+      "Synopsis": "Gets CodeQL CLI version information",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ProjectPath",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-PowerShellCodeQLDB",
+      "Synopsis": "Creates CodeQL database specifically for PowerShell code analysis",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "InstallPath",
+        "Force",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Install-CodeQLCLI",
+      "Synopsis": "Installs CodeQL CLI using multiple installation methods",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "DatabasePath",
+        "QueryPath",
+        "OutputFormat",
+        "OutputPath",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-CodeQLQuery",
+      "Synopsis": "Executes a CodeQL query against a database",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ProjectPath",
+        "ScanLevel",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-PowerShellSecurityScan",
+      "Synopsis": "Performs comprehensive security scan of PowerShell code",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "SourcePath",
+        "Language",
+        "DatabaseName",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "New-CodeQLDatabase",
+      "Synopsis": "Creates a new CodeQL database for a source code directory",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "CallbackFunction",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Register-SecurityCallback",
+      "Synopsis": "Registers callback functions for security events",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-CodeQLInstallation",
+      "Synopsis": "Verifies CodeQL CLI installation and functionality",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-CodeQL",
+  "ExportedFunctions": [
+    "Export-CodeQLResults",
+    "Get-CodeQLVersion",
+    "Initialize-PowerShellCodeQLDB",
+    "Install-CodeQLCLI",
+    "Invoke-CodeQLQuery",
+    "Invoke-PowerShellSecurityScan",
+    "New-CodeQLDatabase",
+    "Register-SecurityCallback",
+    "Test-CodeQLInstallation"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

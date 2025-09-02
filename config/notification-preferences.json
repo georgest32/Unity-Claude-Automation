@@ -1,0 +1,140 @@
+{
+    "Version":  "1.0.0",
+    "Users":  [
+                  {
+                      "UserId":  "default",
+                      "DisplayName":  "Default User",
+                      "Email":  "admin@company.com",
+                      "Preferences":  {
+                                          "EnabledChannels":  [
+                                                                  "Email",
+                                                                  "Dashboard",
+                                                                  "Webhook"
+                                                              ],
+                                          "DisabledChannels":  [
+                                                                   "SMS"
+                                                               ],
+                                          "SeverityFilters":  {
+                                                                  "Dashboard":  [
+                                                                                    "Critical",
+                                                                                    "High",
+                                                                                    "Medium",
+                                                                                    "Low",
+                                                                                    "Info"
+                                                                                ],
+                                                                  "Teams":  [
+                                                                                "Critical",
+                                                                                "High",
+                                                                                "Medium"
+                                                                            ],
+                                                                  "Webhook":  [
+                                                                                  "Critical",
+                                                                                  "High",
+                                                                                  "Medium",
+                                                                                  "Low"
+                                                                              ],
+                                                                  "SMS":  [
+                                                                              "Critical"
+                                                                          ],
+                                                                  "Slack":  [
+                                                                                "Critical",
+                                                                                "High",
+                                                                                "Medium"
+                                                                            ],
+                                                                  "Email":  [
+                                                                                "Critical",
+                                                                                "High"
+                                                                            ]
+                                                              },
+                                          "TimeBasedRules":  [
+                                                                 {
+                                                                     "Name":  "Business Hours",
+                                                                     "StartTime":  "08:00",
+                                                                     "EndTime":  "18:00",
+                                                                     "DaysOfWeek":  [
+                                                                                        "Monday",
+                                                                                        "Tuesday",
+                                                                                        "Wednesday",
+                                                                                        "Thursday",
+                                                                                        "Friday"
+                                                                                    ],
+                                                                     "Channels":  [
+                                                                                      "Email",
+                                                                                      "Teams",
+                                                                                      "Dashboard"
+                                                                                  ],
+                                                                     "Enabled":  true
+                                                                 },
+                                                                 {
+                                                                     "Name":  "After Hours",
+                                                                     "StartTime":  "18:01",
+                                                                     "EndTime":  "07:59",
+                                                                     "DaysOfWeek":  [
+                                                                                        "Monday",
+                                                                                        "Tuesday",
+                                                                                        "Wednesday",
+                                                                                        "Thursday",
+                                                                                        "Friday",
+                                                                                        "Saturday",
+                                                                                        "Sunday"
+                                                                                    ],
+                                                                     "Channels":  [
+                                                                                      "SMS",
+                                                                                      "Teams"
+                                                                                  ],
+                                                                     "SeverityOverride":  [
+                                                                                              "Critical",
+                                                                                              "High"
+                                                                                          ],
+                                                                     "Enabled":  true
+                                                                 }
+                                                             ],
+                                          "TagBasedRules":  [
+                                                                {
+                                                                    "Name":  "Unity Compilation Errors",
+                                                                    "Tags":  [
+                                                                                 "unity",
+                                                                                 "compilation",
+                                                                                 "error"
+                                                                             ],
+                                                                    "Channels":  [
+                                                                                     "Email",
+                                                                                     "Teams",
+                                                                                     "Dashboard"
+                                                                                 ],
+                                                                    "Priority":  1,
+                                                                    "Enabled":  true
+                                                                },
+                                                                {
+                                                                    "Name":  "AI Analysis Results",
+                                                                    "Tags":  [
+                                                                                 "ai",
+                                                                                 "analysis",
+                                                                                 "recommendation"
+                                                                             ],
+                                                                    "Channels":  [
+                                                                                     "Dashboard",
+                                                                                     "Email"
+                                                                                 ],
+                                                                    "Priority":  2,
+                                                                    "Enabled":  true
+                                                                }
+                                                            ],
+                                          "EscalationSettings":  {
+                                                                     "EnableEscalation":  true,
+                                                                     "EscalationTimeouts":  {
+                                                                                                "Low":  3600,
+                                                                                                "Critical":  300,
+                                                                                                "Medium":  1800,
+                                                                                                "High":  600
+                                                                                            },
+                                                                     "EscalationChannels":  [
+                                                                                                "SMS",
+                                                                                                "Teams"
+                                                                                            ],
+                                                                     "MaxEscalationLevels":  3
+                                                                 }
+                                      }
+                  }
+              ]
+}

@@ -1,0 +1,372 @@
+{
+  "Summary": {
+    "Passed": 24,
+    "Total": 39,
+    "Skipped": 0,
+    "Failed": 14,
+    "Warning": 1
+  },
+  "Duration": "00:00:35",
+  "EndTime": "2025-08-25T15:15:43.5220091-04:00",
+  "Results": [
+    {
+      "TestName": "Docker Daemon",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Docker version: 28.3.2",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Docker Containers",
+      "Metrics": {
+        "Healthy": 12,
+        "Total": 14
+      },
+      "Duration": 0,
+      "Details": "12/14 containers running",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Container: unity-claude-autogen",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Up 14 hours (unhealthy)",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Container: unity-claude-langgraph",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Up 14 hours (healthy)",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Container: unity-claude-monitor",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Up 14 hours (healthy)",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Container: unity-claude-powershell",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Up 14 hours (healthy)",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Container: unity-claude-docs",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Up 14 hours (unhealthy)",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Container: unity-claude-health-check",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Up 14 hours (unhealthy)",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Container: unity-claude-alertmanager",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Up 14 hours (healthy)",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Container: unity-claude-grafana",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Up 14 hours (healthy)",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Container: unity-claude-alloy",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Restarting (1) 40 seconds ago",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Fail"
+    },
+    {
+      "TestName": "Container: unity-claude-fluent-bit",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Restarting (255) 31 seconds ago",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Fail"
+    },
+    {
+      "TestName": "Container: unity-claude-cadvisor",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Up 14 hours (healthy)",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Container: unity-claude-prometheus",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Up 14 hours (healthy)",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Container: unity-claude-node-exporter",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Up 14 hours (healthy)",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Container: unity-claude-loki",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Up 14 hours (healthy)",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Service Health: Documentation Web",
+      "Metrics": {},
+      "Duration": 18,
+      "Details": "An error occurred while sending the request.",
+      "Timestamp": "2025-08-25 15:15:12",
+      "Status": "Fail"
+    },
+    {
+      "TestName": "Service Health: Documentation API",
+      "Metrics": {},
+      "Duration": 4337,
+      "Details": "No connection could be made because the target machine actively refused it. (localhost:8091)",
+      "Timestamp": "2025-08-25 15:15:17",
+      "Status": "Fail"
+    },
+    {
+      "TestName": "Service Health: PowerShell Modules",
+      "Metrics": {},
+      "Duration": 12,
+      "Details": "An error occurred while sending the request.",
+      "Timestamp": "2025-08-25 15:15:17",
+      "Status": "Fail"
+    },
+    {
+      "TestName": "Service Health: LangGraph API",
+      "Metrics": {},
+      "Duration": 17,
+      "Details": "An error occurred while sending the request.",
+      "Timestamp": "2025-08-25 15:15:17",
+      "Status": "Fail"
+    },
+    {
+      "TestName": "Service Health: AutoGen Service",
+      "Metrics": {},
+      "Duration": 10,
+      "Details": "An error occurred while sending the request.",
+      "Timestamp": "2025-08-25 15:15:17",
+      "Status": "Fail"
+    },
+    {
+      "TestName": "Service Health: Prometheus",
+      "Metrics": {},
+      "Duration": 9,
+      "Details": "An error occurred while sending the request.",
+      "Timestamp": "2025-08-25 15:15:17",
+      "Status": "Fail"
+    },
+    {
+      "TestName": "Service Health: Grafana",
+      "Metrics": {},
+      "Duration": 12333,
+      "Details": "An error occurred while sending the request.",
+      "Timestamp": "2025-08-25 15:15:29",
+      "Status": "Fail"
+    },
+    {
+      "TestName": "Service Health: Loki",
+      "Metrics": {},
+      "Duration": 12,
+      "Details": "An error occurred while sending the request.",
+      "Timestamp": "2025-08-25 15:15:29",
+      "Status": "Fail"
+    },
+    {
+      "TestName": "PowerShell Module: Unity-Claude-CPG",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "The specified ModuleList entry 'Unity-Claude-CPG.psm1' in the module manifest 'C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CPG\\Unity-Claude-CPG.psd1' is invalid. Try again after updating this entry with valid values.",
+      "Timestamp": "2025-08-25 15:15:29",
+      "Status": "Fail"
+    },
+    {
+      "TestName": "PowerShell Module: Unity-Claude-SemanticAnalysis",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "Module manifest not found",
+      "Timestamp": "2025-08-25 15:15:29",
+      "Status": "Warning"
+    },
+    {
+      "TestName": "PowerShell Module: Unity-Claude-LLM",
+      "Metrics": {
+        "Functions": 10,
+        "Version": {
+          "Major": 1,
+          "Minor": 0,
+          "Build": 0,
+          "Revision": -1,
+          "MajorRevision": -1,
+          "MinorRevision": -1
+        }
+      },
+      "Duration": 0,
+      "Details": "10 functions exported",
+      "Timestamp": "2025-08-25 15:15:29",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "PowerShell Module: Unity-Claude-APIDocumentation",
+      "Metrics": {
+        "Functions": 5,
+        "Version": {
+          "Major": 1,
+          "Minor": 0,
+          "Build": 0,
+          "Revision": -1,
+          "MajorRevision": -1,
+          "MinorRevision": -1
+        }
+      },
+      "Duration": 0,
+      "Details": "5 functions exported",
+      "Timestamp": "2025-08-25 15:15:29",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "PowerShell Module: Unity-Claude-CodeQL",
+      "Metrics": {
+        "Functions": 9,
+        "Version": {
+          "Major": 1,
+          "Minor": 0,
+          "Build": 0,
+          "Revision": -1,
+          "MajorRevision": -1,
+          "MinorRevision": -1
+        }
+      },
+      "Duration": 0,
+      "Details": "9 functions exported",
+      "Timestamp": "2025-08-25 15:15:29",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Directory: Modules Directory",
+      "Metrics": {
+        "ItemCount": 523
+      },
+      "Duration": 0,
+      "Details": "523 items",
+      "Timestamp": "2025-08-25 15:15:29",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Directory: Documentation Directory",
+      "Metrics": {
+        "ItemCount": 121
+      },
+      "Duration": 0,
+      "Details": "121 items",
+      "Timestamp": "2025-08-25 15:15:29",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Directory: Scripts Directory",
+      "Metrics": {
+        "ItemCount": 15
+      },
+      "Duration": 0,
+      "Details": "15 items",
+      "Timestamp": "2025-08-25 15:15:29",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Directory: Agents Directory",
+      "Metrics": {
+        "ItemCount": 36
+      },
+      "Duration": 0,
+      "Details": "36 items",
+      "Timestamp": "2025-08-25 15:15:29",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Directory: Docker Directory",
+      "Metrics": {
+        "ItemCount": 30
+      },
+      "Duration": 0,
+      "Details": "30 items",
+      "Timestamp": "2025-08-25 15:15:29",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Directory: Logs Directory",
+      "Metrics": {
+        "ItemCount": 16
+      },
+      "Duration": 0,
+      "Details": "16 items",
+      "Timestamp": "2025-08-25 15:15:29",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "Disk Space",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "532.03GB free (71.7% used)",
+      "Timestamp": "2025-08-25 15:15:31",
+      "Status": "Pass"
+    },
+    {
+      "TestName": "API: Modules List",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "No connection could be made because the target machine actively refused it. (localhost:8091)",
+      "Timestamp": "2025-08-25 15:15:35",
+      "Status": "Fail"
+    },
+    {
+      "TestName": "API: Functions List",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "No connection could be made because the target machine actively refused it. (localhost:8091)",
+      "Timestamp": "2025-08-25 15:15:39",
+      "Status": "Fail"
+    },
+    {
+      "TestName": "API: Search Data",
+      "Metrics": {},
+      "Duration": 0,
+      "Details": "No connection could be made because the target machine actively refused it. (localhost:8091)",
+      "Timestamp": "2025-08-25 15:15:43",
+      "Status": "Fail"
+    }
+  ],
+  "StartTime": "2025-08-25T15:15:08.0556533-04:00",
+  "TestType": "Full"
+}

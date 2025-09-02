@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation Guide &mdash; Unity-Claude-Automation 3.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=acc74ff5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2b3e50" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Unity-Claude-Automation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Installation Guide</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
+<li><a class="reference internal" href="#required-software">Required Software</a></li>
+<li><a class="reference internal" href="#development-tools">Development Tools</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installation-steps">Installation Steps</a><ul>
+<li><a class="reference internal" href="#clone-the-repository">1. Clone the Repository</a></li>
+<li><a class="reference internal" href="#set-powershell-execution-policy">2. Set PowerShell Execution Policy</a></li>
+<li><a class="reference internal" href="#install-powershell-modules">3. Install PowerShell Modules</a></li>
+<li><a class="reference internal" href="#configure-unity-project-path">4. Configure Unity Project Path</a></li>
+<li><a class="reference internal" href="#install-documentation-tools-optional">5. Install Documentation Tools (Optional)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li><a class="reference internal" href="#basic-configuration">Basic Configuration</a></li>
+<li><a class="reference internal" href="#github-integration-optional">GitHub Integration (Optional)</a></li>
+<li><a class="reference internal" href="#email-notifications-optional">Email Notifications (Optional)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#verification">Verification</a></li>
+<li><a class="reference internal" href="#quick-start">Quick Start</a></li>
+<li><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li><a class="reference internal" href="#common-issues">Common Issues</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2b3e50" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Unity-Claude-Automation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getting-started/installation.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation-guide">
+<h1>Installation Guide<a class="headerlink" href="#installation-guide" title="Link to this heading"></a></h1>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<p>Before installing Unity-Claude-Automation, ensure you have the following:</p>
+<section id="required-software">
+<h3>Required Software<a class="headerlink" href="#required-software" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>PowerShell</strong>: Version 5.1 or later (PowerShell 7.5+ recommended)</p></li>
+<li><p><strong>Python</strong>: Version 3.10 or later (for documentation generation)</p></li>
+<li><p><strong>Git</strong>: For repository management</p></li>
+<li><p><strong>Unity</strong>: 2021.3 LTS or later</p></li>
+</ul>
+</section>
+<section id="development-tools">
+<h3>Development Tools<a class="headerlink" href="#development-tools" title="Link to this heading"></a></h3>
+<ul>
+<li><p><strong>ripgrep</strong>: Fast search tool</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">choco</span> <span class="n">install</span> <span class="n">ripgrep</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>universal-ctags</strong> (Optional): For code indexing</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">choco</span> <span class="n">install</span> <span class="n">universal-ctags</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+<section id="installation-steps">
+<h2>Installation Steps<a class="headerlink" href="#installation-steps" title="Link to this heading"></a></h2>
+<section id="clone-the-repository">
+<h3>1. Clone the Repository<a class="headerlink" href="#clone-the-repository" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">://</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">Unity-Claude-Automation</span><span class="p">/</span><span class="n">Unity-Claude-Automation</span><span class="p">.</span><span class="n">git</span>
+<span class="nb">cd </span><span class="n">Unity-Claude-Automation</span>
+</pre></div>
+</div>
+</section>
+<section id="set-powershell-execution-policy">
+<h3>2. Set PowerShell Execution Policy<a class="headerlink" href="#set-powershell-execution-policy" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-ExecutionPolicy</span> <span class="n">-ExecutionPolicy</span> <span class="n">RemoteSigned</span> <span class="n">-Scope</span> <span class="n">CurrentUser</span>
+</pre></div>
+</div>
+</section>
+<section id="install-powershell-modules">
+<h3>3. Install PowerShell Modules<a class="headerlink" href="#install-powershell-modules" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Import the main module</span>
+<span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">Modules</span><span class="p">\</span><span class="n">Unity-Claude-SystemStatus</span><span class="p">\</span><span class="n">Unity-Claude-SystemStatus</span><span class="p">.</span><span class="n">psd1</span>
+
+<span class="c"># Import additional modules</span>
+<span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">Modules</span><span class="p">\</span><span class="n">Unity-Claude-Configuration</span><span class="p">\</span><span class="n">Unity-Claude-Configuration</span><span class="p">.</span><span class="n">psd1</span>
+<span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">Modules</span><span class="p">\</span><span class="n">Unity-Claude-GitHub</span><span class="p">\</span><span class="n">Unity-Claude-GitHub</span><span class="p">.</span><span class="n">psd1</span>
+</pre></div>
+</div>
+</section>
+<section id="configure-unity-project-path">
+<h3>4. Configure Unity Project Path<a class="headerlink" href="#configure-unity-project-path" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Set your Unity project path</span>
+<span class="nv">$env:UNITY_PROJECT_PATH</span> <span class="p">=</span> <span class="s2">&quot;C:\Path\To\Your\Unity\Project&quot;</span>
+
+<span class="c"># Register Unity project</span>
+<span class="nb">Register-UnityProject</span> <span class="n">-ProjectPath</span> <span class="nv">$env:UNITY_PROJECT_PATH</span>
+</pre></div>
+</div>
+</section>
+<section id="install-documentation-tools-optional">
+<h3>5. Install Documentation Tools (Optional)<a class="headerlink" href="#install-documentation-tools-optional" title="Link to this heading"></a></h3>
+<p>For documentation generation:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Create Python virtual environment</span>
+<span class="n">python</span> <span class="n">-m</span> <span class="n">venv</span> <span class="p">.</span><span class="n">venv</span>
+<span class="p">.\.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">Activate</span><span class="p">.</span><span class="n">ps1</span>
+
+<span class="c"># Install MkDocs and dependencies</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">-r</span> <span class="n">requirements</span><span class="p">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<section id="basic-configuration">
+<h3>Basic Configuration<a class="headerlink" href="#basic-configuration" title="Link to this heading"></a></h3>
+<p>Create a configuration file:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Initialize configuration</span>
+<span class="nb">Initialize-UnityClaudeConfig</span>
+
+<span class="c"># Set basic parameters</span>
+<span class="nb">Set-UnityClaudeParameter</span> <span class="n">-Key</span> <span class="s2">&quot;MonitoringInterval&quot;</span> <span class="n">-Value</span> <span class="n">30</span>
+<span class="nb">Set-UnityClaudeParameter</span> <span class="n">-Key</span> <span class="s2">&quot;EnableNotifications&quot;</span> <span class="n">-Value</span> <span class="nv">$true</span>
+</pre></div>
+</div>
+</section>
+<section id="github-integration-optional">
+<h3>GitHub Integration (Optional)<a class="headerlink" href="#github-integration-optional" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Set GitHub PAT</span>
+<span class="nv">$pat</span> <span class="p">=</span> <span class="nb">Read-Host</span> <span class="s2">&quot;Enter GitHub PAT&quot;</span> <span class="n">-AsSecureString</span>
+<span class="nb">Set-GitHubIntegrationConfig</span> <span class="n">-PAT</span> <span class="nv">$pat</span> <span class="n">-Owner</span> <span class="s2">&quot;YourGitHubOrg&quot;</span> <span class="n">-Repo</span> <span class="s2">&quot;YourRepo&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="email-notifications-optional">
+<h3>Email Notifications (Optional)<a class="headerlink" href="#email-notifications-optional" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Configure email settings</span>
+<span class="p">.\</span><span class="n">Configure-NotificationSettings</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="verification">
+<h2>Verification<a class="headerlink" href="#verification" title="Link to this heading"></a></h2>
+<p>Verify the installation:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Test system status module</span>
+<span class="nb">Test-SystemStatusModule</span>
+
+<span class="c"># Check all modules</span>
+<span class="nb">Get-Module</span> <span class="n">Unity-Claude</span><span class="p">-*</span> <span class="p">|</span> <span class="nb">Format-Table</span> <span class="n">Name</span><span class="p">,</span> <span class="n">Version</span>
+
+<span class="c"># Run basic health check</span>
+<span class="nb">Get-SystemHealthScore</span>
+</pre></div>
+</div>
+</section>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
+<p>Start the automation system:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Start autonomous monitoring</span>
+<span class="p">.\</span><span class="nb">Start-UnityClaudeAutomation</span><span class="p">.</span><span class="n">ps1</span>
+
+<span class="c"># Or start with dashboard</span>
+<span class="p">.\</span><span class="nb">Start-EnhancedDashboard</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="common-issues">
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Module Import Errors</strong></p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Reload modules</span>
+<span class="nb">Remove-Module</span> <span class="n">Unity-Claude</span><span class="p">-*</span> <span class="n">-Force</span>
+<span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">Modules</span><span class="p">\</span><span class="n">Unity-Claude-SystemStatus</span><span class="p">\</span><span class="n">Unity-Claude-SystemStatus</span><span class="p">.</span><span class="n">psd1</span> <span class="n">-Force</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Unity Path Not Found</strong></p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Verify Unity installation</span>
+<span class="nb">Test-Path</span> <span class="nv">$env:UNITY_PROJECT_PATH</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Python Environment Issues</strong></p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Recreate virtual environment</span>
+<span class="nb">Remove-Item</span> <span class="p">.</span><span class="n">venv</span> <span class="n">-Recurse</span> <span class="n">-Force</span>
+<span class="n">python</span> <span class="n">-m</span> <span class="n">venv</span> <span class="p">.</span><span class="n">venv</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="quick-start.html"><span class="std std-doc">Quick Start Tutorial</span></a></p></li>
+<li><p><a class="reference internal" href="configuration.html"><span class="std std-doc">Configuration Guide</span></a></p></li>
+<li><p><a class="reference internal" href="../user-guide/overview.html"><span class="std std-doc">User Guide</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Unity-Claude-Automation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

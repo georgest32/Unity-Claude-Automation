@@ -1,0 +1,424 @@
+{
+  "TestSuite": "AI Workflow Integration Testing - Day 4 Hour 1-2 (FIXED VERSION)",
+  "ComponentBaselines": {
+    "AutoGen_Agent": 2.0428496,
+    "LangGraph_Graph": 2.0499002,
+    "Ollama": 2.038277,
+    "Ollama_Generation": 5.6900598,
+    "AutoGen": 2.0488572,
+    "LangGraph": 2.3051385
+  },
+  "Summary": {
+    "FailedTests": 0,
+    "FixesApplied": [
+      "Ollama health validation",
+      "LangGraph API endpoints",
+      "Model availability validation"
+    ],
+    "PassRate": "100%",
+    "FoundationComplete": true,
+    "ReadyForFullIntegration": true,
+    "TotalTests": 12,
+    "Duration": 33.8644301,
+    "PassedTests": 12
+  },
+  "EndTime": "2025-08-30T01:39:53.6733481-04:00",
+  "Tests": [
+    {
+      "Details": "Service responsive in 2.305s, Standard health status validation",
+      "Category": "Infrastructure",
+      "ServiceIntegration": "LangGraph",
+      "TestName": "LangGraph Service Health",
+      "Timestamp": "2025-08-30T01:39:22.1183592-04:00",
+      "PerformanceData": {},
+      "Data": {
+        "ValidationMethod": "Standard health status validation",
+        "HealthData": {
+          "ValidationMethod": "Standard health status validation",
+          "Healthy": true,
+          "ResponseTime": 2.3051385,
+          "Response": {
+            "status": "healthy",
+            "timestamp": "2025-08-30T01:39:22.115504",
+            "database": "connected"
+          }
+        },
+        "Endpoint": "http://localhost:8000/health",
+        "ServiceName": "LangGraph"
+      },
+      "Passed": true,
+      "Duration": 2.3051385
+    },
+    {
+      "Details": "Service responsive in 2.049s, Standard health status validation",
+      "Category": "Infrastructure",
+      "ServiceIntegration": "AutoGen",
+      "TestName": "AutoGen Service Health",
+      "Timestamp": "2025-08-30T01:39:24.1689284-04:00",
+      "PerformanceData": {},
+      "Data": {
+        "ValidationMethod": "Standard health status validation",
+        "HealthData": {
+          "ValidationMethod": "Standard health status validation",
+          "Healthy": true,
+          "ResponseTime": 2.0488572,
+          "Response": {
+            "status": "healthy",
+            "autogen_version": "0.9.9",
+            "server_time": "2025-08-30T01:39:24.167238"
+          }
+        },
+        "Endpoint": "http://localhost:8001/health",
+        "ServiceName": "AutoGen"
+      },
+      "Passed": true,
+      "Duration": 2.0488572
+    },
+    {
+      "Details": "Service responsive in 2.038s, Models array validation (models.Count = 2)",
+      "Category": "Infrastructure",
+      "ServiceIntegration": "Ollama",
+      "TestName": "Ollama Service Health",
+      "Timestamp": "2025-08-30T01:39:26.2082393-04:00",
+      "PerformanceData": {},
+      "Data": {
+        "ValidationMethod": "Models array validation (models.Count = 2)",
+        "HealthData": {
+          "ValidationMethod": "Models array validation (models.Count = 2)",
+          "Healthy": true,
+          "ResponseTime": 2.038277,
+          "Response": {
+            "models": [
+              {
+                "name": "codellama:34b",
+                "model": "codellama:34b",
+                "modified_at": "2025-08-30T00:27:32.1640037-04:00",
+                "size": 19052049085,
+                "digest": "685be00e1532e01f795e04bc59c67bc292d9b1f80b5136d4fbdebe6830402132",
+                "details": {
+                  "parent_model": "",
+                  "format": "gguf",
+                  "family": "llama",
+                  "families": null,
+                  "parameter_size": "34B",
+                  "quantization_level": "Q4_0"
+                }
+              },
+              {
+                "name": "codellama:13b",
+                "model": "codellama:13b",
+                "modified_at": "2025-08-29T22:50:24.5528519-04:00",
+                "size": 7365960935,
+                "digest": "9f438cb9cd581fc025612d27f7c1a6669ff83a8bb0ed86c94fcf4c5440555697",
+                "details": {
+                  "parent_model": "",
+                  "format": "gguf",
+                  "family": "llama",
+                  "families": null,
+                  "parameter_size": "13B",
+                  "quantization_level": "Q4_0"
+                }
+              }
+            ]
+          }
+        },
+        "Endpoint": "http://localhost:11434/api/tags",
+        "ServiceName": "Ollama",
+        "ModelsAvailable": 2
+      },
+      "Passed": true,
+      "Duration": 2.038277
+    },
+    {
+      "Details": "Functions available: 8",
+      "Category": "ModuleIntegration",
+      "ServiceIntegration": "LangGraph",
+      "TestName": "LangGraph Module Integration",
+      "Timestamp": "2025-08-30T01:39:26.214744-04:00",
+      "PerformanceData": {},
+      "Data": {
+        "ModuleName": "Unity-Claude-LangGraphBridge",
+        "AvailableCommands": [
+          "Get-LangGraphConfig",
+          "Get-LangGraphWorkflows",
+          "Get-WorkflowResult",
+          "New-LangGraphWorkflow",
+          "Set-LangGraphConfig",
+          "Submit-WorkflowTask",
+          "Test-LangGraphServer",
+          "Test-LangGraphWorkflow"
+        ],
+        "CommandCount": 8
+      },
+      "Passed": true,
+      "Duration": 0.0037357
+    },
+    {
+      "Details": "Functions available: 13",
+      "Category": "ModuleIntegration",
+      "ServiceIntegration": "AutoGen",
+      "TestName": "AutoGen Module Integration",
+      "Timestamp": "2025-08-30T01:39:26.2177581-04:00",
+      "PerformanceData": {},
+      "Data": {
+        "ModuleName": "Unity-Claude-AutoGen",
+        "AvailableCommands": [
+          "Clear-AutoGenRegistry",
+          "Get-AutoGenAgent",
+          "Get-AutoGenConfiguration",
+          "Get-AutoGenConversationHistory",
+          "Invoke-AutoGenAnalysisWorkflow",
+          "Invoke-AutoGenConversation",
+          "New-AutoGenAgent",
+          "New-AutoGenTeam",
+          "Send-AutoGenMessage",
+          "Set-AutoGenConfiguration",
+          "Start-AutoGenNamedPipeServer",
+          "Stop-AutoGenServices",
+          "Test-AutoGenConnectivity"
+        ],
+        "CommandCount": 13
+      },
+      "Passed": true,
+      "Duration": 0.0023163
+    },
+    {
+      "Details": "Functions available: 6",
+      "Category": "ModuleIntegration",
+      "ServiceIntegration": "Ollama",
+      "TestName": "Ollama Optimized Module Integration",
+      "Timestamp": "2025-08-30T01:39:27.4933112-04:00",
+      "PerformanceData": {},
+      "Data": {
+        "ModuleName": "Unity-Claude-Ollama-Optimized-Fixed",
+        "AvailableCommands": [
+          "Format-OptimizedPrompt",
+          "Get-OllamaPerformanceReport",
+          "Get-OptimalContextWindow",
+          "Invoke-OllamaOptimizedRequest",
+          "Optimize-OllamaConfiguration",
+          "Start-OllamaBatchProcessing"
+        ],
+        "CommandCount": 6
+      },
+      "Passed": true,
+      "Duration": 1.2749808
+    },
+    {
+      "Details": "Graph created in 2.05s using /graphs endpoint",
+      "Category": "ComponentBaseline",
+      "ServiceIntegration": "LangGraph",
+      "TestName": "LangGraph Graph Creation Baseline",
+      "Timestamp": "2025-08-30T01:39:29.5454139-04:00",
+      "PerformanceData": {
+        "ResponseData": {
+          "graph_id": "baseline_test_graph_013927",
+          "type": "basic",
+          "status": "created",
+          "timestamp": "2025-08-30T01:39:29.543183"
+        },
+        "GraphCreated": true,
+        "GraphEdges": 0,
+        "GraphNodes": 0,
+        "ResponseTime": 2.0499002,
+        "APIEndpoint": "/graphs"
+      },
+      "Data": {},
+      "Passed": true,
+      "Duration": 2.0499002
+    },
+    {
+      "Details": "Agent created in 2.04s",
+      "Category": "ComponentBaseline",
+      "ServiceIntegration": "AutoGen",
+      "TestName": "AutoGen Agent Creation Baseline",
+      "Timestamp": "2025-08-30T01:39:31.5893297-04:00",
+      "PerformanceData": {
+        "ResponseData": {
+          "agent_id": "7b212c02-8f7b-42d4-bdb3-4ce7ddc727ed",
+          "name": "BaselineTestAgent",
+          "type": "AssistantAgent",
+          "status": "created"
+        },
+        "ResponseTime": 2.0428496,
+        "AgentType": "AssistantAgent",
+        "AgentCreated": true
+      },
+      "Data": {},
+      "Passed": true,
+      "Duration": 2.0428496
+    },
+    {
+      "Details": "Documentation generated in 5.69s",
+      "Category": "ComponentBaseline",
+      "ServiceIntegration": "Ollama",
+      "TestName": "Ollama Generation Baseline",
+      "Timestamp": "2025-08-30T01:39:43.4054349-04:00",
+      "PerformanceData": {
+        "ContextWindow": 1024,
+        "ResponseTime": 5.6900598,
+        "GenerationSuccess": true,
+        "DocumentationLength": 392,
+        "OptimizationApplied": true
+      },
+      "Data": {},
+      "Passed": true,
+      "Duration": 5.6900598
+    },
+    {
+      "Details": "CodeLlama models: 13B=True, 34B=True, Recent download=True",
+      "Category": "ModelValidation",
+      "ServiceIntegration": "Ollama",
+      "TestName": "Ollama Model Availability Validation",
+      "Timestamp": "2025-08-30T01:39:45.5067461-04:00",
+      "PerformanceData": {},
+      "Data": {
+        "RecentDownload": true,
+        "CodeLlama34B": true,
+        "TotalModels": 2,
+        "HoursSinceDownload": 1.2,
+        "CodeLlamaModels": 2,
+        "DownloadTime": "2025-08-30T00:27:32",
+        "CodeLlama13B": true
+      },
+      "Passed": true,
+      "Duration": 0.0
+    },
+    {
+      "Details": "Available endpoints: 24, Missing: ",
+      "Category": "APIValidation",
+      "ServiceIntegration": "LangGraph",
+      "TestName": "LangGraph API Endpoint Discovery",
+      "Timestamp": "2025-08-30T01:39:47.5421112-04:00",
+      "PerformanceData": {},
+      "Data": {
+        "AvailableEndpoints": [
+          "GET /",
+          "GET /health",
+          "GET /graphs",
+          "POST /graphs",
+          "POST /graphs/{graph_id}/execute",
+          "POST /graphs/{graph_id}/resume",
+          "GET /graphs/{graph_id}",
+          "DELETE /graphs/{graph_id}",
+          "GET /threads",
+          "GET /threads/{thread_id}",
+          "DELETE /threads/{thread_id}",
+          "POST /state/validate",
+          "POST /state/process",
+          "POST /state/synchronize",
+          "GET /state/snapshots",
+          "GET /state/snapshots/{snapshot_id}",
+          "GET /state/statistics",
+          "POST /state/prepare-for-powershell",
+          "POST /approval/request",
+          "POST /approval/{approval_id}/respond",
+          "GET /approval/{approval_id}",
+          "GET /approval/pending",
+          "POST /approval/{approval_id}/escalate",
+          "POST /workflow/{workflow_id}/interrupt"
+        ],
+        "MissingEndpoints": [],
+        "EndpointsValid": true,
+        "TotalEndpoints": 24,
+        "KeyEndpoints": [
+          "GET /health",
+          "POST /graphs",
+          "GET /graphs"
+        ]
+      },
+      "Passed": true,
+      "Duration": 2.0322384
+    },
+    {
+      "Details": "Full chain communication: True",
+      "Category": "CommunicationValidation",
+      "ServiceIntegration": "All",
+      "TestName": "Cross-Service Communication Validation",
+      "Timestamp": "2025-08-30T01:39:53.6684227-04:00",
+      "PerformanceData": {},
+      "Data": {
+        "LangGraphToOllama": true,
+        "FullChainCommunication": true,
+        "LangGraphToAutoGen": true,
+        "AutoGenToOllama": true
+      },
+      "Passed": true,
+      "Duration": 6.1252755
+    }
+  ],
+  "IntegrationMetrics": {
+    "CrossServiceCommunication": {},
+    "WorkflowOrchestration": {},
+    "ErrorRecovery": {},
+    "ServiceHealthChecks": {
+      "Ollama": {
+        "ValidationMethod": "Service-specific validation applied",
+        "Timestamp": "2025-08-30T01:39:26.2080348-04:00",
+        "Response": {
+          "models": [
+            {
+              "name": "codellama:34b",
+              "model": "codellama:34b",
+              "modified_at": "2025-08-30T00:27:32.1640037-04:00",
+              "size": 19052049085,
+              "digest": "685be00e1532e01f795e04bc59c67bc292d9b1f80b5136d4fbdebe6830402132",
+              "details": {
+                "parent_model": "",
+                "format": "gguf",
+                "family": "llama",
+                "families": null,
+                "parameter_size": "34B",
+                "quantization_level": "Q4_0"
+              }
+            },
+            {
+              "name": "codellama:13b",
+              "model": "codellama:13b",
+              "modified_at": "2025-08-29T22:50:24.5528519-04:00",
+              "size": 7365960935,
+              "digest": "9f438cb9cd581fc025612d27f7c1a6669ff83a8bb0ed86c94fcf4c5440555697",
+              "details": {
+                "parent_model": "",
+                "format": "gguf",
+                "family": "llama",
+                "families": null,
+                "parameter_size": "13B",
+                "quantization_level": "Q4_0"
+              }
+            }
+          ]
+        },
+        "ResponseTime": 2.038277,
+        "Healthy": true,
+        "Endpoint": "http://localhost:11434/api/tags"
+      },
+      "AutoGen": {
+        "ValidationMethod": "Service-specific validation applied",
+        "Timestamp": "2025-08-30T01:39:24.1688141-04:00",
+        "Response": {
+          "status": "healthy",
+          "autogen_version": "0.9.9",
+          "server_time": "2025-08-30T01:39:24.167238"
+        },
+        "ResponseTime": 2.0488572,
+        "Healthy": true,
+        "Endpoint": "http://localhost:8001/health"
+      },
+      "LangGraph": {
+        "ValidationMethod": "Service-specific validation applied",
+        "Timestamp": "2025-08-30T01:39:22.1172322-04:00",
+        "Response": {
+          "status": "healthy",
+          "timestamp": "2025-08-30T01:39:22.115504",
+          "database": "connected"
+        },
+        "ResponseTime": 2.3051385,
+        "Healthy": true,
+        "Endpoint": "http://localhost:8000/health"
+      }
+    },
+    "PerformanceBaselines": {}
+  },
+  "StartTime": "2025-08-30T01:39:19.808918-04:00"
+}

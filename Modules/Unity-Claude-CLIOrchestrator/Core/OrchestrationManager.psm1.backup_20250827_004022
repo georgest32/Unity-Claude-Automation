@@ -1,0 +1,537 @@
+<#
+.SYNOPSIS
+    Unity-Claude CLI Orchestrator - Orchestration Management Component
+    
+.DESCRIPTION
+    Manages the main CLI orchestration control including status monitoring,
+    comprehensive analysis, and autonomous decision making coordination.
+    
+.COMPONENT
+    Part of Unity-Claude-CLIOrchestrator refactored architecture
+    
+.FUNCTIONS
+    - Start-CLIOrchestration: Main orchestration startup and control
+    - Get-CLIOrchestrationStatus: Status reporting and monitoring
+    - Invoke-ComprehensiveResponseAnalysis: Advanced response analysis
+    - Invoke-AutonomousDecisionMaking: Decision making coordination
+    - Invoke-DecisionExecution: Decision execution with safety checks
+#>
+
+function Start-CLIOrchestration {
+    <#
+    .SYNOPSIS
+        Starts the main CLI orchestration system with autonomous capabilities
+        
+    .DESCRIPTION
+        Initializes and runs the complete CLI orchestration system including
+        autonomous monitoring, decision making, and response processing
+        
+    .PARAMETER AutonomousMode
+        Whether to enable autonomous operation mode
+        
+    .PARAMETER MonitoringInterval
+        Interval in seconds for monitoring checks (default: 30)
+        
+    .PARAMETER MaxExecutionTime
+        Maximum execution time in minutes before automatic shutdown (default: 60)
+        
+    .PARAMETER EnableResponseAnalysis
+        Whether to enable comprehensive response analysis
+        
+    .PARAMETER EnableDecisionMaking
+        Whether to enable autonomous decision making
+        
+    .OUTPUTS
+        PSCustomObject with orchestration results and statistics
+        
+    .EXAMPLE
+        $results = Start-CLIOrchestration -AutonomousMode -MonitoringInterval 60 -MaxExecutionTime 120
+    #>
+    [CmdletBinding()]
+    param(
+        [switch]$AutonomousMode,
+        [int]$MonitoringInterval = 30,
+        [int]$MaxExecutionTime = 60,
+        [switch]$EnableResponseAnalysis,
+        [switch]$EnableDecisionMaking
+    )
+    
+    try {
+        Write-Host ""
+        Write-Host "=====================================================================" -ForegroundColor Cyan
+        Write-Host "         Unity-Claude CLI Orchestration System v2.0" -ForegroundColor Cyan
+        Write-Host "=====================================================================" -ForegroundColor Cyan
+        Write-Host ""
+        
+        Write-Host "CONFIGURATION:" -ForegroundColor Yellow
+        Write-Host "  Autonomous Mode: $AutonomousMode" -ForegroundColor Gray
+        Write-Host "  Monitoring Interval: $MonitoringInterval seconds" -ForegroundColor Gray
+        Write-Host "  Max Execution Time: $MaxExecutionTime minutes" -ForegroundColor Gray
+        Write-Host "  Response Analysis: $EnableResponseAnalysis" -ForegroundColor Gray
+        Write-Host "  Decision Making: $EnableDecisionMaking" -ForegroundColor Gray
+        Write-Host ""
+        
+        $orchestrationResults = [PSCustomObject]@{
+            StartTime = Get-Date
+            EndTime = $null
+            Mode = if ($AutonomousMode) { "Autonomous" } else { "Manual" }
+            TotalRunTime = 0
+            MonitoringCycles = 0
+            ResponsesAnalyzed = 0
+            DecisionsMade = 0
+            ActionsExecuted = 0
+            Errors = @()
+            Status = "Running"
+        }
+        
+        # Initialize components
+        Write-Host "Initializing orchestration components..." -ForegroundColor Cyan
+        
+        # Verify Claude window is available
+        $claudeWindow = Find-ClaudeWindow
+        if (-not $claudeWindow) {
+            throw "Claude Code CLI window not found. Please ensure Claude CLI is open and visible."
+        }
+        Write-Host "  Claude CLI window detected successfully" -ForegroundColor Green
+        
+        # Initialize response directory
+        $responseDir = ".\ClaudeResponses\Autonomous"
+        if (-not (Test-Path $responseDir)) {
+            New-Item -ItemType Directory -Path $responseDir -Force | Out-Null
+        }
+        Write-Host "  Response directory initialized: $responseDir" -ForegroundColor Green
+        
+        # Start monitoring loop
+        Write-Host "Starting orchestration monitoring..." -ForegroundColor Cyan
+        $startTime = Get-Date
+        $maxRunTime = New-TimeSpan -Minutes $MaxExecutionTime
+        
+        do {
+            try {
+                $orchestrationResults.MonitoringCycles++
+                $currentTime = Get-Date
+                $elapsedTime = $currentTime - $startTime
+                
+                Write-Host "`n--- Monitoring Cycle $($orchestrationResults.MonitoringCycles) ---" -ForegroundColor Yellow
+                Write-Host "Runtime: $($elapsedTime.ToString('hh\:mm\:ss'))" -ForegroundColor Gray
+                
+                # Check for new responses if autonomous mode is enabled
+                if ($AutonomousMode) {
+                    $responseFiles = Get-ChildItem -Path $responseDir -Filter "*.json" -ErrorAction SilentlyContinue |
+                                   Where-Object { $_.LastWriteTime -gt $startTime } |
+                                   Sort-Object LastWriteTime
+                    
+                    if ($responseFiles) {
+                        Write-Host "Found $($responseFiles.Count) new response file(s)" -ForegroundColor Green
+                        
+                        foreach ($file in $responseFiles) {
+                            try {
+                                $orchestrationResults.ResponsesAnalyzed++
+                                Write-Host "Processing: $($file.Name)" -ForegroundColor Cyan
+                                
+                                if ($EnableResponseAnalysis) {
+                                    $analysisResult = Invoke-ComprehensiveResponseAnalysis -ResponseFile $file.FullName
+                                    Write-Host "  Analysis completed: $($analysisResult.Status)" -ForegroundColor Green
+                                }
+                                
+                                if ($EnableDecisionMaking) {
+                                    $decisionResult = Invoke-AutonomousDecisionMaking -ResponseFile $file.FullName
+                                    $orchestrationResults.DecisionsMade++
+                                    Write-Host "  Decision: $($decisionResult.Decision)" -ForegroundColor Yellow
+                                    
+                                    # Execute decision if it requires action
+                                    if ($decisionResult.Decision -in @("EXECUTE", "CONTINUE", "INVESTIGATE")) {
+                                        $executionResult = Invoke-DecisionExecution -DecisionResult $decisionResult
+                                        if ($executionResult.ExecutionStatus -eq "Success") {
+                                            $orchestrationResults.ActionsExecuted++
+                                            Write-Host "  Action executed successfully" -ForegroundColor Green
+                                        }
+                                        else {
+                                            Write-Host "  Action execution failed: $($executionResult.Errors -join '; ')" -ForegroundColor Red
+                                        }
+                                    }
+                                }
+                                
+                            }
+                            catch {
+                                $orchestrationResults.Errors += "Error processing $($file.Name): $($_.Exception.Message)"
+                                Write-Host "  Error: $($_.Exception.Message)" -ForegroundColor Red
+                            }
+                        }
+                    }
+                    else {
+                        Write-Host "No new responses to process" -ForegroundColor Gray
+                    }
+                }
+                
+                # Display current status
+                Write-Host "Status: Responses: $($orchestrationResults.ResponsesAnalyzed), Decisions: $($orchestrationResults.DecisionsMade), Actions: $($orchestrationResults.ActionsExecuted)" -ForegroundColor Cyan
+                
+                # Check for exit conditions
+                if ($elapsedTime -gt $maxRunTime) {
+                    Write-Host "Maximum execution time reached. Shutting down..." -ForegroundColor Yellow
+                    break
+                }
+                
+                # Wait for next cycle
+                Start-Sleep -Seconds $MonitoringInterval
+                
+            }
+            catch {
+                $orchestrationResults.Errors += "Monitoring cycle error: $($_.Exception.Message)"
+                Write-Host "Monitoring cycle error: $($_.Exception.Message)" -ForegroundColor Red
+                Start-Sleep -Seconds 5  # Brief pause before retrying
+            }
+            
+        } while ($true)
+        
+        # Finalize results
+        $orchestrationResults.EndTime = Get-Date
+        $orchestrationResults.TotalRunTime = ($orchestrationResults.EndTime - $orchestrationResults.StartTime).TotalMinutes
+        $orchestrationResults.Status = "Completed"
+        
+        Write-Host "`n=====================================================================" -ForegroundColor Cyan
+        Write-Host "         CLI Orchestration Session Complete" -ForegroundColor Cyan
+        Write-Host "=====================================================================" -ForegroundColor Cyan
+        Write-Host "Runtime: $($orchestrationResults.TotalRunTime.ToString('F1')) minutes" -ForegroundColor Gray
+        Write-Host "Cycles: $($orchestrationResults.MonitoringCycles)" -ForegroundColor Gray
+        Write-Host "Responses Analyzed: $($orchestrationResults.ResponsesAnalyzed)" -ForegroundColor Gray
+        Write-Host "Decisions Made: $($orchestrationResults.DecisionsMade)" -ForegroundColor Gray
+        Write-Host "Actions Executed: $($orchestrationResults.ActionsExecuted)" -ForegroundColor Gray
+        Write-Host "Errors: $($orchestrationResults.Errors.Count)" -ForegroundColor Gray
+        
+        if ($orchestrationResults.Errors.Count -gt 0) {
+            Write-Host "`nErrors encountered:" -ForegroundColor Red
+            $orchestrationResults.Errors | ForEach-Object { Write-Host "  $_" -ForegroundColor Red }
+        }
+        
+        return $orchestrationResults
+    }
+    catch {
+        Write-Host "CRITICAL ERROR: CLI orchestration failed: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "Press Enter to close this window..." -ForegroundColor Yellow
+        Read-Host
+        throw
+    }
+}
+
+function Get-CLIOrchestrationStatus {
+    <#
+    .SYNOPSIS
+        Gets the current status of CLI orchestration components
+        
+    .DESCRIPTION
+        Returns status information about the orchestration system including
+        component health, active sessions, and performance metrics
+        
+    .OUTPUTS
+        PSCustomObject with status information
+    #>
+    [CmdletBinding()]
+    param()
+    
+    $status = [PSCustomObject]@{
+        Timestamp = Get-Date
+        ClaudeWindow = $null
+        ComponentsLoaded = @()
+        ActiveSessions = 0
+        ResponseDirectory = ".\ClaudeResponses\Autonomous"
+        SystemHealth = "Unknown"
+    }
+    
+    try {
+        # Check Claude window
+        $status.ClaudeWindow = Find-ClaudeWindow -ErrorAction SilentlyContinue
+        
+        # Check loaded components
+        $loadedModules = Get-Module -Name "*Claude*"
+        $status.ComponentsLoaded = $loadedModules | Select-Object Name, Version
+        
+        # Check response directory
+        if (Test-Path $status.ResponseDirectory) {
+            $recentFiles = Get-ChildItem -Path $status.ResponseDirectory -Filter "*.json" |
+                          Where-Object { $_.LastWriteTime -gt (Get-Date).AddHours(-1) }
+            $status.ActiveSessions = $recentFiles.Count
+        }
+        
+        # Determine overall health
+        if ($status.ClaudeWindow -and $status.ComponentsLoaded.Count -gt 0) {
+            $status.SystemHealth = "Healthy"
+        }
+        elseif ($status.ComponentsLoaded.Count -gt 0) {
+            $status.SystemHealth = "Partial"
+        }
+        else {
+            $status.SystemHealth = "Critical"
+        }
+        
+        return $status
+    }
+    catch {
+        $status.SystemHealth = "Error"
+        return $status
+    }
+}
+
+function Invoke-ComprehensiveResponseAnalysis {
+    <#
+    .SYNOPSIS
+        Performs comprehensive analysis of Claude responses
+        
+    .DESCRIPTION
+        Analyzes response files for patterns, recommendations, and actionable insights
+        
+    .PARAMETER ResponseFile
+        Path to the response file to analyze
+        
+    .OUTPUTS
+        PSCustomObject with analysis results
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ResponseFile
+    )
+    
+    try {
+        if (-not (Test-Path $ResponseFile)) {
+            throw "Response file not found: $ResponseFile"
+        }
+        
+        $content = Get-Content -Path $ResponseFile -Raw | ConvertFrom-Json
+        
+        $analysisResults = [PSCustomObject]@{
+            Timestamp = Get-Date
+            ResponseFile = $ResponseFile
+            ResponseType = "Unknown"
+            Confidence = 0
+            RecommendationTypes = @{}
+            ActionableInsights = @()
+            Status = "Analyzed"
+        }
+        
+        # Basic response analysis
+        if ($content.RESPONSE) {
+            $responseText = $content.RESPONSE
+            
+            # Classify response type
+            if ($responseText -match "RECOMMENDATION:|TEST:|ERROR:|SUCCESS:") {
+                $analysisResults.ResponseType = "Actionable"
+                $analysisResults.Confidence = 85
+            }
+            elseif ($responseText -match "COMPLETE|IMPLEMENTED|FIXED") {
+                $analysisResults.ResponseType = "Status Update"
+                $analysisResults.Confidence = 90
+            }
+            else {
+                $analysisResults.ResponseType = "Informational"
+                $analysisResults.Confidence = 70
+            }
+            
+            # Extract recommendations
+            $recommendations = [regex]::Matches($responseText, "RECOMMENDATION:\s*([^\r\n]+)")
+            foreach ($match in $recommendations) {
+                $recType = $match.Groups[1].Value
+                if ($analysisResults.RecommendationTypes.ContainsKey($recType)) {
+                    $analysisResults.RecommendationTypes[$recType]++
+                }
+                else {
+                    $analysisResults.RecommendationTypes[$recType] = 1
+                }
+            }
+            
+            # Generate insights
+            if ($analysisResults.RecommendationTypes.Count -gt 0) {
+                $topRecommendation = $analysisResults.RecommendationTypes.GetEnumerator() | 
+                                   Sort-Object Value -Descending | 
+                                   Select-Object -First 1
+                
+                if ($topRecommendation) {
+                    $analysisResults.ActionableInsights += "Most common recommendation: $($topRecommendation.Name) ($($topRecommendation.Value) occurrences)"
+                }
+            }
+        }
+        
+        return $analysisResults
+    }
+    catch {
+        throw "Analysis failed: $($_.Exception.Message)"
+    }
+}
+
+function Invoke-AutonomousDecisionMaking {
+    <#
+    .SYNOPSIS
+        Makes autonomous decisions based on response analysis
+        
+    .DESCRIPTION
+        Analyzes responses and makes decisions about appropriate actions to take
+        
+    .PARAMETER ResponseFile
+        Path to the response file to analyze for decision making
+        
+    .OUTPUTS
+        PSCustomObject with decision results
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ResponseFile
+    )
+    
+    try {
+        $content = Get-Content -Path $ResponseFile -Raw | ConvertFrom-Json
+        
+        $decisionResult = [PSCustomObject]@{
+            Timestamp = Get-Date
+            ResponseFile = $ResponseFile
+            Decision = "CONTINUE"
+            Confidence = 50
+            Reasoning = @()
+            Actions = @()
+            SafetyChecks = $true
+        }
+        
+        if ($content.RESPONSE) {
+            $responseText = $content.RESPONSE
+            
+            # Decision logic
+            if ($responseText -match "RECOMMENDATION:\s*(TEST|RUN|EXECUTE)") {
+                $decisionResult.Decision = "EXECUTE"
+                $decisionResult.Confidence = 80
+                $decisionResult.Reasoning += "Contains executable recommendation"
+            }
+            elseif ($responseText -match "ERROR|FAIL|CRITICAL") {
+                $decisionResult.Decision = "INVESTIGATE"
+                $decisionResult.Confidence = 75
+                $decisionResult.Reasoning += "Contains error indicators"
+            }
+            elseif ($responseText -match "COMPLETE|SUCCESS|IMPLEMENTED") {
+                $decisionResult.Decision = "CONTINUE"
+                $decisionResult.Confidence = 90
+                $decisionResult.Reasoning += "Task appears complete"
+            }
+            
+            # Safety validation
+            $unsafePatterns = @("rm -rf", "Remove-Item", "Delete", "format", "shutdown")
+            foreach ($pattern in $unsafePatterns) {
+                if ($responseText -match $pattern) {
+                    $decisionResult.SafetyChecks = $false
+                    $decisionResult.Decision = "BLOCK"
+                    $decisionResult.Reasoning += "Contains potentially unsafe operation: $pattern"
+                    break
+                }
+            }
+        }
+        
+        return $decisionResult
+    }
+    catch {
+        throw "Decision making failed: $($_.Exception.Message)"
+    }
+}
+
+function Invoke-DecisionExecution {
+    <#
+    .SYNOPSIS
+        Executes decisions with safety checks and validation
+        
+    .DESCRIPTION
+        Takes a decision result and safely executes the recommended actions
+        
+    .PARAMETER DecisionResult
+        The decision result object from Invoke-AutonomousDecisionMaking
+        
+    .OUTPUTS
+        PSCustomObject with execution results
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [PSCustomObject]$DecisionResult
+    )
+    
+    try {
+        $executionResult = [PSCustomObject]@{
+            Timestamp = Get-Date
+            Decision = $DecisionResult.Decision
+            ExecutionStatus = "Not Executed"
+            Actions = @()
+            Errors = @()
+        }
+        
+        # Safety check
+        if (-not $DecisionResult.SafetyChecks) {
+            $executionResult.ExecutionStatus = "Blocked - Safety Check Failed"
+            $executionResult.Errors += "Execution blocked due to failed safety validation"
+            return $executionResult
+        }
+        
+        # Execute based on decision
+        switch ($DecisionResult.Decision) {
+            "EXECUTE" {
+                $executionResult.ExecutionStatus = "Simulated"  # Safe simulation for now
+                $executionResult.Actions += "Would execute recommended action"
+            }
+            "INVESTIGATE" {
+                $executionResult.ExecutionStatus = "Investigating"
+                $executionResult.Actions += "Flagged for investigation"
+            }
+            "CONTINUE" {
+                # Extract the recommendation from the response file and submit to Claude
+                try {
+                    $responseContent = Get-Content -Path ($DecisionResult.ResponseFile -replace '\.FullName$', '') -Raw | ConvertFrom-Json
+                    if ($responseContent.RECOMMENDATION) {
+                        # Import the prompt submission function
+                        $claudeModule = Get-Module -Name "*CLIOrchestrator*" | Where-Object { $_.ExportedCommands.Keys -contains "Submit-ToClaudeViaTypeKeys" }
+                        if ($claudeModule) {
+                            $submissionResult = Submit-ToClaudeViaTypeKeys -PromptText $responseContent.RECOMMENDATION
+                            if ($submissionResult) {
+                                $executionResult.ExecutionStatus = "Success"
+                                $executionResult.Actions += "Successfully submitted recommendation to Claude: $($responseContent.RECOMMENDATION)"
+                            }
+                            else {
+                                $executionResult.ExecutionStatus = "Failed"
+                                $executionResult.Errors += "Failed to submit prompt to Claude"
+                            }
+                        }
+                        else {
+                            $executionResult.ExecutionStatus = "Failed"
+                            $executionResult.Errors += "Submit-ToClaudeViaTypeKeys function not available"
+                        }
+                    }
+                    else {
+                        $executionResult.ExecutionStatus = "No Action Required"
+                        $executionResult.Actions += "No recommendation found in response"
+                    }
+                }
+                catch {
+                    $executionResult.ExecutionStatus = "Failed"
+                    $executionResult.Errors += "Error processing CONTINUE decision: $($_.Exception.Message)"
+                }
+            }
+            "BLOCK" {
+                $executionResult.ExecutionStatus = "Blocked"
+                $executionResult.Actions += "Action blocked for safety"
+            }
+            default {
+                $executionResult.ExecutionStatus = "Unknown Decision"
+                $executionResult.Errors += "Unknown decision type: $($DecisionResult.Decision)"
+            }
+        }
+        
+        return $executionResult
+    }
+    catch {
+        throw "Execution failed: $($_.Exception.Message)"
+    }
+}
+
+# Export functions
+Export-ModuleMember -Function @(
+    'Start-CLIOrchestration',
+    'Get-CLIOrchestrationStatus',
+    'Invoke-ComprehensiveResponseAnalysis',
+    'Invoke-AutonomousDecisionMaking',
+    'Invoke-DecisionExecution'
+)

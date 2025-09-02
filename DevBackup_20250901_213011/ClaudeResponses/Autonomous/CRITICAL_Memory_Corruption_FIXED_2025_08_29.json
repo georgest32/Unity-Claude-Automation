@@ -1,0 +1,57 @@
+{
+  "timestamp": "2025-08-29T19:00:00Z",
+  "session_id": "critical-memory-corruption-fix",
+  "prompt_type": "Fixing",
+  "task": "CRITICAL: Fix System.AccessViolationException memory corruption in Predictive-Maintenance module",
+  "target_file": "Predictive-Maintenance.psm1",
+  "error_details": {
+    "error_type": "System.AccessViolationException - Memory Corruption",
+    "error_location": "Microsoft.PowerShell.Commands.FileSystemProvider.GetChildNames during recursive file operations",
+    "critical_severity": "FATAL - Complete system crash with memory corruption",
+    "root_cause": "Unsafe Get-ChildItem -Recurse operations in Predictive-Maintenance module causing infinite recursion and memory corruption"
+  },
+  "memory_corruption_analysis": {
+    "crash_location": "FileSystemProvider during recursive directory traversal",
+    "corruption_pattern": "Protected memory access violation during PSMemberInfoInternalCollection operations",
+    "trigger_condition": "Predictive-Maintenance module executing Get-ChildItem -Recurse without symlink protection",
+    "system_impact": "Complete PowerShell process crash with memory corruption"
+  },
+  "critical_fixes_applied": {
+    "predictive_maintenance_fixes": [
+      "Replaced all 3 Get-ChildItem -Recurse calls with Get-SafeChildItems",
+      "Added -MaxDepth 3 limits to prevent infinite recursion",
+      "Added -FilesOnly parameter to prevent directory enumeration issues",
+      "Applied safe file enumeration patterns throughout module"
+    ],
+    "safe_enumeration_integration": [
+      "Import Safe-FileEnumeration.psm1 in Predictive-Maintenance module",
+      "Use Get-SafeChildItems for all file system operations",
+      "Apply exclude patterns to prevent symlink loops",
+      "Limit recursion depth to prevent memory pressure"
+    ]
+  },
+  "memory_safety_measures": {
+    "symlink_protection": "Get-SafeChildItems uses -Attributes !ReparsePoint",
+    "recursion_limits": "MaxDepth parameter prevents infinite traversal",
+    "memory_limits": "File size limits prevent excessive memory allocation",
+    "exclude_patterns": "Unity Library/, Temp/, node_modules/ directories excluded"
+  },
+  "fixed_locations": {
+    "line_200": "Get-ChildItem -Recurse replaced with Get-SafeChildItems -MaxDepth 3",
+    "line_667": "Get-ChildItem -Recurse replaced with Get-SafeChildItems -MaxDepth 3", 
+    "line_1014": "Get-ChildItem -Recurse replaced with Get-SafeChildItems -MaxDepth 3"
+  },
+  "validation_approach": {
+    "immediate_test": "Run Test-AutoGen-MultiAgent.ps1 to verify memory corruption resolved",
+    "safe_enumeration_validation": "Confirm all file operations use Get-SafeChildItems",
+    "memory_stability": "Ensure no AccessViolationException during Predictive-Maintenance operations",
+    "performance_validation": "Verify safe enumeration maintains acceptable performance"
+  },
+  "prevention_measures": {
+    "module_wide_safety": "All PowerShell modules must use Safe-FileEnumeration.psm1 for file operations",
+    "mandatory_pattern": "Get-SafeChildItems required for all recursive file operations",
+    "testing_requirement": "All file system operations must be tested for memory safety",
+    "documentation_update": "Critical learning added to prevent future memory corruption"
+  },
+  "RESPONSE": "FIX - Predictive-Maintenance.psm1: CRITICAL memory corruption fixed by replacing all Get-ChildItem -Recurse calls with Get-SafeChildItems. System.AccessViolationException should be resolved. Test immediately to validate memory safety."
+}

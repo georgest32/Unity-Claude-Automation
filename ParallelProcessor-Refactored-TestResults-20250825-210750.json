@@ -1,0 +1,133 @@
+{
+  "TestSuite": "ParallelProcessor-Refactored",
+  "StartTime": "2025-08-25T21:07:49",
+  "Duration": 0.9731043,
+  "EndTime": "2025-08-25T21:07:50",
+  "PassedTests": 5,
+  "Summary": {
+    "OverallResult": "FAILED",
+    "SuccessRate": 35.71,
+    "Duration": "0.97 seconds",
+    "TotalTests": 14,
+    "SkippedTests": 0,
+    "FailedTests": 9,
+    "PassedTests": 5
+  },
+  "Results": [
+    {
+      "Error": "",
+      "Message": "Module imported successfully",
+      "Status": "PASSED",
+      "TestName": "Import Refactored Module",
+      "Timestamp": "2025-08-25T21:07:49",
+      "Details": null
+    },
+    {
+      "Error": "",
+      "Message": "Version: 2.0.0-Refactored, Architecture: Modular Component-Based",
+      "Status": "PASSED",
+      "TestName": "Module Information",
+      "Timestamp": "2025-08-25T21:07:49",
+      "Details": null
+    },
+    {
+      "Error": "",
+      "Message": "All 7 required functions found",
+      "Status": "PASSED",
+      "TestName": "Core Functions Available",
+      "Timestamp": "2025-08-25T21:07:49",
+      "Details": null
+    },
+    {
+      "Error": "The term 'Get-OptimalThreadCount' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+      "Message": "",
+      "Status": "FAILED",
+      "TestName": "Optimal Thread Calculation",
+      "Timestamp": "2025-08-25T21:07:49",
+      "Details": null
+    },
+    {
+      "Error": "The term 'New-RunspacePoolManager' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+      "Message": "",
+      "Status": "FAILED",
+      "TestName": "RunspacePool Manager Creation",
+      "Timestamp": "2025-08-25T21:07:49",
+      "Details": null
+    },
+    {
+      "Error": "The term 'New-StatisticsTracker' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+      "Message": "",
+      "Status": "FAILED",
+      "TestName": "Statistics Tracker Creation",
+      "Timestamp": "2025-08-25T21:07:49",
+      "Details": null
+    },
+    {
+      "Error": "",
+      "Message": "Processor ID: 15fae853",
+      "Status": "PASSED",
+      "TestName": "Parallel Processor Creation",
+      "Timestamp": "2025-08-25T21:07:50",
+      "Details": null
+    },
+    {
+      "Error": "",
+      "Message": "Health issues: Error checking health: Exception calling \"EnterReadLock\" with \"0\" argument(s): \"Recursive read lock acquisitions not allowed in this mode.\"",
+      "Status": "FAILED",
+      "TestName": "Processor Health Check",
+      "Timestamp": "2025-08-25T21:07:50",
+      "Details": null
+    },
+    {
+      "Error": "A parameter cannot be found that matches parameter name 'InputObjects'.",
+      "Message": "",
+      "Status": "FAILED",
+      "TestName": "Simple Parallel Processing",
+      "Timestamp": "2025-08-25T21:07:50",
+      "Details": null
+    },
+    {
+      "Error": "Exception calling \"EnterReadLock\" with \"0\" argument(s): \"Recursive read lock acquisitions not allowed in this mode.\"",
+      "Message": "",
+      "Status": "FAILED",
+      "TestName": "Statistics Retrieval",
+      "Timestamp": "2025-08-25T21:07:50",
+      "Details": null
+    },
+    {
+      "Error": "",
+      "Message": "Processor stopped and disposed",
+      "Status": "PASSED",
+      "TestName": "Processor Cleanup",
+      "Timestamp": "2025-08-25T21:07:50",
+      "Details": null
+    },
+    {
+      "Error": "A parameter cannot be found that matches parameter name 'Processor'.",
+      "Message": "",
+      "Status": "FAILED",
+      "TestName": "Batch Processing",
+      "Timestamp": "2025-08-25T21:07:50",
+      "Details": null
+    },
+    {
+      "Error": "A parameter cannot be found that matches parameter name 'InputObjects'.",
+      "Message": "",
+      "Status": "FAILED",
+      "TestName": "Error Handling with Retry",
+      "Timestamp": "2025-08-25T21:07:50",
+      "Details": null
+    },
+    {
+      "Error": "A parameter cannot be found that matches parameter name 'InputObjects'.",
+      "Message": "",
+      "Status": "FAILED",
+      "TestName": "Performance Test",
+      "Timestamp": "2025-08-25T21:07:50",
+      "Details": null
+    }
+  ],
+  "FailedTests": 9,
+  "TotalTests": 14,
+  "SkippedTests": 0
+}

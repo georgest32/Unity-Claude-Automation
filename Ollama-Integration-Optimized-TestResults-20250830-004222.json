@@ -1,0 +1,443 @@
+{
+  "TestSuite": "Ollama Integration Testing and Optimization (Week 1 Day 3 Hour 7-8)",
+  "OptimizationMetrics": {},
+  "PerformanceComparison": {
+    "OptimizedTime": 8.2203051,
+    "TargetAchieved": true,
+    "ImprovementPercent": 83.7,
+    "BaselineTime": 50.352733
+  },
+  "Summary": {
+    "Hour7_8Success": false,
+    "TotalTests": 10,
+    "PassedTests": 8,
+    "Categories": {
+      "BatchProcessing": {
+        "PassRate": 100.0,
+        "Failed": 0,
+        "Total": 1,
+        "Passed": 1
+      },
+      "Optimization": {
+        "PassRate": 100.0,
+        "Failed": 0,
+        "Total": 2,
+        "Passed": 2
+      },
+      "ContextOptimization": {
+        "PassRate": 100.0,
+        "Failed": 0,
+        "Total": 1,
+        "Passed": 1
+      },
+      "StressTesting": {
+        "PassRate": 100.0,
+        "Failed": 0,
+        "Total": 1,
+        "Passed": 1
+      },
+      "ResourceMonitoring": {
+        "PassRate": 0.0,
+        "Failed": 1,
+        "Total": 1,
+        "Passed": 0
+      },
+      "Performance": {
+        "PassRate": 100.0,
+        "Failed": 0,
+        "Total": 1,
+        "Passed": 1
+      },
+      "SuccessCriteria": {
+        "PassRate": 67.0,
+        "Failed": 1,
+        "Total": 3,
+        "Passed": 2
+      }
+    },
+    "OptimizationAchieved": false,
+    "Hour7_8SuccessCriteria": {
+      "PerformanceOptimizationEffective": true,
+      "BatchProcessingOperational": true,
+      "ComprehensiveTestingComplete": true,
+      "ResourceUsageOptimized": false
+    },
+    "FailedTests": 2,
+    "PassRate": "80%",
+    "Duration": "00:03:00.5511452"
+  },
+  "EndTime": "2025-08-30T00:42:22.7982024-04:00",
+  "Tests": [
+    {
+      "Passed": true,
+      "Data": {
+        "LoadedCommands": [
+          "Format-OptimizedPrompt",
+          "Get-OllamaPerformanceReport",
+          "Get-OptimalContextWindow",
+          "Invoke-OllamaOptimizedRequest",
+          "Optimize-OllamaConfiguration",
+          "Start-OllamaBatchProcessing"
+        ],
+        "MissingFunctions": [],
+        "ActualCount": 6,
+        "ExpectedCount": 4
+      },
+      "PerformanceData": {},
+      "Timestamp": "2025-08-30T00:39:26.0415224-04:00",
+      "Duration": 0.0,
+      "Category": "Optimization",
+      "TestName": "Optimized Module Loading",
+      "Details": "Commands loaded: 6, Missing: "
+    },
+    {
+      "Passed": true,
+      "Data": {
+        "OptimalTimeout": 30,
+        "OptimalConfiguration": {
+          "TotalMemoryGB": 63.64,
+          "CPUCores": 32,
+          "OptimalTimeout": 30,
+          "OptimalParallel": 4,
+          "GPU": true
+        },
+        "GPUDetected": true,
+        "OptimalParallel": 4
+      },
+      "PerformanceData": {},
+      "Timestamp": "2025-08-30T00:39:27.3863016-04:00",
+      "Duration": 1.3350579,
+      "Category": "Optimization",
+      "TestName": "Configuration Optimization",
+      "Details": "Auto-configuration: True"
+    },
+    {
+      "Passed": true,
+      "Data": {
+        "LargeContext": {
+          "ContextWindow": 16384,
+          "WindowType": "Large",
+          "ContentLength": 5564,
+          "EstimatedTokens": 1391.0
+        },
+        "OptimizationWorking": true,
+        "MediumContext": {
+          "ContextWindow": 4096,
+          "WindowType": "Medium",
+          "ContentLength": 653,
+          "EstimatedTokens": 164.0
+        },
+        "SmallContext": {
+          "ContextWindow": 1024,
+          "WindowType": "Small",
+          "ContentLength": 23,
+          "EstimatedTokens": 6.0
+        }
+      },
+      "PerformanceData": {},
+      "Timestamp": "2025-08-30T00:39:27.3955975-04:00",
+      "Duration": 0.0,
+      "Category": "ContextOptimization",
+      "TestName": "Context Window Selection",
+      "Details": "Dynamic sizing: Small->Small, Medium->Medium, Large->Large"
+    },
+    {
+      "Passed": true,
+      "Data": {},
+      "PerformanceData": {
+        "OptimizedTime": 8.2203051,
+        "ContextWindow": 4096,
+        "MeetsTarget": true,
+        "ImprovementPercent": 83.7,
+        "BaselineTime": 50.352733
+      },
+      "Timestamp": "2025-08-30T00:40:27.2837866-04:00",
+      "Duration": 8.2203051,
+      "Category": "Performance",
+      "TestName": "Performance Optimization",
+      "Details": "Improvement: 83.7%, Target: <30 s, Actual: 8.22s"
+    },
+    {
+      "Passed": true,
+      "Data": {},
+      "PerformanceData": {
+        "TheoreticalTime": 150,
+        "ActualTime": 43.5192809,
+        "ParallelEfficiency": 71.0,
+        "TimeReduction": 71.0,
+        "RequestsProcessed": 5,
+        "BatchResults": {
+          "ParallelEfficiency": 71.0,
+          "TotalProcessed": 5,
+          "Success": true,
+          "Results": [
+            {
+              "WindowType": "Medium",
+              "DocumentationType": "Detailed",
+              "Documentation": "\nFunction: Get-SystemInfo\n=======================\n\nThe `Get-SystemInfo` function retrieves information about the system, including the computer name, operating system, memory usage, and uptime. It also allows for the inclusion of process count if specified by the user.\n\nPurpose\n-------\n\nThe purpose of this function is to provide a comprehensive overview of the system's hardware and software configuration. This information can be useful in troubleshooting issues or identifying potential bottlenecks.\n\nParameters\n----------\n\n### ComputerName\n\n* Type: String\n* Default value: `$env:COMPUTERNAME`\n* Description: The name of the computer to retrieve system information for. If not specified, the local computer is used.\n\n### IncludeProcesses\n\n* Type: Switch\n* Default value: False\n* Description: Specifies whether or not to include process count in the output.\n\nExamples\n--------\n\nRetrieve system information for the local computer:\n```powershell\nGet-SystemInfo\n```\n\nRetrieve system information for a remote computer:\n```powershell\nGet-SystemInfo -ComputerName \"remote-computer\"\n```\n\nInclude process count in output:\n```powershell\nGet-SystemInfo -IncludeProcesses\n```\n\nNotes\n-----\n\n* The `Get-WmiObject` cmdlet is used to retrieve information from the Windows Management Instrumentation (WMI) repository. This allows for the retrieval of system information from remote computers as well as the local computer.\n* The `ConvertToDateTime` method is used to convert the last boot up time value to a date and time object, which is then subtracted from the current date and time to calculate uptime.\n* The `Measure-Object` cmdlet is used to count the number of processes running on the system. This information is only included if the `-IncludeProcesses` parameter is specified.",
+              "Success": true,
+              "Request": {
+                "DocumentationType": "Detailed",
+                "Id": 5,
+                "CodeContent": "function Get-SystemInfo {\r\n    param(\r\n        [string]$ComputerName = $env:COMPUTERNAME,\r\n        [switch]$IncludeProcesses\r\n    )\r\n    \r\n    $systemInfo = @{\r\n        ComputerName = $ComputerName\r\n        OS = (Get-WmiObject Win32_OperatingSystem).Caption\r\n        Memory = [math]::Round((Get-WmiObject Win32_ComputerSystem).TotalPhysicalMemory / 1GB, 2)\r\n        Uptime = (Get-Date) - (Get-WmiObject Win32_OperatingSystem).ConvertToDateTime((Get-WmiObject Win32_OperatingSystem).LastBootUpTime)\r\n    }\r\n    \r\n    if ($IncludeProcesses) {\r\n        $systemInfo.ProcessCount = (Get-Process | Measure-Object).Count\r\n    }\r\n    \r\n    return $systemInfo\r\n}"
+              },
+              "ResponseTime": 14.1370788,
+              "ContextWindow": 4096,
+              "Timestamp": "2025-08-30T00:41:10.7899286-04:00",
+              "Model": "codellama:13b"
+            },
+            {
+              "WindowType": "Medium",
+              "DocumentationType": "Detailed",
+              "Documentation": "\nPurpose:\nThe purpose of this PowerShell function is to retrieve system information for a specified computer or the local machine. The function returns a hash table containing various system properties, such as operating system, memory usage, uptime, and process count (if requested).\n\nParameters:\n\n* ComputerName: The name of the computer to retrieve system information from. If not specified, the local machine is used.\n* IncludeProcesses: A switch parameter that indicates whether or not to include the number of processes running on the system in the output hash table.\n\nExamples:\n\n1. Retrieve system information for the local machine:\n```powershell\nGet-SystemInfo\n```\n2. Retrieve system information for a remote computer:\n```powershell\nGet-SystemInfo -ComputerName \"RemoteMachine\"\n```\n3. Include process count in output hash table:\n```powershell\nGet-SystemInfo -IncludeProcesses\n```\nNotes:\n\n* The function uses the Get-WmiObject cmdlet to retrieve system information from WMI (Windows Management Instrumentation).\n* The ComputerName parameter is optional, and if not specified, the local machine is used.\n* The IncludeProcesses switch parameter is optional, and if specified, the number of processes running on the system will be included in the output hash table.",
+              "Success": true,
+              "Request": {
+                "DocumentationType": "Detailed",
+                "Id": 4,
+                "CodeContent": "function Get-SystemInfo {\r\n    param(\r\n        [string]$ComputerName = $env:COMPUTERNAME,\r\n        [switch]$IncludeProcesses\r\n    )\r\n    \r\n    $systemInfo = @{\r\n        ComputerName = $ComputerName\r\n        OS = (Get-WmiObject Win32_OperatingSystem).Caption\r\n        Memory = [math]::Round((Get-WmiObject Win32_ComputerSystem).TotalPhysicalMemory / 1GB, 2)\r\n        Uptime = (Get-Date) - (Get-WmiObject Win32_OperatingSystem).ConvertToDateTime((Get-WmiObject Win32_OperatingSystem).LastBootUpTime)\r\n    }\r\n    \r\n    if ($IncludeProcesses) {\r\n        $systemInfo.ProcessCount = (Get-Process | Measure-Object).Count\r\n    }\r\n    \r\n    return $systemInfo\r\n}"
+              },
+              "ResponseTime": 7.1804004,
+              "ContextWindow": 4096,
+              "Timestamp": "2025-08-30T00:41:03.5480615-04:00",
+              "Model": "codellama:13b"
+            },
+            {
+              "WindowType": "Medium",
+              "DocumentationType": "Detailed",
+              "Documentation": "\nThe purpose of this PowerShell function is to retrieve system information for a specified computer or the local machine. The function takes two parameters:\n\n* ComputerName (optional): The name of the computer to retrieve system information from. If not specified, the local machine will be used.\n* IncludeProcesses (optional): A switch that indicates whether to include process information in the output.\n\nThe function returns a hash table with the following keys:\n\n* ComputerName: The name of the computer being queried.\n* OS: The operating system version installed on the computer.\n* Memory: The total amount of physical memory available on the computer, rounded to two decimal places.\n* Uptime: The amount of time the computer has been running since its last boot.\n* ProcessCount (optional): The number of processes currently running on the computer, if the IncludeProcesses switch is specified.\n\nHere are some examples of how to use this function:\n\n1. Retrieve system information for the local machine:\n```powershell\nGet-SystemInfo\n```\n2. Retrieve system information for a remote computer:\n```powershell\nGet-SystemInfo -ComputerName \"RemoteComputer\"\n```\n3. Include process information in the output:\n```powershell\nGet-SystemInfo -IncludeProcesses\n```\n4. Retrieve system information for multiple computers:\n```powershell\n$computers = @(\"LocalMachine\", \"RemoteComputer1\", \"RemoteComputer2\")\nforeach ($computer in $computers) {\n    Get-SystemInfo -ComputerName $computer\n}\n```\nNotes:\n\n* The function uses the WMI (Windows Management Instrumentation) provider to retrieve system information.\n* The IncludeProcesses switch is optional, and if not specified, the function will only return basic system information.\n* The ProcessCount key will only be included in the output if the IncludeProcesses switch is specified.",
+              "Success": true,
+              "Request": {
+                "DocumentationType": "Detailed",
+                "Id": 3,
+                "CodeContent": "function Get-SystemInfo {\r\n    param(\r\n        [string]$ComputerName = $env:COMPUTERNAME,\r\n        [switch]$IncludeProcesses\r\n    )\r\n    \r\n    $systemInfo = @{\r\n        ComputerName = $ComputerName\r\n        OS = (Get-WmiObject Win32_OperatingSystem).Caption\r\n        Memory = [math]::Round((Get-WmiObject Win32_ComputerSystem).TotalPhysicalMemory / 1GB, 2)\r\n        Uptime = (Get-Date) - (Get-WmiObject Win32_OperatingSystem).ConvertToDateTime((Get-WmiObject Win32_OperatingSystem).LastBootUpTime)\r\n    }\r\n    \r\n    if ($IncludeProcesses) {\r\n        $systemInfo.ProcessCount = (Get-Process | Measure-Object).Count\r\n    }\r\n    \r\n    return $systemInfo\r\n}"
+              },
+              "ResponseTime": 21.7160259,
+              "ContextWindow": 4096,
+              "Timestamp": "2025-08-30T00:40:53.203857-04:00",
+              "Model": "codellama:13b"
+            },
+            {
+              "WindowType": "Medium",
+              "DocumentationType": "Detailed",
+              "Documentation": "\nPurpose:\nThe purpose of this PowerShell function is to retrieve system information for a specified computer or the local machine. The function returns a hash table containing various system properties, such as operating system, memory usage, uptime, and process count (if requested).\n\nParameters:\n\n* ComputerName: The name of the computer to retrieve system information from. If not specified, the local machine is used.\n* IncludeProcesses: A switch parameter that indicates whether or not to include the number of processes running on the system in the output hash table.\n\nExamples:\n\n1. Retrieve system information for the local machine:\n```powershell\nGet-SystemInfo\n```\n2. Retrieve system information for a remote computer:\n```powershell\nGet-SystemInfo -ComputerName \"RemoteMachine\"\n```\n3. Include process count in output hash table:\n```powershell\nGet-SystemInfo -IncludeProcesses\n```\nNotes:\n\n* The function uses the WMI (Windows Management Instrumentation) provider to retrieve system information from the local or remote computer.\n* The `ConvertToDateTime` method is used to convert the last boot up time property from a string to a date and time object.\n* The `Round` method is used to round the memory usage value to 2 decimal places.",
+              "Success": true,
+              "Request": {
+                "DocumentationType": "Detailed",
+                "Id": 2,
+                "CodeContent": "function Get-SystemInfo {\r\n    param(\r\n        [string]$ComputerName = $env:COMPUTERNAME,\r\n        [switch]$IncludeProcesses\r\n    )\r\n    \r\n    $systemInfo = @{\r\n        ComputerName = $ComputerName\r\n        OS = (Get-WmiObject Win32_OperatingSystem).Caption\r\n        Memory = [math]::Round((Get-WmiObject Win32_ComputerSystem).TotalPhysicalMemory / 1GB, 2)\r\n        Uptime = (Get-Date) - (Get-WmiObject Win32_OperatingSystem).ConvertToDateTime((Get-WmiObject Win32_OperatingSystem).LastBootUpTime)\r\n    }\r\n    \r\n    if ($IncludeProcesses) {\r\n        $systemInfo.ProcessCount = (Get-Process | Measure-Object).Count\r\n    }\r\n    \r\n    return $systemInfo\r\n}"
+              },
+              "ResponseTime": 14.7287495,
+              "ContextWindow": 4096,
+              "Timestamp": "2025-08-30T00:40:45.9485073-04:00",
+              "Model": "codellama:13b"
+            },
+            {
+              "WindowType": "Medium",
+              "DocumentationType": "Detailed",
+              "Documentation": "\nFunction: Get-SystemInfo\n=========================\n\nThe `Get-SystemInfo` function retrieves information about the system, including the computer name, operating system, memory usage, and uptime. It also allows you to include process count in the output if needed.\n\nPurpose\n-------\n\nThe purpose of this function is to provide a comprehensive overview of the system's hardware and software configuration. This information can be useful for troubleshooting, monitoring, and reporting purposes.\n\nParameters\n----------\n\n### ComputerName\n\n* Type: String\n* Default value: `$env:COMPUTERNAME`\n* Description: The name of the computer to retrieve system information from. If not specified, the local computer is used.\n\n### IncludeProcesses\n\n* Type: Switch\n* Default value: False\n* Description: Whether or not to include process count in the output.\n\nExamples\n--------\n\nRetrieve system information for the local computer:\n```powershell\nGet-SystemInfo\n```\n\nRetrieve system information for a remote computer:\n```powershell\nGet-SystemInfo -ComputerName \"remote-computer\"\n```\n\nInclude process count in the output:\n```powershell\nGet-SystemInfo -IncludeProcesses\n```\n\nNotes\n-----\n\n* This function uses WMI (Windows Management Instrumentation) to retrieve system information.\n* The `ConvertToDateTime` method is used to convert the last boot up time from a string to a date and time object.\n* The `TotalPhysicalMemory` property of the `Win32_ComputerSystem` class returns the total amount of physical memory in bytes, which is then divided by 1GB to get the value in GB.\n* The `Measure-Object` cmdlet is used to count the number of processes running on the system.\n* The `Get-Date` cmdlet is used to retrieve the current date and time, which is then subtracted from the last boot up time to calculate the uptime.",
+              "Success": true,
+              "Request": {
+                "DocumentationType": "Detailed",
+                "Id": 1,
+                "CodeContent": "function Get-SystemInfo {\r\n    param(\r\n        [string]$ComputerName = $env:COMPUTERNAME,\r\n        [switch]$IncludeProcesses\r\n    )\r\n    \r\n    $systemInfo = @{\r\n        ComputerName = $ComputerName\r\n        OS = (Get-WmiObject Win32_OperatingSystem).Caption\r\n        Memory = [math]::Round((Get-WmiObject Win32_ComputerSystem).TotalPhysicalMemory / 1GB, 2)\r\n        Uptime = (Get-Date) - (Get-WmiObject Win32_OperatingSystem).ConvertToDateTime((Get-WmiObject Win32_OperatingSystem).LastBootUpTime)\r\n    }\r\n    \r\n    if ($IncludeProcesses) {\r\n        $systemInfo.ProcessCount = (Get-Process | Measure-Object).Count\r\n    }\r\n    \r\n    return $systemInfo\r\n}"
+              },
+              "ResponseTime": 10.0703966,
+              "ContextWindow": 4096,
+              "Timestamp": "2025-08-30T00:40:40.9468893-04:00",
+              "Model": "codellama:13b"
+            }
+          ],
+          "ProcessingTime": 43.5055906,
+          "AverageBatchTime": 21.7527953
+        }
+      },
+      "Timestamp": "2025-08-30T00:41:10.8058852-04:00",
+      "Duration": 43.5192809,
+      "Category": "BatchProcessing",
+      "TestName": "Batch Processing",
+      "Details": "Processed: 5, Efficiency: 71%, Time reduction: 71%"
+    },
+    {
+      "Passed": false,
+      "Data": {},
+      "PerformanceData": {},
+      "Timestamp": "2025-08-30T00:41:26.2023187-04:00",
+      "Duration": 0.0,
+      "Category": "ResourceMonitoring",
+      "TestName": "Memory Usage Monitoring",
+      "Details": "Exception: Method invocation failed because [System.Object[]] does not contain a method named 'op_Division'."
+    },
+    {
+      "Passed": true,
+      "Data": {},
+      "PerformanceData": {
+        "TotalProcessingTime": 56.4214899,
+        "AverageResponseTime": 5.6113676,
+        "SuccessfulRequests": 6,
+        "StressTestResults": {
+          "ParallelEfficiency": 68.7,
+          "TotalProcessed": 6,
+          "Success": true,
+          "Results": [
+            {
+              "WindowType": "Small",
+              "DocumentationType": "Synopsis",
+              "Documentation": "\nThe `Format-Table` cmdlet formats the output of a command as a table. It takes the output from the `Get-Date` cmdlet, which returns the current date and time, and displays it in a table format with columns for the day, month, year, hour, minute, second, and millisecond.\n\nHere is an example of how to use this cmdlet:\n```powershell\nGet-Date | Format-Table -Property Day,Month,Year,Hour,Minute,Second,Millisecond\n```\nThis will display the current date and time in a table format with columns for each of these properties.",
+              "Success": true,
+              "Request": {
+                "DocumentationType": "Synopsis",
+                "Id": 6,
+                "CodeContent": "Get-Date | Format-Table"
+              },
+              "ResponseTime": 6.3292519,
+              "ContextWindow": 1024,
+              "Timestamp": "2025-08-30T00:42:22.6174777-04:00",
+              "Model": "codellama:13b"
+            },
+            {
+              "WindowType": "Small",
+              "DocumentationType": "Synopsis",
+              "Documentation": "\nThe `Format-Table` cmdlet formats the output of a command as a table. It takes the output from the `Get-Date` cmdlet, which returns the current date and time, and displays it in a table format. The `-AutoSize` parameter is used to automatically adjust the column widths based on the content of the cells.\n\nHere's a concise function synopsis for this PowerShell code:\n```powershell\nGet-Date | Format-Table -AutoSize\n```\nThis command displays the current date and time in a table format, with automatic column width adjustment.",
+              "Success": true,
+              "Request": {
+                "DocumentationType": "Synopsis",
+                "Id": 5,
+                "CodeContent": "Get-Date | Format-Table"
+              },
+              "ResponseTime": 4.2144148,
+              "ContextWindow": 1024,
+              "Timestamp": "2025-08-30T00:42:20.4271885-04:00",
+              "Model": "codellama:13b"
+            },
+            {
+              "WindowType": "Small",
+              "DocumentationType": "Synopsis",
+              "Documentation": "\nThe `Format-Table` cmdlet formats the output of a command as a table. It takes the output from the `Get-Date` cmdlet, which returns the current date and time, and displays it in a table format. The `-AutoSize` parameter is used to automatically adjust the column widths based on the content of the cells.\n\nHere's a concise function synopsis for this PowerShell code:\n```powershell\nGet-Date | Format-Table -AutoSize\n```\nThis command displays the current date and time in a table format, with automatic column width adjustment.",
+              "Success": true,
+              "Request": {
+                "DocumentationType": "Synopsis",
+                "Id": 4,
+                "CodeContent": "Get-Date | Format-Table"
+              },
+              "ResponseTime": 8.4443465,
+              "ContextWindow": 1024,
+              "Timestamp": "2025-08-30T00:41:41.2632377-04:00",
+              "Model": "codellama:13b"
+            },
+            {
+              "WindowType": "Small",
+              "DocumentationType": "Synopsis",
+              "Documentation": "\nThe `Format-Table` cmdlet formats the output of a command as a table. It takes the output from the `Get-Date` cmdlet, which returns the current date and time, and displays it in a table format with columns for the day, month, year, hour, minute, second, and millisecond.\n\nThe key parameters for this cmdlet are:\n\n* `-AutoSize`: Automatically adjusts the column width to fit the content.\n* `-Wrap`: Wraps text that is too long to fit in a single line.\n* `-HideTableHeaders`: Hides the table headers.\n* `-Property`: Specifies the properties of the object to display in the table.\n\nThe purpose of this cmdlet is to format the output of the `Get-Date` cmdlet as a table, which can be useful for displaying the current date and time in a more readable format.",
+              "Success": true,
+              "Request": {
+                "DocumentationType": "Synopsis",
+                "Id": 3,
+                "CodeContent": "Get-Date | Format-Table"
+              },
+              "ResponseTime": 7.0205494,
+              "ContextWindow": 1024,
+              "Timestamp": "2025-08-30T00:41:39.2080121-04:00",
+              "Model": "codellama:13b"
+            },
+            {
+              "WindowType": "Small",
+              "DocumentationType": "Synopsis",
+              "Documentation": "\nThe `Format-Table` cmdlet formats the output of a command as a table. It takes the output from the `Get-Date` cmdlet, which returns the current date and time, and displays it in a table format with columns for the day, month, year, hour, minute, second, and millisecond.\n\nThe purpose of this code is to display the current date and time in a table format. The key parameters are:\n\n* `Get-Date`: This cmdlet returns the current date and time.\n* `Format-Table`: This cmdlet formats the output of the `Get-Date` cmdlet as a table with columns for the day, month, year, hour, minute, second, and millisecond.",
+              "Success": true,
+              "Request": {
+                "DocumentationType": "Synopsis",
+                "Id": 2,
+                "CodeContent": "Get-Date | Format-Table"
+              },
+              "ResponseTime": 4.6481913,
+              "ContextWindow": 1024,
+              "Timestamp": "2025-08-30T00:41:36.0286699-04:00",
+              "Model": "codellama:13b"
+            },
+            {
+              "WindowType": "Small",
+              "DocumentationType": "Synopsis",
+              "Documentation": "\nThe `Format-Table` cmdlet formats the output of a command as a table. It takes the input from the pipeline and displays it in a tabular format. The purpose of this function is to display the current date and time in a formatted table.",
+              "Success": true,
+              "Request": {
+                "DocumentationType": "Synopsis",
+                "Id": 1,
+                "CodeContent": "Get-Date | Format-Table"
+              },
+              "ResponseTime": 3.0114517,
+              "ContextWindow": 1024,
+              "Timestamp": "2025-08-30T00:41:33.2696116-04:00",
+              "Model": "codellama:13b"
+            }
+          ],
+          "ProcessingTime": 56.4169481,
+          "AverageBatchTime": 28.20847405
+        },
+        "ConcurrentRequests": 6
+      },
+      "Timestamp": "2025-08-30T00:42:22.7840636-04:00",
+      "Duration": 56.4214899,
+      "Category": "StressTesting",
+      "TestName": "Concurrent Request Stress Test",
+      "Details": "Requests: 6, Avg response: 5.61s"
+    },
+    {
+      "Passed": true,
+      "Data": {
+        "ComprehensiveTesting": true,
+        "RequiredCategories": [
+          "Optimization",
+          "ContextOptimization",
+          "Performance",
+          "BatchProcessing",
+          "ResourceMonitoring",
+          "StressTesting"
+        ],
+        "MissingCategories": [],
+        "TestedCategories": [
+          "BatchProcessing",
+          "ContextOptimization",
+          "Optimization",
+          "Performance",
+          "ResourceMonitoring",
+          "StressTesting"
+        ]
+      },
+      "PerformanceData": {},
+      "Timestamp": "2025-08-30T00:42:22.7909484-04:00",
+      "Duration": 0.0,
+      "Category": "SuccessCriteria",
+      "TestName": "Comprehensive Testing Coverage",
+      "Details": "Categories tested: 6/6"
+    },
+    {
+      "Passed": true,
+      "Data": {
+        "OptimizationEffective": true,
+        "PerformanceComparison": {
+          "OptimizedTime": 8.2203051,
+          "TargetAchieved": true,
+          "ImprovementPercent": 83.7,
+          "BaselineTime": 50.352733
+        }
+      },
+      "PerformanceData": {},
+      "Timestamp": "2025-08-30T00:42:22.7927413-04:00",
+      "Duration": 0.0,
+      "Category": "SuccessCriteria",
+      "TestName": "Performance Optimization Effectiveness",
+      "Details": "Improvement: 83.7%, Target achieved: True"
+    },
+    {
+      "Passed": false,
+      "Data": {},
+      "PerformanceData": {},
+      "Timestamp": "2025-08-30T00:42:22.7979412-04:00",
+      "Duration": 0.0,
+      "Category": "SuccessCriteria",
+      "TestName": "Resource Usage Optimization",
+      "Details": "Exception: Method invocation failed because [System.Object[]] does not contain a method named 'op_Division'."
+    }
+  ],
+  "StartTime": "2025-08-30T00:39:22.2470572-04:00"
+}

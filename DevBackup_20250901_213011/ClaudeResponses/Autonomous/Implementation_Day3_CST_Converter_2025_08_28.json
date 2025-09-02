@@ -1,0 +1,93 @@
+{
+  "timestamp": "2025-08-28T03:25:00Z",
+  "session_id": "day3-cst-converter-implementation",
+  "prompt_type": "Implementation",
+  "task": "Implement TreeSitter-CSTConverter module for Day 3 Afternoon",
+  "feature_name": "Tree-sitter CST to Unified Graph Converter",
+  "target_module": "Unity-Claude-CPG",
+  "requirements": [
+    "Create CSTNode class for representing parse tree nodes",
+    "Create CSTEdge class for representing relationships",
+    "Implement LanguageHandler abstract base class",
+    "Build CSharpHandler for C# specific parsing",
+    "Build PythonHandler for Python specific parsing",
+    "Build JavaScriptHandler for JavaScript/TypeScript parsing",
+    "Add performance benchmarking capabilities",
+    "Ensure thread-safe operation for parallel parsing",
+    "Integrate with existing CPG infrastructure",
+    "Target 36x performance improvement over AST parsing"
+  ],
+  "technical_specifications": {
+    "module_path": "Modules/Unity-Claude-CPG/Core/TreeSitter-CSTConverter.psm1",
+    "dependencies": [
+      "CPG-BasicOperations.psm1",
+      "CPG-CallGraphBuilder.psm1",
+      "CPG-DataFlowTracker.psm1",
+      "CPG-ThreadSafeOperations.psm1"
+    ],
+    "classes_to_implement": {
+      "CSTNode": {
+        "properties": ["Id", "Type", "Text", "StartPosition", "EndPosition", "Children"],
+        "methods": ["ConvertToCPGNode", "GetDescendants", "FindPattern"]
+      },
+      "CSTEdge": {
+        "properties": ["Id", "Type", "Source", "Target", "Properties"],
+        "methods": ["ConvertToCPGEdge", "GetWeight"]
+      },
+      "LanguageHandler": {
+        "properties": ["Language", "FileExtensions", "Parser"],
+        "methods": ["ParseFile", "ExtractNodes", "ExtractEdges", "GetMetrics"]
+      },
+      "CSharpHandler": {
+        "inherits": "LanguageHandler",
+        "specific_features": ["namespace_tracking", "using_directives", "class_hierarchy"]
+      },
+      "PythonHandler": {
+        "inherits": "LanguageHandler",
+        "specific_features": ["import_tracking", "decorator_handling", "indentation_scoping"]
+      },
+      "JavaScriptHandler": {
+        "inherits": "LanguageHandler",
+        "specific_features": ["module_imports", "arrow_functions", "async_await"]
+      }
+    },
+    "performance_targets": {
+      "parse_speed": "1000 lines/second minimum",
+      "memory_usage": "Under 100MB for large files",
+      "speedup_factor": "36x over PowerShell AST",
+      "parallel_efficiency": "Linear scaling up to 4 cores"
+    }
+  },
+  "implementation_steps": [
+    "Define base classes (CSTNode, CSTEdge)",
+    "Create LanguageHandler abstract class",
+    "Implement language-specific handlers",
+    "Add tree-sitter binding integration",
+    "Build node/edge conversion logic",
+    "Implement performance benchmarking",
+    "Add parallel processing support",
+    "Create comprehensive test suite",
+    "Document API and usage examples"
+  ],
+  "success_criteria": {
+    "functional": [
+      "Successfully parse files in C#, Python, JavaScript",
+      "Generate valid CPG nodes and edges",
+      "Maintain relationship accuracy",
+      "Handle edge cases gracefully"
+    ],
+    "performance": [
+      "Achieve 36x speedup over AST",
+      "Process 1000+ lines per second",
+      "Support parallel processing",
+      "Memory efficient for large codebases"
+    ],
+    "integration": [
+      "Seamless integration with existing CPG modules",
+      "Compatible with Call Graph Builder",
+      "Works with Data Flow Tracker",
+      "Thread-safe operations"
+    ]
+  },
+  "RESPONSE": "IMPLEMENT - Create TreeSitter-CSTConverter.psm1 with CSTNode, CSTEdge, and language-specific handlers for C#, Python, and JavaScript to enable high-performance multi-language code parsing"
+}

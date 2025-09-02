@@ -8,6 +8,7 @@
     Version = "1.0.0"
     Description = "Webhook notification service for Unity-Claude autonomous operations with HTTP delivery and authentication"
     StartScript = ".\Start-WebhookNotificationService.ps1"
+    WorkingDirectory = "C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation"
     
     # Dependencies - requires SystemMonitoring and can work alongside EmailNotifications
     Dependencies = @("SystemMonitoring")

@@ -1,0 +1,393 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PowerShell Compatibility - Unity-Claude Automation &mdash; Unity-Claude-Automation 3.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=acc74ff5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2b3e50" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Unity-Claude-Automation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">PowerShell Compatibility - Unity-Claude Automation</a><ul>
+<li><a class="reference internal" href="#powershell-5-1-syntax-and-compatibility-issues">🔧 PowerShell 5.1 Syntax and Compatibility Issues</a><ul>
+<li><a class="reference internal" href="#powershell-string-interpolation-modulo-operator-critical">13. PowerShell String Interpolation Modulo Operator (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#powershell-backtick-escape-sequence-errors-critical">14. PowerShell Backtick Escape Sequence Errors (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#powershell-variable-drive-reference-ambiguity-critical">15. PowerShell Variable Drive Reference Ambiguity (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#powershell-unicode-character-contamination-critical">16. PowerShell Unicode Character Contamination (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#powershell-split-path-parameter-binding-errors-critical">17. PowerShell Split-Path Parameter Binding Errors (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#powershell-array-index-expression-errors-in-strings-critical">18. PowerShell Array Index Expression Errors in Strings (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#powershell-automatic-variable-collision-critical">20. PowerShell Automatic Variable Collision (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#powershell-hashtable-property-access-with-measure-object-critical">21. PowerShell Hashtable Property Access with Measure-Object (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#powershell-5-1-datetime-ets-properties-json-serialization-critical">134. PowerShell 5.1 DateTime ETS Properties JSON Serialization (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#powershell-ets-datetime-object-access-complex-structure-phase-3-day-15-resolved">135. PowerShell ETS DateTime Object Access Complex Structure (Phase 3 Day 15 - ✅ RESOLVED)</a></li>
+<li><a class="reference internal" href="#powershell-5-1-sort-object-string-vs-numeric-comparison-critical">133. PowerShell 5.1 Sort-Object String vs Numeric Comparison (⚠️ CRITICAL)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#powershell-version-feature-compatibility">🔧 PowerShell Version Feature Compatibility</a><ul>
+<li><a class="reference internal" href="#powershell-5-1-vs-powershell-7-feature-differences">PowerShell 5.1 vs PowerShell 7+ Feature Differences</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#powershell-debugging-and-error-analysis">🔍 PowerShell Debugging and Error Analysis</a><ul>
+<li><a class="reference internal" href="#error-location-investigation-patterns">Error Location Investigation Patterns</a></li>
+<li><a class="reference internal" href="#common-error-misleading-patterns">Common Error Misleading Patterns</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2b3e50" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Unity-Claude-Automation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">PowerShell Compatibility - Unity-Claude Automation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/LEARNINGS_POWERSHELL_COMPATIBILITY.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="powershell-compatibility-unity-claude-automation">
+<h1>PowerShell Compatibility - Unity-Claude Automation<a class="headerlink" href="#powershell-compatibility-unity-claude-automation" title="Link to this heading"></a></h1>
+<p><em>PowerShell 5.1 compatibility issues, syntax errors, and version-specific workarounds</em>
+<em>Last Updated: 2025-08-19</em></p>
+<section id="powershell-5-1-syntax-and-compatibility-issues">
+<h2>🔧 PowerShell 5.1 Syntax and Compatibility Issues<a class="headerlink" href="#powershell-5-1-syntax-and-compatibility-issues" title="Link to this heading"></a></h2>
+<section id="powershell-string-interpolation-modulo-operator-critical">
+<h3>13. PowerShell String Interpolation Modulo Operator (⚠️ CRITICAL)<a class="headerlink" href="#powershell-string-interpolation-modulo-operator-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: <code class="docutils literal notranslate"><span class="pre">($variable%)</span></code> in strings causes “You must provide a value expression following the ‘%’ operator”
+<strong>Discovery</strong>: PowerShell interprets <code class="docutils literal notranslate"><span class="pre">%</span></code> as modulo operator even in string interpolation context
+<strong>Evidence</strong>: Test-ModuleRefactoring-Enhanced.ps1 failed with parser errors on <code class="docutils literal notranslate"><span class="pre">($percentage%)</span></code>
+<strong>Resolution</strong>: Move <code class="docutils literal notranslate"><span class="pre">%</span></code> outside parentheses: <code class="docutils literal notranslate"><span class="pre">$percentage%</span></code> or use format operator <code class="docutils literal notranslate"><span class="pre">&quot;{0}%&quot;</span> <span class="pre">-f</span> <span class="pre">$percentage</span></code>
+<strong>Critical Learning</strong>: Avoid <code class="docutils literal notranslate"><span class="pre">($var%)</span></code> pattern in PowerShell strings; use <code class="docutils literal notranslate"><span class="pre">$var%</span></code> or format operators instead
+<strong>Error Pattern</strong>: Parser reports cascading brace errors when modulo operator syntax is invalid</p>
+</section>
+<section id="powershell-backtick-escape-sequence-errors-critical">
+<h3>14. PowerShell Backtick Escape Sequence Errors (⚠️ CRITICAL)<a class="headerlink" href="#powershell-backtick-escape-sequence-errors-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: <code class="docutils literal notranslate"><span class="pre">$variable\</span></code>:<code class="docutils literal notranslate"> <span class="pre">in</span> <span class="pre">strings</span> <span class="pre">causes</span> <span class="pre">&quot;Missing</span> <span class="pre">closing</span> <span class="pre">'}'&quot;</span> <span class="pre">brace</span> <span class="pre">matching</span> <span class="pre">errors</span> <span class="pre">**Discovery**:</span> <span class="pre">Backtick</span> <span class="pre">(\</span></code>) before colon creates invalid escape sequence, breaking parser
+<strong>Evidence</strong>: Test-ModuleRefactoring-Enhanced.ps1 failed with brace errors on foreach loops
+<strong>Resolution</strong>: Remove unnecessary backticks: <code class="docutils literal notranslate"><span class="pre">$variable:</span></code> instead of <code class="docutils literal notranslate"><span class="pre">$variable\</span></code>:<code class="docutils literal notranslate"> <span class="pre">**Critical</span> <span class="pre">Learning**:</span> <span class="pre">Only</span> <span class="pre">use</span> <span class="pre">backtick</span> <span class="pre">for</span> <span class="pre">valid</span> <span class="pre">escape</span> <span class="pre">sequences</span> <span class="pre">(</span></code>\n<code class="docutils literal notranslate"><span class="pre">,</span> </code>\t<code class="docutils literal notranslate"><span class="pre">,</span> </code>“`, etc.)
+<strong>Error Pattern</strong>: Invalid escape sequences cause parser failure and cascading brace mismatch errors</p>
+</section>
+<section id="powershell-variable-drive-reference-ambiguity-critical">
+<h3>15. PowerShell Variable Drive Reference Ambiguity (⚠️ CRITICAL)<a class="headerlink" href="#powershell-variable-drive-reference-ambiguity-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: <code class="docutils literal notranslate"><span class="pre">$variable:</span></code> causes “Variable reference is not valid. ‘:’ was not followed by a valid variable name character”
+<strong>Discovery</strong>: PowerShell interprets <code class="docutils literal notranslate"><span class="pre">$variable:</span></code> as drive reference syntax (like C:, D:), not variable + colon
+<strong>Evidence</strong>: Test-ModuleRefactoring-Enhanced.ps1 failed with InvalidVariableReferenceWithDrive errors
+<strong>Resolution</strong>: Use variable delimiting: <code class="docutils literal notranslate"><span class="pre">${variable}:</span></code> instead of <code class="docutils literal notranslate"><span class="pre">$variable:</span></code>
+<strong>Critical Learning</strong>: Always delimit variables with <code class="docutils literal notranslate"><span class="pre">${variable}</span></code> when followed by colon to avoid drive reference confusion
+<strong>Error Pattern</strong>: Drive reference ambiguity causes cascading parser errors in surrounding code</p>
+</section>
+<section id="powershell-unicode-character-contamination-critical">
+<h3>16. PowerShell Unicode Character Contamination (⚠️ CRITICAL)<a class="headerlink" href="#powershell-unicode-character-contamination-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Persistent “Missing closing ‘}’” errors on foreach loops despite multiple syntax fixes
+<strong>Discovery</strong>: Copy-paste from rich text sources introduces Unicode dashes (U+2013, U+2014) instead of ASCII hyphens (U+002D)
+<strong>Evidence</strong>: 5 debugging attempts with same error location indicates Unicode character contamination
+<strong>Resolution</strong>: Create ASCII-only scripts, use Unicode detection tools, avoid copy-paste from Word/web
+<strong>Critical Learning</strong>: PowerShell 5.1 cannot distinguish Unicode dashes from ASCII hyphens, causing parser failures
+<strong>Error Pattern</strong>: Unicode characters cause misleading error locations and persistent syntax failures</p>
+</section>
+<section id="powershell-split-path-parameter-binding-errors-critical">
+<h3>17. PowerShell Split-Path Parameter Binding Errors (⚠️ CRITICAL)<a class="headerlink" href="#powershell-split-path-parameter-binding-errors-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: “Cannot bind parameter because parameter ‘Parent’ is specified more than once”
+<strong>Discovery</strong>: Cannot specify same parameter multiple times in Split-Path command
+<strong>Evidence</strong>: <code class="docutils literal notranslate"><span class="pre">Split-Path</span> <span class="pre">$PSScriptRoot</span> <span class="pre">-Parent</span> <span class="pre">-Parent</span></code> syntax is invalid
+<strong>Resolution</strong>: Use nested calls: <code class="docutils literal notranslate"><span class="pre">Split-Path</span> <span class="pre">(Split-Path</span> <span class="pre">$PSScriptRoot</span> <span class="pre">-Parent)</span> <span class="pre">-Parent</span></code>
+<strong>Critical Learning</strong>: Split-Path location parameters (-Parent, -Leaf, -Extension) are mutually exclusive
+<strong>Error Pattern</strong>: Parameter binding errors when trying to use same parameter twice</p>
+</section>
+<section id="powershell-array-index-expression-errors-in-strings-critical">
+<h3>18. PowerShell Array Index Expression Errors in Strings (⚠️ CRITICAL)<a class="headerlink" href="#powershell-array-index-expression-errors-in-strings-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: “Array index expression is missing or not valid” when using [ERROR] or [DEBUG] in Write-Host
+<strong>Discovery</strong>: PowerShell interprets square brackets as array indexing syntax even in strings
+<strong>Evidence</strong>: <code class="docutils literal notranslate"><span class="pre">Write-Host</span> <span class="pre">&quot;[ERROR]</span> <span class="pre">Message&quot;</span></code> breaks with array index errors
+<strong>Resolution</strong>: Use alternative format: <code class="docutils literal notranslate"><span class="pre">Write-Host</span> <span class="pre">&quot;ERROR:</span> <span class="pre">Message&quot;</span></code> or escape brackets
+<strong>Critical Learning</strong>: Avoid square brackets in PowerShell strings unless escaped or using single quotes
+<strong>Error Pattern</strong>: Square brackets in strings cause array indexing interpretation errors</p>
+</section>
+<section id="powershell-automatic-variable-collision-critical">
+<h3>20. PowerShell Automatic Variable Collision (⚠️ CRITICAL)<a class="headerlink" href="#powershell-automatic-variable-collision-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: “The ‘++’ operator works only on numbers. The operand is a ‘System.Collections.Hashtable’”
+<strong>Discovery</strong>: Custom variable <code class="docutils literal notranslate"><span class="pre">$matches</span></code> conflicts with PowerShell automatic <code class="docutils literal notranslate"><span class="pre">$Matches</span></code> variable (hashtable)
+<strong>Evidence</strong>: Classification.psm1 using <code class="docutils literal notranslate"><span class="pre">$matches++</span></code> but automatic variable overwrites integer with hashtable
+<strong>Resolution</strong>: Rename variables to avoid collision: <code class="docutils literal notranslate"><span class="pre">$matches</span></code> → <code class="docutils literal notranslate"><span class="pre">$patternMatches</span></code>, avoid <code class="docutils literal notranslate"><span class="pre">$error</span></code>, <code class="docutils literal notranslate"><span class="pre">$input</span></code>
+<strong>Critical Learning</strong>: Never use PowerShell automatic variable names for custom variables
+<strong>Error Pattern</strong>: Automatic variable collision causes type conversion errors in arithmetic operations</p>
+</section>
+<section id="powershell-hashtable-property-access-with-measure-object-critical">
+<h3>21. PowerShell Hashtable Property Access with Measure-Object (⚠️ CRITICAL)<a class="headerlink" href="#powershell-hashtable-property-access-with-measure-object-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: “The property ‘Confidence’ cannot be found in the input for any objects”
+<strong>Discovery</strong>: Measure-Object cannot access hashtable keys as properties, requires PSCustomObject
+<strong>Evidence</strong>: ResponseParsing.psm1:194 and 400 using Measure-Object on array of hashtables
+<strong>Resolution</strong>: Use manual iteration: <code class="docutils literal notranslate"><span class="pre">foreach</span> <span class="pre">($item</span> <span class="pre">in</span> <span class="pre">$array)</span> <span class="pre">{</span> <span class="pre">$sum</span> <span class="pre">+=</span> <span class="pre">$item.Property</span> <span class="pre">}</span></code>
+<strong>Critical Learning</strong>: Hashtables don’t expose keys as properties for Measure-Object; use manual loops or convert to PSCustomObject
+<strong>Error Pattern</strong>: Property access errors when using Measure-Object with hashtable collections - CHECK ALL INSTANCES</p>
+</section>
+<section id="powershell-5-1-datetime-ets-properties-json-serialization-critical">
+<h3>134. PowerShell 5.1 DateTime ETS Properties JSON Serialization (⚠️ CRITICAL)<a class="headerlink" href="#powershell-5-1-datetime-ets-properties-json-serialization-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: “Cannot create object of type System.DateTime. The DisplayHint property was not found for the System.DateTime object”
+<strong>Discovery</strong>: PowerShell Extended Type System (ETS) adds DisplayHint and DateTime properties to DateTime objects that break JSON serialization
+<strong>Evidence</strong>: Get-Date creates DateTime objects with ETS properties that serialize incorrectly and fail during ConvertFrom-Json reconstruction
+<strong>Location</strong>: ConvertTo-HashTable function and Get-EnhancedAutonomousState UptimeMinutes calculation
+<strong>Root Cause</strong>: PowerShell 5.1’s ETS automatically adds extra properties to DateTime objects:</p>
+<ul class="simple">
+<li><p><strong>DisplayHint Property</strong>: NoteProperty added by Get-Date cmdlet</p></li>
+<li><p><strong>DateTime Property</strong>: ScriptProperty attached by ETS to all DateTime objects</p></li>
+<li><p><strong>JSON Serialization</strong>: These properties get included in JSON but fail during reconstruction
+<strong>Technical Details</strong>:</p></li>
+<li><p>PowerShell 5.1 uses JavaScriptSerializer with problematic DateTime handling</p></li>
+<li><p>PowerShell 7.2+ fixed this by excluding ETS properties from DateTime serialization</p></li>
+<li><p>ConvertFrom-Json tries to recreate objects with missing ETS properties causing errors
+<strong>Resolution</strong>: Special DateTime handling in ConvertTo-HashTable function:</p></li>
+</ul>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Detect DateTime objects</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$propertyValue</span> <span class="o">-is</span> <span class="no">[DateTime]</span> <span class="o">-or</span> <span class="p">(</span><span class="nv">$propertyValue</span> <span class="o">-and</span> <span class="nv">$propertyValue</span><span class="p">.</span><span class="n">GetType</span><span class="p">().</span><span class="n">Name</span> <span class="o">-eq</span> <span class="s2">&quot;DateTime&quot;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c"># Use BaseObject to get underlying .NET DateTime without ETS properties</span>
+    <span class="nv">$baseDateTime</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$propertyValue</span><span class="p">.</span><span class="n">PSObject</span><span class="p">.</span><span class="n">BaseObject</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$propertyValue</span><span class="p">.</span><span class="n">PSObject</span><span class="p">.</span><span class="n">BaseObject</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="nv">$propertyValue</span> <span class="p">}</span>
+    <span class="c"># Convert to ISO string format for clean JSON serialization</span>
+    <span class="nv">$hashtable</span><span class="p">[</span><span class="nv">$propertyName</span><span class="p">]</span> <span class="p">=</span> <span class="nv">$baseDateTime</span><span class="p">.</span><span class="n">ToString</span><span class="p">(</span><span class="s2">&quot;yyyy-MM-ddTHH:mm:ss.fffK&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>DateTime Parsing Fix</strong>: Update calculations to parse DateTime strings:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Before (fails with ETS properties)</span>
+<span class="n">UptimeMinutes</span> <span class="p">=</span> <span class="no">[math]</span><span class="p">::</span><span class="n">Round</span><span class="p">(((</span><span class="nb">Get-Date</span><span class="p">)</span> <span class="p">-</span> <span class="no">[DateTime]</span><span class="nv">$agentState</span><span class="p">.</span><span class="n">StartTime</span><span class="p">).</span><span class="n">TotalMinutes</span><span class="p">,</span> <span class="n">2</span><span class="p">)</span>
+
+<span class="c"># After (parses ISO string correctly)</span>
+<span class="n">UptimeMinutes</span> <span class="p">=</span> <span class="no">[math]</span><span class="p">::</span><span class="n">Round</span><span class="p">(((</span><span class="nb">Get-Date</span><span class="p">)</span> <span class="p">-</span> <span class="no">[DateTime]</span><span class="p">::</span><span class="n">Parse</span><span class="p">(</span><span class="nv">$agentState</span><span class="p">.</span><span class="n">StartTime</span><span class="p">)).</span><span class="n">TotalMinutes</span><span class="p">,</span> <span class="n">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Alternative Solutions</strong>:</p>
+<ol class="arabic simple">
+<li><p>Use .PSObject.BaseObject to get underlying DateTime</p></li>
+<li><p>Type casting with [DateTime]$object to unwrap PSObject</p></li>
+<li><p>Use ToString() method for string representation</p></li>
+<li><p>Remove-TypeData to eliminate ETS properties globally
+<strong>Critical Learning</strong>: PowerShell 5.1 requires special DateTime handling for JSON serialization due to ETS property contamination. Always convert DateTime objects to ISO strings for persistence and parse back for calculations.</p></li>
+</ol>
+</section>
+<section id="powershell-ets-datetime-object-access-complex-structure-phase-3-day-15-resolved">
+<h3>135. PowerShell ETS DateTime Object Access Complex Structure (Phase 3 Day 15 - ✅ RESOLVED)<a class="headerlink" href="#powershell-ets-datetime-object-access-complex-structure-phase-3-day-15-resolved" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: “Exception calling ‘Parse’ with ‘1’ argument(s): ‘The string was not recognized as a valid DateTime. There is an unknown word starting at index 0.’”
+<strong>Discovery</strong>: DateTime objects from Get-Date retain ETS properties (DisplayHint, DateTime, value) even after JSON round-trip, causing parsing failures
+<strong>Evidence</strong>: Agent state shows <code class="docutils literal notranslate"><span class="pre">StartTime</span> <span class="pre">{DisplayHint,</span> <span class="pre">DateTime,</span> <span class="pre">value}</span></code> structure instead of simple DateTime or string values
+<strong>Location</strong>: Get-EnhancedAutonomousState function UptimeMinutes calculation attempting DateTime.Parse() on complex object
+<strong>Root Cause</strong>: In-memory DateTime objects retain PSObject wrapper with ETS properties independently of JSON serialization fixes
+<strong>Technical Details</strong>:</p>
+<ul class="simple">
+<li><p>Get-Date creates DateTime objects wrapped in PSObject with ETS properties</p></li>
+<li><p>ConvertTo-HashTable correctly handles serialization to JSON as ISO strings</p></li>
+<li><p>In-memory agent state objects still contain original PSObject complex structure</p></li>
+<li><p>DateTime.Parse() receives complex object {DisplayHint, DateTime, value} instead of string</p></li>
+<li><p>“Unknown word starting at index 0” indicates Parse() cannot interpret the object type
+<strong>Resolution</strong>: Implemented Get-SafeDateTime helper function with comprehensive object type handling:</p></li>
+</ul>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="nb">Get-SafeDateTime</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$DateTimeObject</span><span class="p">)</span>
+    
+    <span class="c"># Handle various object types: DateTime, String, PSObject with ETS properties</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$DateTimeObject</span> <span class="o">-is</span> <span class="no">[DateTime]</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$DateTimeObject</span> <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$DateTimeObject</span> <span class="o">-is</span> <span class="no">[string]</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="no">[DateTime]</span><span class="p">::</span><span class="n">Parse</span><span class="p">(</span><span class="nv">$DateTimeObject</span><span class="p">)</span> <span class="p">}</span>
+    
+    <span class="c"># Handle PSObject with ETS properties</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$DateTimeObject</span><span class="p">.</span><span class="n">PSObject</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c"># Try BaseObject first</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$DateTimeObject</span><span class="p">.</span><span class="n">PSObject</span><span class="p">.</span><span class="n">BaseObject</span> <span class="o">-is</span> <span class="no">[DateTime]</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nv">$DateTimeObject</span><span class="p">.</span><span class="n">PSObject</span><span class="p">.</span><span class="n">BaseObject</span>
+        <span class="p">}</span>
+        <span class="c"># Try &#39;value&#39; property for complex ETS objects  </span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$DateTimeObject</span><span class="p">.</span><span class="n">value</span> <span class="o">-is</span> <span class="no">[DateTime]</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nv">$DateTimeObject</span><span class="p">.</span><span class="n">value</span>
+        <span class="p">}</span>
+        <span class="c"># Try casting entire object</span>
+        <span class="k">try</span> <span class="p">{</span> <span class="k">return</span> <span class="no">[DateTime]</span><span class="nv">$DateTimeObject</span> <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span> <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="c"># Last resort: ToString() and parse</span>
+    <span class="k">return</span> <span class="no">[DateTime]</span><span class="p">::</span><span class="n">Parse</span><span class="p">(</span><span class="nv">$DateTimeObject</span><span class="p">.</span><span class="n">ToString</span><span class="p">())</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Updated Implementation</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Before (fails with ETS objects)</span>
+<span class="n">UptimeMinutes</span> <span class="p">=</span> <span class="no">[math]</span><span class="p">::</span><span class="n">Round</span><span class="p">(((</span><span class="nb">Get-Date</span><span class="p">)</span> <span class="p">-</span> <span class="no">[DateTime]</span><span class="p">::</span><span class="n">Parse</span><span class="p">(</span><span class="nv">$agentState</span><span class="p">.</span><span class="n">StartTime</span><span class="p">)).</span><span class="n">TotalMinutes</span><span class="p">,</span> <span class="n">2</span><span class="p">)</span>
+
+<span class="c"># After (handles all DateTime object types)</span>
+<span class="n">UptimeMinutes</span> <span class="p">=</span> <span class="no">[math]</span><span class="p">::</span><span class="n">Round</span><span class="p">(((</span><span class="nb">Get-Date</span><span class="p">)</span> <span class="p">-</span> <span class="p">(</span><span class="nb">Get-SafeDateTime</span> <span class="n">-DateTimeObject</span> <span class="nv">$agentState</span><span class="p">.</span><span class="n">StartTime</span><span class="p">)).</span><span class="n">TotalMinutes</span><span class="p">,</span> <span class="n">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Alternative Solutions</strong>:</p>
+<ol class="arabic simple">
+<li><p>Use [DateTime] casting with error handling</p></li>
+<li><p>Access .PSObject.BaseObject directly</p></li>
+<li><p>Check object type before parsing</p></li>
+<li><p>Use .value property for ETS complex objects
+<strong>Critical Learning</strong>: PowerShell ETS properties persist in memory independently of JSON serialization. Always use safe extraction methods for DateTime objects rather than assuming they are strings or pure DateTime types.</p></li>
+</ol>
+</section>
+<section id="powershell-5-1-sort-object-string-vs-numeric-comparison-critical">
+<h3>133. PowerShell 5.1 Sort-Object String vs Numeric Comparison (⚠️ CRITICAL)<a class="headerlink" href="#powershell-5-1-sort-object-string-vs-numeric-comparison-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Queue sorting failing because Sort-Object treats numbers as strings
+<strong>Discovery</strong>: PowerShell 5.1 Sort-Object performs string comparison on numeric properties
+<strong>Evidence</strong>: Debug logs show “1, 10, 5” sorted as “10, 1, 5” instead of “10, 5, 1”
+<strong>Location</strong>: CLIAutomation.psm1 Add-InputToQueue function
+<strong>Root Cause</strong>: Sort-Object -Property Priority treats values as strings where “1” &lt; “5” alphabetically
+<strong>Technical Details</strong>:</p>
+<ul class="simple">
+<li><p>String sorting: “1” comes before “5” alphabetically, regardless of numeric value</p></li>
+<li><p>PowerShell 5.1 lacks stable sort features available in PowerShell 7+</p></li>
+<li><p>JSON deserialization may convert numbers to strings in PSObjects
+<strong>Resolution</strong>: Cast property to correct type for sorting:</p></li>
+</ul>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Before (string sorting)</span>
+<span class="nv">$queue</span><span class="p">.</span><span class="n">Queue</span> <span class="p">=</span> <span class="nv">$queueArray</span> <span class="p">|</span> <span class="nb">Sort-Object</span> <span class="n">-Property</span> <span class="n">Priority</span> <span class="n">-Descending</span>
+
+<span class="c"># After (numeric sorting)  </span>
+<span class="nv">$queue</span><span class="p">.</span><span class="n">Queue</span> <span class="p">=</span> <span class="nv">$queueArray</span> <span class="p">|</span> <span class="nb">Sort-Object</span> <span class="n">-Property</span> <span class="p">{</span> <span class="no">[int]</span><span class="nv">$_</span><span class="p">.</span><span class="n">Priority</span> <span class="p">}</span> <span class="n">-Descending</span>
+</pre></div>
+</div>
+<p><strong>Alternative Solutions</strong>:</p>
+<ol class="arabic simple">
+<li><p>Version casting: <code class="docutils literal notranslate"><span class="pre">Sort-Object</span> <span class="pre">{</span> <span class="pre">[version]</span> <span class="pre">$_.Priority</span> <span class="pre">}</span></code></p></li>
+<li><p>Regex padding: <code class="docutils literal notranslate"><span class="pre">Sort-Object</span> <span class="pre">{</span> <span class="pre">[regex]::Replace($_.Priority,</span> <span class="pre">'\d+',</span> <span class="pre">{</span> <span class="pre">$args[0].Value.PadLeft(20)</span> <span class="pre">})</span> <span class="pre">}</span></code></p></li>
+<li><p>Custom comparison function using StrCmpLogicalW API
+<strong>Critical Learning</strong>: Always cast numeric properties to proper types when sorting in PowerShell 5.1 to avoid string comparison behavior</p></li>
+</ol>
+</section>
+</section>
+<section id="powershell-version-feature-compatibility">
+<h2>🔧 PowerShell Version Feature Compatibility<a class="headerlink" href="#powershell-version-feature-compatibility" title="Link to this heading"></a></h2>
+<section id="powershell-5-1-vs-powershell-7-feature-differences">
+<h3>PowerShell 5.1 vs PowerShell 7+ Feature Differences<a class="headerlink" href="#powershell-5-1-vs-powershell-7-feature-differences" title="Link to this heading"></a></h3>
+<p><strong>Features NOT available in PowerShell 5.1</strong>:</p>
+<ul class="simple">
+<li><p>Null coalescing operator <code class="docutils literal notranslate"><span class="pre">??</span></code></p></li>
+<li><p>Ternary operator <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">:</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ForEach-Object</span> <span class="pre">-Parallel</span></code></p></li>
+<li><p>Pipeline chain operators <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">||</span></code></p></li>
+<li><p>ConvertFrom-Json <code class="docutils literal notranslate"><span class="pre">-AsHashtable</span></code> parameter</p></li>
+<li><p>ConvertFrom-Json <code class="docutils literal notranslate"><span class="pre">-DateKind</span></code> parameter</p></li>
+</ul>
+<p><strong>PowerShell 5.1 Workarounds</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Instead of ??</span>
+<span class="nv">$value</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$null</span> <span class="o">-eq</span> <span class="nv">$variable</span><span class="p">)</span> <span class="p">{</span> <span class="s2">&quot;default&quot;</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="nv">$variable</span> <span class="p">}</span>
+
+<span class="c"># Instead of ? :</span>
+<span class="nv">$result</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$condition</span><span class="p">)</span> <span class="p">{</span> <span class="s2">&quot;true&quot;</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="s2">&quot;false&quot;</span> <span class="p">}</span>
+
+<span class="c"># Instead of ForEach-Object -Parallel</span>
+<span class="nb">Install-Module</span> <span class="n">ThreadJob</span> <span class="n">-Scope</span> <span class="n">CurrentUser</span>
+<span class="nb">Start-ThreadJob</span> <span class="n">-ScriptBlock</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+
+<span class="c"># Instead of ConvertFrom-Json -AsHashtable</span>
+<span class="k">function</span> <span class="nb">ConvertTo-HashTable</span> <span class="p">{</span> 
+    <span class="c"># Custom implementation using PSObject.Properties</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="powershell-debugging-and-error-analysis">
+<h2>🔍 PowerShell Debugging and Error Analysis<a class="headerlink" href="#powershell-debugging-and-error-analysis" title="Link to this heading"></a></h2>
+<section id="error-location-investigation-patterns">
+<h3>Error Location Investigation Patterns<a class="headerlink" href="#error-location-investigation-patterns" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Check encoding first</strong> - UTF-8 BOM requirement</p></li>
+<li><p><strong>Expand error range</strong> - Check lines before reported location</p></li>
+<li><p><strong>Look for Unicode contamination</strong> - Use detection tools</p></li>
+<li><p><strong>Validate syntax separately</strong> - Test small code blocks</p></li>
+<li><p><strong>Use ISE or VSCode</strong> - Better error highlighting than console</p></li>
+</ol>
+</section>
+<section id="common-error-misleading-patterns">
+<h3>Common Error Misleading Patterns<a class="headerlink" href="#common-error-misleading-patterns" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Unicode characters cause persistent syntax errors</p></li>
+<li><p>Encoding issues reported at wrong line numbers</p></li>
+<li><p>Escape sequence errors cascade to unrelated code</p></li>
+<li><p>Module import failures mask function export issues</p></li>
+<li><p>Automatic variable collisions appear as type errors</p></li>
+</ul>
+<hr class="docutils" />
+<p><em>This document focuses specifically on PowerShell 5.1 compatibility and syntax issues.</em>
+<em>For broader development patterns, see LEARNINGS_CRITICAL_REQUIREMENTS.md</em></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Unity-Claude-Automation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

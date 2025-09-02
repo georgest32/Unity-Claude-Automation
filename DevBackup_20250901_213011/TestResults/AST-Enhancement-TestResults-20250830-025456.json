@@ -1,0 +1,215 @@
+{
+  "Summary": {
+    "SuccessRate": 60.0,
+    "TestsFailed": 2,
+    "ExecutionTime": {
+      "Ticks": 57978419,
+      "Days": 0,
+      "Hours": 0,
+      "Milliseconds": 797,
+      "Microseconds": 841,
+      "Nanoseconds": 900,
+      "Minutes": 0,
+      "Seconds": 5,
+      "TotalDays": 6.710465162037037E-05,
+      "TotalHours": 0.0016105116388888889,
+      "TotalMilliseconds": 5797.8419,
+      "TotalMicroseconds": 5797841.9,
+      "TotalNanoseconds": 5797841900.0,
+      "TotalMinutes": 0.09663069833333333,
+      "TotalSeconds": 5.7978419
+    },
+    "TotalTests": 5,
+    "TestsPassed": 3
+  },
+  "StartTime": "2025-08-30T02:54:50.3699582-04:00",
+  "TestMode": "Comprehensive",
+  "Performance": {},
+  "Results": [
+    {
+      "TestName": "Module Import and Basic Functionality",
+      "Status": "Passed",
+      "ExecutionTime": {
+        "Ticks": 69408,
+        "Days": 0,
+        "Hours": 0,
+        "Milliseconds": 6,
+        "Microseconds": 940,
+        "Nanoseconds": 800,
+        "Minutes": 0,
+        "Seconds": 0,
+        "TotalDays": 8.033333333333334E-08,
+        "TotalHours": 1.928E-06,
+        "TotalMilliseconds": 6.9408,
+        "TotalMicroseconds": 6940.8,
+        "TotalNanoseconds": 6940800.0,
+        "TotalMinutes": 0.00011568,
+        "TotalSeconds": 0.0069408
+      },
+      "Details": [
+        "✓ Function Get-ModuleCallGraph available",
+        "✓ Function Get-CrossModuleRelationships available",
+        "✓ Function Get-FunctionCallAnalysis available",
+        "✓ Function Export-CallGraphData available",
+        "✓ DependencySearch module integration verified",
+        "✓ All basic functionality tests passed"
+      ]
+    },
+    {
+      "TestName": "Module Call Graph Generation",
+      "Status": "Passed",
+      "ExecutionTime": {
+        "Ticks": 566583,
+        "Days": 0,
+        "Hours": 0,
+        "Milliseconds": 56,
+        "Microseconds": 658,
+        "Nanoseconds": 300,
+        "Minutes": 0,
+        "Seconds": 0,
+        "TotalDays": 6.557673611111111E-07,
+        "TotalHours": 1.573841666666667E-05,
+        "TotalMilliseconds": 56.6583,
+        "TotalMicroseconds": 56658.3,
+        "TotalNanoseconds": 56658300.0,
+        "TotalMinutes": 0.000944305,
+        "TotalSeconds": 0.0566583
+      },
+      "Details": [
+        "✓ Call graph generated successfully",
+        "✓ Found 2 modules",
+        "✓ Total functions: 4",
+        "✓ Call graph structure validated",
+        "✓ Found 2 relationships"
+      ]
+    },
+    {
+      "TestName": "Import/Export Analysis",
+      "Status": "Failed",
+      "ExecutionTime": {
+        "Ticks": 251707,
+        "Days": 0,
+        "Hours": 0,
+        "Milliseconds": 25,
+        "Microseconds": 170,
+        "Nanoseconds": 700,
+        "Minutes": 0,
+        "Seconds": 0,
+        "TotalDays": 2.913275462962963E-07,
+        "TotalHours": 6.991861111111111E-06,
+        "TotalMilliseconds": 25.1707,
+        "TotalMicroseconds": 25170.7,
+        "TotalNanoseconds": 25170700.0,
+        "TotalMinutes": 0.00041951166666666666,
+        "TotalSeconds": 0.0251707
+      },
+      "Details": [
+        "✗ Error: At C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:758 char:86\r\n+ … ExportedItems += $functionNames -replace '@\\(|\\)|\"|' ', '' -split ','\r\n+                                                        ~~~~~~~~~~~~~~\r\nUnexpected token '', '' -split '' in expression or statement.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:877 char:30\r\n+     'Get-ExportUsageFrequency'\r\n+                              ~\r\nThe string is missing the terminator: '.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:874 char:6\r\n+     'Get-ModuleImportAnalysis',\r\n+      ~~~~~~~~~~~~~~~~~~~~~~~~~~\r\nUnexpected token 'Get-ModuleImportAnalysis',\r\n    'Get-ModuleDependencyChain',\r\n    'Get-ModuleExportAnalysis',\r\n    'Get-ExportUsageFrequency'\r\n)' in expression or statement.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:756 char:49\r\n+                 if ($functionNames -like \"@(*\") {\r\n+                                                 ~\r\nMissing closing '}' in statement block or type definition.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:754 char:66\r\n+             if ($i + 1 -lt $ExportCommand.CommandElements.Count) {\r\n+                                                                  ~\r\nMissing closing '}' in statement block or type definition.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:752 char:52\r\n+         if ($element.ParameterName -eq \"Function\") {\r\n+                                                    ~\r\nMissing closing '}' in statement block or type definition.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:750 char:69\r\n+     for ($i = 1; $i -lt $ExportCommand.CommandElements.Count; $i++) {\r\n+                                                                     ~\r\nMissing closing '}' in statement block or type definition.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:739 char:44\r\n+ function Analyze-ExportModuleMemberCommand {\r\n+                                            ~\r\nMissing closing '}' in statement block or type definition."
+      ]
+    },
+    {
+      "TestName": "D3.js Data Structures",
+      "Status": "Failed",
+      "ExecutionTime": {
+        "Ticks": 56692,
+        "Days": 0,
+        "Hours": 0,
+        "Milliseconds": 5,
+        "Microseconds": 669,
+        "Nanoseconds": 200,
+        "Minutes": 0,
+        "Seconds": 0,
+        "TotalDays": 6.561574074074073E-08,
+        "TotalHours": 1.5747777777777777E-06,
+        "TotalMilliseconds": 5.6692,
+        "TotalMicroseconds": 5669.2,
+        "TotalNanoseconds": 5669200.0,
+        "TotalMinutes": 9.448666666666667E-05,
+        "TotalSeconds": 0.0056692
+      },
+      "Details": [
+        "✗ Error: The Export-ModuleMember cmdlet can only be called from inside a module."
+      ]
+    },
+    {
+      "TestName": "Integration Testing",
+      "Status": "Passed",
+      "ExecutionTime": {
+        "Ticks": 56769099,
+        "Days": 0,
+        "Hours": 0,
+        "Milliseconds": 676,
+        "Microseconds": 909,
+        "Nanoseconds": 900,
+        "Minutes": 0,
+        "Seconds": 5,
+        "TotalDays": 6.570497569444445E-05,
+        "TotalHours": 0.0015769194166666666,
+        "TotalMilliseconds": 5676.9099,
+        "TotalMicroseconds": 5676909.9,
+        "TotalNanoseconds": 5676909900.0,
+        "TotalMinutes": 0.094615165,
+        "TotalSeconds": 5.6769099
+      },
+      "Details": [
+        "✓ Found 46 Unity-Claude modules for integration testing",
+        "✓ Integration call graph generated",
+        "✓ Modules analyzed: 115",
+        "✓ Total relationships: 774",
+        "✓ D3.js data export integration successful",
+        "✓ Export saved to: .\\TestResults\\call_graph_d3_20250830_025456.json",
+        "✓ JSON serialization integration verified"
+      ]
+    }
+  ],
+  "Errors": [
+    {
+      "TestName": "Import/Export Analysis",
+      "Status": "Failed",
+      "ExecutionTime": {
+        "Ticks": 251707,
+        "Days": 0,
+        "Hours": 0,
+        "Milliseconds": 25,
+        "Microseconds": 170,
+        "Nanoseconds": 700,
+        "Minutes": 0,
+        "Seconds": 0,
+        "TotalDays": 2.913275462962963E-07,
+        "TotalHours": 6.991861111111111E-06,
+        "TotalMilliseconds": 25.1707,
+        "TotalMicroseconds": 25170.7,
+        "TotalNanoseconds": 25170700.0,
+        "TotalMinutes": 0.00041951166666666666,
+        "TotalSeconds": 0.0251707
+      },
+      "Details": [
+        "✗ Error: At C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:758 char:86\r\n+ … ExportedItems += $functionNames -replace '@\\(|\\)|\"|' ', '' -split ','\r\n+                                                        ~~~~~~~~~~~~~~\r\nUnexpected token '', '' -split '' in expression or statement.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:877 char:30\r\n+     'Get-ExportUsageFrequency'\r\n+                              ~\r\nThe string is missing the terminator: '.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:874 char:6\r\n+     'Get-ModuleImportAnalysis',\r\n+      ~~~~~~~~~~~~~~~~~~~~~~~~~~\r\nUnexpected token 'Get-ModuleImportAnalysis',\r\n    'Get-ModuleDependencyChain',\r\n    'Get-ModuleExportAnalysis',\r\n    'Get-ExportUsageFrequency'\r\n)' in expression or statement.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:756 char:49\r\n+                 if ($functionNames -like \"@(*\") {\r\n+                                                 ~\r\nMissing closing '}' in statement block or type definition.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:754 char:66\r\n+             if ($i + 1 -lt $ExportCommand.CommandElements.Count) {\r\n+                                                                  ~\r\nMissing closing '}' in statement block or type definition.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:752 char:52\r\n+         if ($element.ParameterName -eq \"Function\") {\r\n+                                                    ~\r\nMissing closing '}' in statement block or type definition.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:750 char:69\r\n+     for ($i = 1; $i -lt $ExportCommand.CommandElements.Count; $i++) {\r\n+                                                                     ~\r\nMissing closing '}' in statement block or type definition.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AST-Enhanced\\Import-Export-Analysis.ps1:739 char:44\r\n+ function Analyze-ExportModuleMemberCommand {\r\n+                                            ~\r\nMissing closing '}' in statement block or type definition."
+      ]
+    },
+    {
+      "TestName": "D3.js Data Structures",
+      "Status": "Failed",
+      "ExecutionTime": {
+        "Ticks": 56692,
+        "Days": 0,
+        "Hours": 0,
+        "Milliseconds": 5,
+        "Microseconds": 669,
+        "Nanoseconds": 200,
+        "Minutes": 0,
+        "Seconds": 0,
+        "TotalDays": 6.561574074074073E-08,
+        "TotalHours": 1.5747777777777777E-06,
+        "TotalMilliseconds": 5.6692,
+        "TotalMicroseconds": 5669.2,
+        "TotalNanoseconds": 5669200.0,
+        "TotalMinutes": 9.448666666666667E-05,
+        "TotalSeconds": 0.0056692
+      },
+      "Details": [
+        "✗ Error: The Export-ModuleMember cmdlet can only be called from inside a module."
+      ]
+    }
+  ]
+}

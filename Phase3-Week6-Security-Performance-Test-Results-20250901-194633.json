@@ -1,0 +1,127 @@
+{
+  "TotalTests": 12,
+  "FailedTests": 11,
+  "Duration": {
+    "Ticks": 9945992,
+    "Days": 0,
+    "Hours": 0,
+    "Milliseconds": 994,
+    "Microseconds": 599,
+    "Nanoseconds": 200,
+    "Minutes": 0,
+    "Seconds": 0,
+    "TotalDays": 1.1511564814814814E-05,
+    "TotalHours": 0.00027627755555555556,
+    "TotalMilliseconds": 994.5992,
+    "TotalMicroseconds": 994599.2,
+    "TotalNanoseconds": 994599200.0,
+    "TotalMinutes": 0.016576653333333333,
+    "TotalSeconds": 0.9945992
+  },
+  "Tests": [
+    {
+      "Name": "BiometricAuth",
+      "Status": "ERROR",
+      "FilePath": "iOS-App\\AgentDashboard\\AgentDashboard\\Services\\BiometricAuthenticationService.swift",
+      "Error": "Method invocation failed because [System.Boolean] does not contain a method named 'Replace'.",
+      "Category": "Security"
+    },
+    {
+      "Name": "KeychainIntegration",
+      "Status": "ERROR",
+      "FilePath": "iOS-App\\AgentDashboard\\AgentDashboard\\Services\\KeychainService.swift",
+      "Error": "Method invocation failed because [System.Boolean] does not contain a method named 'Replace'.",
+      "Category": "Security"
+    },
+    {
+      "Name": "CertificatePinning",
+      "Status": "FAILED",
+      "FilePath": "iOS-App\\AgentDashboard\\AgentDashboard\\Network\\CertificatePinningService.swift",
+      "Category": "Security",
+      "MissingElements": [
+        "URLSessionDelegate"
+      ]
+    },
+    {
+      "Name": "AuditLogging",
+      "Status": "ERROR",
+      "FilePath": "iOS-App\\AgentDashboard\\AgentDashboard\\Services\\AuditLoggingService.swift",
+      "Error": "Method invocation failed because [System.Boolean] does not contain a method named 'Replace'.",
+      "Category": "Security"
+    },
+    {
+      "Name": "LazyLoading",
+      "Status": "ERROR",
+      "FilePath": "iOS-App\\AgentDashboard\\AgentDashboard\\Services\\LazyLoadingService.swift",
+      "Error": "Method invocation failed because [System.Boolean] does not contain a method named 'Replace'.",
+      "Category": "Performance"
+    },
+    {
+      "Name": "DataCaching",
+      "Status": "ERROR",
+      "FilePath": "iOS-App\\AgentDashboard\\AgentDashboard\\Services\\CacheService.swift",
+      "Error": "Method invocation failed because [System.Boolean] does not contain a method named 'Replace'.",
+      "Category": "Performance"
+    },
+    {
+      "Name": "WebSocketOptimization",
+      "Status": "ERROR",
+      "FilePath": "iOS-App\\AgentDashboard\\AgentDashboard\\Network\\OptimizedWebSocketClient.swift",
+      "Error": "Method invocation failed because [System.Boolean] does not contain a method named 'Replace'.",
+      "Category": "Performance"
+    },
+    {
+      "Name": "VoiceOverSupport",
+      "Status": "ERROR",
+      "FilePath": "iOS-App\\AgentDashboard\\AgentDashboard\\Services\\AccessibilityService.swift",
+      "Error": "Method invocation failed because [System.Boolean] does not contain a method named 'Replace'.",
+      "Category": "Accessibility"
+    },
+    {
+      "Name": "DynamicTypeSupport",
+      "Status": "ERROR",
+      "FilePath": "iOS-App\\AgentDashboard\\AgentDashboard\\Services\\AccessibilityService.swift",
+      "Error": "Method invocation failed because [System.Boolean] does not contain a method named 'Replace'.",
+      "Category": "Accessibility"
+    },
+    {
+      "Name": "HighContrastMode",
+      "Status": "ERROR",
+      "FilePath": "iOS-App\\AgentDashboard\\AgentDashboard\\Services\\AccessibilityService.swift",
+      "Error": "Method invocation failed because [System.Boolean] does not contain a method named 'Replace'.",
+      "Category": "Accessibility"
+    },
+    {
+      "Name": "WCAGCompliance",
+      "Status": "ERROR",
+      "FilePath": "iOS-App\\AgentDashboard\\AgentDashboard\\Services\\AccessibilityService.swift",
+      "Error": "Method invocation failed because [System.Boolean] does not contain a method named 'Replace'.",
+      "Category": "Accessibility"
+    }
+  ],
+  "SuccessRate": 8.3,
+  "PassedTests": 1,
+  "Phase": "Phase 3 Week 6",
+  "EndTime": "2025-09-01T19:46:33.3749338-04:00",
+  "StartTime": "2025-09-01T19:46:32.3803346-04:00",
+  "Features": {
+    "Security": {
+      "KeychainIntegration": false,
+      "AuditLogging": false,
+      "BiometricAuth": false,
+      "CertificatePinning": false
+    },
+    "Accessibility": {
+      "DynamicTypeSupport": false,
+      "WCAGCompliance": false,
+      "HighContrastMode": false,
+      "VoiceOverSupport": false
+    },
+    "Performance": {
+      "WebSocketOptimization": false,
+      "LazyLoading": false,
+      "DataCaching": false,
+      "PerformanceProfiling": false
+    }
+  }
+}

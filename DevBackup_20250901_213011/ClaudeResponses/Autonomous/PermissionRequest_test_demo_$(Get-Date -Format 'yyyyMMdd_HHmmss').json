@@ -1,0 +1,12 @@
+{
+    "Type": "PermissionRequest",
+    "Tool": "Bash",
+    "PromptText": "Allow Bash to execute command 'ls -la C:\\UnityProjects'? (y/n)",
+    "Command": "ls -la C:\\UnityProjects",
+    "RequestId": "demo-$(New-Guid)",
+    "Timestamp": "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')",
+    "Context": "Claude needs to list project directories to understand the workspace structure",
+    "SafetyLevel": "Low",
+    "RequiresApproval": false,
+    "Source": "Claude Code CLI"
+}

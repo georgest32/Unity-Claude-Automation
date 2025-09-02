@@ -1,0 +1,155 @@
+{
+  "TestSuite": "HITL Interrupt Handling (Hour 7)",
+  "EndTime": "2025-08-23T16:34:40.38518-04:00",
+  "Tests": [
+    {
+      "Details": "HITL enhanced server operational",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:39.9872932-04:00",
+      "TestName": "Server Health Check"
+    },
+    {
+      "Details": "Graph ID: hitl-simple_approval-20250823-163439",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.0086438-04:00",
+      "TestName": "Create simple_approval Graph"
+    },
+    {
+      "Details": "Graph ID: hitl-detailed_approval-20250823-163440",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.0405996-04:00",
+      "TestName": "Create detailed_approval Graph"
+    },
+    {
+      "Details": "Graph ID: hitl-state_review-20250823-163440",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.0551611-04:00",
+      "TestName": "Create state_review Graph"
+    },
+    {
+      "Details": "Graph ID: hitl-conditional_interrupt-20250823-163440",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.0664157-04:00",
+      "TestName": "Create conditional_interrupt Graph"
+    },
+    {
+      "Details": "Status: interrupted, Thread: 2f11796c-c82a-45c0-bb47-a2f6d4df0639",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.1186889-04:00",
+      "TestName": "Simple Approval Interrupt"
+    },
+    {
+      "Details": "Auto-approved, status: completed",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.1528325-04:00",
+      "TestName": "Simple Approval Resume"
+    },
+    {
+      "Details": "Status: interrupted",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.1829684-04:00",
+      "TestName": "Detailed Approval Interrupt"
+    },
+    {
+      "Details": "Auto-modified, status: completed",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.2169727-04:00",
+      "TestName": "Detailed Approval Resume"
+    },
+    {
+      "Details": "Status: interrupted",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.2500363-04:00",
+      "TestName": "State Review Interrupt"
+    },
+    {
+      "Details": "Auto-reviewed with changes, status: completed",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.2860746-04:00",
+      "TestName": "State Review Resume"
+    },
+    {
+      "Details": "Counter=3, Status: completed",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.3258218-04:00",
+      "TestName": "Conditional No Interrupt (Low Counter)"
+    },
+    {
+      "Details": "Counter=7, Status: interrupted",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.344717-04:00",
+      "TestName": "Conditional Interrupt (High Counter)"
+    },
+    {
+      "Details": "Auto-continued, status: completed",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.3693683-04:00",
+      "TestName": "Conditional Interrupt Resume"
+    },
+    {
+      "Details": "Function executed without error",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.3786419-04:00",
+      "TestName": "Show-LangGraphInterrupt Function"
+    },
+    {
+      "Details": "Function exists and is properly structured",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.379227-04:00",
+      "TestName": "Get-LangGraphInterruptChoice Function"
+    },
+    {
+      "Details": "Enhanced approval function is available",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.3826508-04:00",
+      "TestName": "Wait-LangGraphApprovalEnhanced Function"
+    },
+    {
+      "Details": "Function is exported",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.3835869-04:00",
+      "TestName": "Export Show-LangGraphInterrupt"
+    },
+    {
+      "Details": "Function is exported",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.3842412-04:00",
+      "TestName": "Export Get-LangGraphInterruptChoice"
+    },
+    {
+      "Details": "Function is exported",
+      "Data": null,
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:34:40.3847591-04:00",
+      "TestName": "Export Wait-LangGraphApprovalEnhanced"
+    }
+  ],
+  "StartTime": "2025-08-23T16:34:39.9091947-04:00",
+  "Summary": {
+    "Duration": "00:00:00.4759853",
+    "TotalTests": 20,
+    "PassedTests": 20,
+    "PassRate": "100%",
+    "FailedTests": 0
+  },
+  "Duration": "00:00:00.4759853"
+}

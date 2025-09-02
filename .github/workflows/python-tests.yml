@@ -1,0 +1,393 @@
+# Python Agent Testing Workflow
+# Tests LangGraph, AutoGen, and custom Python agent implementations
+# Includes coverage reporting and integration tests
+
+name: Python Tests
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+    paths:
+      - 'agents/**/*.py'
+      - 'scripts/**/*.py'
+      - '*.py'
+      - 'requirements*.txt'
+      - 'pyproject.toml'
+      - '.github/workflows/python-tests.yml'
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'agents/**/*.py'
+      - 'scripts/**/*.py'
+      - '*.py'
+      - 'requirements*.txt'
+      - 'pyproject.toml'
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Test type to run'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - unit
+          - integration
+          - langgraph
+          - autogen
+
+env:
+  PYTHON_VERSION: '3.12'
+  UV_SYSTEM_PYTHON: 1
+  LANGGRAPH_API_URL: http://localhost:8000
+  AUTOGEN_API_URL: http://localhost:8001
+
+jobs:
+  test:
+    name: Python Tests - ${{ matrix.test-type }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        test-type: [unit, integration, langgraph, autogen]
+        include:
+          - os: ubuntu-latest
+            pip-cache-path: ~/.cache/pip
+          - os: windows-latest
+            pip-cache-path: ~\AppData\Local\pip\Cache
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install UV package manager
+        run: |
+          pip install --upgrade pip
+          pip install uv
+          uv --version
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ matrix.pip-cache-path }}
+            .venv
+          key: ${{ runner.os }}-python-${{ hashFiles('**/requirements*.txt', '**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-python-
+
+      - name: Create virtual environment
+        run: |
+          uv venv .venv
+          echo "Virtual environment created"
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            source .venv/Scripts/activate
+          else
+            source .venv/bin/activate
+          fi
+          
+          echo "Installing base dependencies..."
+          uv pip install -r requirements.txt
+          
+          echo "Installing test dependencies..."
+          uv pip install pytest pytest-cov pytest-asyncio pytest-timeout pytest-xdist
+          uv pip install pylint mypy black isort safety bandit
+          
+          if [[ "${{ matrix.test-type }}" == "langgraph" ]]; then
+            echo "Installing LangGraph dependencies..."
+            uv pip install langgraph langgraph-checkpoint-sqlite fastapi uvicorn httpx
+          fi
+          
+          if [[ "${{ matrix.test-type }}" == "autogen" ]]; then
+            echo "Installing AutoGen dependencies..."
+            uv pip install pyautogen
+          fi
+          
+          echo "Installed packages:"
+          pip list
+
+      - name: Run linting checks
+        if: matrix.test-type == 'unit'
+        shell: bash
+        run: |
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            source .venv/Scripts/activate
+          else
+            source .venv/bin/activate
+          fi
+          
+          echo "Running pylint..."
+          pylint agents scripts *.py --exit-zero --output-format=json > pylint-report.json || true
+          
+          echo "Running mypy..."
+          mypy agents scripts --ignore-missing-imports --no-error-summary > mypy-report.txt || true
+          
+          echo "Running black check..."
+          black --check --diff agents scripts *.py || true
+          
+          echo "Running isort check..."
+          isort --check-only --diff agents scripts *.py || true
+
+      - name: Run security checks
+        if: matrix.test-type == 'unit'
+        shell: bash
+        run: |
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            source .venv/Scripts/activate
+          else
+            source .venv/bin/activate
+          fi
+          
+          echo "Running safety check..."
+          safety check --json > safety-report.json || true
+          
+          echo "Running bandit..."
+          bandit -r agents scripts -f json -o bandit-report.json || true
+
+      - name: Start LangGraph server
+        if: matrix.test-type == 'langgraph' && matrix.os == 'ubuntu-latest'
+        shell: bash
+        run: |
+          source .venv/bin/activate
+          
+          echo "Starting LangGraph REST server..."
+          python langgraph_rest_server.py &
+          LANGGRAPH_PID=$!
+          echo "LANGGRAPH_PID=$LANGGRAPH_PID" >> $GITHUB_ENV
+          
+          # Wait for server to start
+          for i in {1..30}; do
+            if curl -s http://localhost:8000/health > /dev/null; then
+              echo "LangGraph server is running"
+              break
+            fi
+            echo "Waiting for LangGraph server... ($i/30)"
+            sleep 2
+          done
+
+      - name: Start AutoGen server
+        if: matrix.test-type == 'autogen' && matrix.os == 'ubuntu-latest'
+        shell: bash
+        run: |
+          source .venv/bin/activate
+          
+          echo "Starting AutoGen GroupChat server..."
+          python agents/autogen_groupchat_server.py &
+          AUTOGEN_PID=$!
+          echo "AUTOGEN_PID=$AUTOGEN_PID" >> $GITHUB_ENV
+          
+          # Wait for server to start
+          for i in {1..30}; do
+            if curl -s http://localhost:8001/health > /dev/null; then
+              echo "AutoGen server is running"
+              break
+            fi
+            echo "Waiting for AutoGen server... ($i/30)"
+            sleep 2
+          done
+
+      - name: Run tests
+        shell: bash
+        run: |
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            source .venv/Scripts/activate
+          else
+            source .venv/bin/activate
+          fi
+          
+          TEST_ARGS="-v --tb=short --timeout=300"
+          COVERAGE_ARGS="--cov=agents --cov=scripts --cov-report=xml --cov-report=term"
+          
+          case "${{ matrix.test-type }}" in
+            unit)
+              echo "Running unit tests..."
+              pytest tests/unit $TEST_ARGS $COVERAGE_ARGS -m "not integration"
+              ;;
+            integration)
+              echo "Running integration tests..."
+              pytest tests/integration $TEST_ARGS $COVERAGE_ARGS -m "integration"
+              ;;
+            langgraph)
+              echo "Running LangGraph tests..."
+              pytest tests/langgraph $TEST_ARGS $COVERAGE_ARGS
+              pytest test_langgraph_*.py $TEST_ARGS || true
+              ;;
+            autogen)
+              echo "Running AutoGen tests..."
+              pytest tests/autogen $TEST_ARGS $COVERAGE_ARGS
+              pytest test_autogen_*.py $TEST_ARGS || true
+              ;;
+            *)
+              echo "Running all tests..."
+              pytest $TEST_ARGS $COVERAGE_ARGS
+              ;;
+          esac
+
+      - name: Stop test servers
+        if: always() && matrix.os == 'ubuntu-latest'
+        shell: bash
+        run: |
+          if [ ! -z "$LANGGRAPH_PID" ]; then
+            echo "Stopping LangGraph server (PID: $LANGGRAPH_PID)"
+            kill $LANGGRAPH_PID || true
+          fi
+          
+          if [ ! -z "$AUTOGEN_PID" ]; then
+            echo "Stopping AutoGen server (PID: $AUTOGEN_PID)"
+            kill $AUTOGEN_PID || true
+          fi
+
+      - name: Generate test report
+        if: always()
+        shell: bash
+        run: |
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            source .venv/Scripts/activate
+          else
+            source .venv/bin/activate
+          fi
+          
+          cat > test-report.json << EOF
+          {
+            "timestamp": "$(date -u +"%Y-%m-%d %H:%M:%S")",
+            "os": "${{ matrix.os }}",
+            "python_version": "${{ env.PYTHON_VERSION }}",
+            "test_type": "${{ matrix.test-type }}",
+            "branch": "${{ github.ref_name }}",
+            "commit": "${{ github.sha }}"
+          }
+          EOF
+          
+          echo "Test report generated"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-test-results-${{ matrix.os }}-${{ matrix.test-type }}
+          path: |
+            coverage.xml
+            test-report.json
+            *-report.json
+            *-report.txt
+          retention-days: 30
+
+      - name: Upload coverage to Codecov
+        if: matrix.os == 'ubuntu-latest' && matrix.test-type == 'unit'
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          flags: python
+          name: Python Coverage
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  # Integration test with PowerShell bridge
+  bridge-test:
+    name: PowerShell-Python Bridge Test
+    runs-on: windows-latest
+    needs: test
+    if: success() || failure()
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PowerShell
+        uses: PowerShell/setup-powershell@v1
+        with:
+          powershell-version: '7.4'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install uv
+          uv venv .venv
+          .\.venv\Scripts\activate
+          uv pip install -r requirements.txt
+          uv pip install pytest
+
+      - name: Test PowerShell-Python Bridge
+        shell: pwsh
+        run: |
+          Write-Host "Testing PowerShell-Python Bridge..." -ForegroundColor Cyan
+          
+          # Import bridge module
+          Import-Module ./Unity-Claude-LangGraphBridge.psm1 -Force
+          
+          # Test basic connectivity
+          $result = Test-LangGraphConnection
+          if (-not $result) {
+            throw "Failed to connect to LangGraph bridge"
+          }
+          
+          Write-Host "Bridge test completed successfully!" -ForegroundColor Green
+
+  # Summary job
+  test-summary:
+    name: Test Summary
+    needs: [test, bridge-test]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Check test results
+        run: |
+          if [ "${{ needs.test.result }}" == "success" ] && [ "${{ needs.bridge-test.result }}" == "success" ]; then
+            echo "✅ All Python tests passed!"
+            exit 0
+          else
+            echo "❌ Python tests failed"
+            echo "Test results: ${{ needs.test.result }}"
+            echo "Bridge test results: ${{ needs.bridge-test.result }}"
+            exit 1
+          fi
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const testResult = '${{ needs.test.result }}';
+            const bridgeResult = '${{ needs.bridge-test.result }}';
+            
+            const emoji = (testResult === 'success' && bridgeResult === 'success') ? '✅' : '❌';
+            const status = (testResult === 'success' && bridgeResult === 'success') ? 'passed' : 'failed';
+            
+            const comment = `## ${emoji} Python Test Results
+            
+            **Test Suite**: ${testResult}
+            **Bridge Test**: ${bridgeResult}
+            
+            All Python tests ${status}.
+            
+            View detailed results in the [Actions tab](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

@@ -1,0 +1,71 @@
+{
+  "Results": {
+    "Details": [
+      {
+        "Status": "Pass",
+        "Details": "Initialize base orchestrator",
+        "Component": "Orchestrator Initialization"
+      },
+      {
+        "Status": "Pass",
+        "Details": "Initialize permission handling integration",
+        "Component": "Permission Integration"
+      },
+      {
+        "Status": "Pass",
+        "Details": "Test destructive command conversion",
+        "Component": "Safe Operations"
+      },
+      {
+        "Status": "Error",
+        "Details": "The term 'Test-ClaudePermissionPrompt' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+        "Component": "Permission Detection"
+      },
+      {
+        "Status": "Pass",
+        "Details": "Verify integration status reporting",
+        "Component": "Integration Status"
+      },
+      {
+        "Status": "Error",
+        "Details": "The term 'Prepare-PromptSubmission' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+        "Component": "Safe Prompt Submission"
+      },
+      {
+        "Status": "Pass",
+        "Details": "Test integrated permission handler",
+        "Component": "Permission Handler"
+      },
+      {
+        "Status": "Fail",
+        "Details": "Test dangerous operation denial",
+        "Component": "Dangerous Operation"
+      }
+    ],
+    "Failed": 3,
+    "Warnings": 0,
+    "Passed": 5
+  },
+  "IntegrationStatus": {
+    "Statistics": {
+      "SafeConversions": 0,
+      "PromptsProcessed": 0,
+      "PermissionsHandled": 0
+    },
+    "Components": {
+      "SafeOperations": {
+        "Status": "Active",
+        "Enabled": true
+      },
+      "Interceptor": {
+        "Status": "Disabled",
+        "Enabled": false
+      }
+    },
+    "Initialized": true,
+    "Mode": "Intelligent"
+  },
+  "Timestamp": "2025-08-31T02:17:45.4036076-04:00",
+  "SuccessRate": 62.5,
+  "TestType": "Full"
+}

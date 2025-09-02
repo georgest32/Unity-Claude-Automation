@@ -1,0 +1,96 @@
+{
+  "Timestamp": "2025-08-24 01:36:26",
+  "Summary": {
+    "Passed": 11,
+    "Total": 17,
+    "Failed": 6
+  },
+  "Tests": [
+    {
+      "Message": "Component is accessible",
+      "Component": "Prometheus",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Component is accessible",
+      "Component": "Grafana",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Component is accessible",
+      "Component": "Loki",
+      "Status": "Passed"
+    },
+    {
+      "Message": "No connection could be made because the target machine actively refused it. (localhost:9093)",
+      "Component": "Alertmanager",
+      "Status": "Failed"
+    },
+    {
+      "Message": "Component is accessible",
+      "Component": "cAdvisor",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Component is accessible",
+      "Component": "Node Exporter",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Service is alive",
+      "Name": "Liveness Probe",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Response status code does not indicate success: 503 (Service Unavailable).",
+      "Name": "Readiness Probe",
+      "Status": "Failed"
+    },
+    {
+      "Message": "Health status: unhealthy",
+      "Name": "Service Health",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Metrics retrieved successfully",
+      "Name": "Prometheus Query",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Container metrics available",
+      "Name": "Container Metrics",
+      "Status": "Passed"
+    },
+    {
+      "Message": "Failed to search logs: end timestamp must not be before or equal to start time",
+      "Name": "Loki Search",
+      "Status": "Failed"
+    },
+    {
+      "Message": "Failed to get service logs: Failed to search logs: end timestamp must not be before or equal to start time",
+      "Name": "Service Logs",
+      "Status": "Failed"
+    },
+    {
+      "Message": "Failed to send alert: No connection could be made because the target machine actively refused it.",
+      "Name": "Send Alert",
+      "Status": "Failed"
+    },
+    {
+      "Message": "Failed to get active alerts: No connection could be made because the target machine actively refused it.",
+      "Name": "Get Alerts",
+      "Status": "Failed"
+    },
+    {
+      "Message": "All datasources configured",
+      "Name": "Grafana Datasources",
+      "Status": "Passed"
+    },
+    {
+      "Message": "5 healthy targets",
+      "Name": "Metric Scraping",
+      "Status": "Passed"
+    }
+  ],
+  "TestType": "All"
+}

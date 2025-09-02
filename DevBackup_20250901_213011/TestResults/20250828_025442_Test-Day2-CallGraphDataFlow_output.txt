@@ -1,0 +1,58 @@
+
+=== Testing Day 2 Implementations ===
+Date: 2025-08-28 02:54:43
+Modules: Call Graph Builder & Data Flow Tracker
+
+
+[Test Group 1: Call Graph Builder]
+  Testing: Load Call Graph Builder Module... WARNING: The names of some imported commands from the module 'CPG-CallGraphBuilder' include unapproved verbs that might
+ make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the 
+Verbose parameter. For a list of approved verbs, type Get-Verb.
+PASS
+  Testing: Call Graph Builder Functions Available... PASS
+  Testing: Build PowerShell Call Graph... PASS
+  Testing: Call Graph Contains Functions... PASS
+  Testing: Call Graph Contains Edges... PASS
+  Testing: Detect Recursive Calls... PASS
+  Testing: Get Call Graph Metrics... PASS
+  Testing: Metrics Show Entry Points... PASS
+  Testing: Metrics Show Leaf Functions... PASS
+  Testing: Export Call Graph to JSON... PASS
+
+[Test Group 2: Data Flow Tracker]
+  Testing: Load Data Flow Tracker Module... WARNING: The names of some imported commands from the module 'CPG-DataFlowTracker' include unapproved verbs that might 
+make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the 
+Verbose parameter. For a list of approved verbs, type Get-Verb.
+PASS
+  Testing: Data Flow Tracker Functions Available... PASS
+  Testing: Build PowerShell Data Flow... ERROR - Cannot bind argument to parameter 'DifferenceObject' because it is null.
+  Testing: Data Flow Contains Definitions... FAIL - Test failed
+  Testing: Data Flow Contains Uses... FAIL - Test failed
+  Testing: Def-Use Chains Created... FAIL - Test failed
+  Testing: Taint Analysis Detects Security Issues... FAIL - Test failed
+  Testing: Tainted Variables Marked... FAIL - Test failed
+  Testing: Analyze Data Sensitivity... ERROR - Cannot bind argument to parameter 'DataFlow' because it is null.
+  Testing: Detect Sensitive Variables... FAIL - Test failed
+  Testing: Get Data Flow Metrics... ERROR - Cannot bind argument to parameter 'DataFlow' because it is null.
+  Testing: Metrics Show Unused Definitions... FAIL - Test failed
+  Testing: Metrics Show Undefined Uses... FAIL - Test failed
+  Testing: Export Data Flow to JSON... ERROR - Cannot bind argument to parameter 'DataFlow' because it is null.
+
+[Test Group 3: Integration]
+  Testing: Call Graph and Data Flow Consistency... FAIL - Test failed
+  Testing: Performance Within Limits... PASS
+
+[Cleanup]
+  Removed test script
+  Removed call graph export
+
+=== Test Results Summary ===
+Total Tests: 26
+Passed: 13
+Failed: 13
+Success Rate: 50%
+Total Duration: 0.66 seconds
+
+Detailed results saved to: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Day2-TestResults-20250828-025444.json
+
+Test suite FAILED

@@ -1,0 +1,112 @@
+{
+    "Modules":  {
+                    "AlertFeedbackCollector":  {
+                                                   "Status":  "Passed",
+                                                   "Tests":  {
+                                                                 "Initialize AlertFeedbackCollector":  {
+                                                                                                           "Duration":  97.2958,
+                                                                                                           "Status":  "Passed",
+                                                                                                           "Result":  true
+                                                                                                       },
+                                                                 "Load AlertFeedbackCollector Module":  {
+                                                                                                            "Duration":  32.836800000000004,
+                                                                                                            "Status":  "Passed",
+                                                                                                            "Result":  true
+                                                                                                        },
+                                                                 "AlertFeedbackCollector System Test":  {
+                                                                                                            "Duration":  138.21,
+                                                                                                            "Status":  "Passed",
+                                                                                                            "Result":  true
+                                                                                                        }
+                                                             }
+                                               },
+                    "AlertMLOptimizer":  {
+                                             "Status":  "Pending",
+                                             "Tests":  {
+
+                                                       }
+                                         },
+                    "AlertAnalytics":  {
+                                           "Status":  "Failed",
+                                           "Tests":  {
+                                                         "Load AlertAnalytics Module":  {
+                                                                                            "Duration":  0,
+                                                                                            "Status":  "Error",
+                                                                                            "Result":  null,
+                                                                                            "Error":  "Failed to load AlertAnalytics: The term \u0027Initialize-AlertAnalytics\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+                                                                                        },
+                                                         "AlertAnalytics System Test":  {
+                                                                                            "Duration":  0,
+                                                                                            "Status":  "Error",
+                                                                                            "Result":  null,
+                                                                                            "Error":  "AlertAnalytics test failed: The term \u0027Test-AlertAnalytics\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+                                                                                        }
+                                                     }
+                                       },
+                    "AlertQualityReporting":  {
+                                                  "Status":  "Partial",
+                                                  "Tests":  {
+                                                                "System Integration Validation":  {
+                                                                                                      "Duration":  0,
+                                                                                                      "Status":  "Error",
+                                                                                                      "Result":  null,
+                                                                                                      "Error":  "System integration validation failed: Integration success rate too low: 33.3%"
+                                                                                                  },
+                                                                "End-to-End Feedback Loop Test":  {
+                                                                                                      "Duration":  0,
+                                                                                                      "Status":  "Error",
+                                                                                                      "Result":  null,
+                                                                                                      "Error":  "End-to-end feedback loop test failed: Quality report generation failed in end-to-end test"
+                                                                                                  },
+                                                                "Performance and Scalability Test":  {
+                                                                                                         "Duration":  0,
+                                                                                                         "Status":  "Error",
+                                                                                                         "Result":  null,
+                                                                                                         "Error":  "Performance test failed: Too many errors in performance test: 20"
+                                                                                                     },
+                                                                "Load AlertQualityReporting Module":  {
+                                                                                                          "Duration":  20.392400000000002,
+                                                                                                          "Status":  "Passed",
+                                                                                                          "Result":  true
+                                                                                                      },
+                                                                "AlertQualityReporting System Test":  {
+                                                                                                          "Duration":  0,
+                                                                                                          "Status":  "Error",
+                                                                                                          "Result":  null,
+                                                                                                          "Error":  "AlertQualityReporting test failed: Quality reporting test failed. Success rate: 50%"
+                                                                                                      }
+                                                            }
+                                              }
+                },
+    "TotalTests":  10,
+    "PassedTests":  4,
+    "StartTime":  {
+                      "value":  "\/Date(1756580590577)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "Saturday, August 30, 2025 3:03:10 PM"
+                  },
+    "Performance":  {
+                        "ReportingTime":  41.9093,
+                        "AnalyticsTime":  0,
+                        "OptimizationTime":  0,
+                        "FeedbackCollectionTime":  93.3122
+                    },
+    "Errors":  [
+                   "[Load AlertAnalytics Module] Failed to load AlertAnalytics: The term \u0027Initialize-AlertAnalytics\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                   "[AlertAnalytics System Test] AlertAnalytics test failed: The term \u0027Test-AlertAnalytics\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                   "[AlertQualityReporting System Test] AlertQualityReporting test failed: Quality reporting test failed. Success rate: 50%",
+                   "[End-to-End Feedback Loop Test] End-to-end feedback loop test failed: Quality report generation failed in end-to-end test",
+                   "[Performance and Scalability Test] Performance test failed: Too many errors in performance test: 20",
+                   "[System Integration Validation] System integration validation failed: Integration success rate too low: 33.3%"
+               ],
+    "TestName":  "Alert Quality and Feedback Loop Comprehensive Test",
+    "OverallStatus":  "Failed",
+    "SuccessRate":  40,
+    "TotalDuration":  0.55918499999999993,
+    "EndTime":  {
+                    "value":  "\/Date(1756580591136)\/",
+                    "DisplayHint":  2,
+                    "DateTime":  "Saturday, August 30, 2025 3:03:11 PM"
+                },
+    "FailedTests":  6
+}

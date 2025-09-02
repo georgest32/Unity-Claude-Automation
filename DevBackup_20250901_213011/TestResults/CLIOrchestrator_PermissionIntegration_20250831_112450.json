@@ -1,0 +1,56 @@
+{
+  "Timestamp": "2025-08-31T11:24:50.2371807-04:00",
+  "IntegrationStatus": {
+    "Statistics": {
+      "SafeConversions": 0,
+      "PromptsProcessed": 0,
+      "PermissionsHandled": 0
+    },
+    "Mode": "Intelligent",
+    "Components": {
+      "Interceptor": {
+        "Enabled": true,
+        "Status": "Active"
+      },
+      "SafeOperations": {
+        "Enabled": true,
+        "Status": "Active"
+      }
+    },
+    "Initialized": true
+  },
+  "SuccessRate": 80.0,
+  "TestType": "Standard",
+  "Results": {
+    "Failed": 1,
+    "Details": [
+      {
+        "Details": "Initialize base orchestrator",
+        "Status": "Pass",
+        "Component": "Orchestrator Initialization"
+      },
+      {
+        "Details": "Initialize permission handling integration",
+        "Status": "Pass",
+        "Component": "Permission Integration"
+      },
+      {
+        "Details": "Test destructive command conversion",
+        "Status": "Pass",
+        "Component": "Safe Operations"
+      },
+      {
+        "Details": "The term 'Test-ClaudePermissionPrompt' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+        "Status": "Error",
+        "Component": "Permission Detection"
+      },
+      {
+        "Details": "Verify integration status reporting",
+        "Status": "Pass",
+        "Component": "Integration Status"
+      }
+    ],
+    "Warnings": 0,
+    "Passed": 4
+  }
+}

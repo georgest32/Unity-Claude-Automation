@@ -1,0 +1,64 @@
+{
+  "TotalDuration": 1146.729,
+  "Summary": {
+    "Total": 6,
+    "Skipped": 0,
+    "Passed": 4,
+    "Errors": 0,
+    "Failed": 2
+  },
+  "EndTime": "2025-08-25T02:46:12.1334848-04:00",
+  "TestSuite": "CLIOrchestrator-Complete",
+  "StartTime": "2025-08-25T02:46:10.9867558-04:00",
+  "TestType": "Unit",
+  "Results": [
+    {
+      "Name": "Module Import and Validation",
+      "Error": "",
+      "Details": "All core modules and functions loaded successfully",
+      "Duration": 859,
+      "Timestamp": "2025-08-25T02:46:11.8634438-04:00",
+      "Status": "Passed"
+    },
+    {
+      "Name": "Response Analysis Engine",
+      "Error": "",
+      "Details": "Entities: 10, Sentiment: Uncertainty (0.45), Relevance: 0.09",
+      "Duration": 69,
+      "Timestamp": "2025-08-25T02:46:11.9395579-04:00",
+      "Status": "Passed"
+    },
+    {
+      "Name": "Pattern Recognition Engine",
+      "Error": "A parameter cannot be found that matches parameter name 'ResponseText'.",
+      "Details": "",
+      "Duration": 29,
+      "Timestamp": "2025-08-25T02:46:11.9726824-04:00",
+      "Status": "Failed"
+    },
+    {
+      "Name": "Decision Engine",
+      "Error": "Safety validation failed to return results",
+      "Details": "",
+      "Duration": 110,
+      "Timestamp": "2025-08-25T02:46:12.0871866-04:00",
+      "Status": "Failed"
+    },
+    {
+      "Name": "Action Execution Framework",
+      "Error": "",
+      "Details": "Path validation: OK, Command validation: OK, Action safety: OK, Queue operations: OK",
+      "Duration": 26,
+      "Timestamp": "2025-08-25T02:46:12.1177557-04:00",
+      "Status": "Passed"
+    },
+    {
+      "Name": "Configuration Loading",
+      "Error": "",
+      "Details": "Decision trees: OK, Safety policies: OK, Learning parameters: OK",
+      "Duration": 11,
+      "Timestamp": "2025-08-25T02:46:12.1324562-04:00",
+      "Status": "Passed"
+    }
+  ]
+}

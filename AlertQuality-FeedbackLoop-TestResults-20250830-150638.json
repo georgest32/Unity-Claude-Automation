@@ -1,0 +1,94 @@
+{
+  "FailedTests": 2,
+  "SuccessRate": 80.0,
+  "StartTime": "2025-08-30T15:06:37.3569733-04:00",
+  "OverallStatus": "Partial",
+  "PassedTests": 8,
+  "TestName": "Alert Quality and Feedback Loop Comprehensive Test",
+  "Errors": [
+    "[End-to-End Feedback Loop Test] End-to-end feedback loop test failed: The term 'Verify-FeedbackLoopCompletion' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+    "[Performance and Scalability Test] Performance test failed: Too many errors in performance test: 20"
+  ],
+  "TotalTests": 10,
+  "EndTime": "2025-08-30T15:06:38.514983-04:00",
+  "TotalDuration": 1.1580097,
+  "Modules": {
+    "AlertMLOptimizer": {
+      "Tests": {},
+      "Status": "Pending"
+    },
+    "AlertAnalytics": {
+      "Tests": {
+        "Load AlertAnalytics Module": {
+          "Duration": 19.1679,
+          "Status": "Passed",
+          "Result": true
+        },
+        "AlertAnalytics System Test": {
+          "Duration": 101.7403,
+          "Status": "Passed",
+          "Result": true
+        }
+      },
+      "Status": "Passed"
+    },
+    "AlertQualityReporting": {
+      "Tests": {
+        "Performance and Scalability Test": {
+          "Error": "Performance test failed: Too many errors in performance test: 20",
+          "Duration": 0,
+          "Status": "Error",
+          "Result": null
+        },
+        "Load AlertQualityReporting Module": {
+          "Duration": 20.6518,
+          "Status": "Passed",
+          "Result": true
+        },
+        "AlertQualityReporting System Test": {
+          "Duration": 83.2801,
+          "Status": "Passed",
+          "Result": true
+        },
+        "End-to-End Feedback Loop Test": {
+          "Error": "End-to-end feedback loop test failed: The term 'Verify-FeedbackLoopCompletion' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+          "Duration": 0,
+          "Status": "Error",
+          "Result": null
+        },
+        "System Integration Validation": {
+          "Duration": 32.0032,
+          "Status": "Passed",
+          "Result": true
+        }
+      },
+      "Status": "Partial"
+    },
+    "AlertFeedbackCollector": {
+      "Tests": {
+        "Load AlertFeedbackCollector Module": {
+          "Duration": 59.4408,
+          "Status": "Passed",
+          "Result": true
+        },
+        "AlertFeedbackCollector System Test": {
+          "Duration": 85.5804,
+          "Status": "Passed",
+          "Result": true
+        },
+        "Initialize AlertFeedbackCollector": {
+          "Duration": 619.2074,
+          "Status": "Passed",
+          "Result": true
+        }
+      },
+      "Status": "Passed"
+    }
+  },
+  "Performance": {
+    "FeedbackCollectionTime": 617.6669,
+    "ReportingTime": 82.3073,
+    "AnalyticsTime": 100.7829,
+    "OptimizationTime": 0
+  }
+}

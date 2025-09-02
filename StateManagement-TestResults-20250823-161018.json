@@ -1,0 +1,106 @@
+{
+  "Duration": "00:00:42.6377928",
+  "StartTime": "2025-08-23T16:09:35.9933941-04:00",
+  "EndTime": "2025-08-23T16:10:18.6311869-04:00",
+  "TestSuite": "LangGraph State Management (Hour 6)",
+  "Summary": {
+    "Duration": "00:00:42.6377928",
+    "PassedTests": 9,
+    "TotalTests": 13,
+    "PassRate": "69.2%",
+    "FailedTests": 4
+  },
+  "Tests": [
+    {
+      "Data": null,
+      "Details": "State management server operational",
+      "TestName": "Server Health Check",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:09:36.0357814-04:00"
+    },
+    {
+      "Data": null,
+      "Details": "Valid: True",
+      "TestName": "Basic State Validation",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:09:36.0531603-04:00"
+    },
+    {
+      "Data": null,
+      "Details": "Valid: True",
+      "TestName": "HITL State Validation",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:09:36.0631209-04:00"
+    },
+    {
+      "Data": null,
+      "Details": "Should detect invalid state",
+      "TestName": "Invalid State Detection",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:09:36.0835817-04:00"
+    },
+    {
+      "Data": null,
+      "Details": "Exception: Response status code does not indicate success: 500 (Internal Server Error).",
+      "TestName": "State Processing Tests",
+      "Passed": false,
+      "Timestamp": "2025-08-23T16:09:50.281078-04:00"
+    },
+    {
+      "Data": null,
+      "Details": "Exception: Response status code does not indicate success: 500 (Internal Server Error).",
+      "TestName": "State Synchronization Tests",
+      "Passed": false,
+      "Timestamp": "2025-08-23T16:10:04.3911879-04:00"
+    },
+    {
+      "Data": null,
+      "Details": "Found 0 snapshots",
+      "TestName": "List All Snapshots",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:10:04.4208616-04:00"
+    },
+    {
+      "Data": null,
+      "Details": "No snapshots available to filter",
+      "TestName": "Filter Snapshots by Graph",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:10:04.4216289-04:00"
+    },
+    {
+      "Data": null,
+      "Details": "No snapshots available to test",
+      "TestName": "Get Specific Snapshot",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:10:04.4220987-04:00"
+    },
+    {
+      "Data": null,
+      "Details": "Total snapshots: 0, Unique graphs: 0",
+      "TestName": "State Statistics",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:10:04.4456218-04:00"
+    },
+    {
+      "Data": null,
+      "Details": "State converted for PowerShell consumption",
+      "TestName": "Python to PowerShell Conversion",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:10:04.4558072-04:00"
+    },
+    {
+      "Data": null,
+      "Details": "Metadata included: False",
+      "TestName": "PowerShell State with Metadata",
+      "Passed": false,
+      "Timestamp": "2025-08-23T16:10:04.4620795-04:00"
+    },
+    {
+      "Data": null,
+      "Details": "Exception: Response status code does not indicate success: 500 (Internal Server Error).",
+      "TestName": "Integration Tests",
+      "Passed": false,
+      "Timestamp": "2025-08-23T16:10:18.6294599-04:00"
+    }
+  ]
+}

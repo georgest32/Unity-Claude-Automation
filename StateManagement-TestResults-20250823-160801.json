@@ -1,0 +1,92 @@
+{
+  "StartTime": "2025-08-23T16:08:00.7805428-04:00",
+  "Tests": [
+    {
+      "Details": "State management server operational",
+      "Data": null,
+      "Timestamp": "2025-08-23T16:08:00.8624851-04:00",
+      "TestName": "Server Health Check",
+      "Passed": true
+    },
+    {
+      "Details": "Exception: Response status code does not indicate success: 422 (Unprocessable Entity).",
+      "Data": null,
+      "Timestamp": "2025-08-23T16:08:00.9972867-04:00",
+      "TestName": "State Validation Tests",
+      "Passed": false
+    },
+    {
+      "Details": "Exception: Response status code does not indicate success: 422 (Unprocessable Entity).",
+      "Data": null,
+      "Timestamp": "2025-08-23T16:08:01.0494466-04:00",
+      "TestName": "State Processing Tests",
+      "Passed": false
+    },
+    {
+      "Details": "Exception: Response status code does not indicate success: 422 (Unprocessable Entity).",
+      "Data": null,
+      "Timestamp": "2025-08-23T16:08:01.1029491-04:00",
+      "TestName": "State Synchronization Tests",
+      "Passed": false
+    },
+    {
+      "Details": "Found 0 snapshots",
+      "Data": null,
+      "Timestamp": "2025-08-23T16:08:01.1474298-04:00",
+      "TestName": "List All Snapshots",
+      "Passed": true
+    },
+    {
+      "Details": "No snapshots available to filter",
+      "Data": null,
+      "Timestamp": "2025-08-23T16:08:01.1482432-04:00",
+      "TestName": "Filter Snapshots by Graph",
+      "Passed": true
+    },
+    {
+      "Details": "No snapshots available to test",
+      "Data": null,
+      "Timestamp": "2025-08-23T16:08:01.1488621-04:00",
+      "TestName": "Get Specific Snapshot",
+      "Passed": true
+    },
+    {
+      "Details": "Total snapshots: 0, Unique graphs: 0",
+      "Data": null,
+      "Timestamp": "2025-08-23T16:08:01.1770538-04:00",
+      "TestName": "State Statistics",
+      "Passed": true
+    },
+    {
+      "Details": "State converted for PowerShell consumption",
+      "Data": null,
+      "Timestamp": "2025-08-23T16:08:01.2040768-04:00",
+      "TestName": "Python to PowerShell Conversion",
+      "Passed": true
+    },
+    {
+      "Details": "Metadata included: False",
+      "Data": null,
+      "Timestamp": "2025-08-23T16:08:01.2202277-04:00",
+      "TestName": "PowerShell State with Metadata",
+      "Passed": false
+    },
+    {
+      "Details": "Exception: Response status code does not indicate success: 422 (Unprocessable Entity).",
+      "Data": null,
+      "Timestamp": "2025-08-23T16:08:01.3173754-04:00",
+      "TestName": "Integration Tests",
+      "Passed": false
+    }
+  ],
+  "Duration": "00:00:00.5387758",
+  "Summary": {
+    "PassedTests": 6,
+    "FailedTests": 5,
+    "Duration": "00:00:00.5387758",
+    "PassRate": "54.5%",
+    "TotalTests": 11
+  },
+  "TestSuite": "LangGraph State Management (Hour 6)",
+  "EndTime": "2025-08-23T16:08:01.3193186-04:00"
+}

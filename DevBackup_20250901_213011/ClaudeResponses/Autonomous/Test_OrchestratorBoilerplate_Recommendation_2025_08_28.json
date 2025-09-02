@@ -1,0 +1,101 @@
+{
+    "timestamp": "2025-08-28T00:00:00Z",
+    "session_id": "orchestrator-boilerplate-test-recommendation",
+    "prompt_type": "Testing",
+    "task": "Verify orchestrator boilerplate implementation",
+    "priority": "CRITICAL",
+    "test_details": {
+        "test_script": "./Test-OrchestratorBoilerplate.ps1",
+        "test_purpose": "Verify that the orchestrator properly uses boilerplate format instead of pipe-separated format",
+        "expected_duration": "10 seconds",
+        "requires_nuggetron": false,
+        "test_mode": "Verification"
+    },
+    "verification_points": [
+        {
+            "step": 1,
+            "description": "Check boilerplate functions exist",
+            "expected": "New-BoilerplatePrompt.ps1 and Submit-ToClaudeViaTypeKeys.ps1 files exist",
+            "critical": true
+        },
+        {
+            "step": 2,
+            "description": "Verify functions load correctly",
+            "expected": "Functions are successfully dot-sourced and available via Get-Command",
+            "critical": true
+        },
+        {
+            "step": 3,
+            "description": "Test boilerplate prompt construction",
+            "expected": "Prompt includes full 94-line boilerplate template with 'Testing:' marker",
+            "critical": true
+        },
+        {
+            "step": 4,
+            "description": "Verify correct format",
+            "expected": "[BOILERPLATE] Testing: [details] Files: [paths] format, NOT pipe-separated",
+            "critical": true
+        },
+        {
+            "step": 5,
+            "description": "Confirm clipboard method",
+            "expected": "Uses Set-Clipboard + Ctrl+V paste, not character-by-character typing",
+            "critical": true
+        }
+    ],
+    "success_criteria": {
+        "must_see": [
+            "✅ New-BoilerplatePrompt.ps1 exists",
+            "✅ New-BoilerplatePrompt function loaded successfully",
+            "✅ Submit-ToClaudeViaTypeKeys.ps1 exists",
+            "✅ Boilerplate prompt created successfully",
+            "✅ Correct format detected (Testing: included)",
+            "✅ Boilerplate template included"
+        ],
+        "must_not_see": [
+            "❌ New-BoilerplatePrompt.ps1 not found",
+            "❌ New-BoilerplatePrompt function failed to load",
+            "❌ Wrong format - missing 'Testing:' marker",
+            "Test Execution Complete: script | Exit Code: 0 |"
+        ]
+    },
+    "expected_output": {
+        "format": "[Full boilerplate template - 94 lines]\n\nTesting: Please analyze the console output and results from running the test Test-Example.ps1 in file ./TestResults/test_output.json Files: ./TestResults/test_output.json",
+        "length": "Approximately 4000+ characters",
+        "submission_method": "Single clipboard paste operation"
+    },
+    "troubleshooting": {
+        "if_functions_not_found": "Check paths in Modules/Unity-Claude-CLIOrchestrator/Public/PromptSubmissionEngine/",
+        "if_wrong_format": "Verify orchestrator is loading enhanced functions before checking with Get-Command",
+        "if_line_by_line": "Ensure WindowManager.psm1 Submit-ToClaudeWindow uses clipboard method",
+        "if_fallback_triggered": "Check orchestrator logs for '[WARN] New-BoilerplatePrompt not available' messages"
+    },
+    "next_steps": {
+        "after_success": [
+            "Test with actual orchestrator and real signal file",
+            "Verify end-to-end workflow from signal to Claude submission",
+            "Confirm NUGGETRON window receives properly formatted prompt"
+        ],
+        "after_failure": [
+            "Check function file paths and permissions",
+            "Review orchestrator Submit-TestResultsToClaude function",
+            "Verify module loading sequence",
+            "Check for syntax errors in enhanced functions"
+        ]
+    },
+    "context": {
+        "previous_issues": [
+            "Orchestrator was using pipe-separated format instead of boilerplate",
+            "New-BoilerplatePrompt function wasn't exported by module",
+            "Line-by-line submission due to character-by-character typing",
+            "Functions existed but weren't being loaded by orchestrator"
+        ],
+        "fixes_applied": [
+            "Modified orchestrator to directly load .ps1 files with dot-sourcing",
+            "Enhanced WindowManager to use clipboard paste instead of typing",
+            "Added detailed logging for function loading verification",
+            "Implemented proper boilerplate format construction"
+        ]
+    },
+    "RESPONSE": "RECOMMENDATION: TEST - ./Test-OrchestratorBoilerplate.ps1: Execute the orchestrator boilerplate verification test to confirm all enhanced functions load correctly and the proper boilerplate format is used instead of the pipe-separated format. This test verifies: (1) boilerplate functions exist and load successfully, (2) prompt construction uses full boilerplate template with 'Testing:' format, (3) clipboard paste method is configured, and (4) no fallback to old format occurs. Expected result: all verification points pass with green checkmarks."
+}

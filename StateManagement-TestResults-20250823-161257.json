@@ -1,0 +1,120 @@
+{
+  "EndTime": "2025-08-23T16:12:57.2124888-04:00",
+  "Tests": [
+    {
+      "Passed": true,
+      "Data": null,
+      "Details": "State management server operational",
+      "Timestamp": "2025-08-23T16:12:56.7456277-04:00",
+      "TestName": "Server Health Check"
+    },
+    {
+      "Passed": true,
+      "Data": null,
+      "Details": "Valid: True",
+      "Timestamp": "2025-08-23T16:12:56.7620462-04:00",
+      "TestName": "Basic State Validation"
+    },
+    {
+      "Passed": true,
+      "Data": null,
+      "Details": "Valid: True",
+      "Timestamp": "2025-08-23T16:12:56.7695745-04:00",
+      "TestName": "HITL State Validation"
+    },
+    {
+      "Passed": true,
+      "Data": null,
+      "Details": "Should detect invalid state",
+      "Timestamp": "2025-08-23T16:12:56.7903782-04:00",
+      "TestName": "Invalid State Detection"
+    },
+    {
+      "Passed": true,
+      "Data": null,
+      "Details": "Graph: state-test-20250823-161256, Thread: thread-6496",
+      "Timestamp": "2025-08-23T16:12:56.8477662-04:00",
+      "TestName": "Complex State Processing"
+    },
+    {
+      "Passed": true,
+      "Data": null,
+      "Details": "No thread ID - no snapshot created",
+      "Timestamp": "2025-08-23T16:12:56.8549728-04:00",
+      "TestName": "Simple State Processing"
+    },
+    {
+      "Passed": true,
+      "Data": null,
+      "Details": "Synchronized with checkpoint info",
+      "Timestamp": "2025-08-23T16:12:56.9322265-04:00",
+      "TestName": "State Synchronization"
+    },
+    {
+      "Passed": true,
+      "Data": null,
+      "Details": "Handled missing checkpoint gracefully",
+      "Timestamp": "2025-08-23T16:12:56.9601482-04:00",
+      "TestName": "Sync Without Checkpoint"
+    },
+    {
+      "Passed": true,
+      "Data": null,
+      "Details": "Found 5 snapshots",
+      "Timestamp": "2025-08-23T16:12:56.9850793-04:00",
+      "TestName": "List All Snapshots"
+    },
+    {
+      "Passed": true,
+      "Data": null,
+      "Details": "Found 1 snapshots for graph sync-test-20250823-161256",
+      "Timestamp": "2025-08-23T16:12:57.0079747-04:00",
+      "TestName": "Filter Snapshots by Graph"
+    },
+    {
+      "Passed": true,
+      "Data": null,
+      "Details": "Retrieved snapshot: sync-test-20250823-161256_sync-thread-817_20250823_161256",
+      "Timestamp": "2025-08-23T16:12:57.0315456-04:00",
+      "TestName": "Get Specific Snapshot"
+    },
+    {
+      "Passed": true,
+      "Data": null,
+      "Details": "Total snapshots: 5, Unique graphs: 5",
+      "Timestamp": "2025-08-23T16:12:57.0572563-04:00",
+      "TestName": "State Statistics"
+    },
+    {
+      "Passed": true,
+      "Data": null,
+      "Details": "State converted for PowerShell consumption",
+      "Timestamp": "2025-08-23T16:12:57.0659723-04:00",
+      "TestName": "Python to PowerShell Conversion"
+    },
+    {
+      "Passed": false,
+      "Data": null,
+      "Details": "Metadata included: False",
+      "Timestamp": "2025-08-23T16:12:57.073844-04:00",
+      "TestName": "PowerShell State with Metadata"
+    },
+    {
+      "Passed": true,
+      "Data": null,
+      "Details": "Integration successful: completed",
+      "Timestamp": "2025-08-23T16:12:57.2038546-04:00",
+      "TestName": "Graph Execution with State Management"
+    }
+  ],
+  "StartTime": "2025-08-23T16:12:56.6810796-04:00",
+  "Duration": "00:00:00.5314092",
+  "Summary": {
+    "TotalTests": 15,
+    "PassedTests": 14,
+    "FailedTests": 1,
+    "Duration": "00:00:00.5314092",
+    "PassRate": "93.3%"
+  },
+  "TestSuite": "LangGraph State Management (Hour 6)"
+}

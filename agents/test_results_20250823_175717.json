@@ -1,0 +1,69 @@
+{
+  "timestamp": "2025-08-23T17:57:17.175605",
+  "tests": [
+    {
+      "test_name": "Environment Setup",
+      "status": "FAIL",
+      "details": {
+        "python_version": "3.13.5",
+        "autogen_agentchat": "0.7.4",
+        "autogen_core": "0.7.4",
+        "openai_api_key": "missing"
+      },
+      "error": "OPENAI_API_KEY not set"
+    },
+    {
+      "test_name": "Supervisor Creation",
+      "status": "FAIL",
+      "details": {},
+      "error": "The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable"
+    },
+    {
+      "test_name": "Repo Analyst v0.4",
+      "status": "FAIL",
+      "details": {},
+      "error": "The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable"
+    },
+    {
+      "test_name": "Multi-Agent System",
+      "status": "FAIL",
+      "details": {},
+      "error": "The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable"
+    },
+    {
+      "test_name": "Group Chat Creation",
+      "status": "FAIL",
+      "details": {},
+      "error": "The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable"
+    },
+    {
+      "test_name": "Security Configurations",
+      "status": "FAIL",
+      "details": {},
+      "error": "The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable"
+    },
+    {
+      "test_name": "Memory Configurations",
+      "status": "FAIL",
+      "details": {},
+      "error": "The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable"
+    },
+    {
+      "test_name": "IPC Bridge Components",
+      "status": "PASS",
+      "details": {
+        "powershell_executable": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+        "ps7_detected": true,
+        "pipe_name": "\\\\.\\pipe\\UnityClaudeAutogen",
+        "pipe_format_correct": true
+      }
+    }
+  ],
+  "summary": {
+    "total": 8,
+    "passed": 1,
+    "failed": 7,
+    "partial": 0,
+    "success_rate": "12.5%"
+  }
+}

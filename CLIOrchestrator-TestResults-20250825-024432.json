@@ -1,0 +1,64 @@
+{
+  "TestType": "Unit",
+  "TotalDuration": 1288.567,
+  "StartTime": "2025-08-25T02:44:31.6477733-04:00",
+  "Results": [
+    {
+      "Duration": 1013,
+      "Details": "All core modules and functions loaded successfully",
+      "Status": "Passed",
+      "Timestamp": "2025-08-25T02:44:32.6787358-04:00",
+      "Error": "",
+      "Name": "Module Import and Validation"
+    },
+    {
+      "Duration": 72,
+      "Details": "Entities: 10, Sentiment: Negative (0.45), Relevance: 0.09",
+      "Status": "Passed",
+      "Timestamp": "2025-08-25T02:44:32.7602984-04:00",
+      "Error": "",
+      "Name": "Response Analysis Engine"
+    },
+    {
+      "Duration": 32,
+      "Details": "",
+      "Status": "Failed",
+      "Timestamp": "2025-08-25T02:44:32.7962588-04:00",
+      "Error": "A parameter cannot be found that matches parameter name 'ResponseText'.",
+      "Name": "Pattern Recognition Engine"
+    },
+    {
+      "Duration": 82,
+      "Details": "",
+      "Status": "Failed",
+      "Timestamp": "2025-08-25T02:44:32.8839584-04:00",
+      "Error": "Decision engine returned unexpected decision: TEST",
+      "Name": "Decision Engine"
+    },
+    {
+      "Duration": 29,
+      "Details": "Path validation: OK, Command validation: OK, Action safety: OK, Queue operations: OK",
+      "Status": "Passed",
+      "Timestamp": "2025-08-25T02:44:32.9173189-04:00",
+      "Error": "",
+      "Name": "Action Execution Framework"
+    },
+    {
+      "Duration": 15,
+      "Details": "Decision trees: OK, Safety policies: OK, Learning parameters: OK",
+      "Status": "Passed",
+      "Timestamp": "2025-08-25T02:44:32.9357019-04:00",
+      "Error": "",
+      "Name": "Configuration Loading"
+    }
+  ],
+  "Summary": {
+    "Failed": 2,
+    "Skipped": 0,
+    "Total": 6,
+    "Errors": 0,
+    "Passed": 4
+  },
+  "EndTime": "2025-08-25T02:44:32.9363403-04:00",
+  "TestSuite": "CLIOrchestrator-Complete"
+}

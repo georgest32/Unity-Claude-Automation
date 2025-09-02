@@ -1,0 +1,253 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-LLM",
+  "Commands": [
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-LLMConfiguration",
+      "Synopsis": "\r\nGet-LLMConfiguration [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "BaseUrl",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-OllamaModels",
+      "Synopsis": "\r\nGet-OllamaModels [[-BaseUrl] <string>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "FilePath",
+        "AnalysisTypes",
+        "OutputPath",
+        "Context",
+        "FocusAreas",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-CodeAnalysis",
+      "Synopsis": "\r\nInvoke-CodeAnalysis [-FilePath] <string> [[-AnalysisTypes] <string[]>] [[-OutputPath] <string>] [[-Context] <string>] [[-FocusAreas] <string[]>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "FilePath",
+        "Type",
+        "OutputPath",
+        "Context",
+        "Requirements",
+        "UpdateExisting",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-DocumentationGeneration",
+      "Synopsis": "\r\nInvoke-DocumentationGeneration [-FilePath] <string> [[-Type] <string>] [[-OutputPath] <string>] [[-Context] <string>] [[-Requirements] <string[]>] [-UpdateExisting] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Prompt",
+        "Model",
+        "BaseUrl",
+        "Temperature",
+        "MaxTokens",
+        "Stream",
+        "TimeoutSec",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-OllamaGenerate",
+      "Synopsis": "\r\nInvoke-OllamaGenerate [-Prompt] <string> [[-Model] <string>] [[-BaseUrl] <string>] [[-Temperature] <double>] [[-MaxTokens] <int>] [[-Stream] <bool>] [[-TimeoutSec] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "AnalysisType",
+        "Code",
+        "Context",
+        "FocusAreas",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "New-CodeAnalysisPrompt",
+      "Synopsis": "\r\nNew-CodeAnalysisPrompt [-AnalysisType] <string> [-Code] <string> [[-Context] <string>] [[-FocusAreas] <string[]>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Type",
+        "Code",
+        "Context",
+        "ExistingDocs",
+        "Requirements",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "New-DocumentationPrompt",
+      "Synopsis": "\r\nNew-DocumentationPrompt [-Type] <string> [-Code] <string> [[-Context] <string>] [[-ExistingDocs] <string>] [[-Requirements] <string[]>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Model",
+        "BaseUrl",
+        "Timeout",
+        "MaxRetries",
+        "RetryDelay",
+        "Stream",
+        "Temperature",
+        "MaxTokens",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Set-LLMConfiguration",
+      "Synopsis": "\r\nSet-LLMConfiguration [[-Model] <string>] [[-BaseUrl] <string>] [[-Timeout] <int>] [[-MaxRetries] <int>] [[-RetryDelay] <int>] [[-Stream] <bool>] [[-Temperature] <double>] [[-MaxTokens] <int>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-LLMAvailability",
+      "Synopsis": "\r\nTest-LLMAvailability [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "BaseUrl",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-OllamaConnection",
+      "Synopsis": "\r\nTest-OllamaConnection [[-BaseUrl] <string>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-LLM",
+  "ExportedFunctions": [
+    "Get-LLMConfiguration",
+    "Get-OllamaModels",
+    "Invoke-CodeAnalysis",
+    "Invoke-DocumentationGeneration",
+    "Invoke-OllamaGenerate",
+    "New-CodeAnalysisPrompt",
+    "New-DocumentationPrompt",
+    "Set-LLMConfiguration",
+    "Test-LLMAvailability",
+    "Test-OllamaConnection"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

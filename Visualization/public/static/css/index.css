@@ -1,0 +1,487 @@
+/**
+ * Unity-Claude Automation - Visualization Styles
+ * Advanced CSS for D3.js graph visualization with performance optimizations
+ */
+
+/* ==========================================================================
+   Reset and Base Styles
+   ========================================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   Graph Element Styles
+   ========================================================================== */
+
+/* Node styles with enhanced animations */
+.node {
+    stroke: #fff;
+    stroke-width: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.node:hover {
+    stroke-width: 4px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4)) brightness(1.2);
+    transform-origin: center;
+    animation: nodeHover 0.2s ease-in-out;
+}
+
+@keyframes nodeHover {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1.05); }
+}
+
+.node.selected {
+    stroke: #ffff00;
+    stroke-width: 5px;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 0, 0.8));
+    animation: nodeSelected 0.3s ease-in-out;
+}
+
+@keyframes nodeSelected {
+    0% { stroke-width: 2px; }
+    50% { stroke-width: 8px; }
+    100% { stroke-width: 5px; }
+}
+
+.node.search-highlight {
+    stroke: #00ff88;
+    stroke-width: 4px;
+    filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.6));
+}
+
+/* Link styles with enhanced visuals */
+.link {
+    stroke: #999;
+    stroke-opacity: 0.6;
+    stroke-width: 2px;
+    fill: none;
+    transition: all 0.3s ease;
+}
+
+.link:hover {
+    stroke-opacity: 0.9;
+    stroke-width: 3px;
+}
+
+.link.highlighted {
+    stroke: #ffff00;
+    stroke-opacity: 0.9;
+    stroke-width: 4px;
+    animation: linkHighlight 0.5s ease-in-out;
+}
+
+@keyframes linkHighlight {
+    0% { stroke-width: 2px; stroke-opacity: 0.6; }
+    50% { stroke-width: 6px; stroke-opacity: 1; }
+    100% { stroke-width: 4px; stroke-opacity: 0.9; }
+}
+
+.link.search-highlight {
+    stroke: #00ff88;
+    stroke-opacity: 0.8;
+    stroke-width: 3px;
+}
+
+/* Label styles */
+.label {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    fill: #ffffff;
+    text-anchor: middle;
+    pointer-events: none;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    transition: opacity 0.3s ease;
+}
+
+.label.search-highlight {
+    fill: #00ff88;
+    font-weight: 700;
+    text-shadow: 0 0 4px rgba(0, 255, 136, 0.8);
+}
+
+/* ==========================================================================
+   Control Panel Enhancements
+   ========================================================================== */
+
+.control-panel {
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.control-panel.collapsed {
+    transform: translateX(220px);
+}
+
+.control-section {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+}
+
+.control-section:last-child {
+    border-bottom: none;
+}
+
+.control-section h3 {
+    background: linear-gradient(45deg, #00ff88, #2196F3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+}
+
+/* Button enhancements */
+.button {
+    background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 4px 4px 4px 0;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.button:hover {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Slider enhancements */
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #1e3c72 0%, #00ff88 100%);
+    outline: none;
+    margin: 10px 0;
+    transition: all 0.3s ease;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+    border: 2px solid #2a5298;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+    border: 2px solid #2a5298;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Search box enhancements */
+.search-box {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    color: white;
+    margin-bottom: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.search-box:focus {
+    outline: none;
+    border-color: #00ff88;
+    box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.search-box::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Status indicators */
+.status {
+    background: rgba(0, 255, 0, 0.2);
+    border: 1px solid rgba(0, 255, 0, 0.4);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.9em;
+    color: #00ff88;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.status.connecting {
+    background: rgba(255, 165, 0, 0.2);
+    border-color: rgba(255, 165, 0, 0.4);
+    color: #ffa500;
+}
+
+.status.error {
+    background: rgba(255, 0, 0, 0.2);
+    border-color: rgba(255, 0, 0, 0.4);
+    color: #ff4444;
+}
+
+/* ==========================================================================
+   Performance Indicator Enhancements
+   ========================================================================== */
+
+.perf-indicator {
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 0.85em;
+    color: #00ff88;
+    font-family: 'Courier New', monospace;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.perf-indicator span {
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   Tooltip Enhancements
+   ========================================================================== */
+
+.tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 12px;
+    color: white;
+    font-size: 0.9em;
+    pointer-events: none;
+    z-index: 1001;
+    max-width: 220px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    transition: opacity 0.3s ease;
+}
+
+.tooltip::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 15px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid rgba(0, 0, 0, 0.95);
+}
+
+/* ==========================================================================
+   Loading States and Animations
+   ========================================================================== */
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.loading {
+    animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.spinning {
+    animation: spin 1s linear infinite;
+}
+
+/* ==========================================================================
+   Graph Type Specific Styles
+   ========================================================================== */
+
+/* Node type colors (fallback for canvas mode) */
+.node-module { fill: #4CAF50; }
+.node-component { fill: #2196F3; }
+.node-function { fill: #FF9800; }
+.node-metric { fill: #9C27B0; }
+.node-class { fill: #F44336; }
+.node-powershell { fill: #0078D4; }
+
+/* ==========================================================================
+   Responsive Design Enhancements
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+    .control-panel {
+        min-width: 220px;
+        max-height: 75vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 0.9em;
+    }
+    
+    .control-panel {
+        right: 5px;
+        min-width: 180px;
+        max-height: 65vh;
+        padding: 15px;
+    }
+    
+    .button {
+        padding: 6px 12px;
+        font-size: 0.9em;
+    }
+    
+    .perf-indicator {
+        padding: 8px;
+        font-size: 0.75em;
+    }
+    
+    .tooltip {
+        max-width: 180px;
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 5px;
+    }
+    
+    .header h1 {
+        font-size: 0.8em;
+    }
+    
+    .controls {
+        gap: 5px;
+    }
+    
+    .status {
+        padding: 4px 8px;
+        font-size: 0.8em;
+    }
+    
+    .control-panel {
+        right: 2px;
+        min-width: 160px;
+        padding: 10px;
+    }
+}
+
+/* ==========================================================================
+   Accessibility Enhancements
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus indicators for keyboard navigation */
+.button:focus,
+.search-box:focus,
+.slider:focus {
+    outline: 2px solid #00ff88;
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .node {
+        stroke-width: 3px;
+    }
+    
+    .link {
+        stroke-opacity: 0.8;
+        stroke-width: 3px;
+    }
+    
+    .label {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+    }
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+    .header,
+    .control-panel,
+    .perf-indicator,
+    .tooltip {
+        display: none !important;
+    }
+    
+    .visualization-container {
+        margin-top: 0;
+        height: 100vh;
+    }
+    
+    body {
+        background: white;
+    }
+    
+    .node {
+        stroke: #000;
+    }
+    
+    .link {
+        stroke: #666;
+    }
+    
+    .label {
+        fill: #000;
+        text-shadow: none;
+    }
+}

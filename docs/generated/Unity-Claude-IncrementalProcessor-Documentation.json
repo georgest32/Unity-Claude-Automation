@@ -1,0 +1,190 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-IncrementalProcessor",
+  "Commands": [
+    {
+      "Parameters": [
+        "Processor",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Build-DependencyGraph",
+      "Synopsis": "\r\nBuild-DependencyGraph [-Processor] <IncrementalProcessor> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Processor",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-IncrementalProcessorStatistics",
+      "Synopsis": "\r\nGet-IncrementalProcessorStatistics [-Processor] <IncrementalProcessor> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "WatchPath",
+        "CPGManager",
+        "CacheManager",
+        "OnChangeDetected",
+        "OnProcessingComplete",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "New-IncrementalProcessor",
+      "Synopsis": "\r\nNew-IncrementalProcessor [-WatchPath] <string> [[-CPGManager] <Object>] [[-CacheManager] <Object>] [[-OnChangeDetected] <scriptblock>] [[-OnProcessingComplete] <scriptblock>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Processor",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "New-ProcessorCheckpoint",
+      "Synopsis": "\r\nNew-ProcessorCheckpoint [-Processor] <IncrementalProcessor> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Processor",
+        "Checkpoint",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Restore-ProcessorCheckpoint",
+      "Synopsis": "\r\nRestore-ProcessorCheckpoint [-Processor] <IncrementalProcessor> [-Checkpoint] <hashtable> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Processor",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Start-IncrementalProcessing",
+      "Synopsis": "\r\nStart-IncrementalProcessing [-Processor] <IncrementalProcessor> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Processor",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Stop-IncrementalProcessing",
+      "Synopsis": "\r\nStop-IncrementalProcessing [-Processor] <IncrementalProcessor> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "FilePath",
+        "Processor",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Update-CPGIncremental",
+      "Synopsis": "\r\nUpdate-CPGIncremental [-FilePath] <string> [-Processor] <IncrementalProcessor> [<CommonParameters>]\r\n",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-IncrementalProcessor",
+  "ExportedFunctions": [
+    "Build-DependencyGraph",
+    "Get-IncrementalProcessorStatistics",
+    "New-IncrementalProcessor",
+    "New-ProcessorCheckpoint",
+    "Restore-ProcessorCheckpoint",
+    "Start-IncrementalProcessing",
+    "Stop-IncrementalProcessing",
+    "Update-CPGIncremental"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

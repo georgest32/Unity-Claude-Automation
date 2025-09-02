@@ -1,0 +1,43 @@
+{
+  "timestamp": "2025-08-22T15:00:00",
+  "assistance_type": "Configuration",
+  "issue": "Email credentials not configured",
+  "root_cause": "User configured email addresses but not authentication credentials",
+  "current_state": {
+    "from_address": "dev@auto-m8.io",
+    "to_address": "georgest32@gmail.com",
+    "smtp_server": "smtp.gmail.com:587",
+    "credentials_configured": false,
+    "use_secure_credentials": true
+  },
+  "problem_details": [
+    "Email addresses are configured in systemstatus.config.json",
+    "No actual username/password stored for SMTP authentication",
+    "Gmail SMTP requires authentication to send emails",
+    "dev@auto-m8.io appears to be custom domain, not Gmail"
+  ],
+  "solution_provided": {
+    "script_created": "CONFIGURE_EMAIL_CREDENTIALS.ps1",
+    "features": [
+      "Auto-creates configuration if missing",
+      "Guides through credential setup",
+      "Supports Gmail with App Password instructions",
+      "Tests configuration after setup",
+      "Supports custom email services"
+    ]
+  },
+  "next_steps": [
+    "Run .\\CONFIGURE_EMAIL_CREDENTIALS.ps1",
+    "Choose option 2 to use your own Gmail",
+    "Enable 2FA on Gmail account",
+    "Generate App Password",
+    "Enter credentials when prompted"
+  ],
+  "gmail_app_password_setup": {
+    "url_2fa": "https://myaccount.google.com/security",
+    "url_app_password": "https://myaccount.google.com/apppasswords",
+    "note": "Gmail requires App Password, not regular password"
+  },
+  "expected_outcome": "Once credentials are configured, email tests will pass with 70%+ success rate",
+  "recommendation": "CONTINUE: Run .\\CONFIGURE_EMAIL_CREDENTIALS.ps1 to set up email credentials, then re-run notification tests"
+}

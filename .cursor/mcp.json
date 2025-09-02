@@ -1,0 +1,33 @@
+{
+  "mcpServers": {
+    "ripgrep": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-ripgrep@latest"
+      ],
+      "env": {}
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation",
+        "C:\\UnityProjects\\Sound-and-Shoal\\Dithering",
+        "C:\\Users\\georg\\AppData\\Local\\Unity\\Editor"
+      ],
+      "env": {}
+    },
+    "git": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-git"
+      ],
+      "env": {
+        "GIT_PATH": "C:\\Program Files\\Git\\cmd\\git.exe"
+      }
+    }
+  }
+}

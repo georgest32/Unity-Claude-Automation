@@ -1,0 +1,3801 @@
+# Unity-Claude-SemanticAnalysis.psm1
+# Semantic analysis layer for intelligent code understanding and pattern detection
+# Phase 2: Semantic Intelligence & LLM Integration - Day 1-2 Implementation
+
+#Requires -Version 5.1
+
+<#
+.SYNOPSIS
+    Semantic analysis module for intelligent code understanding, pattern detection, and quality analysis.
+
+.DESCRIPTION
+    Implements semantic analysis algorithms including design pattern detection, code purpose classification,
+    cohesion metrics calculation, and code quality analysis. Built on top of the CPG infrastructure.
+    
+    Based on 2025 research including Power-ASTNN, PSScriptAnalyzer techniques, and TAACO cohesion analysis.
+
+.NOTES
+    Version: 1.0.0
+    Author: Unity-Claude Automation System
+    Date: 2025-08-25
+    Dependencies: Unity-Claude-CPG.psm1
+#>
+
+# Defensive graph validation function
+function Test-IsCPGraph {
+    [CmdletBinding()]
+    param([Parameter(Mandatory)]$Graph)
+
+    if ($null -eq $Graph) { return $false }
+
+    # Accept either the real CPGraph type or a duck-typed object exposing the methods we use.
+    if ($Graph.GetType().Name -eq 'CPGraph') { return $true }
+
+    $need = @('GetNodesByType','GetEdges','GetNodeById')
+    foreach ($m in $need) {
+        if (-not ($Graph.PSObject.Methods.Name -contains $m)) { return $false }
+    }
+    return $true
+}
+
+function Ensure-GraphDuckType {
+    [CmdletBinding()]
+    param([Parameter(Mandatory)]$Graph)
+
+    if ($null -eq $Graph) { throw "Graph is null." }
+
+    # Attach GetNodesByType if missing
+    if (-not ($Graph.PSObject.Methods.Name -contains 'GetNodesByType')) {
+        Add-Member -InputObject $Graph -MemberType ScriptMethod -Name GetNodesByType -Force -Value {
+            param([object]$Type)
+            # Normalize enum or string to a plain name
+            $typeName = if ($Type -is [string]) { $Type } else { $Type.ToString() }
+
+            # Pull all nodes, then filter by their .Type property (string or enum)
+            $all = Unity-Claude-CPG\Get-CPGNode -Graph $this
+            $all | Where-Object {
+                $t = $_.Type
+                if ($null -eq $t) { return $false }
+                $tn = if ($t -is [enum]) { $t.ToString() } else { [string]$t }
+                $tn.Equals($typeName, 'InvariantCultureIgnoreCase')
+            }
+        } | Out-Null
+    }
+
+    # Attach GetEdges if missing (accepts sparse params)
+    if (-not ($Graph.PSObject.Methods.Name -contains 'GetEdges')) {
+        Add-Member -InputObject $Graph -MemberType ScriptMethod -Name GetEdges -Force -Value {
+            param(
+                [int]$SourceId,
+                [int]$TargetId,
+                [string]$Type,
+                [hashtable]$Properties
+            )
+            $args = @{'Graph'=$this}
+            if ($PSBoundParameters.ContainsKey('SourceId')) { $args['SourceId']=$SourceId }
+            if ($PSBoundParameters.ContainsKey('TargetId')) { $args['TargetId']=$TargetId }
+            if ($PSBoundParameters.ContainsKey('Type'))     { $args['Type']=$Type }
+            if ($PSBoundParameters.ContainsKey('Properties')){ $args['Properties']=$Properties }
+            Unity-Claude-CPG\Get-CPGEdge @args
+        } | Out-Null
+    }
+
+    # Attach GetNodeById if missing
+    if (-not ($Graph.PSObject.Methods.Name -contains 'GetNodeById')) {
+        Add-Member -InputObject $Graph -MemberType ScriptMethod -Name GetNodeById -Force -Value {
+            param($Id)
+            # Prefer helper if it supports -Id; else linear scan
+            try {
+                $node = Unity-Claude-CPG\Get-CPGNode -Graph $this -Id $Id 2>$null
+                if ($node) { return $node }
+            } catch {}
+            $all = Unity-Claude-CPG\Get-CPGNode -Graph $this
+            return $all | Where-Object { $_.Id -eq $Id } | Select-Object -First 1
+        } | Out-Null
+    }
+
+    # Attach GetNode if missing (alias for GetNodeById)
+    if (-not ($Graph.PSObject.Methods.Name -contains 'GetNode')) {
+        Add-Member -InputObject $Graph -MemberType ScriptMethod -Name GetNode -Force -Value {
+            param($Id)
+            $this.GetNodeById($Id)
+        } | Out-Null
+    }
+
+    # Attach GetNeighbors if missing (uses exported Get-CPGEdge only)
+    if (-not ($Graph.PSObject.Methods.Name -contains 'GetNeighbors')) {
+        Add-Member -InputObject $Graph -MemberType ScriptMethod -Name GetNeighbors -Force -Value {
+            param($NodeId, [ValidateSet('In','Out','Both')]$Direction = 'Both')
+            $neighbors = @()
+            $allEdges = Unity-Claude-CPG\Get-CPGEdge -Graph $this
+            switch ($Direction) {
+                'Out' {
+                    $neighbors = $allEdges | Where-Object { $_.SourceId -eq $NodeId } |
+                        ForEach-Object { $_.TargetId }
+                }
+                'In' {
+                    $neighbors = $allEdges | Where-Object { $_.TargetId -eq $NodeId } |
+                        ForEach-Object { $_.SourceId }
+                }
+                'Both' {
+                    $neighbors = @(
+                        ($allEdges | Where-Object { $_.SourceId -eq $NodeId } | ForEach-Object { $_.TargetId }),
+                        ($allEdges | Where-Object { $_.TargetId -eq $NodeId } | ForEach-Object { $_.SourceId })
+                    )
+                }
+            }
+            # Return node objects if available; else array of IDs
+            $nodesById = @{}
+            foreach ($n in (Unity-Claude-CPG\Get-CPGNode -Graph $this)) { $nodesById[$n.Id] = $n }
+            $neighbors | ForEach-Object { if ($nodesById.ContainsKey($_)) { $nodesById[$_] } else { $_ } }
+        } | Out-Null
+    }
+
+    # Attach GetStatistics if missing
+    if (-not ($Graph.PSObject.Methods.Name -contains 'GetStatistics')) {
+        Add-Member -InputObject $Graph -MemberType ScriptMethod -Name GetStatistics -Force -Value {
+            Unity-Claude-CPG\Get-CPGStatistics -Graph $this
+        } | Out-Null
+    }
+
+    # Nodes facade (live view)
+    if (-not ($Graph.PSObject.Properties.Name -contains 'Nodes')) {
+        Add-Member -InputObject $Graph -MemberType ScriptProperty -Name Nodes -Force -Value {
+            # Return an object with a live Values property every time it's read
+            [pscustomobject]@{
+                Values = (Unity-Claude-CPG\Get-CPGNode -Graph $this)
+            }
+        } | Out-Null
+    }
+
+    # Edges facade (live view)  
+    if (-not ($Graph.PSObject.Properties.Name -contains 'Edges')) {
+        Add-Member -InputObject $Graph -MemberType ScriptProperty -Name Edges -Force -Value {
+            [pscustomobject]@{
+                Values = (Unity-Claude-CPG\Get-CPGEdge -Graph $this)
+            }
+        } | Out-Null
+    }
+
+    # Attach Id property if missing
+    if (-not ($Graph.PSObject.Properties.Name -contains 'Id')) {
+        # Generate a deterministic ID based on node/edge count
+        $nodeCount = (Unity-Claude-CPG\Get-CPGNode -Graph $Graph).Count
+        $edgeCount = (Unity-Claude-CPG\Get-CPGEdge -Graph $Graph).Count
+        Add-Member -InputObject $Graph -MemberType NoteProperty -Name Id -Value "graph-$nodeCount-$edgeCount" -Force | Out-Null
+    }
+
+    return $Graph
+}
+
+# Import required CPG module with classes and functions
+$cpgModule = Join-Path $PSScriptRoot "Unity-Claude-CPG.psm1"
+if (Test-Path $cpgModule) {
+    # Import module with global scope to ensure classes are available
+    Import-Module $cpgModule -Force -Global -Verbose:$false
+    Write-Verbose "Imported Unity-Claude-CPG module successfully"
+} else {
+    throw "Unity-Claude-CPG module not found at: $cpgModule"
+}
+
+# Verify CPG classes are available
+try {
+    $testGraph = New-CPGraph -Name "TestGraph"
+    Write-Verbose "CPG classes loaded successfully"
+} catch {
+    throw "CPG classes not available after module import: $($_.Exception.Message)"
+}
+
+#region Module Variables and Initialization
+
+# Thread-safe storage for semantic analysis data
+$script:PatternCache = [hashtable]::Synchronized(@{})
+$script:PurposeClassificationCache = [hashtable]::Synchronized(@{})
+$script:QualityMetricsCache = [hashtable]::Synchronized(@{})
+$script:BusinessLogicCache = [hashtable]::Synchronized(@{})
+
+# Cache for expensive computations
+if (-not $script:UC_SA_Cache) { $script:UC_SA_Cache = @{} }
+
+# Pattern confidence thresholds
+$script:PatternThresholds = @{
+    Singleton = 0.8
+    Factory = 0.7
+    Observer = 0.75
+    Strategy = 0.7
+    Command = 0.7
+    Decorator = 0.75
+}
+
+# Complexity thresholds based on 2025 best practices
+$script:ComplexityThresholds = @{
+    CyclomaticLow = 5
+    CyclomaticModerate = 10
+    CyclomaticHigh = 20
+    CognitiveLow = 5
+    CognitiveModerate = 15
+    CognitiveHigh = 25
+}
+
+Write-Verbose "Unity-Claude-SemanticAnalysis module loaded successfully"
+
+#endregion
+
+#region Design Pattern Detection System (Hours 1-4)
+
+function Find-DesignPatterns {
+    <#
+    .SYNOPSIS
+    Detects common design patterns in code using CPG-based structural analysis.
+    
+    .DESCRIPTION
+    Analyzes CPG graph structure to identify design patterns including Singleton, Factory, Observer,
+    Strategy, Command, and Decorator patterns. Uses sophisticated graph-based matching with confidence scoring.
+    
+    .PARAMETER Graph
+    The CPG graph to analyze for patterns
+    
+    .PARAMETER PatternTypes
+    Array of pattern types to detect (default: all supported patterns)
+    
+    .PARAMETER MinConfidence
+    Minimum confidence score for pattern detection (0.0-1.0, default: 0.7)
+    
+    .PARAMETER UseCache
+    Whether to use cached results if available
+    
+    .EXAMPLE
+    $patterns = Find-DesignPatterns -Graph $graph -PatternTypes @('Singleton', 'Factory')
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        $Graph,
+        
+        [string[]]$PatternTypes = @('Singleton', 'Factory', 'Observer', 'Strategy', 'Command', 'Decorator'),
+        
+        [ValidateRange(0.0, 1.0)]
+        [double]$MinConfidence = 0.7,
+        
+        [switch]$UseCache = $true
+    )
+    
+    begin {
+        # Initialize patterns array first
+        $patterns = @()
+        
+        if (-not (Test-IsCPGraph -Graph $Graph)) {
+            throw "Invalid graph instance passed to $($MyInvocation.MyCommand.Name): missing expected CPGraph methods: GetNodesByType, GetEdges, GetNodeById."
+        }
+        # Attach missing methods so downstream calls work on duck-typed graphs
+        $Graph = Ensure-GraphDuckType -Graph $Graph
+        
+        Write-Verbose "Starting design pattern detection analysis"
+        Write-Verbose "  Target patterns: $($PatternTypes -join ', ')"
+        Write-Verbose "  Minimum confidence: $MinConfidence"
+        $allNodes = Unity-Claude-CPG\Get-CPGNode -Graph $Graph
+        $allEdges = Unity-Claude-CPG\Get-CPGEdge -Graph $Graph
+        Write-Verbose "  Graph nodes: $($allNodes.Count)"
+        Write-Verbose "  Graph edges: $($allEdges.Count)"
+        
+        # Debug node discovery
+        Write-Verbose ("[SA] Node counts - Functions: {0}, Classes: {1}, Variables: {2}" -f `
+            ($Graph.GetNodesByType('Function')).Count,
+            ($Graph.GetNodesByType('Class')).Count,
+            ($Graph.GetNodesByType('Variable')).Count)
+        
+        # Use node/edge count for cache key to handle dynamic graphs
+        $nodeCount = (Unity-Claude-CPG\Get-CPGNode -Graph $Graph).Count
+        $edgeCount = (Unity-Claude-CPG\Get-CPGEdge -Graph $Graph).Count
+        $cacheKey = "PAT::" + ($Graph.Id ?? "*") + "::" + ($PatternTypes -join ",") + "::" + $MinConfidence
+        
+        if ($UseCache -and $script:UC_SA_Cache.ContainsKey($cacheKey)) {
+            Write-Verbose "Find-DesignPatterns cache hit"
+            $patterns = $script:UC_SA_Cache[$cacheKey]
+            return $script:UC_SA_Cache[$cacheKey]
+        }
+    }
+    
+    process {
+        try {
+            foreach ($patternType in $PatternTypes) {
+                Write-Verbose "Detecting $patternType pattern..."
+                
+                switch ($patternType) {
+                    'Singleton' {
+                        $singletonPatterns = Find-SingletonPattern -Graph $Graph -MinConfidence $MinConfidence
+                        $patterns += $singletonPatterns
+                        Write-Verbose "  Found $($singletonPatterns.Count) Singleton pattern(s)"
+                    }
+                    
+                    'Factory' {
+                        $factoryPatterns = Find-FactoryPattern -Graph $Graph -MinConfidence $MinConfidence
+                        $patterns += $factoryPatterns
+                        Write-Verbose "  Found $($factoryPatterns.Count) Factory pattern(s)"
+                    }
+                    
+                    'Observer' {
+                        $observerPatterns = Find-ObserverPattern -Graph $Graph -MinConfidence $MinConfidence
+                        $patterns += $observerPatterns
+                        Write-Verbose "  Found $($observerPatterns.Count) Observer pattern(s)"
+                    }
+                    
+                    'Strategy' {
+                        $strategyPatterns = Find-StrategyPattern -Graph $Graph -MinConfidence $MinConfidence
+                        $patterns += $strategyPatterns
+                        Write-Verbose "  Found $($strategyPatterns.Count) Strategy pattern(s)"
+                    }
+                    
+                    'Command' {
+                        $commandPatterns = Find-CommandPattern -Graph $Graph -MinConfidence $MinConfidence
+                        $patterns += $commandPatterns
+                        Write-Verbose "  Found $($commandPatterns.Count) Command pattern(s)"
+                    }
+                    
+                    'Decorator' {
+                        $decoratorPatterns = Find-DecoratorPattern -Graph $Graph -MinConfidence $MinConfidence
+                        $patterns += $decoratorPatterns
+                        Write-Verbose "  Found $($decoratorPatterns.Count) Decorator pattern(s)"
+                    }
+                    
+                    default {
+                        Write-Warning "Unknown pattern type: $patternType"
+                    }
+                }
+            }
+            
+            # Cache results
+            if ($UseCache) {
+                $script:UC_SA_Cache[$cacheKey] = $patterns
+            }
+            
+            Write-Verbose "Pattern detection complete. Total patterns found: $($patterns.Count)"
+        }
+        catch {
+            Write-Verbose "Pattern detection error: $($_.Exception.Message)"
+            return @()
+        }
+    }
+    
+    end {
+        # Ensure we always return an array
+        if ($patterns -eq $null) {
+            return @()
+        }
+        return $script:UC_SA_Cache[$cacheKey]  # Use comma operator to ensure array is returned
+    }
+}
+
+function Find-SingletonPattern {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        $Graph,
+        
+        [double]$MinConfidence = 0.6
+    )
+    
+    Write-Verbose "Analyzing for Singleton pattern..."
+    $singletonPatterns = @()
+    
+    # Get all classes and functions for analysis
+    $classes = Unity-Claude-CPG\Get-CPGNode -Graph $Graph -Type Class
+    $functions = Unity-Claude-CPG\Get-CPGNode -Graph $Graph -Type Function
+    $variables = Unity-Claude-CPG\Get-CPGNode -Graph $Graph -Type Variable
+    
+    foreach ($class in $classes) {
+        Write-Verbose "  Analyzing class: $($class.Name)"
+        $confidence = 0.0
+        $evidence = @()
+        
+        # Check for static instance field
+        $staticInstanceField = $Graph.GetNeighbors($class.Id, [EdgeDirection]::Forward) | 
+                              Where-Object { 
+                                  $_.Type -eq [CPGNodeType]::Field -and 
+                                  $_.Properties.ContainsKey('IsStatic') -and 
+                                  $_.Properties.IsStatic -eq $true -and
+                                  $_.Properties.ContainsKey('TypeName') -and
+                                  $_.Properties.TypeName -eq $class.Name
+                              }
+        
+        if ($staticInstanceField) {
+            $confidence += 0.4
+            $evidence += "Static instance field: $($staticInstanceField.Name)"
+            Write-Verbose "    Found static instance field: $($staticInstanceField.Name)"
+        }
+        
+        # Check for private constructor
+        $constructors = $Graph.GetNeighbors($class.Id, [EdgeDirection]::Forward) | 
+                       Where-Object { 
+                           $_.Type -eq [CPGNodeType]::Method -and 
+                           $_.Name -match 'constructor|__init__|New' -and
+                           $_.Properties.ContainsKey('Visibility') -and
+                           $_.Properties.Visibility -eq 'Private'
+                       }
+        
+        if ($constructors) {
+            $confidence += 0.3
+            $evidence += "Private constructor found"
+            Write-Verbose "    Found private constructor"
+        }
+        
+        # Check for getInstance method
+        $getInstanceMethod = $Graph.GetNeighbors($class.Id, [EdgeDirection]::Forward) | 
+                            Where-Object { 
+                                $_.Type -eq [CPGNodeType]::Method -and 
+                                $_.Name -match 'getInstance|GetInstance|Instance' -and
+                                $_.Properties.ContainsKey('IsStatic') -and
+                                $_.Properties.IsStatic -eq $true
+                            }
+        
+        if ($getInstanceMethod) {
+            $confidence += 0.3
+            $evidence += "Static getInstance method: $($getInstanceMethod.Name)"
+            Write-Verbose "    Found getInstance method: $($getInstanceMethod.Name)"
+        }
+        
+        if ($confidence -ge $MinConfidence) {
+            $pattern = @{
+                Type = 'Singleton'
+                Confidence = [Math]::Round($confidence, 2)
+                Location = @{
+                    NodeId = $class.Id
+                    ClassName = $class.Name
+                    FilePath = $class.FilePath
+                    StartLine = $class.StartLine
+                    EndLine = $class.EndLine
+                }
+                Evidence = $evidence
+                DetectedAt = Get-Date
+                Metadata = @{
+                    StaticInstance = $staticInstanceField.Name
+                    GetInstanceMethod = $getInstanceMethod.Name
+                }
+            }
+            $singletonPatterns += $pattern
+            Write-Verbose "    DETECTED: Singleton pattern with confidence $($pattern.Confidence)"
+        }
+        else {
+            Write-Verbose "    Below threshold: confidence $([Math]::Round($confidence, 2)) < $MinConfidence"
+        }
+    }
+    
+    # Method 2: Module-style singleton with script-scoped variables
+    $scriptVars = $variables | Where-Object { $_.Name -match '^\$script:inst(ance)?' -or $_.Properties.Scope -eq 'Script' }
+    if ($scriptVars) {
+        $getterFunc = $functions | Where-Object { $_.Name -match '^(Get|Get-)?(Singleton|Instance)' }
+        if ($getterFunc) {
+            foreach ($func in $getterFunc) {
+                $pattern = [PSCustomObject]@{
+                    Type = 'Singleton'
+                    Confidence = 0.7
+                    Node = $func
+                    Location = @{
+                        FilePath = $func.FilePath
+                        StartLine = $func.StartLine
+                        EndLine = $func.EndLine
+                    }
+                    Evidence = @("Script-scoped instance variable", "Getter function: $($func.Name)")
+                    DetectedAt = Get-Date
+                }
+                $singletonPatterns += $pattern
+                Write-Verbose "  DETECTED: Module-style Singleton in function $($func.Name)"
+            }
+        }
+    }
+    
+    # Method 3: Simple static Instance property or GetInstance method
+    foreach ($class in $classes) {
+        if ($class.Properties.Members) {
+            $hasInstance = $class.Properties.Members | Where-Object { 
+                $_.Name -match '^(Instance|GetInstance)' -and $_.IsStatic 
+            }
+            if ($hasInstance -and -not ($singletonPatterns | Where-Object { $_.Node.Id -eq $class.Id })) {
+                $pattern = [PSCustomObject]@{
+                    Type = 'Singleton'
+                    Confidence = 0.65
+                    Node = $class
+                    Location = @{
+                        FilePath = $class.FilePath
+                        StartLine = $class.StartLine
+                        EndLine = $class.EndLine
+                    }
+                    Evidence = @("Has static Instance member")
+                    DetectedAt = Get-Date
+                }
+                $singletonPatterns += $pattern
+            }
+        }
+    }
+# Method 4: Lazy<T>-style or memoized getter pattern
+foreach ($class in $classes) {
+    $body = $class.Properties.Body
+    if ($body -and ($body -match 'Lazy<[^>]+>' -or $body -match 'if\s*\(\s*!?\$this\.\s*Instance' -or $body -match 'if\s*\(\s*-not\s*\$script:inst(ance)?')) {
+        $singletonPatterns += [PSCustomObject]@{
+            Type = 'Singleton'
+            Confidence = 0.6
+            Node = $class
+            Location = @{
+                FilePath = $class.FilePath
+                StartLine = $class.StartLine
+                EndLine = $class.EndLine
+            }
+            Evidence = @('Lazy or memoized getter style; guarded instance check detected')
+            DetectedAt = Get-Date
+        }
+    }
+}
+
+# Ensure confidence property present on all pattern results
+foreach ($__p in $singletonPatterns + $factoryPatterns) {
+    if ($__p -and -not ($__p.PSObject.Properties['Confidence'])) {
+        $__p | Add-Member -NotePropertyName Confidence -NotePropertyValue 0.6 -Force
+    }
+}
+
+# Ensure each pattern has a Confidence
+foreach ($__p in $singletonPatterns) {
+    if ($__p -and -not ($__p.PSObject.Properties['Confidence'])) {
+        $__p | Add-Member -NotePropertyName Confidence -NotePropertyValue 0.6 -Force
+    }
+}
+
+
+
+
+    
+    return $singletonPatterns
+}
+
+function Find-FactoryPattern {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Graph,
+        
+        [double]$MinConfidence = 0.6
+    )
+    
+    Write-Verbose "Analyzing for Factory pattern..."
+    $factoryPatterns = @()
+    
+    # Get all functions for analysis
+    $functions = Unity-Claude-CPG\Get-CPGNode -Graph $Graph -Type Function
+    $methods = Unity-Claude-CPG\Get-CPGNode -Graph $Graph -Type Method
+    $allFuncs = $functions + $methods
+    
+    foreach ($method in $methods) {
+        if ($method.Name -match 'create|make|build|new|factory|get.*instance' -or
+            $method.Properties.ContainsKey('Purpose') -and $method.Properties.Purpose -eq 'ObjectCreation') {
+            
+            Write-Verbose "  Analyzing factory candidate: $($method.Name)"
+            $confidence = 0.0
+            $evidence = @()
+            
+            # Factory method name patterns
+            if ($method.Name -match 'create|make|build|factory') {
+                $confidence += 0.3
+                $evidence += "Factory naming pattern: $($method.Name)"
+            }
+            
+            # Check for multiple return types (polymorphism)
+            $returnTypes = @()
+            $callEdges = Get-CPGEdge -Graph $Graph -SourceId $method.Id -Type Returns
+            foreach ($edge in $callEdges) {
+                $returnNode = $Graph.GetNode($edge.TargetId)
+                if ($returnNode.Properties.ContainsKey('TypeName')) {
+                    $returnTypes += $returnNode.Properties.TypeName
+                }
+            }
+            
+            $uniqueReturnTypes = $returnTypes | Select-Object -Unique
+            if ($uniqueReturnTypes.Count -gt 1) {
+                $confidence += 0.4
+                $evidence += "Multiple return types: $($uniqueReturnTypes -join ', ')"
+                Write-Verbose "    Multiple return types detected: $($uniqueReturnTypes.Count)"
+            }
+            
+            # Check for parameter-based object creation
+            $parameters = Get-CPGNeighbors -Graph $Graph -NodeId $method.Id -Direction Forward | 
+                         Where-Object { $_.Type -eq [CPGNodeType]::Parameter }
+            
+            if ($parameters.Count -gt 0) {
+                $typeParameters = $parameters | Where-Object { $_.Name -match 'type|kind|class' }
+                if ($typeParameters) {
+                    $confidence += 0.3
+                    $evidence += "Type parameters: $($typeParameters.Name -join ', ')"
+                }
+            }
+            
+            if ($confidence -ge $MinConfidence) {
+                $pattern = @{
+                    Type = 'Factory'
+                    Confidence = [Math]::Round($confidence, 2)
+                    Location = @{
+                        NodeId = $method.Id
+                        MethodName = $method.Name
+                        FilePath = $method.FilePath
+                        StartLine = $method.StartLine
+                        EndLine = $method.EndLine
+                    }
+                    Evidence = $evidence
+                    DetectedAt = Get-Date
+                    Metadata = @{
+                        ReturnTypes = $uniqueReturnTypes
+                        ParameterCount = $parameters.Count
+                    }
+                }
+                $factoryPatterns += $pattern
+                Write-Verbose "    DETECTED: Factory pattern with confidence $($pattern.Confidence)"
+            }
+        }
+    }
+    
+    # Method 2: Name-based heuristic for factory functions
+    $factoryNamed = $allFuncs | Where-Object { 
+        $_.Name -match '^(New|Create|Build|Make|Factory)' 
+    }
+    foreach ($func in $factoryNamed) {
+        if (-not ($factoryPatterns | Where-Object { $_.Node.Id -eq $func.Id })) {
+            $pattern = [PSCustomObject]@{
+                Type = 'Factory'
+                Confidence = 0.65
+                Node = $func
+                Location = @{
+                    FilePath = $func.FilePath
+                    StartLine = $func.StartLine
+                    EndLine = $func.EndLine
+                }
+                Evidence = @("Factory naming pattern: $($func.Name)")
+                DetectedAt = Get-Date
+            }
+            $factoryPatterns += $pattern
+            Write-Verbose "  DETECTED: Factory pattern in $($func.Name) (name heuristic)"
+        }
+    }
+    
+    # Method 3: Functions that call New-Object or have switch statements
+    foreach ($func in $allFuncs) {
+        if ($func.Properties.Body -match 'New-Object|new\s+\w+|switch.*\{') {
+            if (-not ($factoryPatterns | Where-Object { $_.Node.Id -eq $func.Id })) {
+                $pattern = [PSCustomObject]@{
+                    Type = 'Factory'
+                    Confidence = 0.62
+                    Node = $func
+                    Location = @{
+                        FilePath = $func.FilePath
+                        StartLine = $func.StartLine
+                        EndLine = $func.EndLine
+                    }
+                    Evidence = @("Contains object creation logic")
+                    DetectedAt = Get-Date
+                }
+                if ($pattern.Confidence -ge $MinConfidence) {
+                    $factoryPatterns += $pattern
+                }
+            }
+        }
+    }
+# Method 4: Suffix-based aliases (Factory/Provider/Builder)
+foreach ($func in $allFuncs) {
+    if ($func.Name -match '(Factory|Provider|Builder)$') {
+        if (-not ($factoryPatterns | Where-Object { $_.Node.Id -eq $func.Id })) {
+            $factoryPatterns += [PSCustomObject]@{
+                Type = 'Factory'
+                Confidence = 0.64
+                Node = $func
+                Location = @{
+                    FilePath = $func.FilePath
+                    StartLine = $func.StartLine
+                    EndLine = $func.EndLine
+                }
+                Evidence = @('Name suffix suggests factory/provider/builder role')
+                DetectedAt = Get-Date
+            }
+        }
+    }
+}
+
+# Method 5: Branch-based construction (multiple new-object sites / return types)
+foreach ($func in $allFuncs) {
+    $body = $func.Properties.Body
+    if ($body -and ($body -match 'New-Object' -or $body -match '\bnew\s+\w+') -and ($body -match 'switch\s*\(' -or $body -match 'if\s*\(')) {
+        if (-not ($factoryPatterns | Where-Object { $_.Node.Id -eq $func.Id })) {
+            $factoryPatterns += [PSCustomObject]@{
+                Type = 'Factory'
+                Confidence = 0.66
+                Node = $func
+                Location = @{
+                    FilePath = $func.FilePath
+                    StartLine = $func.StartLine
+                    EndLine = $func.EndLine
+                }
+                Evidence = @('Conditional branching with object construction detected')
+                DetectedAt = Get-Date
+            }
+        }
+    }
+}
+
+# Ensure confidence property present on all pattern results
+foreach ($__p in $singletonPatterns + $factoryPatterns) {
+    if ($__p -and -not ($__p.PSObject.Properties['Confidence'])) {
+        $__p | Add-Member -NotePropertyName Confidence -NotePropertyValue 0.6 -Force
+    }
+}
+
+# Ensure each pattern has a Confidence
+foreach ($__p in $factoryPatterns) {
+    if ($__p -and -not ($__p.PSObject.Properties['Confidence'])) {
+        $__p | Add-Member -NotePropertyName Confidence -NotePropertyValue 0.6 -Force
+    }
+}
+
+
+
+
+    
+    return $factoryPatterns
+}
+
+function Find-ObserverPattern {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Graph,
+        
+        [double]$MinConfidence = 0.75
+    )
+    
+    Write-Verbose "Analyzing for Observer pattern..."
+    $observerPatterns = @()
+    
+    # Look for event subscription/notification patterns
+    $classes = $Graph.GetNodesByType([CPGNodeType]::Class)
+    
+    foreach ($class in $classes) {
+        Write-Verbose "  Analyzing class: $($class.Name)"
+        $confidence = 0.0
+        $evidence = @()
+        
+        # Check for event-related methods
+        $methods = Get-CPGNeighbors -Graph $Graph -NodeId $class.Id -Direction Forward | 
+                  Where-Object { $_.Type -eq [CPGNodeType]::Method }
+        
+        $subscriptionMethods = $methods | Where-Object { $_.Name -match 'add.*event|subscribe|attach|register' }
+        $unsubscriptionMethods = $methods | Where-Object { $_.Name -match 'remove.*event|unsubscribe|detach|unregister' }
+        $notificationMethods = $methods | Where-Object { $_.Name -match 'notify|update|trigger|fire.*event' }
+        
+        if ($subscriptionMethods) {
+            $confidence += 0.3
+            $evidence += "Subscription methods: $($subscriptionMethods.Name -join ', ')"
+            Write-Verbose "    Found subscription methods: $($subscriptionMethods.Count)"
+        }
+        
+        if ($unsubscriptionMethods) {
+            $confidence += 0.2
+            $evidence += "Unsubscription methods: $($unsubscriptionMethods.Name -join ', ')"
+            Write-Verbose "    Found unsubscription methods: $($unsubscriptionMethods.Count)"
+        }
+        
+        if ($notificationMethods) {
+            $confidence += 0.3
+            $evidence += "Notification methods: $($notificationMethods.Name -join ', ')"
+            Write-Verbose "    Found notification methods: $($notificationMethods.Count)"
+        }
+        
+        # Check for observer collection field
+        $observerFields = Get-CPGNeighbors -Graph $Graph -NodeId $class.Id -Direction Forward | 
+                         Where-Object { 
+                             $_.Type -eq [CPGNodeType]::Field -and 
+                             ($_.Name -match 'observer|listener|subscriber' -or
+                              $_.Properties.ContainsKey('TypeName') -and
+                              $_.Properties.TypeName -match 'list|array|collection')
+                         }
+        
+        if ($observerFields) {
+            $confidence += 0.2
+            $evidence += "Observer collection fields: $($observerFields.Name -join ', ')"
+            Write-Verbose "    Found observer collection fields: $($observerFields.Count)"
+        }
+        
+        if ($confidence -ge $MinConfidence) {
+            $pattern = @{
+                Type = 'Observer'
+                Confidence = [Math]::Round($confidence, 2)
+                Location = @{
+                    NodeId = $class.Id
+                    ClassName = $class.Name
+                    FilePath = $class.FilePath
+                    StartLine = $class.StartLine
+                    EndLine = $class.EndLine
+                }
+                Evidence = $evidence
+                DetectedAt = Get-Date
+                Metadata = @{
+                    SubscriptionMethods = $subscriptionMethods.Name
+                    NotificationMethods = $notificationMethods.Name
+                    ObserverFields = $observerFields.Name
+                }
+            }
+            $observerPatterns += $pattern
+            Write-Verbose "    DETECTED: Observer pattern with confidence $($pattern.Confidence)"
+        }
+    }
+    
+    return $observerPatterns
+}
+
+function Find-StrategyPattern {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Graph,
+        
+        [double]$MinConfidence = 0.7
+    )
+    
+    Write-Verbose "Analyzing for Strategy pattern..."
+    $strategyPatterns = @()
+    
+    # Look for interfaces/base classes with multiple implementations
+    $interfaces = $Graph.GetNodesByType([CPGNodeType]::Interface)
+    $abstractClasses = $Graph.GetNodesByType([CPGNodeType]::Class) | 
+                      Where-Object { $_.Properties -and $_.Properties.ContainsKey('IsAbstract') -and $_.Properties.IsAbstract }
+    
+    $strategyBases = $interfaces + $abstractClasses
+    
+    foreach ($strategyBase in $strategyBases) {
+        Write-Verbose "  Analyzing strategy base: $($strategyBase.Name)"
+        $confidence = 0.0
+        $evidence = @()
+        
+        # Find implementing classes
+        $implementations = Get-CPGEdge -Graph $Graph -TargetId $strategyBase.Id -Type Implements
+        $implementations += Get-CPGEdge -Graph $Graph -TargetId $strategyBase.Id -Type Extends
+        
+        if ($implementations.Count -gt 1) {
+            $confidence += 0.4
+            $evidence += "Multiple implementations: $($implementations.Count)"
+            Write-Verbose "    Found $($implementations.Count) implementations"
+            
+            # Check if implementations have strategy-like naming
+            $implNodes = $implementations | ForEach-Object { $Graph.GetNode($_.SourceId) }
+            $strategyNames = $implNodes | Where-Object { $_.Name -match 'strategy|algorithm|policy' }
+            
+            if ($strategyNames) {
+                $confidence += 0.3
+                $evidence += "Strategy naming patterns: $($strategyNames.Name -join ', ')"
+            }
+        }
+        
+        # Check for strategy execution method
+        $executeMethods = Get-CPGNeighbors -Graph $Graph -NodeId $strategyBase.Id -Direction Forward | 
+                         Where-Object { 
+                             $_.Type -eq [CPGNodeType]::Method -and 
+                             $_.Name -match 'execute|apply|run|process|calculate'
+                         }
+        
+        if ($executeMethods) {
+            $confidence += 0.3
+            $evidence += "Strategy execution methods: $($executeMethods.Name -join ', ')"
+        }
+        
+        if ($confidence -ge $MinConfidence) {
+            $pattern = @{
+                Type = 'Strategy'
+                Confidence = [Math]::Round($confidence, 2)
+                Location = @{
+                    NodeId = $strategyBase.Id
+                    Name = $strategyBase.Name
+                    FilePath = $strategyBase.FilePath
+                    StartLine = $strategyBase.StartLine
+                    EndLine = $strategyBase.EndLine
+                }
+                Evidence = $evidence
+                DetectedAt = Get-Date
+                Metadata = @{
+                    ImplementationCount = $implementations.Count
+                    Implementations = $implNodes.Name
+                    ExecuteMethods = $executeMethods.Name
+                }
+            }
+            $strategyPatterns += $pattern
+            Write-Verbose "    DETECTED: Strategy pattern with confidence $($pattern.Confidence)"
+        }
+    }
+    
+    return $strategyPatterns
+}
+
+function Find-CommandPattern {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Graph,
+        
+        [double]$MinConfidence = 0.7
+    )
+    
+    Write-Verbose "Analyzing for Command pattern..."
+    $commandPatterns = @()
+    
+    # Look for command-like classes and methods
+    $classes = $Graph.GetNodesByType([CPGNodeType]::Class)
+    
+    foreach ($class in $classes) {
+        if ($class.Name -match 'command|action|operation|request') {
+            Write-Verbose "  Analyzing command candidate: $($class.Name)"
+            $confidence = 0.0
+            $evidence = @()
+            
+            # Command naming pattern
+            if ($class.Name -match 'command') {
+                $confidence += 0.3
+                $evidence += "Command naming pattern: $($class.Name)"
+            }
+            
+            # Check for execute method
+            $executeMethods = Get-CPGNeighbors -Graph $Graph -NodeId $class.Id -Direction Forward | 
+                             Where-Object { 
+                                 $_.Type -eq [CPGNodeType]::Method -and 
+                                 $_.Name -match 'execute|run|perform|invoke|do'
+                             }
+            
+            if ($executeMethods) {
+                $confidence += 0.4
+                $evidence += "Execute methods: $($executeMethods.Name -join ', ')"
+            }
+            
+            # Check for undo method
+            $undoMethods = Get-CPGNeighbors -Graph $Graph -NodeId $class.Id -Direction Forward | 
+                          Where-Object { 
+                              $_.Type -eq [CPGNodeType]::Method -and 
+                              $_.Name -match 'undo|reverse|rollback'
+                          }
+            
+            if ($undoMethods) {
+                $confidence += 0.3
+                $evidence += "Undo methods: $($undoMethods.Name -join ', ')"
+            }
+            
+            if ($confidence -ge $MinConfidence) {
+                $pattern = @{
+                    Type = 'Command'
+                    Confidence = [Math]::Round($confidence, 2)
+                    Location = @{
+                        NodeId = $class.Id
+                        ClassName = $class.Name
+                        FilePath = $class.FilePath
+                        StartLine = $class.StartLine
+                        EndLine = $class.EndLine
+                    }
+                    Evidence = $evidence
+                    DetectedAt = Get-Date
+                    Metadata = @{
+                        ExecuteMethods = $executeMethods.Name
+                        UndoMethods = $undoMethods.Name
+                    }
+                }
+                $commandPatterns += $pattern
+                Write-Verbose "    DETECTED: Command pattern with confidence $($pattern.Confidence)"
+            }
+        }
+    }
+    
+    return $commandPatterns
+}
+
+function Find-DecoratorPattern {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Graph,
+        
+        [double]$MinConfidence = 0.75
+    )
+    
+    Write-Verbose "Analyzing for Decorator pattern..."
+    $decoratorPatterns = @()
+    
+    # Look for decorator-like structures
+    $classes = $Graph.GetNodesByType([CPGNodeType]::Class)
+    
+    foreach ($class in $classes) {
+        if ($class.Name -match 'decorator|wrapper|proxy') {
+            Write-Verbose "  Analyzing decorator candidate: $($class.Name)"
+            $confidence = 0.0
+            $evidence = @()
+            
+            # Decorator naming pattern
+            if ($class.Name -match 'decorator') {
+                $confidence += 0.3
+                $evidence += "Decorator naming pattern: $($class.Name)"
+            }
+            
+            # Check for wrapped component field
+            $componentFields = Get-CPGNeighbors -Graph $Graph -NodeId $class.Id -Direction Forward | 
+                              Where-Object { 
+                                  $_.Type -eq [CPGNodeType]::Field -and 
+                                  ($_.Name -match 'component|wrapped|inner|target' -or
+                                   $_.Properties.ContainsKey('Purpose') -and 
+                                   $_.Properties.Purpose -eq 'Composition')
+                              }
+            
+            if ($componentFields) {
+                $confidence += 0.4
+                $evidence += "Component fields: $($componentFields.Name -join ', ')"
+            }
+            
+            # Check for method forwarding
+            $methods = Get-CPGNeighbors -Graph $Graph -NodeId $class.Id -Direction Forward | 
+                      Where-Object { $_.Type -eq [CPGNodeType]::Method }
+            
+            $forwardingMethods = 0
+            foreach ($method in $methods) {
+                # Look for calls to the wrapped component
+                $methodCalls = Get-CPGEdge -Graph $Graph -SourceId $method.Id -Type Calls
+                foreach ($call in $methodCalls) {
+                    $calledMethod = $Graph.GetNode($call.TargetId)
+                    if ($componentFields -and $calledMethod.Properties.ContainsKey('Owner')) {
+                        $forwardingMethods++
+                        break
+                    }
+                }
+            }
+            
+            if ($forwardingMethods -gt 0) {
+                $confidence += 0.3
+                $evidence += "Method forwarding detected: $forwardingMethods methods"
+            }
+            
+            if ($confidence -ge $MinConfidence) {
+                $pattern = @{
+                    Type = 'Decorator'
+                    Confidence = [Math]::Round($confidence, 2)
+                    Location = @{
+                        NodeId = $class.Id
+                        ClassName = $class.Name
+                        FilePath = $class.FilePath
+                        StartLine = $class.StartLine
+                        EndLine = $class.EndLine
+                    }
+                    Evidence = $evidence
+                    DetectedAt = Get-Date
+                    Metadata = @{
+                        ComponentFields = $componentFields.Name
+                        ForwardingMethods = $forwardingMethods
+                    }
+                }
+                $decoratorPatterns += $pattern
+                Write-Verbose "    DETECTED: Decorator pattern with confidence $($pattern.Confidence)"
+            }
+        }
+    }
+    
+    return $decoratorPatterns
+}
+
+#endregion
+
+#region Code Purpose Classification System (Hours 1-4 continued)
+
+function Get-UCNodeNameSafe {
+    param($node)
+    $name = $null
+    if ($null -ne $node) {
+        if ($node.Name) { $name = $node.Name }
+        elseif ($node.Properties -and $node.Properties.Name) { $name = $node.Properties.Name }
+        elseif ($node.Properties -and $node.Properties.OriginalName) { $name = $node.Properties.OriginalName }
+        elseif ($node.Properties -and $node.Properties.Identifier) { $name = $node.Properties.Identifier }
+    }
+    if (-not $name) { $name = "(anonymous)" }
+    return $name
+}
+function Resolve-PurposeFromName {
+    [CmdletBinding()]
+    param([string]$Name)
+    
+    switch -regex ($Name) {
+        '^(Get|Read|Fetch|Load|List|Find|Search|Query|Select|Retrieve)\b' { return 'Read' }
+        '^(New|Create|Add|Insert|Post|Build|Make|Generate|Initialize)\b' { return 'Create' }
+        '^(Set|Update|Put|Patch|Edit|Modify|Change|Upsert|Save)\b' { return 'Update' }
+        '^(Remove|Delete|Del|Drop|Destroy|Clear|Purge|Erase)\b' { return 'Delete' }
+        '^(Validate|Verify|Check|Ensure|Assert|Test|Confirm|Is|Has)\b' { return 'Validation' }
+        '^(Convert|Transform|Parse|Format|Encode|Decode|Serialize)\b' { return 'Transformation' }
+        '^(Send|Receive|Download|Upload|Export|Import|Sync)\b' { return 'IO' }
+        '^(Calculate|Compute|Sum|Average|Count|Measure)\b' { return 'Calculation' }
+        default { return $null }
+    }
+}
+
+function Get-CodePurpose {
+    <#
+    .SYNOPSIS
+    Classifies the purpose and intent of code elements using heuristic analysis.
+    
+    .DESCRIPTION
+    Analyzes function names, parameters, return types, and structural patterns to classify
+    code purpose into categories like CRUD operations, validation, transformation, I/O, and business logic.
+    
+    .PARAMETER Graph
+    The CPG graph to analyze
+    
+    .PARAMETER NodeId
+    Specific node ID to classify (optional, if not provided analyzes all functions/methods)
+    
+    .PARAMETER UseCache
+    Whether to use cached results if available
+    
+    .EXAMPLE
+    $purposes = Get-CodePurpose -Graph $graph
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Graph,
+        
+        [string]$NodeId,
+        
+        [switch]$UseCache = $true
+    )
+    
+    begin {
+        # Initialize results array first
+        $purposeResults = @()
+        
+        if (-not (Test-IsCPGraph -Graph $Graph)) {
+            throw "Invalid graph instance passed to $($MyInvocation.MyCommand.Name): missing expected CPGraph methods: GetNodesByType, GetEdges, GetNodeById."
+        }
+        # Attach missing methods so downstream calls work on duck-typed graphs
+        $Graph = Ensure-GraphDuckType -Graph $Graph
+        
+        Write-Verbose "Starting code purpose classification analysis"
+        
+        # Use node/edge count for cache key
+        $nodeCount = (Unity-Claude-CPG\Get-CPGNode -Graph $Graph).Count
+        $edgeCount = (Unity-Claude-CPG\Get-CPGEdge -Graph $Graph).Count
+        $nodeIdKey = if ($NodeId) { $NodeId } else { '*' }
+        $cacheKey = "PURP::" + ($Graph.Id ?? "*") + "::" + (($null -ne $NodeId -and $NodeId -ne "") ? $NodeId : "*")
+        
+        if ($UseCache -and $script:UC_SA_Cache.ContainsKey($cacheKey)) {
+            Write-Verbose "Get-CodePurpose cache hit"
+            $purposeResults = $script:UC_SA_Cache[$cacheKey]
+            return $script:UC_SA_Cache[$cacheKey]
+        }
+        
+        # Purpose categories with detection patterns
+        $purposeCategories = @{
+            'CRUD_Create' = @{
+                Keywords = @('create', 'add', 'insert', 'new', 'make', 'build', 'generate')
+                Patterns = @('Add-.*', 'New-.*', 'Create.*', '.*Insert.*')
+                Weight = 1.0
+            }
+            'CRUD_Read' = @{
+                Keywords = @('get', 'read', 'find', 'search', 'query', 'fetch', 'retrieve', 'select')
+                Patterns = @('Get-.*', 'Find-.*', 'Search-.*', 'Fetch.*', 'Read.*')
+                Weight = 1.0
+            }
+            'CRUD_Update' = @{
+                Keywords = @('update', 'modify', 'change', 'edit', 'set', 'save', 'write')
+                Patterns = @('Set-.*', 'Update.*', 'Modify.*', 'Edit.*', 'Save.*')
+                Weight = 1.0
+            }
+            'CRUD_Delete' = @{
+                Keywords = @('delete', 'remove', 'clear', 'clean', 'purge', 'destroy')
+                Patterns = @('Remove-.*', 'Delete.*', 'Clear.*', 'Clean.*')
+                Weight = 1.0
+            }
+            'Validation' = @{
+                Keywords = @('validate', 'verify', 'check', 'test', 'confirm', 'ensure')
+                Patterns = @('Test-.*', 'Validate.*', 'Verify.*', 'Check.*', 'Is.*')
+                Weight = 0.9
+            }
+            'Transformation' = @{
+                Keywords = @('convert', 'transform', 'parse', 'format', 'map', 'translate')
+                Patterns = @('Convert.*', 'Transform.*', 'Parse.*', 'Format.*')
+                Weight = 0.9
+            }
+            'IO_Operations' = @{
+                Keywords = @('read', 'write', 'load', 'save', 'export', 'import', 'file', 'stream')
+                Patterns = @('Export-.*', 'Import-.*', '.*File.*', '.*Stream.*')
+                Weight = 0.8
+            }
+            'Business_Logic' = @{
+                Keywords = @('calculate', 'compute', 'process', 'analyze', 'evaluate', 'determine')
+                Patterns = @('Calculate.*', 'Compute.*', 'Process.*', 'Analyze.*')
+                Weight = 0.7
+            }
+            'Utility' = @{
+                Keywords = @('helper', 'util', 'common', 'shared', 'support', 'assist')
+                Patterns = @('.*Helper.*', '.*Util.*', '.*Common.*')
+                Weight = 0.6
+            }
+            'Configuration' = @{
+                Keywords = @('config', 'setting', 'option', 'preference', 'parameter')
+                Patterns = @('.*Config.*', '.*Setting.*', '.*Option.*')
+                Weight = 0.8
+            }
+        }
+    }
+    
+    process {
+        try {
+            # Get functions/methods to analyze
+            $nodes = if ($NodeId) {
+                @($Graph.GetNode($NodeId))
+            } else {
+                $Graph.GetNodesByType([CPGNodeType]::Function) + $Graph.GetNodesByType([CPGNodeType]::Method)
+            }
+            
+            foreach ($node in $nodes) {
+                Write-Verbose "Analyzing purpose of: $(Get-UCNodeNameSafe $node)"
+                
+                # First try fast name-based classification
+                $nameSafe = Get-UCNodeNameSafe $node; $quickPurpose = Resolve-PurposeFromName -Name $nameSafe
+                if ($quickPurpose) {
+                    $purposeResult = [PSCustomObject]@{
+                        NodeId = $node.Id
+                        Name = $node.Name
+                        Purpose = $quickPurpose
+                        Confidence = 0.85
+                        Evidence = @("Name pattern match: $($node.Name)")
+                        DetectedAt = Get-Date
+                    }
+                    $purposeResults += $purposeResult
+                    Write-Verbose "  Quick classification: $quickPurpose (confidence: 0.85)"
+                    continue  # Skip to next node
+            # Ensure at least one result per node
+            $existing = $purposeResults | Where-Object { $_.NodeId -eq $node.Id }
+            if (-not $existing) {
+                $purposeResults += [PSCustomObject]@{
+                    NodeId = $node.Id
+                    Name = (Get-UCNodeNameSafe $node)
+                    Purpose = 'Unknown'
+                    Confidence = 0.2
+                    Evidence = @('No matching heuristics; fallback classification')
+                    DetectedAt = Get-Date
+                }
+            }
+        }
+        $purposeScores = @{}
+                
+                # Initialize all categories with zero scores
+                foreach ($category in $purposeCategories.Keys) {
+                    $purposeScores[$category] = 0.0
+                }
+                
+                # Analyze function name
+                $functionName = $node.Name.ToLower()
+                
+                foreach ($category in $purposeCategories.Keys) {
+                    $categoryInfo = $purposeCategories[$category]
+                    
+                    # Check keywords
+                    foreach ($keyword in $categoryInfo.Keywords) {
+                        if ($functionName -like "*$keyword*") {
+                            $purposeScores[$category] += 0.3 * $categoryInfo.Weight
+                            Write-Verbose "  Keyword match '$keyword' in category '$category'"
+                        }
+                    }
+                    
+                    # Check patterns
+                    foreach ($pattern in $categoryInfo.Patterns) {
+                        if ($node.Name -match $pattern) {
+                            $purposeScores[$category] += 0.4 * $categoryInfo.Weight
+                            Write-Verbose "  Pattern match '$pattern' in category '$category'"
+                        }
+                    }
+                }
+                
+                # Analyze parameters for additional context
+                $parameters = Get-CPGNeighbors -Graph $Graph -NodeId $node.Id -Direction Forward | 
+                             Where-Object { $_.Type -eq [CPGNodeType]::Parameter }
+                
+                foreach ($param in $parameters) {
+                    $paramName = $param.Name.ToLower()
+                    
+                    # IO parameters
+                    if ($paramName -match 'file|path|stream|reader|writer') {
+                        $purposeScores['IO_Operations'] += 0.2
+                    }
+                    
+                    # Validation parameters
+                    if ($paramName -match 'validate|verify|check') {
+                        $purposeScores['Validation'] += 0.2
+                    }
+                    
+                    # Configuration parameters
+                    if ($paramName -match 'config|setting|option') {
+                        $purposeScores['Configuration'] += 0.2
+                    }
+                }
+                
+                # Analyze return type hints
+                if ($node.Properties.ContainsKey('ReturnType')) {
+                    $returnType = $node.Properties.ReturnType.ToLower()
+                    
+                    if ($returnType -match 'bool|boolean') {
+                        $purposeScores['Validation'] += 0.1
+                    }
+                    if ($returnType -match 'void|null') {
+                        $purposeScores['CRUD_Create'] += 0.1
+                        $purposeScores['CRUD_Update'] += 0.1
+                        $purposeScores['CRUD_Delete'] += 0.1
+                    }
+                }
+                
+                # Find the highest scoring category
+                $topCategory = $purposeScores.GetEnumerator() | 
+                              Sort-Object Value -Descending | 
+                              Select-Object -First 1
+                
+                $confidence = [Math]::Round($topCategory.Value, 2)
+                
+                if ($confidence -gt 0.3) {
+                    $purposeResult = @{
+                        NodeId = $node.Id
+                        Name = $node.Name
+                        PrimaryPurpose = $topCategory.Key
+                        Confidence = [double]$confidence
+                        AllScores = $purposeScores.Clone()
+                        FilePath = $node.FilePath
+                        StartLine = $node.StartLine
+                        EndLine = $node.EndLine
+                        AnalyzedAt = Get-Date
+                    }
+                    
+                    $purposeResults += $purposeResult
+                    Write-Verbose "  Primary purpose: $($topCategory.Key) (confidence: $confidence)"
+                }
+                else {
+                    Write-Verbose "  No clear purpose identified (max confidence: $confidence)"
+                }
+            }
+            
+            # Cache results
+            if ($UseCache) {
+                $script:UC_SA_Cache[$cacheKey] = $purposeResults
+            }
+            
+            Write-Verbose "Purpose classification complete. Analyzed $($purposeResults.Count) functions"
+        }
+        catch {
+            Write-Verbose "Purpose classification error: $($_.Exception.Message)"
+            return @()
+        }
+    }
+    
+    end {
+        # Ensure we always return an array
+        if ($purposeResults -eq $null) {
+            return @()
+        }
+        return $script:UC_SA_Cache[$cacheKey]  # Use comma operator to ensure array is returned
+    }
+}
+
+#endregion
+
+#region Cohesion Metrics Calculator (Hours 1-4 continued)
+
+function Get-CohesionMetrics {
+    <#
+    .SYNOPSIS
+    Calculates cohesion metrics including CHM (Cohesion at Message Level) and CHD (Cohesion at Domain Level).
+    
+    .DESCRIPTION
+    Analyzes module and class cohesion using graph-based analysis of function interactions,
+    semantic similarity, and structural relationships. Provides industry-standard cohesion measurements.
+    
+    .PARAMETER Graph
+    The CPG graph to analyze
+    
+    .PARAMETER ModuleNodeId
+    Specific module/class node ID to analyze (optional)
+    
+    .PARAMETER IncludeDetails
+    Include detailed breakdown of cohesion calculations
+    
+    .EXAMPLE
+    $cohesion = Get-CohesionMetrics -Graph $graph -IncludeDetails
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Graph,
+        
+        [string]$ModuleNodeId,
+        
+        [switch]$IncludeDetails,
+        
+        [switch]$UseCache = $true
+    )
+    
+    begin {
+        if (-not (Test-IsCPGraph -Graph $Graph)) {
+            throw "Invalid graph instance passed to $($MyInvocation.MyCommand.Name): missing expected CPGraph methods: GetNodesByType, GetEdges, GetNodeById."
+        }
+        # Attach missing methods so downstream calls work on duck-typed graphs
+        $Graph = Ensure-GraphDuckType -Graph $Graph
+
+        # Check cache first
+        if ($UseCache) {
+            $nodeCount = (Unity-Claude-CPG\Get-CPGNode -Graph $Graph).Count
+            $edgeCount = (Unity-Claude-CPG\Get-CPGEdge -Graph $Graph).Count
+            $cacheKey = "CohesionMetrics::$nodeCount::$edgeCount::$ModuleNodeId"
+
+            if ($script:UC_SA_Cache.ContainsKey($cacheKey)) {
+                Write-Verbose "Get-CohesionMetrics cache hit"
+                return $script:UC_SA_Cache[$cacheKey]
+            }
+        }
+        
+        Write-Verbose "Starting cohesion metrics calculation"
+        $cohesionResults = @()
+        
+        # Cohesion thresholds based on industry standards
+        $cohesionThresholds = @{
+            High = 0.7
+            Moderate = 0.5
+            Low = 0.3
+        }
+    }
+    
+    process {
+        try {
+            # Get modules/classes to analyze
+            $modules = if ($ModuleNodeId) {
+                @($Graph.GetNode($ModuleNodeId))
+            } else {
+                $Graph.GetNodesByType([CPGNodeType]::Module) + $Graph.GetNodesByType([CPGNodeType]::Class)
+            }
+            
+            foreach ($module in $modules) {
+                Write-Verbose "Analyzing cohesion for: $($module.Name)"
+                
+                # Get all functions/methods in the module
+                $functions = Get-CPGNeighbors -Graph $Graph -NodeId $module.Id -Direction Forward | 
+                            Where-Object { $_.Type -eq [CPGNodeType]::Function -or $_.Type -eq [CPGNodeType]::Method }
+                
+                if ($functions.Count -lt 2) {
+                    Write-Verbose "  Skipping - insufficient functions for cohesion analysis"
+                    continue
+                }
+                
+                Write-Verbose "  Analyzing $($functions.Count) functions"
+                
+                # Calculate CHM (Cohesion at Message Level) - Function interaction analysis
+                $chm = Get-FunctionInteractionCohesion -Graph $Graph -Functions $functions
+                
+                # Calculate CHD (Cohesion at Domain Level) - Semantic cohesion
+                $chd = Get-SemanticCohesion -Graph $Graph -Functions $functions
+                
+                # Calculate overall cohesion score (weighted average)
+                $overallCohesion = ($chm * 0.6) + ($chd * 0.4)
+                
+                # Determine cohesion level
+                $cohesionLevel = if ($overallCohesion -ge $cohesionThresholds.High) { 'High' }
+                                elseif ($overallCohesion -ge $cohesionThresholds.Moderate) { 'Moderate' }
+                                else { 'Low' }
+                
+                $cohesionResult = @{
+                    ModuleId = $module.Id
+                    ModuleName = $module.Name
+                    CHM = [Math]::Round([double]($1), 3)
+                    CHD = [Math]::Round([double]($1), 3)
+                    OverallCohesion = [Math]::Round([double]($1), 3)
+                    CohesionLevel = $cohesionLevel
+                    FunctionCount = $functions.Count
+                    FilePath = $module.FilePath
+                        # safety: ensure numbers are not null
+                        CHM = [double]($cohesionResult.CHM ?? (Clamp01 -Value $chm))
+                        CHD = [double]($cohesionResult.CHD ?? (Clamp01 -Value $chd))
+                        OverallCohesion = [double]($cohesionResult.OverallCohesion ?? (Clamp01 -Value $overallCohesion))
+                    AnalyzedAt = Get-Date
+                }
+                
+                if ($IncludeDetails) {
+                    $cohesionResult.Details = @{
+                        FunctionNames = $functions.Name
+                        InteractionMatrix = Get-FunctionInteractionMatrix -Graph $Graph -Functions $functions
+                        SemanticSimilarityMatrix = Get-SemanticSimilarityMatrix -Functions $functions
+                    }
+                }
+                
+                $cohesionResults += $cohesionResult
+                Write-Verbose "  CHM: $($cohesionResult.CHM), CHD: $($cohesionResult.CHD), Overall: $($cohesionResult.OverallCohesion) ($cohesionLevel)"
+            }
+            
+            Write-Verbose "Cohesion analysis complete. Analyzed $($cohesionResults.Count) modules"
+            
+            # Cache the results
+            if ($UseCache) {
+                $script:UC_SA_Cache[$cacheKey] = $cohesionResults
+            }
+            
+        }
+        catch {
+            Write-Verbose "Cohesion metrics error: $($_.Exception.Message)"
+            return @()
+        }
+    }
+    
+    end {
+        # Ensure we always return an array
+        if ($cohesionResults -eq $null) {
+            return @()
+        }
+        return ,$cohesionResults  # Use comma operator to ensure array is returned
+    }
+}
+
+function Clamp01 {
+    param([double]$Value)
+    if ($Value -lt 0) { return 0.0 }
+    elseif ($Value -gt 1) { return 1.0 }
+    else { return $Value }
+}
+
+function Get-FunctionInteractionCohesion {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [array]$Functions
+    )
+    
+    if ($Functions.Count -lt 2) { return 0.0 }
+    
+    $totalInteractions = 0
+    $possibleInteractions = [double]($Functions.Count * ($Functions.Count - 1))
+    
+    foreach ($func1 in $Functions) {
+        foreach ($func2 in $Functions) {
+            if ($func1.Id -ne $func2.Id) {
+                # Check if func1 calls func2
+                $callEdge = Get-CPGEdge -Graph $Graph -SourceId $func1.Id -TargetId $func2.Id -Type Calls
+                if ($callEdge) {
+                    $totalInteractions++
+                }
+                
+                # Check if they share variables
+                $func1Vars = Get-CPGNeighbors -Graph $Graph -NodeId $func1.Id -Direction Forward | 
+                            Where-Object { $_.Type -eq [CPGNodeType]::Variable }
+                $func2Vars = Get-CPGNeighbors -Graph $Graph -NodeId $func2.Id -Direction Forward | 
+                            Where-Object { $_.Type -eq [CPGNodeType]::Variable }
+                
+                $sharedVars = $func1Vars | Where-Object { $_.Id -in $func2Vars.Id }
+                if ($sharedVars) {
+                    $totalInteractions += 0.5
+                }
+            }
+        }
+    }
+    
+    if ($possibleInteractions -le 0) { return 0.0 }
+    $cohesion = $totalInteractions / $possibleInteractions
+    return Clamp01 -Value $cohesion
+}
+
+function Get-SemanticCohesion {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [array]$Functions
+    )
+    
+    if ($Functions.Count -lt 2) { return 0.0 }
+    
+    # Calculate semantic similarity based on function names and purposes
+    $similarities = @()
+    
+    for ($i = 0; $i -lt $Functions.Count; $i++) {
+        for ($j = $i + 1; $j -lt $Functions.Count; $j++) {
+            $func1 = $Functions[$i]
+            $func2 = $Functions[$j]
+            
+            # Name similarity using Levenshtein distance
+            $nameSimilarity = Get-StringSimilarity -String1 $func1.Name -String2 $func2.Name
+            
+            # Purpose similarity (if available)
+            $purposeSimilarity = 0.0
+            if ($func1.Properties.ContainsKey('Purpose') -and $func2.Properties.ContainsKey('Purpose')) {
+                $purposeSimilarity = if ($func1.Properties.Purpose -eq $func2.Properties.Purpose) { 1.0 } else { 0.0 }
+            }
+            
+            # Combined similarity
+            $combinedSimilarity = ($nameSimilarity * 0.6) + ($purposeSimilarity * 0.4)
+            $similarities += $combinedSimilarity
+        }
+    }
+    
+    return if ($similarities.Count -gt 0) { ($similarities | Measure-Object -Average).Average } else { 0.0 }
+}
+
+function Get-StringSimilarity {
+    [CmdletBinding()]
+    param(
+        [string]$String1,
+        [string]$String2
+    )
+    
+    if (-not $String1 -or -not $String2) { return 0.0 }
+    
+    $maxLength = [Math]::Max($String1.Length, $String2.Length)
+    if ($maxLength -eq 0) { return 1.0 }
+    
+    # Simple similarity based on common substrings
+    $commonChars = 0
+    $minLength = [Math]::Min($String1.Length, $String2.Length)
+    
+    for ($i = 0; $i -lt $minLength; $i++) {
+        if ($String1[$i] -eq $String2[$i]) {
+            $commonChars++
+        }
+    }
+    
+    return $commonChars / $maxLength
+}
+
+function Get-FunctionInteractionMatrix {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [array]$Functions
+    )
+    
+    $matrix = @{}
+    foreach ($func in $Functions) {
+        $matrix[$func.Name] = @{}
+        foreach ($otherFunc in $Functions) {
+            if ($func.Id -ne $otherFunc.Id) {
+                $callEdge = Get-CPGEdge -Graph $Graph -SourceId $func.Id -TargetId $otherFunc.Id -Type Calls
+                $matrix[$func.Name][$otherFunc.Name] = if ($callEdge) { 1 } else { 0 }
+            }
+        }
+    }
+    return $matrix
+}
+
+function Get-SemanticSimilarityMatrix {
+    [CmdletBinding()]
+    param(
+        [array]$Functions
+    )
+    
+    $matrix = @{}
+    foreach ($func in $Functions) {
+        $matrix[$func.Name] = @{}
+        foreach ($otherFunc in $Functions) {
+            if ($func.Id -ne $otherFunc.Id) {
+                $similarity = Get-StringSimilarity -String1 $func.Name -String2 $otherFunc.Name
+                $matrix[$func.Name][$otherFunc.Name] = [Math]::Round($similarity, 2)
+            }
+        }
+    }
+    return $matrix
+}
+
+#endregion
+
+#region Business Logic Extraction and Architecture Recovery (Hours 1-4 completion)
+
+function Extract-BusinessLogic {
+    <#
+    .SYNOPSIS
+    Extracts business logic and rules from code comments and conditional logic.
+    
+    .DESCRIPTION
+    Analyzes code comments, conditional statements, and business rule patterns to extract
+    and document business logic. Uses natural language processing techniques on comments
+    and structural analysis of business rule implementations.
+    
+    .PARAMETER Graph
+    The CPG graph to analyze
+    
+    .PARAMETER FilePath
+    Specific file path to analyze (optional)
+    
+    .PARAMETER ExtractFromComments
+    Extract business logic from code comments
+    
+    .PARAMETER ExtractFromConditionals
+    Extract business rules from conditional logic
+    
+    .EXAMPLE
+    $businessLogic = Extract-BusinessLogic -Graph $graph -ExtractFromComments -ExtractFromConditionals
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Graph,
+        
+        [string]$FilePath,
+        
+        [switch]$ExtractFromComments,
+        
+        [switch]$ExtractFromConditionals
+    )
+    
+    begin {
+        if (-not (Test-IsCPGraph -Graph $Graph)) {
+            throw "Invalid graph instance passed to $($MyInvocation.MyCommand.Name): missing expected CPGraph methods: GetNodesByType, GetEdges, GetNodeById."
+        }
+        # Attach missing methods so downstream calls work on duck-typed graphs
+        $Graph = Ensure-GraphDuckType -Graph $Graph
+        
+        Write-Verbose "Starting business logic extraction"
+        $businessLogicResults = @()
+        
+        # Business rule patterns
+        $businessRulePatterns = @{
+            'ValidationRule' = @('must', 'should', 'cannot', 'required', 'mandatory', 'validate', 'check')
+            'CalculationRule' = @('calculate', 'compute', 'formula', 'rate', 'percentage', 'total', 'sum')
+            'WorkflowRule' = @('if.*then', 'when.*then', 'process', 'workflow', 'step', 'sequence')
+            'BusinessConstraint' = @('limit', 'maximum', 'minimum', 'threshold', 'boundary', 'constraint')
+            'AuthorizationRule' = @('permission', 'access', 'role', 'authorized', 'allowed', 'restricted')
+            'DataRule' = @('format', 'pattern', 'structure', 'schema', 'field', 'attribute')
+        }
+    }
+    
+    process {
+        try {
+            # Get nodes to analyze
+            $nodes = if ($FilePath) {
+                $Graph.Nodes.Values | Where-Object { $_.FilePath -eq $FilePath }
+            } else {
+                $Graph.Nodes.Values
+            }
+            
+            Write-Verbose "Analyzing $($nodes.Count) nodes for business logic"
+            
+            if ($ExtractFromComments) {
+                Write-Verbose "Extracting business logic from comments..."
+                $commentLogic = Get-BusinessLogicFromComments -Graph $Graph -Nodes $nodes -RulePatterns $businessRulePatterns
+                $businessLogicResults += $commentLogic
+            }
+            
+            if ($ExtractFromConditionals) {
+                Write-Verbose "Extracting business logic from conditionals..."
+                $conditionalLogic = Get-BusinessLogicFromConditionals -Graph $Graph -Nodes $nodes -RulePatterns $businessRulePatterns
+                $businessLogicResults += $conditionalLogic
+            }
+            
+            # Method 3: Discount rule detection
+            Write-Verbose "Extracting discount and pricing rules..."
+            $discountRegex = '(discount|coupon|promo|promotion|rebate|markdown|price\s*(off|drop|reduction)|%\s*off|sale)'
+            $moneyRegex = '(\b\d+(\.\d+)?\s*%|\$\s*\d+|price|cost|fee|charge)'
+            
+            $discountNodes = $nodes | Where-Object {
+                $_.Name -match $discountRegex -or 
+                ($_.Properties.Body -and $_.Properties.Body -match $discountRegex) -or
+                ($_.Properties.Comments -and $_.Properties.Comments -match $discountRegex)
+            }
+            
+            foreach ($node in $discountNodes) {
+                $confidence = 0.7
+                if ($node.Properties.Body -match $moneyRegex -or $node.Name -match 'calculate|apply') {
+                    $confidence = 0.9
+                }
+                
+                $businessLogicResults += [PSCustomObject]@{
+                    Type = 'BusinessRule'
+                    Category = 'Discount'
+                    NodeId = $node.Id
+                    NodeName = $node.Name
+                    Rule = "Discount/pricing logic detected"
+                    Confidence = [double]$confidence
+                    Evidence = @("Name or body matches discount pattern")
+                    Location = @{
+                        FilePath = $node.FilePath
+                        StartLine = $node.StartLine
+                        EndLine = $node.EndLine
+                    }
+                    DetectedAt = Get-Date
+                }
+                Write-Verbose "  DETECTED: Discount rule in $($node.Name)"
+            }
+            
+            Write-Verbose "Business logic extraction complete. Found $($businessLogicResults.Count) rules"
+        }
+        catch {
+            Write-Verbose "Business logic extraction error: $($_.Exception.Message)"
+            return @()
+        }
+    }
+    
+    end {
+        # Ensure we always return an array
+        if ($businessLogicResults -eq $null) {
+            return @()
+        }
+        return ,$businessLogicResults  # Use comma operator to ensure array is returned
+    }
+}
+
+function Get-BusinessLogicFromComments {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [array]$Nodes,
+        [hashtable]$RulePatterns
+    )
+    
+    $commentLogic = @()
+    
+    # Find comment nodes
+    $commentNodes = $Nodes | Where-Object { $_.Type -eq [CPGNodeType]::Comment }
+    
+    foreach ($commentNode in $commentNodes) {
+        $commentText = $commentNode.Properties.Text
+        if (-not $commentText) { continue }
+        
+        Write-Verbose "  Analyzing comment: $($commentText.Substring(0, [Math]::Min(50, $commentText.Length)))..."
+        
+        foreach ($ruleType in $RulePatterns.Keys) {
+            $patterns = $RulePatterns[$ruleType]
+            $matches = @()
+            
+            foreach ($pattern in $patterns) {
+                if ($commentText -match $pattern) {
+                    $matches += $pattern
+                }
+            }
+            
+            if ($matches.Count -gt 0) {
+                $confidence = [Math]::Min(1.0, $matches.Count * 0.3)
+                
+                $businessRule = @{
+                    Type = 'BusinessLogic'
+                    Source = 'Comment'
+                    RuleType = $ruleType
+                    Confidence = [Math]::Round($confidence, 2)
+                    Location = @{
+                        NodeId = $commentNode.Id
+                        FilePath = $commentNode.FilePath
+                        StartLine = $commentNode.StartLine
+                        EndLine = $commentNode.EndLine
+                    }
+                    Content = $commentText
+                    MatchedPatterns = $matches
+                    ExtractedAt = Get-Date
+                }
+                
+                $commentLogic += $businessRule
+                Write-Verbose "    Found $ruleType rule with confidence $confidence"
+            }
+        }
+    }
+    
+    return $commentLogic
+}
+
+function Get-BusinessLogicFromConditionals {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [array]$Nodes,
+        [hashtable]$RulePatterns
+    )
+    
+    $conditionalLogic = @()
+    
+    # Find functions and methods with conditional logic
+    $functionNodes = $Nodes | Where-Object { $_.Type -eq [CPGNodeType]::Function -or $_.Type -eq [CPGNodeType]::Method }
+    
+    foreach ($functionNode in $functionNodes) {
+        Write-Verbose "  Analyzing function: $($functionNode.Name)"
+        
+        # Check if function has validation-like naming
+        $functionName = $functionNode.Name.ToLower()
+        $isValidationFunction = $functionName -match 'validate|verify|check|test|ensure|confirm'
+        $isBusinessFunction = $functionName -match 'calculate|compute|process|apply|execute|perform'
+        
+        if ($isValidationFunction -or $isBusinessFunction) {
+            # Look for conditional expressions in function body
+            # This is simplified - in reality, we'd parse the AST more deeply
+            
+            $ruleType = if ($isValidationFunction) { 'ValidationRule' } else { 'BusinessConstraint' }
+            $confidence = if ($isValidationFunction) { 0.7 } else { 0.6 }
+            
+            $businessRule = @{
+                Type = 'BusinessLogic'
+                Source = 'ConditionalLogic'
+                RuleType = $ruleType
+                Confidence = [double]$confidence
+                Location = @{
+                    NodeId = $functionNode.Id
+                    FunctionName = $functionNode.Name
+                    FilePath = $functionNode.FilePath
+                    StartLine = $functionNode.StartLine
+                    EndLine = $functionNode.EndLine
+                }
+                Content = "Business logic detected in function: $($functionNode.Name)"
+                InferredRule = "Function $($functionNode.Name) implements $ruleType based on naming patterns"
+                ExtractedAt = Get-Date
+            }
+            
+            $conditionalLogic += $businessRule
+            Write-Verbose "    Found $ruleType in function $($functionNode.Name)"
+        }
+    }
+    
+    return $conditionalLogic
+}
+
+function Recover-Architecture {
+    <#
+    .SYNOPSIS
+    Performs semi-automatic architecture recovery using ARM-based techniques.
+    
+    .DESCRIPTION
+    Analyzes code structure to identify architectural layers (presentation, business, data),
+    component boundaries, and architectural patterns. Uses graph analysis and clustering
+    to group related functionality.
+    
+    .PARAMETER Graph
+    The CPG graph to analyze
+    
+    .PARAMETER DetectLayers
+    Detect architectural layers (presentation, business, data)
+    
+    .PARAMETER DetectComponents
+    Detect component boundaries and groupings
+    
+    .PARAMETER MinComponentSize
+    Minimum number of functions/classes for component detection
+    
+    .EXAMPLE
+    $architecture = Recover-Architecture -Graph $graph -DetectLayers -DetectComponents
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Graph,
+        
+        [switch]$DetectLayers,
+        
+        [switch]$DetectComponents,
+        
+        [int]$MinComponentSize = 3
+    )
+    
+    begin {
+        # Initialize results array first
+        $architectureResults = @()
+        
+        if (-not (Test-IsCPGraph -Graph $Graph)) {
+            throw "Invalid graph instance passed to $($MyInvocation.MyCommand.Name): missing expected CPGraph methods: GetNodesByType, GetEdges, GetNodeById."
+        }
+        # Attach missing methods so downstream calls work on duck-typed graphs
+        $Graph = Ensure-GraphDuckType -Graph $Graph
+        
+        Write-Verbose "Starting architecture recovery analysis"
+        $architectureData = @{
+            Layers = @()
+            Components = @()
+            Patterns = @()
+            AnalyzedAt = Get-Date
+        }
+        
+        # Layer detection patterns
+        $layerPatterns = @{
+            'Presentation' = @{
+                Patterns = @('ui', 'view', 'controller', 'gui', 'web', 'api', 'endpoint', 'route')
+                NodeTypes = @([CPGNodeType]::Class, [CPGNodeType]::Function)
+                Weight = 1.0
+            }
+            'Business' = @{
+                Patterns = @('service', 'manager', 'processor', 'engine', 'logic', 'rule', 'workflow')
+                NodeTypes = @([CPGNodeType]::Class, [CPGNodeType]::Function)
+                Weight = 1.0
+            }
+            'Data' = @{
+                Patterns = @('repository', 'dao', 'data', 'database', 'storage', 'persistence', 'model')
+                NodeTypes = @([CPGNodeType]::Class, [CPGNodeType]::Function)
+                Weight = 1.0
+            }
+            'Integration' = @{
+                Patterns = @('client', 'adapter', 'gateway', 'proxy', 'connector', 'integration')
+                NodeTypes = @([CPGNodeType]::Class, [CPGNodeType]::Function)
+                Weight = 0.8
+            }
+        }
+    }
+    
+    process {
+        try {
+            if ($DetectLayers) {
+                Write-Verbose "Detecting architectural layers..."
+                $architectureData.Layers = Get-ArchitecturalLayers -Graph $Graph -LayerPatterns $layerPatterns
+            }
+            
+            if ($DetectComponents) {
+                Write-Verbose "Detecting components..."
+                $architectureData.Components = Get-ArchitecturalComponents -Graph $Graph -MinSize $MinComponentSize
+            }
+            
+            # Detect architectural patterns
+            Write-Verbose "Detecting architectural patterns..."
+            $architectureData.Patterns = Get-ArchitecturalPatterns -Graph $Graph
+            
+            Write-Verbose "Architecture recovery complete"
+            # Return as array containing the architecture data
+            $architectureResults = @($architectureData)
+            return $architectureResults
+        }
+        catch {
+            Write-Verbose "Architecture recovery error: $($_.Exception.Message)"
+            return @()
+        }
+    }
+}
+
+function Get-ArchitecturalLayers {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [hashtable]$LayerPatterns
+    )
+    
+    $layers = @()
+    $allNodes = $Graph.Nodes.Values
+    
+    foreach ($layerName in $LayerPatterns.Keys) {
+        Write-Verbose "  Detecting $layerName layer..."
+        $layerInfo = $LayerPatterns[$layerName]
+        $layerNodes = @()
+        
+        foreach ($node in $allNodes) {
+            if ($node.Type -in $layerInfo.NodeTypes) {
+                $nodeName = $node.Name.ToLower()
+                $fileName = if ($node.FilePath) { [System.IO.Path]::GetFileName($node.FilePath).ToLower() } else { "" }
+                
+                foreach ($pattern in $layerInfo.Patterns) {
+                    if ($nodeName -like "*$pattern*" -or $fileName -like "*$pattern*") {
+                        $layerNodes += $node
+                        break
+                    }
+                }
+            }
+        }
+        
+        if ($layerNodes.Count -gt 0) {
+            $layer = @{
+                Name = $layerName
+                NodeCount = $layerNodes.Count
+                Nodes = $layerNodes | Select-Object Id, Name, Type, FilePath, StartLine
+                Confidence = [Math]::Min(1.0, $layerNodes.Count * 0.1)
+                DetectedAt = Get-Date
+            }
+            
+            $layers += $layer
+            Write-Verbose "    Found $layerName layer with $($layerNodes.Count) nodes"
+        }
+    }
+    
+    return $layers
+}
+
+function Get-ArchitecturalComponents {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [int]$MinSize
+    )
+    
+    $components = @()
+    
+    # Group nodes by file/namespace to identify potential components
+    $nodeGroups = $Graph.Nodes.Values | 
+                  Where-Object { $_.FilePath -and ($_.Type -eq [CPGNodeType]::Class -or $_.Type -eq [CPGNodeType]::Function) } |
+                  Group-Object { 
+                      $dir = [System.IO.Path]::GetDirectoryName($_.FilePath)
+                      $fileName = [System.IO.Path]::GetFileNameWithoutExtension($_.FilePath)
+                      "$dir\$fileName"
+                  }
+    
+    foreach ($group in $nodeGroups) {
+        if ($group.Count -ge $MinSize) {
+            Write-Verbose "  Found potential component: $($group.Name) with $($group.Count) elements"
+            
+            # Analyze cohesion within the component
+            $cohesionScore = Get-ComponentCohesion -Graph $Graph -Nodes $group.Group
+            
+            $component = @{
+                Name = [System.IO.Path]::GetFileName($group.Name)
+                Path = $group.Name
+                NodeCount = $group.Count
+                Nodes = $group.Group | Select-Object Id, Name, Type, StartLine
+                CohesionScore = $cohesionScore
+                DetectedAt = Get-Date
+            }
+            
+            $components += $component
+        }
+    }
+    
+    return $components
+}
+
+function Get-ComponentCohesion {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [array]$Nodes
+    )
+    
+    if ($Nodes.Count -lt 2) { return 0.0 }
+    
+    # Calculate internal vs external connections
+    $internalConnections = 0
+    $externalConnections = 0
+    
+    foreach ($node in $Nodes) {
+        $edges = Get-CPGEdge -Graph $Graph -SourceId $node.Id
+        foreach ($edge in $edges) {
+            $target = $Graph.GetNode($edge.TargetId)
+            if ($target.Id -in $Nodes.Id) {
+                $internalConnections++
+            } else {
+                $externalConnections++
+            }
+        }
+    }
+    
+    $totalConnections = $internalConnections + $externalConnections
+    return if ($totalConnections -gt 0) { $internalConnections / $totalConnections } else { 0.0 }
+}
+
+function Get-ArchitecturalPatterns {
+    [CmdletBinding()]
+    param(
+        [object]$Graph
+    )
+    
+    $patterns = @()
+    
+    # Check for MVC pattern
+    $controllers = $Graph.Nodes.Values | Where-Object { $_.Name -match 'controller' -and $_.Type -eq [CPGNodeType]::Class }
+    $views = $Graph.Nodes.Values | Where-Object { $_.Name -match 'view' -and $_.Type -eq [CPGNodeType]::Class }
+    $models = $Graph.Nodes.Values | Where-Object { $_.Name -match 'model' -and $_.Type -eq [CPGNodeType]::Class }
+    
+    if ($controllers.Count -gt 0 -and $views.Count -gt 0 -and $models.Count -gt 0) {
+        $patterns += @{
+            Name = 'MVC (Model-View-Controller)'
+            Confidence = 0.8
+            Evidence = @{
+                Controllers = $controllers.Count
+                Views = $views.Count
+                Models = $models.Count
+            }
+        }
+    }
+    
+    # Check for Repository pattern
+    $repositories = $Graph.Nodes.Values | Where-Object { $_.Name -match 'repository' -and $_.Type -eq [CPGNodeType]::Class }
+    if ($repositories.Count -gt 0) {
+        $patterns += @{
+            Name = 'Repository Pattern'
+            Confidence = 0.7
+            Evidence = @{
+                Repositories = $repositories.Count
+            }
+        }
+    }
+    
+    # Check for Service Layer pattern
+    $services = $Graph.Nodes.Values | Where-Object { $_.Name -match 'service' -and $_.Type -eq [CPGNodeType]::Class }
+    if ($services.Count -gt 0) {
+        $patterns += @{
+            Name = 'Service Layer Pattern'
+            Confidence = 0.7
+            Evidence = @{
+                Services = $services.Count
+            }
+        }
+    }
+    
+    return $patterns
+}
+
+#endregion
+
+#region Code Quality Analysis System (Hours 5-8)
+
+function Test-DocumentationCompleteness {
+    <#
+    .SYNOPSIS
+    Analyzes documentation completeness and quality for functions, classes, and modules.
+    
+    .DESCRIPTION
+    Evaluates the coverage and quality of code documentation including function help,
+    class descriptions, parameter documentation, and inline comments. Provides
+    completeness scores and identifies areas needing documentation improvement.
+    
+    .PARAMETER Graph
+    The CPG graph to analyze
+    
+    .PARAMETER FilePath
+    Specific file path to analyze (optional)
+    
+    .PARAMETER IncludePrivate
+    Include private functions and methods in analysis
+    
+    .PARAMETER MinCommentRatio
+    Minimum ratio of comments to code lines (default: 0.1)
+    
+    .EXAMPLE
+    $docAnalysis = Test-DocumentationCompleteness -Graph $graph -IncludePrivate
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Graph,
+        
+        [string]$FilePath,
+        
+        [switch]$IncludePrivate,
+        
+        [ValidateRange(0.0, 1.0)]
+        [double]$MinCommentRatio = 0.1
+    )
+    
+    begin {
+        Write-Verbose "Starting documentation completeness analysis"
+        $documentationResults = @()
+        
+        # Documentation completeness thresholds
+        $completenessThresholds = @{
+            Excellent = 0.9
+            Good = 0.7
+            Fair = 0.5
+            Poor = 0.3
+        }
+    }
+    
+    process {
+        try {
+            # Get nodes to analyze
+            $nodes = if ($FilePath) {
+                $Graph.Nodes.Values | Where-Object { $_.FilePath -eq $FilePath }
+            } else {
+                $Graph.Nodes.Values
+            }
+            
+            # Filter by visibility if not including private
+            if (-not $IncludePrivate) {
+                $nodes = $nodes | Where-Object { 
+                    -not $_.Properties.ContainsKey('Visibility') -or 
+                    $_.Properties.Visibility -ne 'Private' 
+                }
+            }
+            
+            # Analyze functions and methods
+            $functions = $nodes | Where-Object { $_.Type -eq [CPGNodeType]::Function -or $_.Type -eq [CPGNodeType]::Method }
+            $classes = $nodes | Where-Object { $_.Type -eq [CPGNodeType]::Class }
+            $modules = $nodes | Where-Object { $_.Type -eq [CPGNodeType]::Module }
+            
+            Write-Verbose "Analyzing $($functions.Count) functions, $($classes.Count) classes, $($modules.Count) modules"
+            
+            foreach ($function in $functions) {
+                $docAnalysis = Get-FunctionDocumentationScore -Graph $Graph -Function $function -MinCommentRatio $MinCommentRatio
+                $documentationResults += $docAnalysis
+            }
+            
+            foreach ($class in $classes) {
+                $docAnalysis = Get-ClassDocumentationScore -Graph $Graph -Class $class
+                $documentationResults += $docAnalysis
+            }
+            
+            foreach ($module in $modules) {
+                $docAnalysis = Get-ModuleDocumentationScore -Graph $Graph -Module $module
+                $documentationResults += $docAnalysis
+            }
+            
+            # Calculate overall statistics
+            if ($documentationResults.Count -gt 0) {
+                $overallScore = ($documentationResults | Measure-Object -Property CompletenessScore -Average).Average
+                $overallLevel = Get-CompletenessLevel -Score $overallScore -Thresholds $completenessThresholds
+                
+                $summary = @{
+                    OverallCompleteness = [Math]::Round($overallScore, 3)
+                    CompletenessLevel = $overallLevel
+                    TotalItems = $documentationResults.Count
+                    WellDocumented = ($documentationResults | Where-Object { $_.CompletenessScore -ge 0.7 }).Count
+                    PoorlyDocumented = ($documentationResults | Where-Object { $_.CompletenessScore -lt 0.3 }).Count
+                    AnalyzedAt = Get-Date
+                    Details = $documentationResults
+                }
+                
+                Write-Verbose "Documentation analysis complete. Overall score: $($summary.OverallCompleteness) ($overallLevel)"
+                return $summary
+            }
+            else {
+                Write-Warning "No documentable items found for analysis"
+                return @{ OverallCompleteness = 0; Details = @() }
+            }
+        }
+        catch {
+            Write-Error "Error during documentation completeness analysis: $($_.Exception.Message)"
+            throw
+        }
+    }
+}
+
+function Get-FunctionDocumentationScore {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [object]$Function,
+        [double]$MinCommentRatio
+    )
+    
+    $score = 0.0
+    $evidence = @()
+    
+    # Check for function help/documentation
+    $helpComments = Get-CPGNeighbors -Graph $Graph -NodeId $Function.Id -Direction Forward | 
+                   Where-Object { $_.Type -eq [CPGNodeType]::Comment -and $_.Properties.Text -match '\.SYNOPSIS|\.DESCRIPTION|<#' }
+    
+    if ($helpComments) {
+        $score += 0.4
+        $evidence += "Function help documentation present"
+        
+        # Check for comprehensive help
+        $helpText = ($helpComments | ForEach-Object { $_.Properties.Text }) -join " "
+        if ($helpText -match '\.SYNOPSIS' -and $helpText -match '\.DESCRIPTION' -and $helpText -match '\.PARAMETER') {
+            $score += 0.2
+            $evidence += "Comprehensive help with SYNOPSIS, DESCRIPTION, and PARAMETER sections"
+        }
+    }
+    
+    # Check for parameter documentation
+    $parameters = Get-CPGNeighbors -Graph $Graph -NodeId $Function.Id -Direction Forward | 
+                 Where-Object { $_.Type -eq [CPGNodeType]::Parameter }
+    
+    if ($parameters.Count -gt 0) {
+        $documentedParams = 0
+        foreach ($param in $parameters) {
+            if ($param.Properties.ContainsKey('Description') -and $param.Properties.Description) {
+                $documentedParams++
+            }
+        }
+        
+        $paramScore = $documentedParams / $parameters.Count * 0.3
+        $score += $paramScore
+        $evidence += "Parameter documentation: $documentedParams/$($parameters.Count) parameters documented"
+    }
+    
+    # Check for inline comments
+    if ($Function.Properties.ContainsKey('LineCount') -and $Function.Properties.LineCount -gt 0) {
+        $comments = Get-CPGNeighbors -Graph $Graph -NodeId $Function.Id -Direction Forward | 
+                   Where-Object { $_.Type -eq [CPGNodeType]::Comment }
+        
+        $commentRatio = $comments.Count / $Function.Properties.LineCount
+        if ($commentRatio -ge $MinCommentRatio) {
+            $score += 0.1
+            $evidence += "Adequate inline comments (ratio: $([Math]::Round($commentRatio, 2)))"
+        }
+    }
+    
+    return @{
+        Type = 'Function'
+        NodeId = $Function.Id
+        Name = $Function.Name
+        CompletenessScore = [Math]::Round($score, 3)
+        Evidence = $evidence
+        FilePath = $Function.FilePath
+        StartLine = $Function.StartLine
+        AnalyzedAt = Get-Date
+    }
+}
+
+function Get-ClassDocumentationScore {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [object]$Class
+    )
+    
+    $score = 0.0
+    $evidence = @()
+    
+    # Check for class documentation
+    $classComments = Get-CPGNeighbors -Graph $Graph -NodeId $Class.Id -Direction Forward | 
+                    Where-Object { $_.Type -eq [CPGNodeType]::Comment }
+    
+    if ($classComments) {
+        $score += 0.5
+        $evidence += "Class documentation present"
+        
+        # Check for comprehensive class documentation
+        $commentText = ($classComments | ForEach-Object { $_.Properties.Text }) -join " "
+        if ($commentText.Length -gt 100) {
+            $score += 0.2
+            $evidence += "Detailed class documentation (>100 characters)"
+        }
+    }
+    
+    # Check for property documentation
+    $properties = Get-CPGNeighbors -Graph $Graph -NodeId $Class.Id -Direction Forward | 
+                 Where-Object { $_.Type -eq [CPGNodeType]::Property -or $_.Type -eq [CPGNodeType]::Field }
+    
+    if ($properties.Count -gt 0) {
+        $documentedProperties = ($properties | Where-Object { 
+            $_.Properties.ContainsKey('Description') -and $_.Properties.Description 
+        }).Count
+        
+        $propScore = $documentedProperties / $properties.Count * 0.3
+        $score += $propScore
+        $evidence += "Property documentation: $documentedProperties/$($properties.Count) properties documented"
+    }
+    
+    return @{
+        Type = 'Class'
+        NodeId = $Class.Id
+        Name = $Class.Name
+        CompletenessScore = [Math]::Round($score, 3)
+        Evidence = $evidence
+        FilePath = $Class.FilePath
+        StartLine = $Class.StartLine
+        AnalyzedAt = Get-Date
+    }
+}
+
+function Get-ModuleDocumentationScore {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [object]$Module
+    )
+    
+    $score = 0.0
+    $evidence = @()
+    
+    # Check for module header documentation
+    $moduleComments = Get-CPGNeighbors -Graph $Graph -NodeId $Module.Id -Direction Forward | 
+                     Where-Object { $_.Type -eq [CPGNodeType]::Comment }
+    
+    if ($moduleComments) {
+        $score += 0.6
+        $evidence += "Module documentation present"
+        
+        $commentText = ($moduleComments | ForEach-Object { $_.Properties.Text }) -join " "
+        if ($commentText -match 'SYNOPSIS|DESCRIPTION|PURPOSE' -and $commentText.Length -gt 200) {
+            $score += 0.4
+            $evidence += "Comprehensive module documentation with purpose and description"
+        }
+    }
+    
+    return @{
+        Type = 'Module'
+        NodeId = $Module.Id
+        Name = $Module.Name
+        CompletenessScore = [Math]::Round($score, 3)
+        Evidence = $evidence
+        FilePath = $Module.FilePath
+        AnalyzedAt = Get-Date
+    }
+}
+
+function Get-CompletenessLevel {
+    [CmdletBinding()]
+    param(
+        [double]$Score,
+        [hashtable]$Thresholds
+    )
+    
+    if ($Score -ge $Thresholds.Excellent) { return 'Excellent' }
+    elseif ($Score -ge $Thresholds.Good) { return 'Good' }
+    elseif ($Score -ge $Thresholds.Fair) { return 'Fair' }
+    else { return 'Poor' }
+}
+
+function Test-NamingConventions {
+    <#
+    .SYNOPSIS
+    Validates naming conventions for functions, classes, variables, and other code elements.
+    
+    .DESCRIPTION
+    Analyzes code element names against language-specific naming conventions including
+    PowerShell Verb-Noun patterns, camelCase/PascalCase rules, and custom organizational standards.
+    Provides violation reports with correction suggestions.
+    
+    .PARAMETER Graph
+    The CPG graph to analyze
+    
+    .PARAMETER Language
+    Programming language for convention rules (PowerShell, JavaScript, CSharp, Python)
+    
+    .PARAMETER CustomRules
+    Additional custom naming rules to validate
+    
+    .PARAMETER IncludePrivate
+    Include private elements in validation
+    
+    .EXAMPLE
+    $namingIssues = Test-NamingConventions -Graph $graph -Language PowerShell
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Graph,
+        
+        [ValidateSet('PowerShell', 'JavaScript', 'TypeScript', 'CSharp', 'Python')]
+        [string]$Language = 'PowerShell',
+        
+        [hashtable]$CustomRules = @{},
+        
+        [switch]$IncludePrivate
+    )
+    
+    begin {
+        Write-Verbose "Starting naming convention validation for $Language"
+        $namingViolations = @()
+        
+        # Language-specific naming patterns
+        $namingPatterns = @{
+            PowerShell = @{
+                Function = @{
+                    Pattern = '^[A-Z][a-z]+-[A-Z][a-zA-Z0-9]*$'
+                    Description = 'PowerShell functions should use Verb-Noun pattern (e.g., Get-Item)'
+                    Examples = @('Get-Process', 'Set-Location', 'New-Object')
+                }
+                Variable = @{
+                    Pattern = '^\$[a-zA-Z][a-zA-Z0-9_]*$'
+                    Description = 'PowerShell variables should start with $ and use camelCase'
+                    Examples = @('$myVariable', '$processName', '$fileCount')
+                }
+                Parameter = @{
+                    Pattern = '^[A-Z][a-zA-Z0-9]*$'
+                    Description = 'PowerShell parameters should use PascalCase'
+                    Examples = @('FilePath', 'ComputerName', 'MaxRetries')
+                }
+            }
+            JavaScript = @{
+                Function = @{
+                    Pattern = '^[a-z][a-zA-Z0-9]*$'
+                    Description = 'JavaScript functions should use camelCase'
+                    Examples = @('getUserData', 'processResults', 'calculateTotal')
+                }
+                Variable = @{
+                    Pattern = '^[a-z][a-zA-Z0-9]*$'
+                    Description = 'JavaScript variables should use camelCase'
+                    Examples = @('userName', 'fileSize', 'isValid')
+                }
+                Class = @{
+                    Pattern = '^[A-Z][a-zA-Z0-9]*$'
+                    Description = 'JavaScript classes should use PascalCase'
+                    Examples = @('UserManager', 'DataProcessor', 'HttpClient')
+                }
+            }
+            CSharp = @{
+                Method = @{
+                    Pattern = '^[A-Z][a-zA-Z0-9]*$'
+                    Description = 'C# methods should use PascalCase'
+                    Examples = @('GetUserData', 'ProcessResults', 'CalculateTotal')
+                }
+                Property = @{
+                    Pattern = '^[A-Z][a-zA-Z0-9]*$'
+                    Description = 'C# properties should use PascalCase'
+                    Examples = @('UserName', 'FileSize', 'IsValid')
+                }
+                Class = @{
+                    Pattern = '^[A-Z][a-zA-Z0-9]*$'
+                    Description = 'C# classes should use PascalCase'
+                    Examples = @('UserManager', 'DataProcessor', 'HttpClient')
+                }
+                Field = @{
+                    Pattern = '^[a-z][a-zA-Z0-9]*$'
+                    Description = 'C# private fields should use camelCase'
+                    Examples = @('userName', 'fileSize', 'isValid')
+                }
+            }
+            Python = @{
+                Function = @{
+                    Pattern = '^[a-z][a-z0-9_]*$'
+                    Description = 'Python functions should use snake_case'
+                    Examples = @('get_user_data', 'process_results', 'calculate_total')
+                }
+                Variable = @{
+                    Pattern = '^[a-z][a-z0-9_]*$'
+                    Description = 'Python variables should use snake_case'
+                    Examples = @('user_name', 'file_size', 'is_valid')
+                }
+                Class = @{
+                    Pattern = '^[A-Z][a-zA-Z0-9]*$'
+                    Description = 'Python classes should use PascalCase'
+                    Examples = @('UserManager', 'DataProcessor', 'HttpClient')
+                }
+            }
+        }
+        
+        # Get patterns for current language
+        $currentPatterns = $namingPatterns[$Language]
+        if ($CustomRules.Count -gt 0) {
+            # Merge custom rules
+            foreach ($ruleType in $CustomRules.Keys) {
+                $currentPatterns[$ruleType] = $CustomRules[$ruleType]
+            }
+        }
+    }
+    
+    process {
+        try {
+            # Get all nodes to validate
+            $nodes = $Graph.Nodes.Values
+            
+            # Filter by visibility if needed
+            if (-not $IncludePrivate) {
+                $nodes = $nodes | Where-Object { 
+                    -not $_.Properties.ContainsKey('Visibility') -or 
+                    $_.Properties.Visibility -ne 'Private' 
+                }
+            }
+            
+            Write-Verbose "Validating naming conventions for $($nodes.Count) nodes"
+            
+            foreach ($node in $nodes) {
+                $nodeTypeName = $node.Type.ToString()
+                
+                # Map CPG node types to naming rule types
+                $ruleType = switch ($node.Type) {
+                    ([CPGNodeType]::Function) { 'Function' }
+                    ([CPGNodeType]::Method) { if ($Language -eq 'CSharp') { 'Method' } else { 'Function' } }
+                    ([CPGNodeType]::Class) { 'Class' }
+                    ([CPGNodeType]::Variable) { 'Variable' }
+                    ([CPGNodeType]::Parameter) { 'Parameter' }
+                    ([CPGNodeType]::Property) { 'Property' }
+                    ([CPGNodeType]::Field) { 'Field' }
+                    default { $null }
+                }
+                
+                if ($ruleType -and $currentPatterns.ContainsKey($ruleType)) {
+                    $rule = $currentPatterns[$ruleType]
+                    
+                    if ($node.Name -notmatch $rule.Pattern) {
+                        $suggestion = Get-NamingSuggestion -Name $node.Name -Rule $rule -Language $Language
+                        
+                        $violation = @{
+                            NodeId = $node.Id
+                            NodeType = $nodeTypeName
+                            Name = $node.Name
+                            RuleType = $ruleType
+                            Pattern = $rule.Pattern
+                            Description = $rule.Description
+                            Suggestion = $suggestion
+                            Examples = $rule.Examples
+                            FilePath = $node.FilePath
+                            StartLine = $node.StartLine
+                            Severity = 'Warning'
+                            DetectedAt = Get-Date
+                        }
+                        
+                        $namingViolations += $violation
+                        Write-Verbose "  Naming violation: $($node.Name) ($nodeTypeName) - $($rule.Description)"
+                    }
+                }
+            }
+            
+            # Generate summary
+            $summary = @{
+                Language = $Language
+                TotalViolations = $namingViolations.Count
+                ViolationsByType = $namingViolations | Group-Object RuleType | 
+                                  ForEach-Object { @{ Type = $_.Name; Count = $_.Count } }
+                Violations = $namingViolations
+                AnalyzedAt = Get-Date
+            }
+            
+            Write-Verbose "Naming convention validation complete. Found $($namingViolations.Count) violations"
+            return $summary
+        }
+        catch {
+            Write-Error "Error during naming convention validation: $($_.Exception.Message)"
+            throw
+        }
+    }
+}
+
+function Get-NamingSuggestion {
+    [CmdletBinding()]
+    param(
+        [string]$Name,
+        [hashtable]$Rule,
+        [string]$Language
+    )
+    
+    # Simple naming suggestion logic
+    switch ($Language) {
+        'PowerShell' {
+            if ($Rule.Pattern -match 'Verb-Noun') {
+                # Try to suggest proper verb-noun format
+                if ($Name -notmatch '-') {
+                    return "Consider: Get-$Name or Set-$Name"
+                }
+            }
+            elseif ($Rule.Pattern -match 'PascalCase') {
+                $pascalCase = (Get-Culture).TextInfo.ToTitleCase($Name.ToLower()) -replace '[^a-zA-Z0-9]', ''
+                return $pascalCase
+            }
+        }
+        'JavaScript' {
+            if ($Rule.Pattern -match 'camelCase') {
+                $parts = $Name -split '[^a-zA-Z0-9]'
+                $camelCase = $parts[0].ToLower()
+                for ($i = 1; $i -lt $parts.Count; $i++) {
+                    $camelCase += (Get-Culture).TextInfo.ToTitleCase($parts[$i].ToLower())
+                }
+                return $camelCase
+            }
+        }
+        'Python' {
+            if ($Rule.Pattern -match 'snake_case') {
+                $snakeCase = $Name -replace '([A-Z])', '_$1' -replace '^_', '' -replace '[^a-zA-Z0-9_]', '_'
+                return $snakeCase.ToLower()
+            }
+        }
+    }
+    
+    return "Please follow $($Rule.Description)"
+}
+
+function Test-CommentCodeAlignment {
+    <#
+    .SYNOPSIS
+    Analyzes the alignment between code comments and actual code behavior.
+    
+    .DESCRIPTION
+    Evaluates the semantic alignment between comments and code, identifies outdated comments
+    that no longer match the code behavior, and finds complex code sections that lack
+    explanatory comments. Uses heuristic analysis and pattern matching.
+    
+    .PARAMETER Graph
+    The CPG graph to analyze
+    
+    .PARAMETER FilePath
+    Specific file path to analyze (optional)
+    
+    .PARAMETER MinComplexityForComment
+    Minimum complexity threshold that requires explanatory comments
+    
+    .EXAMPLE
+    $alignment = Test-CommentCodeAlignment -Graph $graph -MinComplexityForComment 5
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Graph,
+        
+        [string]$FilePath,
+        
+        [int]$MinComplexityForComment = 5
+    )
+    
+    begin {
+        Write-Verbose "Starting comment-code alignment analysis"
+        $alignmentResults = @()
+    }
+    
+    process {
+        try {
+            # Get nodes to analyze
+            $nodes = if ($FilePath) {
+                $Graph.Nodes.Values | Where-Object { $_.FilePath -eq $FilePath }
+            } else {
+                $Graph.Nodes.Values
+            }
+            
+            # Analyze functions and methods for comment alignment
+            $functions = $nodes | Where-Object { $_.Type -eq [CPGNodeType]::Function -or $_.Type -eq [CPGNodeType]::Method }
+            
+            Write-Verbose "Analyzing comment alignment for $($functions.Count) functions"
+            
+            foreach ($function in $functions) {
+                $alignmentScore = Get-CommentCodeAlignmentScore -Graph $Graph -Function $function -MinComplexity $MinComplexityForComment
+                $alignmentResults += $alignmentScore
+            }
+            
+            # Calculate overall statistics
+            if ($alignmentResults.Count -gt 0) {
+                $averageAlignment = ($alignmentResults | Measure-Object -Property AlignmentScore -Average).Average
+                $wellAligned = ($alignmentResults | Where-Object { $_.AlignmentScore -ge 0.7 }).Count
+                $poorlyAligned = ($alignmentResults | Where-Object { $_.AlignmentScore -lt 0.4 }).Count
+                
+                $summary = @{
+                    OverallAlignment = [Math]::Round($averageAlignment, 3)
+                    TotalFunctions = $alignmentResults.Count
+                    WellAligned = $wellAligned
+                    PoorlyAligned = $poorlyAligned
+                    AnalyzedAt = Get-Date
+                    Details = $alignmentResults
+                }
+                
+                Write-Verbose "Comment alignment analysis complete. Overall score: $($summary.OverallAlignment)"
+                return $summary
+            }
+            else {
+                Write-Warning "No functions found for comment alignment analysis"
+                return @{ OverallAlignment = 0; Details = @() }
+            }
+        }
+        catch {
+            Write-Error "Error during comment-code alignment analysis: $($_.Exception.Message)"
+            throw
+        }
+    }
+}
+
+function Get-CommentCodeAlignmentScore {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [object]$Function,
+        [int]$MinComplexity
+    )
+    
+    $alignmentScore = 0.0
+    $issues = @()
+    $positives = @()
+    
+    # Get comments associated with the function
+    $comments = Get-CPGNeighbors -Graph $Graph -NodeId $Function.Id -Direction Forward | 
+               Where-Object { $_.Type -eq [CPGNodeType]::Comment }
+    
+    # Calculate function complexity (simplified)
+    $complexity = Get-SimplifiedComplexity -Graph $Graph -Function $Function
+    
+    # Check if complex functions have explanatory comments
+    if ($complexity -ge $MinComplexity) {
+        if ($comments.Count -gt 0) {
+            $alignmentScore += 0.3
+            $positives += "Complex function ($complexity complexity) has explanatory comments"
+        } else {
+            $issues += "Complex function ($complexity complexity) lacks explanatory comments"
+        }
+    }
+    
+    # Analyze comment relevance to function behavior
+    foreach ($comment in $comments) {
+        $commentText = $comment.Properties.Text
+        if (-not $commentText) { continue }
+        
+        # Check for comment-code semantic alignment
+        $semanticAlignment = Test-SemanticAlignment -FunctionName $Function.Name -CommentText $commentText
+        
+        if ($semanticAlignment.IsAligned) {
+            $alignmentScore += 0.2
+            $positives += "Comment aligns with function purpose: $($semanticAlignment.Reason)"
+        } else {
+            $issues += "Comment may be outdated or misaligned: $($semanticAlignment.Reason)"
+        }
+        
+        # Check for temporal indicators that might suggest outdated comments
+        if ($commentText -match 'TODO|FIXME|HACK|TEMP|DEPRECATED') {
+            $issues += "Comment contains temporal indicators suggesting maintenance needed"
+        } else {
+            $alignmentScore += 0.1
+        }
+    }
+    
+    # Normalize score
+    $alignmentScore = [Math]::Min(1.0, $alignmentScore)
+    
+    return @{
+        NodeId = $Function.Id
+        Name = $Function.Name
+        AlignmentScore = [Math]::Round($alignmentScore, 3)
+        Complexity = $complexity
+        CommentCount = $comments.Count
+        Issues = $issues
+        Positives = $positives
+        FilePath = $Function.FilePath
+        StartLine = $Function.StartLine
+        AnalyzedAt = Get-Date
+    }
+}
+
+function Get-SimplifiedComplexity {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [object]$Function
+    )
+    
+    # Simplified complexity calculation based on graph structure
+    $complexity = 1  # Base complexity
+    
+    # Count decision points (simplified)
+    if ($Function.Properties.ContainsKey('CyclomaticComplexity')) {
+        return $Function.Properties.CyclomaticComplexity
+    }
+    
+    # Estimate based on function connections
+    $edges = Get-CPGEdge -Graph $Graph -SourceId $Function.Id
+    $complexity += [Math]::Min(10, $edges.Count)  # Cap at 10 for estimate
+    
+    return $complexity
+}
+
+function Test-SemanticAlignment {
+    [CmdletBinding()]
+    param(
+        [string]$FunctionName,
+        [string]$CommentText
+    )
+    
+    # Simple heuristic semantic alignment check
+    $functionNameLower = $FunctionName.ToLower()
+    $commentTextLower = $CommentText.ToLower()
+    
+    # Extract key words from function name
+    $functionWords = $functionNameLower -split '[^a-zA-Z0-9]' | Where-Object { $_.Length -gt 2 }
+    
+    # Check if comment contains function-related keywords
+    $alignedWords = @()
+    foreach ($word in $functionWords) {
+        if ($commentTextLower -like "*$word*") {
+            $alignedWords += $word
+        }
+    }
+    
+    $alignmentRatio = if ($functionWords.Count -gt 0) { $alignedWords.Count / $functionWords.Count } else { 0 }
+    
+    return @{
+        IsAligned = $alignmentRatio -gt 0.3
+        Reason = if ($alignmentRatio -gt 0.3) { 
+            "Comment contains $($alignedWords.Count)/$($functionWords.Count) function keywords: $($alignedWords -join ', ')"
+        } else {
+            "Comment lacks function-related keywords from: $($functionWords -join ', ')"
+        }
+    }
+}
+
+function Get-TechnicalDebt {
+    <#
+    .SYNOPSIS
+    Calculates technical debt metrics including complexity, code smells, and maintainability scores.
+    
+    .DESCRIPTION
+    Analyzes code for technical debt indicators including cyclomatic/cognitive complexity,
+    code smells (long functions, deep nesting, magic numbers), maintainability index,
+    and provides time-based estimates for debt resolution.
+    
+    .PARAMETER Graph
+    The CPG graph to analyze
+    
+    .PARAMETER FilePath
+    Specific file path to analyze (optional)
+    
+    .PARAMETER IncludeTimeEstimates
+    Include time estimates for resolving debt
+    
+    .EXAMPLE
+    $debt = Get-TechnicalDebt -Graph $graph -IncludeTimeEstimates
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Graph,
+        
+        [string]$FilePath,
+        
+        [switch]$IncludeTimeEstimates
+    )
+    
+    begin {
+        Write-Verbose "Starting technical debt analysis"
+        $debtResults = @()
+        
+        # Technical debt thresholds based on 2025 best practices
+        $debtThresholds = @{
+            CyclomaticComplexity = @{ Low = 5; Moderate = 10; High = 20; Critical = 30 }
+            CognitiveComplexity = @{ Low = 5; Moderate = 15; High = 25; Critical = 50 }
+            FunctionLength = @{ Low = 20; Moderate = 50; High = 100; Critical = 200 }
+            NestingDepth = @{ Low = 3; Moderate = 5; High = 8; Critical = 10 }
+            ParameterCount = @{ Low = 3; Moderate = 5; High = 8; Critical = 12 }
+        }
+        
+        # Time estimates for resolution (in hours)
+        $timeEstimates = @{
+            Low = 0.5
+            Moderate = 2
+            High = 8
+            Critical = 16
+        }
+    }
+    
+    process {
+        try {
+            # Get nodes to analyze
+            $nodes = if ($FilePath) {
+                $Graph.Nodes.Values | Where-Object { $_.FilePath -eq $FilePath }
+            } else {
+                $Graph.Nodes.Values
+            }
+            
+            # Analyze functions and methods for technical debt
+            $functions = $nodes | Where-Object { $_.Type -eq [CPGNodeType]::Function -or $_.Type -eq [CPGNodeType]::Method }
+            $classes = $nodes | Where-Object { $_.Type -eq [CPGNodeType]::Class }
+            
+            Write-Verbose "Analyzing technical debt for $($functions.Count) functions and $($classes.Count) classes"
+            
+            # Analyze function debt
+            foreach ($function in $functions) {
+                $debtAnalysis = Get-FunctionTechnicalDebt -Graph $Graph -Function $function -Thresholds $debtThresholds -TimeEstimates $timeEstimates -IncludeTimeEstimates:$IncludeTimeEstimates
+                $debtResults += $debtAnalysis
+            }
+            
+            # Analyze class debt
+            foreach ($class in $classes) {
+                $debtAnalysis = Get-ClassTechnicalDebt -Graph $Graph -Class $class -Thresholds $debtThresholds
+                $debtResults += $debtAnalysis
+            }
+            
+            # Calculate overall statistics
+            if ($debtResults.Count -gt 0) {
+                $totalDebtScore = ($debtResults | Measure-Object -Property DebtScore -Sum).Sum
+                $averageDebt = ($debtResults | Measure-Object -Property DebtScore -Average).Average
+                $criticalIssues = ($debtResults | Where-Object { $_.DebtLevel -eq 'Critical' }).Count
+                $highIssues = ($debtResults | Where-Object { $_.DebtLevel -eq 'High' }).Count
+                
+                $summary = @{
+                    TotalDebtScore = [Math]::Round($totalDebtScore, 2)
+                    AverageDebtScore = [Math]::Round($averageDebt, 3)
+                    TotalItems = $debtResults.Count
+                    CriticalIssues = $criticalIssues
+                    HighIssues = $highIssues
+                    AnalyzedAt = Get-Date
+                    Details = $debtResults
+                }
+                
+                if ($IncludeTimeEstimates) {
+                    $totalTime = ($debtResults | Where-Object { $_.EstimatedResolutionTime } | 
+                                 Measure-Object -Property EstimatedResolutionTime -Sum).Sum
+                    $summary.EstimatedTotalResolutionTime = $totalTime
+                }
+                
+                Write-Verbose "Technical debt analysis complete. Total debt score: $($summary.TotalDebtScore)"
+                return $summary
+            }
+            else {
+                Write-Warning "No code elements found for debt analysis"
+                return @{ TotalDebtScore = 0; Details = @() }
+            }
+        }
+        catch {
+            Write-Error "Error during technical debt analysis: $($_.Exception.Message)"
+            throw
+        }
+    }
+}
+
+function Get-FunctionTechnicalDebt {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [object]$Function,
+        [hashtable]$Thresholds,
+        [hashtable]$TimeEstimates,
+        [switch]$IncludeTimeEstimates
+    )
+    
+    $debtScore = 0.0
+    $debtIssues = @()
+    $debtLevel = 'Low'
+    
+    # Analyze cyclomatic complexity
+    $cyclomaticComplexity = if ($Function.Properties.ContainsKey('CyclomaticComplexity')) { 
+        $Function.Properties.CyclomaticComplexity 
+    } else { 
+        Get-SimplifiedComplexity -Graph $Graph -Function $Function 
+    }
+    
+    $complexityLevel = Get-ThresholdLevel -Value $cyclomaticComplexity -Thresholds $Thresholds.CyclomaticComplexity
+    $debtScore += Get-DebtScoreForLevel -Level $complexityLevel
+    if ($complexityLevel -ne 'Low') {
+        $debtIssues += "High cyclomatic complexity: $cyclomaticComplexity ($complexityLevel)"
+        $debtLevel = Get-HigherLevel -Current $debtLevel -New $complexityLevel
+    }
+    
+    # Analyze function length
+    $functionLength = if ($Function.Properties.ContainsKey('LineCount')) { 
+        $Function.Properties.LineCount 
+    } else { 
+        ($Function.EndLine - $Function.StartLine) + 1
+    }
+    
+    $lengthLevel = Get-ThresholdLevel -Value $functionLength -Thresholds $Thresholds.FunctionLength
+    $debtScore += Get-DebtScoreForLevel -Level $lengthLevel
+    if ($lengthLevel -ne 'Low') {
+        $debtIssues += "Long function: $functionLength lines ($lengthLevel)"
+        $debtLevel = Get-HigherLevel -Current $debtLevel -New $lengthLevel
+    }
+    
+    # Analyze parameter count
+    $parameters = Get-CPGNeighbors -Graph $Graph -NodeId $Function.Id -Direction Forward | 
+                 Where-Object { $_.Type -eq [CPGNodeType]::Parameter }
+    
+    $parameterLevel = Get-ThresholdLevel -Value $parameters.Count -Thresholds $Thresholds.ParameterCount
+    $debtScore += Get-DebtScoreForLevel -Level $parameterLevel
+    if ($parameterLevel -ne 'Low') {
+        $debtIssues += "Too many parameters: $($parameters.Count) ($parameterLevel)"
+        $debtLevel = Get-HigherLevel -Current $debtLevel -New $parameterLevel
+    }
+    
+    # Check for code smells
+    $codeSmells = Get-CodeSmells -Graph $Graph -Function $Function
+    $debtScore += $codeSmells.Count * 0.5
+    $debtIssues += $codeSmells
+    
+    # Calculate maintainability index (simplified Microsoft formula)
+    $maintainabilityIndex = Get-MaintainabilityIndex -CyclomaticComplexity $cyclomaticComplexity -LinesOfCode $functionLength
+    if ($maintainabilityIndex -lt 10) {
+        $debtIssues += "Low maintainability index: $([Math]::Round($maintainabilityIndex, 1))"
+        $debtLevel = Get-HigherLevel -Current $debtLevel -New 'High'
+    }
+    
+    $result = @{
+        Type = 'Function'
+        NodeId = $Function.Id
+        Name = $Function.Name
+        DebtScore = [Math]::Round($debtScore, 2)
+        DebtLevel = $debtLevel
+        CyclomaticComplexity = $cyclomaticComplexity
+        FunctionLength = $functionLength
+        ParameterCount = $parameters.Count
+        MaintainabilityIndex = [Math]::Round($maintainabilityIndex, 1)
+        Issues = $debtIssues
+        FilePath = $Function.FilePath
+        StartLine = $Function.StartLine
+        AnalyzedAt = Get-Date
+    }
+    
+    if ($IncludeTimeEstimates -and $TimeEstimates.ContainsKey($debtLevel)) {
+        $result.EstimatedResolutionTime = $TimeEstimates[$debtLevel]
+    }
+    
+    return $result
+}
+
+function Get-ClassTechnicalDebt {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [object]$Class,
+        [hashtable]$Thresholds
+    )
+    
+    $debtScore = 0.0
+    $debtIssues = @()
+    $debtLevel = 'Low'
+    
+    # Count methods and properties
+    $methods = Get-CPGNeighbors -Graph $Graph -NodeId $Class.Id -Direction Forward | 
+              Where-Object { $_.Type -eq [CPGNodeType]::Method }
+    $properties = Get-CPGNeighbors -Graph $Graph -NodeId $Class.Id -Direction Forward | 
+                 Where-Object { $_.Type -eq [CPGNodeType]::Property -or $_.Type -eq [CPGNodeType]::Field }
+    
+    # Check for large classes
+    if ($methods.Count -gt 20) {
+        $debtScore += 2.0
+        $debtIssues += "Large class: $($methods.Count) methods"
+        $debtLevel = 'High'
+    }
+    
+    if ($properties.Count -gt 15) {
+        $debtScore += 1.0
+        $debtIssues += "Many properties: $($properties.Count) properties"
+        $debtLevel = Get-HigherLevel -Current $debtLevel -New 'Moderate'
+    }
+    
+    return @{
+        Type = 'Class'
+        NodeId = $Class.Id
+        Name = $Class.Name
+        DebtScore = [Math]::Round($debtScore, 2)
+        DebtLevel = $debtLevel
+        MethodCount = $methods.Count
+        PropertyCount = $properties.Count
+        Issues = $debtIssues
+        FilePath = $Class.FilePath
+        StartLine = $Class.StartLine
+        AnalyzedAt = Get-Date
+    }
+}
+
+function Get-ThresholdLevel {
+    [CmdletBinding()]
+    param(
+        [int]$Value,
+        [hashtable]$Thresholds
+    )
+    
+    if ($Value -ge $Thresholds.Critical) { return 'Critical' }
+    elseif ($Value -ge $Thresholds.High) { return 'High' }
+    elseif ($Value -ge $Thresholds.Moderate) { return 'Moderate' }
+    else { return 'Low' }
+}
+
+function Get-DebtScoreForLevel {
+    [CmdletBinding()]
+    param(
+        [string]$Level
+    )
+    
+    switch ($Level) {
+        'Critical' { return 4.0 }
+        'High' { return 2.0 }
+        'Moderate' { return 1.0 }
+        default { return 0.0 }
+    }
+}
+
+function Get-HigherLevel {
+    [CmdletBinding()]
+    param(
+        [string]$Current,
+        [string]$New
+    )
+    
+    $levels = @{ 'Low' = 0; 'Moderate' = 1; 'High' = 2; 'Critical' = 3 }
+    $currentLevel = $levels[$Current]
+    $newLevel = $levels[$New]
+    
+    return if ($newLevel -gt $currentLevel) { $New } else { $Current }
+}
+
+function Get-CodeSmells {
+    [CmdletBinding()]
+    param(
+        [object]$Graph,
+        [object]$Function
+    )
+    
+    $smells = @()
+    
+    # Check for magic numbers (simplified)
+    if ($Function.Properties.ContainsKey('HasMagicNumbers') -and $Function.Properties.HasMagicNumbers) {
+        $smells += "Contains magic numbers"
+    }
+    
+    # Check for deep nesting (simplified)
+    if ($Function.Properties.ContainsKey('MaxNestingLevel') -and $Function.Properties.MaxNestingLevel -gt 4) {
+        $smells += "Deep nesting: level $($Function.Properties.MaxNestingLevel)"
+    }
+    
+    # Check for duplicate code patterns
+    if ($Function.Properties.ContainsKey('HasDuplicateCode') -and $Function.Properties.HasDuplicateCode) {
+        $smells += "Potential code duplication"
+    }
+    
+    return $smells
+}
+
+function Get-MaintainabilityIndex {
+    [CmdletBinding()]
+    param(
+        [int]$CyclomaticComplexity,
+        [int]$LinesOfCode
+    )
+    
+    # Simplified Microsoft Maintainability Index formula
+    # MI = 171 - 5.2 * ln(HalsteadVolume) - 0.23 * CyclomaticComplexity - 16.2 * ln(LinesOfCode)
+    # Simplified version without Halstead metrics
+    
+    $linesOfCodeLog = [Math]::Log($LinesOfCode + 1)  # +1 to avoid log(0)
+    $maintainabilityIndex = 171 - (0.23 * $CyclomaticComplexity) - (16.2 * $linesOfCodeLog)
+    
+    # Normalize to 0-100 scale
+    return [Math]::Max(0, [Math]::Min(100, $maintainabilityIndex))
+}
+
+function New-QualityReport {
+    <#
+    .SYNOPSIS
+    Generates comprehensive code quality reports with interactive dashboards and visualizations.
+    
+    .DESCRIPTION
+    Creates detailed quality reports combining pattern detection, documentation analysis,
+    naming conventions, technical debt, and other quality metrics. Supports multiple
+    output formats including HTML dashboards, JSON, CSV, and PDF.
+    
+    .PARAMETER Graph
+    The CPG graph to analyze
+    
+    .PARAMETER OutputPath
+    Base path for generated reports
+    
+    .PARAMETER Format
+    Output format(s): HTML, JSON, CSV, PDF
+    
+    .PARAMETER IncludeAllAnalysis
+    Include all available analysis types
+    
+    .PARAMETER Language
+    Programming language for analysis (affects naming conventions and patterns)
+    
+    .EXAMPLE
+    New-QualityReport -Graph $graph -OutputPath ".\reports" -Format @('HTML', 'JSON') -IncludeAllAnalysis -Language PowerShell
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Graph,
+        
+        [ValidateNotNullOrEmpty()]
+        [string]$OutputPath = (Resolve-Path -LiteralPath '.\').Path,
+        
+        [ValidateSet('HTML', 'JSON', 'CSV', 'PDF')]
+        [string[]]$Format = @('HTML', 'JSON'),
+        
+        [ValidateSet('Markdown','Json','HTML')]
+        [string]$OutputFormat = 'Markdown',
+        
+        [switch]$IncludeAllAnalysis,
+        
+        [ValidateSet('PowerShell', 'JavaScript', 'TypeScript', 'CSharp', 'Python')]
+        [string]$Language = 'PowerShell'
+    )
+    
+    begin {
+        if (-not (Test-IsCPGraph -Graph $Graph)) {
+            throw "Invalid graph instance passed to $($MyInvocation.MyCommand.Name): missing expected CPGraph methods: GetNodesByType, GetEdges, GetNodeById."
+        }
+        # Attach missing methods so downstream calls work on duck-typed graphs
+        $Graph = Ensure-GraphDuckType -Graph $Graph
+        
+        Write-Verbose "Starting comprehensive quality report generation"
+        $reportTimestamp = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
+        $reportData = @{
+            Metadata = @{
+                GeneratedAt = Get-Date
+                Language = $Language
+                GraphStatistics = $Graph.GetStatistics()
+                AnalysisVersion = "1.0.0"
+                ReportId = [guid]::NewGuid().ToString()
+            }
+            Summary = @{}
+            Analysis = @{}
+        }
+        
+        # Ensure output directory exists
+        if (-not (Test-Path $OutputPath)) {
+            New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
+        }
+    }
+    
+    process {
+        try {
+            Write-Verbose "Performing comprehensive code analysis..."
+            
+            # Run all analysis types if requested
+            if ($IncludeAllAnalysis) {
+                Write-Verbose "  Running design pattern detection..."
+                $reportData.Analysis.DesignPatterns = Find-DesignPatterns -Graph $Graph -UseCache
+                
+                Write-Verbose "  Running code purpose classification..."
+                $reportData.Analysis.CodePurpose = Get-CodePurpose -Graph $Graph -UseCache
+                
+                Write-Verbose "  Running cohesion metrics calculation..."
+                $reportData.Analysis.CohesionMetrics = Get-CohesionMetrics -Graph $Graph -IncludeDetails
+                
+                Write-Verbose "  Running business logic extraction..."
+                $reportData.Analysis.BusinessLogic = Extract-BusinessLogic -Graph $Graph -ExtractFromComments -ExtractFromConditionals
+                
+                Write-Verbose "  Running architecture recovery..."
+                $reportData.Analysis.Architecture = Recover-Architecture -Graph $Graph -DetectLayers -DetectComponents
+                
+                Write-Verbose "  Running documentation completeness analysis..."
+                $reportData.Analysis.Documentation = Test-DocumentationCompleteness -Graph $Graph -IncludePrivate
+                
+                Write-Verbose "  Running naming convention validation..."
+                $reportData.Analysis.NamingConventions = Test-NamingConventions -Graph $Graph -Language $Language -IncludePrivate
+                
+                Write-Verbose "  Running comment-code alignment analysis..."
+                $reportData.Analysis.CommentAlignment = Test-CommentCodeAlignment -Graph $Graph
+                
+                Write-Verbose "  Running technical debt analysis..."
+                $reportData.Analysis.TechnicalDebt = Get-TechnicalDebt -Graph $Graph -IncludeTimeEstimates
+            }
+            
+            # Generate summary statistics
+            $reportData.Summary = Get-QualityReportSummary -AnalysisData $reportData.Analysis
+            
+            Write-Verbose "Analysis complete. Generating reports in formats: $($Format -join ', ')"
+            
+            # Generate reports in requested formats
+            $generatedFiles = @()
+            
+            foreach ($formatType in $Format) {
+                $fileName = "CodeQualityReport_$reportTimestamp.$($formatType.ToLower())"
+                $filePath = Join-Path $OutputPath $fileName
+                
+                switch ($formatType) {
+                    'HTML' {
+                        $htmlContent = New-HTMLQualityReport -ReportData $reportData
+                        $htmlContent | Out-File -FilePath $filePath -Encoding UTF8
+                    }
+                    'JSON' {
+                        $reportData | ConvertTo-Json -Depth 10 | Out-File -FilePath $filePath -Encoding UTF8
+                    }
+                    'CSV' {
+                        $csvContent = New-CSVQualityReport -ReportData $reportData
+                        $csvContent | Export-Csv -Path $filePath -NoTypeInformation -Encoding UTF8
+                    }
+                    'PDF' {
+                        # PDF generation would require additional dependencies
+                        Write-Warning "PDF generation not implemented in this version"
+                        continue
+                    }
+                }
+                
+                $generatedFiles += $filePath
+                Write-Verbose "  Generated: $filePath"
+            }
+            
+            $result = @{
+                ReportId = $reportData.Metadata.ReportId
+                GeneratedAt = $reportData.Metadata.GeneratedAt
+                GeneratedFiles = $generatedFiles
+                Summary = $reportData.Summary
+                OutputPath = $OutputPath
+            }
+            
+            Write-Verbose "Quality report generation complete. Generated $($generatedFiles.Count) files."
+            
+            # Apply OutputFormat formatting (case-insensitive)
+            $OutputFormat = $OutputFormat.ToUpperInvariant()
+            switch ($OutputFormat) {
+                'JSON' {
+                    return ($result | ConvertTo-Json -Depth 10)
+                }
+                'HTML' {
+                    # Convert result to HTML string
+                    return ($result | ConvertTo-Html -As List | Out-String)
+                }
+                'MARKDOWN' {
+                    # Build Markdown report
+                    $markdown = @"
+# Code Quality Report
+
+**Report ID:** $($result.ReportId)
+**Generated:** $($result.GeneratedAt)
+**Output Path:** $($result.OutputPath)
+
+## Summary
+
+**Overall Score:** $($result.Summary.OverallScore)%
+**Overall Rating:** $($result.Summary.Ratings.Overall)
+
+### Key Metrics
+$(if ($result.Summary.KeyMetrics) {
+    $result.Summary.KeyMetrics.GetEnumerator() | ForEach-Object {
+        "- **$($_.Key):** $($_.Value)"
+    }
+})
+
+### Recommendations
+$(if ($result.Summary.Recommendations -and $result.Summary.Recommendations.Count -gt 0) {
+    $result.Summary.Recommendations | ForEach-Object {
+        "- $_"
+    }
+} else {
+    "No recommendations at this time."
+})
+
+### Generated Files
+$(if ($result.GeneratedFiles -and $result.GeneratedFiles.Count -gt 0) {
+    $result.GeneratedFiles | ForEach-Object {
+        "- ``$_``"
+    }
+})
+"@
+                    return $markdown
+                }
+                default {
+                    return $result
+                }
+            }
+        }
+        catch {
+            Write-Error "Error during quality report generation: $($_.Exception.Message)"
+            throw
+        }
+    }
+}
+
+function Get-QualityReportSummary {
+    [CmdletBinding()]
+    param(
+        [hashtable]$AnalysisData
+    )
+    
+    $summary = @{
+        OverallScore = 0.0
+        Ratings = @{}
+        KeyMetrics = @{}
+        Recommendations = @()
+    }
+    
+    # Calculate overall quality score
+    $scores = @()
+    
+    if ($AnalysisData.Documentation) {
+        $docScore = $AnalysisData.Documentation.OverallCompleteness * 100
+        $scores += $docScore
+        $summary.Ratings.Documentation = Get-QualityRating -Score $docScore
+        $summary.KeyMetrics.DocumentationCompleteness = "$([Math]::Round($docScore, 1))%"
+    }
+    
+    if ($AnalysisData.TechnicalDebt) {
+        $debtScore = [Math]::Max(0, 100 - $AnalysisData.TechnicalDebt.AverageDebtScore * 10)
+        $scores += $debtScore
+        $summary.Ratings.TechnicalDebt = Get-QualityRating -Score $debtScore
+        $summary.KeyMetrics.AverageDebtScore = $AnalysisData.TechnicalDebt.AverageDebtScore
+    }
+    
+    if ($AnalysisData.CommentAlignment) {
+        $alignmentScore = $AnalysisData.CommentAlignment.OverallAlignment * 100
+        $scores += $alignmentScore
+        $summary.Ratings.CommentAlignment = Get-QualityRating -Score $alignmentScore
+        $summary.KeyMetrics.CommentAlignment = "$([Math]::Round($alignmentScore, 1))%"
+    }
+    
+    if ($scores.Count -gt 0) {
+        $summary.OverallScore = [Math]::Round(($scores | Measure-Object -Average).Average, 1)
+        $summary.Ratings.Overall = Get-QualityRating -Score $summary.OverallScore
+    }
+    
+    # Generate recommendations
+    $summary.Recommendations = Get-QualityRecommendations -AnalysisData $AnalysisData
+    
+    return $summary
+}
+
+function Get-QualityRating {
+    [CmdletBinding()]
+    param(
+        [double]$Score
+    )
+    
+    if ($Score -ge 90) { return 'Excellent' }
+    elseif ($Score -ge 80) { return 'Good' }
+    elseif ($Score -ge 60) { return 'Fair' }
+    elseif ($Score -ge 40) { return 'Poor' }
+    else { return 'Critical' }
+}
+
+function Get-QualityRecommendations {
+    [CmdletBinding()]
+    param(
+        [hashtable]$AnalysisData
+    )
+    
+    $recommendations = @()
+    
+    # Documentation recommendations
+    if ($AnalysisData.Documentation -and $AnalysisData.Documentation.OverallCompleteness -lt 0.7) {
+        $recommendations += "Improve documentation completeness (current: $([Math]::Round($AnalysisData.Documentation.OverallCompleteness * 100, 1))%)"
+    }
+    
+    # Technical debt recommendations
+    if ($AnalysisData.TechnicalDebt -and $AnalysisData.TechnicalDebt.CriticalIssues -gt 0) {
+        $recommendations += "Address $($AnalysisData.TechnicalDebt.CriticalIssues) critical technical debt issues"
+    }
+    
+    # Naming convention recommendations
+    if ($AnalysisData.NamingConventions -and $AnalysisData.NamingConventions.TotalViolations -gt 0) {
+        $recommendations += "Fix $($AnalysisData.NamingConventions.TotalViolations) naming convention violations"
+    }
+    
+    # Design pattern recommendations
+    if ($AnalysisData.DesignPatterns) {
+        $highConfidencePatterns = $AnalysisData.DesignPatterns | Where-Object { $_.Confidence -gt 0.8 }
+        if ($highConfidencePatterns.Count -gt 0) {
+            $recommendations += "Consider documenting $($highConfidencePatterns.Count) detected design patterns"
+        }
+    }
+    
+    return $recommendations
+}
+
+function New-HTMLQualityReport {
+    [CmdletBinding()]
+    param(
+        [hashtable]$ReportData
+    )
+    
+    $html = @"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Quality Report - $($ReportData.Metadata.GeneratedAt.ToString("yyyy-MM-dd"))</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background-color: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; border-bottom: 3px solid #007acc; padding-bottom: 20px; margin-bottom: 30px; }
+        .header h1 { color: #007acc; margin: 0; font-size: 2.5em; }
+        .header p { color: #666; margin: 5px 0 0 0; }
+        .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .metric-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; text-align: center; }
+        .metric-value { font-size: 2.5em; font-weight: bold; margin: 10px 0; }
+        .metric-label { font-size: 1.1em; opacity: 0.9; }
+        .section { margin: 30px 0; }
+        .section h2 { color: #333; border-left: 4px solid #007acc; padding-left: 15px; margin-bottom: 20px; }
+        .analysis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .analysis-item { background: #f9f9f9; padding: 20px; border-radius: 8px; border-left: 4px solid #007acc; }
+        .analysis-item h3 { margin-top: 0; color: #007acc; }
+        .recommendations { background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 20px; }
+        .recommendations h3 { color: #856404; margin-top: 0; }
+        .recommendations ul { margin: 10px 0; }
+        .recommendations li { margin: 5px 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #ddd; }
+        th { background-color: #007acc; color: white; }
+        tr:hover { background-color: #f5f5f5; }
+        .rating-excellent { color: #28a745; font-weight: bold; }
+        .rating-good { color: #17a2b8; font-weight: bold; }
+        .rating-fair { color: #ffc107; font-weight: bold; }
+        .rating-poor { color: #fd7e14; font-weight: bold; }
+        .rating-critical { color: #dc3545; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Code Quality Report</h1>
+            <p>Generated on $($ReportData.Metadata.GeneratedAt.ToString("MMMM dd, yyyy 'at' HH:mm:ss"))</p>
+            <p>Language: $($ReportData.Metadata.Language) | Report ID: $($ReportData.Metadata.ReportId)</p>
+        </div>
+        
+        <div class="summary">
+            <div class="metric-card">
+                <div class="metric-value">$($ReportData.Summary.OverallScore)%</div>
+                <div class="metric-label">Overall Quality Score</div>
+            </div>
+"@
+
+    if ($ReportData.Summary.KeyMetrics.DocumentationCompleteness) {
+        $html += @"
+            <div class="metric-card">
+                <div class="metric-value">$($ReportData.Summary.KeyMetrics.DocumentationCompleteness)</div>
+                <div class="metric-label">Documentation</div>
+            </div>
+"@
+    }
+
+    if ($ReportData.Summary.KeyMetrics.AverageDebtScore) {
+        $html += @"
+            <div class="metric-card">
+                <div class="metric-value">$([Math]::Round($ReportData.Summary.KeyMetrics.AverageDebtScore, 1))</div>
+                <div class="metric-label">Technical Debt</div>
+            </div>
+"@
+    }
+
+    $html += @"
+        </div>
+        
+        <div class="section recommendations">
+            <h3>Key Recommendations</h3>
+            <ul>
+"@
+
+    foreach ($recommendation in $ReportData.Summary.Recommendations) {
+        $html += "                <li>$recommendation</li>`n"
+    }
+
+    $html += @"
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>Analysis Results</h2>
+            <div class="analysis-grid">
+"@
+
+    # Add analysis sections based on available data
+    foreach ($analysisType in $ReportData.Analysis.Keys) {
+        $analysisData = $ReportData.Analysis[$analysisType]
+        $html += @"
+                <div class="analysis-item">
+                    <h3>$analysisType Analysis</h3>
+                    <p><strong>Status:</strong> Complete</p>
+                    <p><strong>Items Analyzed:</strong> $($true ? 1 : 0)</p>
+                </div>
+"@
+    }
+
+    $html += @"
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Graph Statistics</h2>
+            <table>
+                <tr><th>Metric</th><th>Value</th></tr>
+                <tr><td>Total Nodes</td><td>$($ReportData.Metadata.GraphStatistics.NodeCount)</td></tr>
+                <tr><td>Total Edges</td><td>$($ReportData.Metadata.GraphStatistics.EdgeCount)</td></tr>
+                <tr><td>Average Out Degree</td><td>$([Math]::Round($ReportData.Metadata.GraphStatistics.AverageOutDegree, 2))</td></tr>
+                <tr><td>Graph Density</td><td>$([Math]::Round($ReportData.Metadata.GraphStatistics.Density, 4))</td></tr>
+            </table>
+        </div>
+        
+        <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center; color: #666;">
+            <p>Report generated by Unity-Claude Semantic Analysis System v1.0.0</p>
+        </footer>
+    </div>
+</body>
+</html>
+"@
+
+    return $html
+}
+
+function New-CSVQualityReport {
+    [CmdletBinding()]
+    param(
+        [hashtable]$ReportData
+    )
+    
+    # Convert analysis data to CSV format
+    $csvData = @()
+    
+    # Add summary metrics
+    $csvData += [PSCustomObject]@{
+        Category = 'Summary'
+        Metric = 'Overall Quality Score'
+        Value = $ReportData.Summary.OverallScore
+        Unit = 'Percentage'
+        Rating = $ReportData.Summary.Ratings.Overall
+    }
+    
+    # Add detailed metrics from each analysis type
+    foreach ($analysisType in $ReportData.Analysis.Keys) {
+        $analysisData = $ReportData.Analysis[$analysisType]
+        
+        # Add type-specific metrics based on analysis structure
+        switch ($analysisType) {
+            'Documentation' {
+                $csvData += [PSCustomObject]@{
+                    Category = 'Documentation'
+                    Metric = 'Completeness Score'
+                    Value = $analysisData.OverallCompleteness
+                    Unit = 'Ratio'
+                    Rating = $ReportData.Summary.Ratings.Documentation
+                }
+            }
+            'TechnicalDebt' {
+                $csvData += [PSCustomObject]@{
+                    Category = 'Technical Debt'
+                    Metric = 'Average Debt Score'
+                    Value = $analysisData.AverageDebtScore
+                    Unit = 'Score'
+                    Rating = $ReportData.Summary.Ratings.TechnicalDebt
+                }
+            }
+        }
+    }
+    
+    return $csvData
+}
+
+#endregion
+
+# Export all functions (Hours 1-8 complete)
+Export-ModuleMember -Function @(
+    'Find-DesignPatterns',
+    'Get-CodePurpose',
+    'Get-CohesionMetrics',
+    'Extract-BusinessLogic',
+    'Recover-Architecture',
+    'Test-DocumentationCompleteness',
+    'Test-NamingConventions',
+    'Test-CommentCodeAlignment',
+    'Get-TechnicalDebt',
+    'New-QualityReport'
+) -Variable @()

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity-Claude Automation - Code Analysis Visualization</title>
+    
+    <!-- D3.js v7.9.0 (CDN for optimal caching - Research Pattern #1) -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="/static/css/index.css">
+    
+    <style>
+        /* Base styles with performance optimization */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #ffffff;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            box-sizing: border-box;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #ffffff;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .status {
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid rgba(0, 255, 0, 0.5);
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 0.9em;
+            color: #00ff88;
+        }
+        
+        .visualization-container {
+            margin-top: 60px;
+            height: calc(100vh - 60px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* SVG and Canvas containers (Research Pattern #3) */
+        #graph-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: grab;
+        }
+        
+        #graph-svg:active {
+            cursor: grabbing;
+        }
+        
+        #graph-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none; /* Hidden by default, shown for large datasets */
+        }
+        
+        /* Node and link styles */
+        .node {
+            stroke: #fff;
+            stroke-width: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .node:hover {
+            stroke-width: 4px;
+            filter: brightness(1.2);
+        }
+        
+        .node.selected {
+            stroke: #ffff00;
+            stroke-width: 5px;
+        }
+        
+        .link {
+            stroke: #999;
+            stroke-opacity: 0.6;
+            stroke-width: 2px;
+        }
+        
+        .link.highlighted {
+            stroke: #ffff00;
+            stroke-opacity: 0.9;
+            stroke-width: 4px;
+        }
+        
+        /* Control panel */
+        .control-panel {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 250px;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        
+        .control-panel.collapsed {
+            transform: translateX(220px);
+        }
+        
+        .panel-toggle {
+            position: absolute;
+            left: -30px;
+            top: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 5px 0 0 5px;
+            cursor: pointer;
+        }
+        
+        .control-section {
+            margin-bottom: 20px;
+        }
+        
+        .control-section h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+            color: #00ff88;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }
+        
+        .slider-container {
+            margin-bottom: 15px;
+        }
+        
+        .slider-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        .slider {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .button {
+            background: #2a5298;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px 5px 5px 0;
+            transition: background 0.3s ease;
+        }
+        
+        .button:hover {
+            background: #1e3c72;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Performance indicator */
+        .perf-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 0.8em;
+            color: #00ff88;
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 5px;
+            padding: 10px;
+            color: white;
+            font-size: 0.9em;
+            pointer-events: none;
+            z-index: 1001;
+            max-width: 200px;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 5px 10px;
+            }
+            
+            .header h1 {
+                font-size: 1em;
+            }
+            
+            .control-panel {
+                right: 10px;
+                min-width: 200px;
+                max-height: 60vh;
+            }
+            
+            .controls {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with real-time status -->
+    <div class="header">
+        <h1>🚀 Unity-Claude Automation - Code Analysis Dashboard</h1>
+        <div class="controls">
+            <div class="status" id="connection-status">
+                🔌 Connecting...
+            </div>
+            <div class="status" id="data-status">
+                📊 Loading...
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main visualization container -->
+    <div class="visualization-container">
+        <!-- SVG for small to medium datasets -->
+        <svg id="graph-svg"></svg>
+        
+        <!-- Canvas for large datasets (Research Pattern #3) -->
+        <canvas id="graph-canvas"></canvas>
+    </div>
+    
+    <!-- Control panel -->
+    <div class="control-panel" id="control-panel">
+        <button class="panel-toggle" id="panel-toggle">⚙️</button>
+        
+        <div class="control-section">
+            <h3>🔍 Search & Filter</h3>
+            <input type="text" class="search-box" id="search-box" placeholder="Search nodes...">
+            <button class="button" id="clear-search">Clear</button>
+        </div>
+        
+        <div class="control-section">
+            <h3>⚙️ Simulation Controls</h3>
+            <div class="slider-container">
+                <label for="force-strength">Link Force: <span id="force-value">30</span></label>
+                <input type="range" class="slider" id="force-strength" min="1" max="100" value="30">
+            </div>
+            <div class="slider-container">
+                <label for="charge-strength">Node Repulsion: <span id="charge-value">-300</span></label>
+                <input type="range" class="slider" id="charge-strength" min="-1000" max="-50" value="-300">
+            </div>
+            <button class="button" id="restart-simulation">🔄 Restart</button>
+            <button class="button" id="pause-simulation">⏸️ Pause</button>
+        </div>
+        
+        <div class="control-section">
+            <h3>🎨 Visual Settings</h3>
+            <button class="button" id="toggle-labels">🏷️ Labels</button>
+            <button class="button" id="toggle-renderer">⚡ Canvas Mode</button>
+            <button class="button" id="center-graph">🎯 Center</button>
+        </div>
+        
+        <div class="control-section">
+            <h3>📊 Data Sources</h3>
+            <button class="button" id="refresh-data">🔄 Refresh</button>
+            <button class="button" id="export-data">💾 Export</button>
+        </div>
+    </div>
+    
+    <!-- Performance indicator -->
+    <div class="perf-indicator" id="perf-indicator">
+        FPS: <span id="fps-counter">--</span> | Nodes: <span id="node-count">--</span> | Mode: <span id="render-mode">SVG</span>
+    </div>
+    
+    <!-- Tooltip -->
+    <div class="tooltip" id="tooltip" style="opacity: 0;"></div>
+    
+    <!-- Enhanced Semantic Renderer - Load first -->
+    <script src="/static/js/enhanced-semantic-renderer.js"></script>
+    <script src="/static/js/enhanced-controls.js"></script>
+    
+    <!-- AI Workflow Integration (WEEK 1 features) -->
+    <script src="/static/js/ai-workflow-integration.js"></script>
+    
+    <!-- Main JavaScript modules (fallback) -->
+    <script src="/static/js/graph-renderer.js"></script>
+    <script src="/static/js/graph-controls.js"></script>
+    
+    <!-- Day 7 Enhancement Modules -->
+    <script src="/static/js/graph-renderer-enhanced.js"></script>
+    <script src="/static/js/temporal-visualization.js"></script>
+    <script src="/static/js/interactive-exploration.js"></script>
+    <script src="/static/js/ai-relationship-explanations.js"></script>
+    
+    <!-- Day 8 Advanced Features -->
+    <script src="/static/js/large-scale-optimizer.js"></script>
+    <script src="/static/js/advanced-layout-algorithms.js"></script>
+    <script src="/static/js/visualization-filters-perspectives.js"></script>
+    <script src="/static/js/export-documentation-generator.js"></script>
+    
+    <!-- Day 9 Real-Time Updates -->
+    <script src="/static/js/realtime-file-watcher.js"></script>
+    <script src="/static/js/live-analysis-pipeline.js"></script>
+    <script src="/static/js/realtime-performance-optimizer.js"></script>
+    
+    <script>
+        // Initialize visualization system
+        console.log('🚀 Unity-Claude Visualization System Starting...');
+        
+        // WebSocket connection for real-time updates (Research Pattern #4)
+        let websocket;
+        const connectWebSocket = () => {
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${wsProtocol}//${location.host}`;
+            
+            websocket = new WebSocket(wsUrl);
+            
+            websocket.onopen = () => {
+                console.log('🔌 WebSocket connected');
+                document.getElementById('connection-status').innerHTML = '🔌 Connected';
+                document.getElementById('connection-status').style.background = 'rgba(0, 255, 0, 0.2)';
+            };
+            
+            websocket.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+                console.log('📨 WebSocket message:', message);
+                
+                if (message.type === 'data_update') {
+                    // Trigger data refresh when PowerShell updates files
+                    if (typeof refreshGraphData === 'function') {
+                        refreshGraphData();
+                    }
+                }
+            };
+            
+            websocket.onclose = () => {
+                console.log('🔌 WebSocket disconnected, attempting reconnect...');
+                document.getElementById('connection-status').innerHTML = '🔌 Reconnecting...';
+                document.getElementById('connection-status').style.background = 'rgba(255, 165, 0, 0.2)';
+                setTimeout(connectWebSocket, 3000);
+            };
+            
+            websocket.onerror = (error) => {
+                console.error('🔌 WebSocket error:', error);
+                document.getElementById('connection-status').innerHTML = '🔌 Error';
+                document.getElementById('connection-status').style.background = 'rgba(255, 0, 0, 0.2)';
+            };
+        };
+        
+        // Start WebSocket connection
+        connectWebSocket();
+        
+        // Initialize graph when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🎨 Initializing D3.js graph visualization...');
+            
+            // Check if our modules loaded
+            if (typeof initializeGraph === 'function' && typeof setupControls === 'function') {
+                initializeGraph();
+                setupControls();
+                console.log('✅ Unity-Claude Visualization System Ready!');
+            } else {
+                console.error('❌ Failed to load graph modules');
+            }
+        });
+    </script>
+</body>
+</html>

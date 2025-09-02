@@ -1,0 +1,211 @@
+{
+  "workflow_schema_version": "2.0.0",
+  "created": "2025-08-29T15:30:00Z",
+  "description": "Multi-step orchestrator workflows for sophisticated AI-enhanced analysis with parallel worker coordination",
+  "workflows": {
+    "comprehensive_analysis_orchestration": {
+      "workflow_type": "multi-step-orchestrator",
+      "description": "Comprehensive 7-stage analysis combining predictive maintenance, evolution analysis, AI enhancement, and synthesis",
+      "orchestrator": {
+        "name": "ComprehensiveAnalysisOrchestrator", 
+        "role": "Coordinate complex multi-step analysis with parallel worker delegation and intelligent synthesis",
+        "coordination_pattern": "dynamic-delegation",
+        "input_schema": {
+          "analysis_scope": "object",
+          "target_modules": "array",
+          "enhancement_config": "object",
+          "parallel_processing_config": "object"
+        },
+        "output_schema": {
+          "comprehensive_report": "object",
+          "synthesis_results": "object", 
+          "performance_metrics": "object",
+          "ai_recommendations": "array",
+          "confidence_assessment": "object"
+        }
+      },
+      "workers": [
+        {
+          "name": "MaintenancePredictionWorker",
+          "role": "Execute enhanced maintenance prediction analysis with technical debt assessment",
+          "specialization": "maintenance_forecasting",
+          "parallel_capability": true,
+          "tools": ["PowerShell-SQALE-Calculator", "PSScriptAnalyzer-Integration", "Predictive-Maintenance-Engine"],
+          "output_format": "maintenance_analysis_result"
+        },
+        {
+          "name": "EvolutionAnalysisWorker", 
+          "role": "Execute comprehensive code evolution analysis with pattern detection",
+          "specialization": "evolution_tracking",
+          "parallel_capability": true,
+          "tools": ["PowerShell-Git-Parser", "Complexity-Analyzer", "Pattern-Detection-Engine"],
+          "output_format": "evolution_analysis_result"
+        },
+        {
+          "name": "AIEnhancementWorker",
+          "role": "Apply AI enhancement to analysis results using Ollama local models",
+          "specialization": "ai_enhancement",
+          "parallel_capability": false,
+          "tools": ["Ollama-CodeLlama", "PowershAI-Integration", "AI-Insight-Generator"],
+          "output_format": "ai_enhanced_analysis"
+        },
+        {
+          "name": "SynthesisWorker",
+          "role": "Synthesize multiple analysis results into comprehensive insights",
+          "specialization": "result_synthesis",
+          "parallel_capability": false,
+          "tools": ["Cross-Analysis-Engine", "Synthesis-Framework", "Consensus-Builder"],
+          "output_format": "synthesized_insights"
+        },
+        {
+          "name": "PerformanceMonitoringWorker",
+          "role": "Monitor and optimize workflow performance with bottleneck detection",
+          "specialization": "performance_optimization", 
+          "parallel_capability": true,
+          "tools": ["PowerShell-Get-Counter", "Bottleneck-Detector", "Resource-Monitor"],
+          "output_format": "performance_analysis"
+        }
+      ],
+      "workflow_steps": [
+        {
+          "step": 1,
+          "stage": "initialization",
+          "node": "orchestrator",
+          "action": "prepare_multi_step_analysis",
+          "description": "Initialize comprehensive analysis with parallel worker preparation and resource allocation",
+          "parallel_workers": [],
+          "dependencies": [],
+          "timeout_seconds": 30
+        },
+        {
+          "step": 2,
+          "stage": "parallel_analysis",
+          "node": "parallel_execution", 
+          "action": "execute_parallel_analysis",
+          "description": "Execute maintenance and evolution analysis in parallel with performance monitoring",
+          "parallel_workers": ["MaintenancePredictionWorker", "EvolutionAnalysisWorker", "PerformanceMonitoringWorker"],
+          "dependencies": ["step_1"],
+          "timeout_seconds": 120
+        },
+        {
+          "step": 3,
+          "stage": "ai_enhancement",
+          "node": "AIEnhancementWorker",
+          "action": "enhance_analysis_results", 
+          "description": "Apply AI enhancement to parallel analysis results using Ollama integration",
+          "parallel_workers": [],
+          "dependencies": ["step_2"],
+          "timeout_seconds": 60
+        },
+        {
+          "step": 4,
+          "stage": "synthesis", 
+          "node": "SynthesisWorker",
+          "action": "synthesize_enhanced_results",
+          "description": "Synthesize AI-enhanced results into comprehensive insights with consensus building",
+          "parallel_workers": [],
+          "dependencies": ["step_3"],
+          "timeout_seconds": 45
+        },
+        {
+          "step": 5,
+          "stage": "optimization",
+          "node": "orchestrator",
+          "action": "optimize_recommendations",
+          "description": "Optimize recommendations based on synthesis results and performance metrics",
+          "parallel_workers": [],
+          "dependencies": ["step_4"],
+          "timeout_seconds": 30
+        },
+        {
+          "step": 6,
+          "stage": "validation",
+          "node": "orchestrator", 
+          "action": "validate_comprehensive_results",
+          "description": "Validate comprehensive analysis results and assess recommendation confidence",
+          "parallel_workers": [],
+          "dependencies": ["step_5"],
+          "timeout_seconds": 30
+        },
+        {
+          "step": 7,
+          "stage": "finalization",
+          "node": "orchestrator",
+          "action": "finalize_comprehensive_report",
+          "description": "Create final comprehensive report with AI insights, performance metrics, and actionable recommendations",
+          "parallel_workers": [],
+          "dependencies": ["step_6"],
+          "timeout_seconds": 30
+        }
+      ],
+      "parallel_processing": {
+        "enabled": true,
+        "max_parallel_workers": 3,
+        "coordination_pattern": "orchestrator-managed",
+        "result_aggregation": "consensus-based", 
+        "error_handling": "graceful_degradation",
+        "resource_management": "adaptive_throttling"
+      },
+      "performance_monitoring": {
+        "enabled": true,
+        "metrics": ["execution_time", "resource_usage", "bottleneck_detection", "worker_efficiency"],
+        "collection_interval_seconds": 5,
+        "alert_thresholds": {
+          "max_execution_time_seconds": 300,
+          "max_memory_usage_mb": 1024,
+          "max_cpu_usage_percent": 80
+        }
+      },
+      "state_management": {
+        "persistence": "json",
+        "checkpoints": true, 
+        "recovery": "automatic",
+        "state_compression": true,
+        "cleanup_on_completion": true
+      }
+    },
+    "parallel_worker_coordination": {
+      "workflow_type": "coordination-framework",
+      "description": "Specialized workflow for coordinating parallel worker execution with load balancing and resource optimization",
+      "coordination_config": {
+        "delegation_strategy": "dynamic_load_balancing",
+        "worker_pool_size": 5,
+        "queue_management": "priority_based",
+        "result_collection": "streaming_aggregation",
+        "error_recovery": "automatic_retry"
+      },
+      "monitoring_framework": {
+        "performance_counters": ["\\Processor(_Total)\\% Processor Time", "\\Memory\\Available MBytes", "\\Process(powershell*)\\Working Set"],
+        "custom_metrics": ["worker_throughput", "queue_depth", "synthesis_quality"],
+        "bottleneck_detection": "automated",
+        "optimization_triggers": ["cpu_threshold_80", "memory_threshold_85", "queue_depth_10"]
+      }
+    }
+  },
+  "configuration": {
+    "rest_api_endpoint": "http://127.0.0.1:8000",
+    "timeout_seconds": 600,
+    "retry_count": 3,
+    "retry_delay_seconds": 5,
+    "max_concurrent_workflows": 2,
+    "state_compression": true,
+    "logging_level": "debug",
+    "performance_profiling": true
+  },
+  "powershell_integration": {
+    "serialization_method": "ConvertTo-Json",
+    "deserialization_method": "ConvertFrom-Json", 
+    "parallel_processing": "ForEach-Object -Parallel",
+    "worker_coordination": "Invoke-Command -AsJob",
+    "content_type": "application/json",
+    "encoding": "UTF-8"
+  },
+  "error_handling": {
+    "retry_on_timeout": true,
+    "retry_on_server_error": true,
+    "fallback_mode": "local_analysis_only",
+    "error_classification": "automatic",
+    "graceful_degradation": true,
+    "partial_result_recovery": true
+  }
+}

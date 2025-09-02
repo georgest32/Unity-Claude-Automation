@@ -1,0 +1,106 @@
+{
+  "StartTime": "2025-08-23T15:56:35.8566432-04:00",
+  "Summary": {
+    "FailedTests": 3,
+    "Duration": "00:00:57.1347415",
+    "PassedTests": 9,
+    "PassRate": "75%",
+    "TotalTests": 12
+  },
+  "TestSuite": "LangGraph Bridge PowerShell Integration",
+  "Duration": "00:00:57.1347415",
+  "Tests": [
+    {
+      "TestName": "Server Health Check",
+      "Passed": true,
+      "Timestamp": "2025-08-23T15:56:36.1954765-04:00",
+      "Details": "Server responded to health check",
+      "Data": null
+    },
+    {
+      "TestName": "Server Info Retrieval",
+      "Passed": true,
+      "Timestamp": "2025-08-23T15:56:36.2066898-04:00",
+      "Details": "Version: 1.0.0, Service: LangGraph PowerShell Bridge API",
+      "Data": {
+        "service": "LangGraph PowerShell Bridge API",
+        "version": "1.0.0",
+        "status": "running",
+        "startup_time": "2025-08-23T15:52:58.235025",
+        "active_graphs": 0,
+        "active_threads": 0
+      }
+    },
+    {
+      "TestName": "Create Basic Graph",
+      "Passed": true,
+      "Timestamp": "2025-08-23T15:56:36.2340295-04:00",
+      "Details": "Graph ID: test-graph-20250823-155636",
+      "Data": null
+    },
+    {
+      "TestName": "List Graphs",
+      "Passed": true,
+      "Timestamp": "2025-08-23T15:56:36.2449828-04:00",
+      "Details": "Found 1 graphs, including our test graph",
+      "Data": null
+    },
+    {
+      "TestName": "Basic Graph Operations",
+      "Passed": false,
+      "Timestamp": "2025-08-23T15:56:50.6051416-04:00",
+      "Details": "Exception: Response status code does not indicate success: 500 (Internal Server Error).",
+      "Data": null
+    },
+    {
+      "TestName": "Create HITL Graph",
+      "Passed": true,
+      "Timestamp": "2025-08-23T15:56:50.6195256-04:00",
+      "Details": "HITL Graph ID: hitl-graph-20250823-155650",
+      "Data": null
+    },
+    {
+      "TestName": "HITL Graph Operations",
+      "Passed": false,
+      "Timestamp": "2025-08-23T15:57:04.7232171-04:00",
+      "Details": "Exception: Response status code does not indicate success: 500 (Internal Server Error).",
+      "Data": null
+    },
+    {
+      "TestName": "Non-Existent Graph Error Handling",
+      "Passed": true,
+      "Timestamp": "2025-08-23T15:57:18.8255598-04:00",
+      "Details": "Correctly threw error: Response status code does not indicate success: 500 (Internal Server Error).",
+      "Data": null
+    },
+    {
+      "TestName": "Invalid Thread Error Handling",
+      "Passed": true,
+      "Timestamp": "2025-08-23T15:57:18.8710242-04:00",
+      "Details": "Correctly threw error: Response status code does not indicate success: 404 (Not Found).",
+      "Data": null
+    },
+    {
+      "TestName": "State Serialization Test",
+      "Passed": false,
+      "Timestamp": "2025-08-23T15:57:32.9828179-04:00",
+      "Details": "Exception: Response status code does not indicate success: 500 (Internal Server Error).",
+      "Data": null
+    },
+    {
+      "TestName": "Server URI Update",
+      "Passed": true,
+      "Timestamp": "2025-08-23T15:57:32.9881549-04:00",
+      "Details": "URI changed from http://127.0.0.1:8000 to http://test.example.com:9000",
+      "Data": null
+    },
+    {
+      "TestName": "Logging Controls",
+      "Passed": true,
+      "Timestamp": "2025-08-23T15:57:32.9909845-04:00",
+      "Details": "Logging enable/disable functions work",
+      "Data": null
+    }
+  ],
+  "EndTime": "2025-08-23T15:57:32.9913847-04:00"
+}

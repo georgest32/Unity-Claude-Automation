@@ -1,0 +1,54 @@
+{
+    "timestamp": "2025-08-28T02:15:00Z",
+    "session_id": "test-enter-key-fix",
+    "prompt_type": "Testing",
+    "task": "Test that ENTER key is properly sent after clipboard paste",
+    "priority": "CRITICAL",
+    "test_details": {
+        "test_script": ".\Test-ENTERKeySubmission.ps1",
+        "test_purpose": "Verify the BlockInput removal fix allows ENTER key to be sent",
+        "expected_duration": "3 seconds",
+        "requires_nuggetron": true,
+        "test_mode": "ENTER key submission verification"
+    },
+    "fix_applied": {
+        "issue": "BlockInput($true) was blocking ALL input including SendKeys",
+        "solution": "Removed BlockInput entirely, rely on window focus and SetCapture",
+        "expected_result": "SendKeys commands including ENTER now work properly"
+    },
+    "verification_steps": [
+        "Orchestrator processes this JSON",
+        "Executes test script",
+        "Creates boilerplate prompt",
+        "Switches to NUGGETRON window",
+        "Clears field with Ctrl+A and Delete",
+        "Pastes prompt with Ctrl+V",
+        "CRITICAL: Sends ENTER key to submit",
+        "Prompt should be submitted to Claude"
+    ],
+    "expected_console_output": [
+        "[LOADED] Boilerplate function",
+        "[LOADED] Enhanced submission function",
+        "Preparing for submission...",
+        "Clearing existing content...",
+        "Using clipboard paste method...",
+        "Pasting complete prompt via Ctrl+V...",
+        "Submitting prompt...",
+        "[SUCCESS] Prompt submitted successfully!"
+    ],
+    "success_criteria": {
+        "must_see": [
+            "Full boilerplate prompt in NUGGETRON",
+            "Prompt is actually submitted (not just pasted)",
+            "Claude begins processing the request",
+            "Success messages in orchestrator console"
+        ],
+        "must_not_see": [
+            "BlockInput errors",
+            "SendKeys failures",
+            "Prompt sitting unsubmitted in input field"
+        ]
+    },
+    "action": "EXECUTE_TEST",
+    "RESPONSE": "RECOMMENDATION: TEST - .\\Test-ENTERKeySubmission.ps1: Execute test to verify that removing BlockInput allows ENTER key to be properly sent after clipboard paste. This test confirms the fix for the submission issue where prompts were being pasted but not submitted. Expected result: Full boilerplate prompt is pasted AND submitted with ENTER key."
+}

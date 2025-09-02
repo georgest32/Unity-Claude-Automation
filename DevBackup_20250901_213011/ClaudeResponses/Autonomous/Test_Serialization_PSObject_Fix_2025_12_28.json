@@ -1,0 +1,47 @@
+{
+  "timestamp": "2025-12-28T13:10:00Z",
+  "session_id": "test-serialization-pscustomobject-fix",
+  "prompt_type": "Testing",
+  "task": "CLIOrchestrator Serialization Test - Fixed PSCustomObject Handling",
+  "analysis_summary": {
+    "initial_issue": "Test script had Unicode characters causing parser errors",
+    "first_fix": "Replaced Unicode characters with ASCII equivalents",
+    "second_issue": "PSCustomObject test failed - ContainsKey method not found",
+    "second_fix": "Separated PSCustomObject handling from hashtable logic"
+  },
+  "test_results": {
+    "after_unicode_fix": {
+      "total_tests": 5,
+      "passed": 4,
+      "failed": 1,
+      "success_rate": "80%",
+      "failure": "PSCustomObject test - ContainsKey method error"
+    },
+    "expected_after_psobject_fix": {
+      "total_tests": 5,
+      "passed": 5,
+      "failed": 0,
+      "success_rate": "100%"
+    }
+  },
+  "fixes_applied": [
+    {
+      "file": "Test-CLIOrchestrator-Serialization.ps1",
+      "change": "Replaced 6 Unicode characters with ASCII equivalents",
+      "reason": "PowerShell parser errors with non-ASCII characters"
+    },
+    {
+      "file": "Unity-Claude-CLIOrchestrator-Original.psm1",
+      "change": "Added separate PSCustomObject handling in Convert-ToSerializedString",
+      "reason": "PSCustomObjects don't have ContainsKey method, must use PSObject.Properties"
+    }
+  ],
+  "learnings_documented": [
+    {
+      "number": 234,
+      "title": "Unicode Characters Cause PowerShell Parser Errors",
+      "location": "docs/learnings/powershell-learnings.md"
+    }
+  ],
+  "RESPONSE": "TEST - C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Test-CLIOrchestrator-Serialization.ps1: Re-run serialization test after fixing PSCustomObject handling. The Convert-ToSerializedString function now properly distinguishes between hashtables and PSCustomObjects, using appropriate property access methods for each type."
+}

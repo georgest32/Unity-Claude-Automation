@@ -1,0 +1,71 @@
+{
+  "timestamp": "2025-08-24T13:00:00",
+  "prompt_type": "Test Results",
+  "issue": "Test-CodeRedundancy persistent op_Subtraction error after multiple fixes",
+  "analysis": {
+    "root_cause": "PowerShell 5.1 Count property can return array instead of scalar when used with Select-Object, Where-Object, and collection operations",
+    "discovery": "Count property from filtered collections and Select-Object -Unique was not properly cast to integer",
+    "critical_locations": [
+      {
+        "lines": "141-143",
+        "description": "Token frequency calculation with Where-Object Count",
+        "operation": "Division with contextTokens.Count"
+      },
+      {
+        "line": "162",
+        "description": "Keyword count from filtered array",
+        "operation": "Multiplication with keywordCount"
+      },
+      {
+        "line": "172",
+        "description": "Other occurrences count from split and filter",
+        "operation": "Comparison with zero"
+      },
+      {
+        "line": "350",
+        "description": "Coverage calculation",
+        "operation": "Division with Graph.Nodes.Count"
+      },
+      {
+        "line": "533",
+        "description": "Redundancy rate calculation",
+        "operation": "Division with codeBlocks.Count"
+      },
+      {
+        "lines": "679-682",
+        "description": "Halstead metrics unique operators/operands",
+        "operation": "Select-Object -Unique Count"
+      }
+    ]
+  },
+  "solution_applied": {
+    "pattern": "[int]@(collection).Count or [int]collection.Count",
+    "fixes": [
+      "Line 141: Added [int]@() wrapper for Where-Object Count",
+      "Lines 142-143: Added [int]@() for contextTokens.Count in division",
+      "Line 162: Added [int]@() for keyword filtering Count",
+      "Line 172: Added [int]@() for otherOccurrences Count",
+      "Lines 347-350: Added [int] cast for all Count operations in stats",
+      "Lines 529-533: Added [int] cast for redundancy statistics",
+      "Lines 679-682: Added [int] cast for Halstead metrics counts"
+    ],
+    "total_fixes_applied": 15
+  },
+  "best_practices": {
+    "rule1": "Always use [int] cast when Count will be used in arithmetic",
+    "rule2": "Wrap filtered collections in @() before accessing Count",
+    "rule3": "Use [int]@(collection).Count for maximum reliability",
+    "alternative": "Use (collection | Measure-Object).Count for guaranteed scalar"
+  },
+  "testing_summary": {
+    "before_fix": "7/8 tests passing (87.5%)",
+    "expected_after_fix": "8/8 tests passing (100%)",
+    "fixed_test": "Test-CodeRedundancy",
+    "error_resolved": "op_Subtraction error on System.Object[]"
+  },
+  "documentation_updated": {
+    "analysis_file": "ObsolescenceDetection_PersistentError_Analysis_20250824.md",
+    "learnings": "Will need to update IMPORTANT_LEARNINGS.md with comprehensive Count property guidance"
+  },
+  "RESPONSE": "RECOMMENDATION: TEST - C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CPG\\Test-ObsolescenceDetection.ps1: Re-run test after comprehensive [int] casting fix. Applied [int] cast to 15 locations where Count property is used in arithmetic operations or comparisons. This ensures scalar values in all arithmetic contexts. Expected: 8/8 tests passing (100% success rate)."
+}

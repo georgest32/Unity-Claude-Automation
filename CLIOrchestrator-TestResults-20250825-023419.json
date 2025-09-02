@@ -1,0 +1,72 @@
+{
+  "TestType": "All",
+  "EndTime": "2025-08-25T02:34:19.9152748-04:00",
+  "TotalDuration": 272.8389,
+  "StartTime": "2025-08-25T02:34:19.6424359-04:00",
+  "Results": [
+    {
+      "Error": "The running command stopped because the preference variable \"ErrorActionPreference\" or common parameter is set to Stop: At C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CLIOrchestrator\\Core\\DecisionEngine.psm1:883 char:165\r\n+ … script:DecisionConfig.ActionQueue.MaxQueueSize) max queue size\" \"INFO\r\n+                                                                   ~~~~~\r\nThe string is missing the terminator: \".",
+      "Details": "",
+      "Status": "Failed",
+      "Timestamp": "2025-08-25T02:34:19.7028591-04:00",
+      "Name": "Module Import and Validation",
+      "Duration": 37
+    },
+    {
+      "Error": "The 'Extract-ResponseEntities' command was found in the module 'Unity-Claude-CLIOrchestrator', but the module could not be loaded. For more information, run 'Import-Module Unity-Claude-CLIOrchestrator'.",
+      "Details": "",
+      "Status": "Failed",
+      "Timestamp": "2025-08-25T02:34:19.7649687-04:00",
+      "Name": "Response Analysis Engine",
+      "Duration": 51
+    },
+    {
+      "Error": "The 'Find-RecommendationPatterns' command was found in the module 'Unity-Claude-CLIOrchestrator', but the module could not be loaded. For more information, run 'Import-Module Unity-Claude-CLIOrchestrator'.",
+      "Details": "",
+      "Status": "Failed",
+      "Timestamp": "2025-08-25T02:34:19.7949007-04:00",
+      "Name": "Pattern Recognition Engine",
+      "Duration": 27
+    },
+    {
+      "Error": "The 'Invoke-RuleBasedDecision' command was found in the module 'Unity-Claude-CLIOrchestrator', but the module could not be loaded. For more information, run 'Import-Module Unity-Claude-CLIOrchestrator'.",
+      "Details": "",
+      "Status": "Failed",
+      "Timestamp": "2025-08-25T02:34:19.8276889-04:00",
+      "Name": "Decision Engine",
+      "Duration": 28
+    },
+    {
+      "Error": "The 'Test-SafeFilePath' command was found in the module 'Unity-Claude-CLIOrchestrator', but the module could not be loaded. For more information, run 'Import-Module Unity-Claude-CLIOrchestrator'.",
+      "Details": "",
+      "Status": "Failed",
+      "Timestamp": "2025-08-25T02:34:19.8591708-04:00",
+      "Name": "Action Execution Framework",
+      "Duration": 27
+    },
+    {
+      "Error": "",
+      "Details": "Decision trees: OK, Safety policies: OK, Learning parameters: OK",
+      "Status": "Passed",
+      "Timestamp": "2025-08-25T02:34:19.8782871-04:00",
+      "Name": "Configuration Loading",
+      "Duration": 15
+    },
+    {
+      "Error": "The 'Invoke-EnhancedResponseAnalysis' command was found in the module 'Unity-Claude-CLIOrchestrator', but the module could not be loaded. For more information, run 'Import-Module Unity-Claude-CLIOrchestrator'.",
+      "Details": "",
+      "Status": "Failed",
+      "Timestamp": "2025-08-25T02:34:19.9145784-04:00",
+      "Name": "End-to-End Workflow",
+      "Duration": 28
+    }
+  ],
+  "TestSuite": "CLIOrchestrator-Complete",
+  "Summary": {
+    "Failed": 6,
+    "Passed": 1,
+    "Total": 7,
+    "Skipped": 0,
+    "Errors": 0
+  }
+}

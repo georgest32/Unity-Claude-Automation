@@ -1,0 +1,3115 @@
+{
+  "Failed": 3,
+  "SuccessRate": 62.5,
+  "Details": [
+    {
+      "EndTime": "2025-08-23T19:22:49.1912671-04:00",
+      "StartTime": "2025-08-23T19:22:49.1685812-04:00",
+      "Result": {
+        "Config": {
+          "Agents": {
+            "Agent3": {
+              "StatusQueue": {
+                "Messages": [],
+                "MaxMessages": 100,
+                "Name": "Agent3-Status",
+                "Statistics": {
+                  "CreatedAt": "2025-08-23T19:22:49.1864444-04:00",
+                  "TotalErrors": 0,
+                  "TotalProcessed": 0,
+                  "TotalReceived": 0
+                }
+              },
+              "LastActivity": "2025-08-23T19:22:49.1864659-04:00",
+              "State": "Idle",
+              "TaskQueue": {
+                "Messages": [],
+                "MaxMessages": 200,
+                "Name": "Agent3-Tasks",
+                "Statistics": {
+                  "CreatedAt": "2025-08-23T19:22:49.1863891-04:00",
+                  "TotalErrors": 0,
+                  "TotalProcessed": 0,
+                  "TotalReceived": 0
+                }
+              }
+            },
+            "Agent2": {
+              "StatusQueue": {
+                "Messages": [],
+                "MaxMessages": 100,
+                "Name": "Agent2-Status",
+                "Statistics": {
+                  "CreatedAt": "2025-08-23T19:22:49.1863037-04:00",
+                  "TotalErrors": 0,
+                  "TotalProcessed": 0,
+                  "TotalReceived": 0
+                }
+              },
+              "LastActivity": "2025-08-23T19:22:49.1863282-04:00",
+              "State": "Idle",
+              "TaskQueue": {
+                "Messages": [],
+                "MaxMessages": 200,
+                "Name": "Agent2-Tasks",
+                "Statistics": {
+                  "CreatedAt": "2025-08-23T19:22:49.1862281-04:00",
+                  "TotalErrors": 0,
+                  "TotalProcessed": 0,
+                  "TotalReceived": 0
+                }
+              }
+            },
+            "Agent1": {
+              "StatusQueue": {
+                "Messages": [],
+                "MaxMessages": 100,
+                "Name": "Agent1-Status",
+                "Statistics": {
+                  "CreatedAt": "2025-08-23T19:22:49.1856122-04:00",
+                  "TotalErrors": 0,
+                  "TotalProcessed": 0,
+                  "TotalReceived": 0
+                }
+              },
+              "LastActivity": "2025-08-23T19:22:49.1856391-04:00",
+              "State": "Idle",
+              "TaskQueue": {
+                "Messages": [],
+                "MaxMessages": 200,
+                "Name": "Agent1-Tasks",
+                "Statistics": {
+                  "CreatedAt": "2025-08-23T19:22:49.1855225-04:00",
+                  "TotalErrors": 0,
+                  "TotalProcessed": 0,
+                  "TotalReceived": 0
+                }
+              }
+            }
+          },
+          "Queue": {
+            "Messages": [],
+            "MaxMessages": 500,
+            "Name": "SupervisorAgent-Control",
+            "Statistics": {
+              "CreatedAt": "2025-08-23T19:22:49.1840373-04:00",
+              "TotalErrors": 0,
+              "TotalProcessed": 0,
+              "TotalReceived": 0
+            }
+          },
+          "Name": "SupervisorAgent",
+          "Statistics": {
+            "TasksCompleted": 0,
+            "StartTime": "2025-08-23T19:22:49.1865017-04:00",
+            "TasksAssigned": 0,
+            "Errors": 0
+          },
+          "RoutingRules": []
+        },
+        "Success": true
+      },
+      "Status": "Passed",
+      "Name": "Initialize Supervisor Orchestration",
+      "Error": null,
+      "Duration": 22.6859
+    },
+    {
+      "EndTime": "2025-08-23T19:22:49.2279943-04:00",
+      "StartTime": "2025-08-23T19:22:49.1950546-04:00",
+      "Result": [
+        {
+          "Agents": {
+            "ResearchAgent": {
+              "StatusQueue": {
+                "Messages": [
+                  {
+                    "RetryCount": 0,
+                    "Type": "StateUpdate",
+                    "Id": "fe25dae3-2803-4847-8bf4-3faf8d3944d2",
+                    "Timestamp": "2025-08-23T19:22:49.7373733-04:00",
+                    "Content": {
+                      "Agent": "ResearchAgent",
+                      "State": "Idle",
+                      "TaskId": null
+                    },
+                    "Status": "Queued",
+                    "Priority": 6
+                  }
+                ],
+                "MaxMessages": 100,
+                "Name": "ResearchAgent-Status",
+                "Statistics": {
+                  "CreatedAt": "2025-08-23T19:22:49.2175793-04:00",
+                  "TotalErrors": 0,
+                  "TotalProcessed": 0,
+                  "TotalReceived": 1
+                }
+              },
+              "LastActivity": "2025-08-23T19:22:49.217599-04:00",
+              "State": "Idle",
+              "TaskQueue": {
+                "Messages": [],
+                "MaxMessages": 200,
+                "Name": "ResearchAgent-Tasks",
+                "Statistics": {
+                  "CreatedAt": "2025-08-23T19:22:49.2175236-04:00",
+                  "TotalErrors": 0,
+                  "TotalProcessed": 0,
+                  "TotalReceived": 0
+                }
+              }
+            },
+            "AnalysisAgent": {
+              "StatusQueue": {
+                "Messages": [
+                  {
+                    "RetryCount": 0,
+                    "Type": "StateUpdate",
+                    "Id": "50a70e5e-9cbb-4aa2-a7ce-b329301e104c",
+                    "Timestamp": "2025-08-23T19:22:49.7372937-04:00",
+                    "Content": {
+                      "Agent": "AnalysisAgent",
+                      "State": "Processing",
+                      "TaskId": "task-001"
+                    },
+                    "Status": "Queued",
+                    "Priority": 6
+                  }
+                ],
+                "MaxMessages": 100,
+                "Name": "AnalysisAgent-Status",
+                "Statistics": {
+                  "CreatedAt": "2025-08-23T19:22:49.217458-04:00",
+                  "TotalErrors": 0,
+                  "TotalProcessed": 0,
+                  "TotalReceived": 1
+                }
+              },
+              "LastActivity": "2025-08-23T19:22:49.2174808-04:00",
+              "State": "Idle",
+              "TaskQueue": {
+                "Messages": [],
+                "MaxMessages": 200,
+                "Name": "AnalysisAgent-Tasks",
+                "Statistics": {
+                  "CreatedAt": "2025-08-23T19:22:49.2173993-04:00",
+                  "TotalErrors": 0,
+                  "TotalProcessed": 0,
+                  "TotalReceived": 0
+                }
+              }
+            },
+            "ImplementationAgent": {
+              "StatusQueue": {
+                "Messages": [
+                  {
+                    "RetryCount": 0,
+                    "Type": "StateUpdate",
+                    "Id": "440bd44d-1e32-4640-abe7-56f4e7099f5f",
+                    "Timestamp": "2025-08-23T19:22:49.737428-04:00",
+                    "Content": {
+                      "Agent": "ImplementationAgent",
+                      "State": "Error",
+                      "Error": "Resource unavailable",
+                      "TaskId": "task-002"
+                    },
+                    "Status": "Queued",
+                    "Priority": 6
+                  }
+                ],
+                "MaxMessages": 100,
+                "Name": "ImplementationAgent-Status",
+                "Statistics": {
+                  "CreatedAt": "2025-08-23T19:22:49.2176904-04:00",
+                  "TotalErrors": 0,
+                  "TotalProcessed": 0,
+                  "TotalReceived": 1
+                }
+              },
+              "LastActivity": "2025-08-23T19:22:49.217711-04:00",
+              "State": "Idle",
+              "TaskQueue": {
+                "Messages": [],
+                "MaxMessages": 200,
+                "Name": "ImplementationAgent-Tasks",
+                "Statistics": {
+                  "CreatedAt": "2025-08-23T19:22:49.2176399-04:00",
+                  "TotalErrors": 0,
+                  "TotalProcessed": 0,
+                  "TotalReceived": 0
+                }
+              }
+            }
+          },
+          "Queue": {
+            "Messages": [
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "f3465a1f-6e25-4db6-be7b-d832e0f65b56",
+                "Timestamp": "2025-08-23T19:22:49.2359962-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Description": "Analyze code quality",
+                  "TaskId": "dd46021e-713d-4a5b-bfc7-82a6073c323f"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "Emergency",
+                "Id": "f13f4889-9ac7-4863-8ea7-70054ba07a8a",
+                "Timestamp": "2025-08-23T19:22:49.3532801-04:00",
+                "Content": {
+                  "Timestamp": "2025-08-23T19:22:49.3507591-04:00",
+                  "Reason": "Critical system failure"
+                },
+                "Status": "Queued",
+                "Priority": 10
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "329c2715-3f1b-4793-ae03-2512fa4a651a",
+                "Timestamp": "2025-08-23T19:22:49.3611334-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 1,
+                  "TaskId": "Task-1"
+                },
+                "Status": "Queued",
+                "Priority": 5
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "26d63577-4e20-46d6-9076-a12a996bfdbb",
+                "Timestamp": "2025-08-23T19:22:49.3636409-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 9,
+                  "TaskId": "Task-2"
+                },
+                "Status": "Queued",
+                "Priority": 9
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "c42352ae-dc98-4ef8-a6e3-34e76be4bf29",
+                "Timestamp": "2025-08-23T19:22:49.3659894-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 5,
+                  "TaskId": "Task-3"
+                },
+                "Status": "Queued",
+                "Priority": 1
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "ac32f8b8-1008-4d71-b925-919b0d9177b7",
+                "Timestamp": "2025-08-23T19:22:49.36824-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 8,
+                  "TaskId": "Task-4"
+                },
+                "Status": "Queued",
+                "Priority": 7
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "2d800a50-3f13-401e-a366-4884cd66e828",
+                "Timestamp": "2025-08-23T19:22:49.3707616-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 1,
+                  "TaskId": "Task-5"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "68d05aaa-5131-4014-a6c7-feeb28f0602b",
+                "Timestamp": "2025-08-23T19:22:49.3740107-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 2,
+                  "TaskId": "Task-6"
+                },
+                "Status": "Queued",
+                "Priority": 5
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "55009960-d498-4e4e-b3f5-e32969259d21",
+                "Timestamp": "2025-08-23T19:22:49.3766549-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 4,
+                  "TaskId": "Task-7"
+                },
+                "Status": "Queued",
+                "Priority": 9
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "bacc43a7-bbf0-461d-8285-d6acd5f472b9",
+                "Timestamp": "2025-08-23T19:22:49.3789964-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 7,
+                  "TaskId": "Task-8"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "b05df570-6387-4ba7-b2e2-3a4e30fff7d0",
+                "Timestamp": "2025-08-23T19:22:49.3812799-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 6,
+                  "TaskId": "Task-9"
+                },
+                "Status": "Queued",
+                "Priority": 7
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "1063d0c0-0626-4163-ba63-ea3dda7c70f3",
+                "Timestamp": "2025-08-23T19:22:49.3835364-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 2,
+                  "TaskId": "Task-10"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "74fe1645-6c75-43d5-ab36-f2f3dbf61553",
+                "Timestamp": "2025-08-23T19:22:49.3857826-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 2,
+                  "TaskId": "Task-11"
+                },
+                "Status": "Queued",
+                "Priority": 7
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "77b07365-d55c-4d2c-b205-99ee14e42f99",
+                "Timestamp": "2025-08-23T19:22:49.3885134-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 6,
+                  "TaskId": "Task-12"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "776d52be-0d3f-4064-8c4a-a1ea543b247e",
+                "Timestamp": "2025-08-23T19:22:49.3908155-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 7,
+                  "TaskId": "Task-13"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "d8e8bc19-cdc9-4230-8729-aad3b49dd30a",
+                "Timestamp": "2025-08-23T19:22:49.393106-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 8,
+                  "TaskId": "Task-14"
+                },
+                "Status": "Queued",
+                "Priority": 6
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "b7518bda-5743-4544-b2bc-911071c701e2",
+                "Timestamp": "2025-08-23T19:22:49.4076881-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 5,
+                  "TaskId": "Task-15"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "f8c2f927-4f06-4925-bdf1-0a68b1d5cd50",
+                "Timestamp": "2025-08-23T19:22:49.4103197-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 4,
+                  "TaskId": "Task-16"
+                },
+                "Status": "Queued",
+                "Priority": 5
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "da30f8a1-c7ac-47d2-a274-2263c4c3710c",
+                "Timestamp": "2025-08-23T19:22:49.4132083-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 3,
+                  "TaskId": "Task-17"
+                },
+                "Status": "Queued",
+                "Priority": 4
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "eb79b005-b5ef-4cfb-94fa-162c73320268",
+                "Timestamp": "2025-08-23T19:22:49.4164764-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 9,
+                  "TaskId": "Task-18"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "1c390f6a-8343-4d33-bb62-1d8dc1a2dd35",
+                "Timestamp": "2025-08-23T19:22:49.4193913-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 9,
+                  "TaskId": "Task-19"
+                },
+                "Status": "Queued",
+                "Priority": 9
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "7b884b70-12e4-4c78-8fa9-07d756f06eb5",
+                "Timestamp": "2025-08-23T19:22:49.4218908-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 8,
+                  "TaskId": "Task-20"
+                },
+                "Status": "Queued",
+                "Priority": 3
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "0d8f1487-36f4-4f4b-878b-bcc1ee28c7f6",
+                "Timestamp": "2025-08-23T19:22:49.4241676-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 6,
+                  "TaskId": "Task-21"
+                },
+                "Status": "Queued",
+                "Priority": 4
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "69bbe635-ab5c-453b-b023-31bcf1acb7d3",
+                "Timestamp": "2025-08-23T19:22:49.4263756-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 9,
+                  "TaskId": "Task-22"
+                },
+                "Status": "Queued",
+                "Priority": 1
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "7b1f0892-08b4-47c2-868a-089e9b45ed7a",
+                "Timestamp": "2025-08-23T19:22:49.4287264-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 8,
+                  "TaskId": "Task-23"
+                },
+                "Status": "Queued",
+                "Priority": 3
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "3cdfdebb-22bf-4188-8f9f-76287def1aeb",
+                "Timestamp": "2025-08-23T19:22:49.4310957-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 7,
+                  "TaskId": "Task-24"
+                },
+                "Status": "Queued",
+                "Priority": 9
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "c24479d8-d1ef-4b14-a11e-d92791c3d967",
+                "Timestamp": "2025-08-23T19:22:49.4340532-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 4,
+                  "TaskId": "Task-25"
+                },
+                "Status": "Queued",
+                "Priority": 9
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "a6ae0a9c-3c32-4598-8c6b-78b57f9e3cf3",
+                "Timestamp": "2025-08-23T19:22:49.4366744-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 6,
+                  "TaskId": "Task-26"
+                },
+                "Status": "Queued",
+                "Priority": 9
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "263f943f-b511-4786-989e-e264b2faf9e0",
+                "Timestamp": "2025-08-23T19:22:49.439018-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 5,
+                  "TaskId": "Task-27"
+                },
+                "Status": "Queued",
+                "Priority": 1
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "62166761-e7f7-4e2c-9b07-11a56df16e0b",
+                "Timestamp": "2025-08-23T19:22:49.4413332-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 6,
+                  "TaskId": "Task-28"
+                },
+                "Status": "Queued",
+                "Priority": 1
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "8075b293-a404-432d-a414-12576360b893",
+                "Timestamp": "2025-08-23T19:22:49.4437772-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 5,
+                  "TaskId": "Task-29"
+                },
+                "Status": "Queued",
+                "Priority": 4
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "4d4b5e16-5077-4530-bc6b-981190561096",
+                "Timestamp": "2025-08-23T19:22:49.4466056-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 2,
+                  "TaskId": "Task-30"
+                },
+                "Status": "Queued",
+                "Priority": 7
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "d47e7b42-47bd-480d-a5fc-c556df725a45",
+                "Timestamp": "2025-08-23T19:22:49.4489441-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 9,
+                  "TaskId": "Task-31"
+                },
+                "Status": "Queued",
+                "Priority": 4
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "f05caa0e-9353-4081-9905-140cfe7880f9",
+                "Timestamp": "2025-08-23T19:22:49.4511938-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 5,
+                  "TaskId": "Task-32"
+                },
+                "Status": "Queued",
+                "Priority": 1
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "525c10d5-431a-4d28-b32b-bc7b92ccf3a0",
+                "Timestamp": "2025-08-23T19:22:49.4535196-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 8,
+                  "TaskId": "Task-33"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "f19d6074-52be-42d9-b739-82ea7c8c4a71",
+                "Timestamp": "2025-08-23T19:22:49.4557392-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 6,
+                  "TaskId": "Task-34"
+                },
+                "Status": "Queued",
+                "Priority": 5
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "42c39d26-e360-41f8-adc4-77b6157b90f6",
+                "Timestamp": "2025-08-23T19:22:49.4580166-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 3,
+                  "TaskId": "Task-35"
+                },
+                "Status": "Queued",
+                "Priority": 4
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "19328d6f-0ccf-40fd-acaf-0ece56fa5099",
+                "Timestamp": "2025-08-23T19:22:49.4602951-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 3,
+                  "TaskId": "Task-36"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "7dceaebe-3d0e-4f29-908f-a1d8a560f8d3",
+                "Timestamp": "2025-08-23T19:22:49.4633925-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 3,
+                  "TaskId": "Task-37"
+                },
+                "Status": "Queued",
+                "Priority": 3
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "9c8c47ca-10cf-4b83-8dee-a3a4e1a1aded",
+                "Timestamp": "2025-08-23T19:22:49.4659461-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 9,
+                  "TaskId": "Task-38"
+                },
+                "Status": "Queued",
+                "Priority": 9
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "070d1cd6-a22d-4357-850e-58890c7d2624",
+                "Timestamp": "2025-08-23T19:22:49.4683129-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 4,
+                  "TaskId": "Task-39"
+                },
+                "Status": "Queued",
+                "Priority": 1
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "62a7bbe8-52fd-442c-9488-9e4b9460f6e2",
+                "Timestamp": "2025-08-23T19:22:49.4706207-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 5,
+                  "TaskId": "Task-40"
+                },
+                "Status": "Queued",
+                "Priority": 2
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "d221844f-1d46-48ac-bf64-b0fb76fb0654",
+                "Timestamp": "2025-08-23T19:22:49.472842-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 4,
+                  "TaskId": "Task-41"
+                },
+                "Status": "Queued",
+                "Priority": 5
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "2441d0bc-207c-4387-871c-3f9b4f66855c",
+                "Timestamp": "2025-08-23T19:22:49.4751045-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 8,
+                  "TaskId": "Task-42"
+                },
+                "Status": "Queued",
+                "Priority": 4
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "7c21ed14-31c7-4211-9a9e-768765965a1c",
+                "Timestamp": "2025-08-23T19:22:49.4773719-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 2,
+                  "TaskId": "Task-43"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "fe34ccee-763b-4e91-9639-41cc4b6a9509",
+                "Timestamp": "2025-08-23T19:22:49.4801029-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 5,
+                  "TaskId": "Task-44"
+                },
+                "Status": "Queued",
+                "Priority": 2
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "e7ca03cd-6cb3-44bf-a66a-9820f2436e20",
+                "Timestamp": "2025-08-23T19:22:49.4831289-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 3,
+                  "TaskId": "Task-45"
+                },
+                "Status": "Queued",
+                "Priority": 3
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "af8b0962-a020-46ef-a18d-c93938e02637",
+                "Timestamp": "2025-08-23T19:22:49.4855123-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 2,
+                  "TaskId": "Task-46"
+                },
+                "Status": "Queued",
+                "Priority": 1
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "bd34e627-4860-4f5f-8fbe-778807dd4dfa",
+                "Timestamp": "2025-08-23T19:22:49.4881535-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 2,
+                  "TaskId": "Task-47"
+                },
+                "Status": "Queued",
+                "Priority": 5
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "b4cb7bb1-7edd-4e6d-a981-d2a454f31927",
+                "Timestamp": "2025-08-23T19:22:49.4905037-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 1,
+                  "TaskId": "Task-48"
+                },
+                "Status": "Queued",
+                "Priority": 2
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "56851879-c865-49f9-a709-de79b75c3ccc",
+                "Timestamp": "2025-08-23T19:22:49.4929404-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 6,
+                  "TaskId": "Task-49"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "dddcb5d4-04ed-4721-8315-bf1840fd6a91",
+                "Timestamp": "2025-08-23T19:22:49.4955319-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 8,
+                  "TaskId": "Task-50"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "543b5dd2-1ab0-4e3b-868a-cc85855447db",
+                "Timestamp": "2025-08-23T19:22:49.4978545-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 1,
+                  "TaskId": "Task-51"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "702a1c0b-ce27-450e-b026-4523dedd7e12",
+                "Timestamp": "2025-08-23T19:22:49.5003324-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 8,
+                  "TaskId": "Task-52"
+                },
+                "Status": "Queued",
+                "Priority": 2
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "0d5f1522-84b7-45f2-9925-e7920d2b31b7",
+                "Timestamp": "2025-08-23T19:22:49.502513-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 3,
+                  "TaskId": "Task-53"
+                },
+                "Status": "Queued",
+                "Priority": 3
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "02f63310-f7b8-4a2a-a06b-fc0c11d55349",
+                "Timestamp": "2025-08-23T19:22:49.5053405-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 2,
+                  "TaskId": "Task-54"
+                },
+                "Status": "Queued",
+                "Priority": 3
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "1a658e03-6494-45d2-999c-9c760acd64df",
+                "Timestamp": "2025-08-23T19:22:49.5076354-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 2,
+                  "TaskId": "Task-55"
+                },
+                "Status": "Queued",
+                "Priority": 7
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "c2ba1a9e-d1c7-4d3f-8682-60fcfe63af24",
+                "Timestamp": "2025-08-23T19:22:49.50986-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 3,
+                  "TaskId": "Task-56"
+                },
+                "Status": "Queued",
+                "Priority": 9
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "b8a53a7a-d12b-4b33-8e5d-1bac59ba2002",
+                "Timestamp": "2025-08-23T19:22:49.5120984-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 7,
+                  "TaskId": "Task-57"
+                },
+                "Status": "Queued",
+                "Priority": 3
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "b8511a8c-5d00-48d5-84d8-74c0d2494594",
+                "Timestamp": "2025-08-23T19:22:49.5143218-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 9,
+                  "TaskId": "Task-58"
+                },
+                "Status": "Queued",
+                "Priority": 3
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "13f9b0d8-e9f1-4363-a9b8-ab2ad8cd78f6",
+                "Timestamp": "2025-08-23T19:22:49.5165909-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 7,
+                  "TaskId": "Task-59"
+                },
+                "Status": "Queued",
+                "Priority": 3
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "822b5e2e-316a-433c-b637-5bc4a1b3c6d4",
+                "Timestamp": "2025-08-23T19:22:49.5188272-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 8,
+                  "TaskId": "Task-60"
+                },
+                "Status": "Queued",
+                "Priority": 4
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "f04018ef-7ed3-421f-bd88-3eefd3b0874e",
+                "Timestamp": "2025-08-23T19:22:49.5215547-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 6,
+                  "TaskId": "Task-61"
+                },
+                "Status": "Queued",
+                "Priority": 5
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "94641941-6244-468d-a953-fbd2cdb102c9",
+                "Timestamp": "2025-08-23T19:22:49.5239134-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 2,
+                  "TaskId": "Task-62"
+                },
+                "Status": "Queued",
+                "Priority": 3
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "a50d2a4d-679b-4b33-92aa-36abfbfae900",
+                "Timestamp": "2025-08-23T19:22:49.5261985-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 5,
+                  "TaskId": "Task-63"
+                },
+                "Status": "Queued",
+                "Priority": 7
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "d7be2433-6d1e-4266-9a6d-fb1cc936b415",
+                "Timestamp": "2025-08-23T19:22:49.5287168-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 7,
+                  "TaskId": "Task-64"
+                },
+                "Status": "Queued",
+                "Priority": 1
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "d9805bd8-0c70-46d4-aaac-ada532258657",
+                "Timestamp": "2025-08-23T19:22:49.5312786-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 7,
+                  "TaskId": "Task-65"
+                },
+                "Status": "Queued",
+                "Priority": 5
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "ac183fbc-9267-407c-bf00-3b35860e2cb0",
+                "Timestamp": "2025-08-23T19:22:49.5338208-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 7,
+                  "TaskId": "Task-66"
+                },
+                "Status": "Queued",
+                "Priority": 6
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "27b2d178-2853-49de-b1fa-790d814ce59d",
+                "Timestamp": "2025-08-23T19:22:49.5367608-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 8,
+                  "TaskId": "Task-67"
+                },
+                "Status": "Queued",
+                "Priority": 7
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "7f220a84-7f87-4c26-9cd8-8810c5e6d734",
+                "Timestamp": "2025-08-23T19:22:49.5391376-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 3,
+                  "TaskId": "Task-68"
+                },
+                "Status": "Queued",
+                "Priority": 5
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "0d65e8bf-fdc0-47e7-9441-4fd8212ee58a",
+                "Timestamp": "2025-08-23T19:22:49.5414639-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 5,
+                  "TaskId": "Task-69"
+                },
+                "Status": "Queued",
+                "Priority": 6
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "b7fde7bb-748b-4cfa-b981-95e6627d9fa2",
+                "Timestamp": "2025-08-23T19:22:49.5438466-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 6,
+                  "TaskId": "Task-70"
+                },
+                "Status": "Queued",
+                "Priority": 4
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "b9bc3283-bd29-4a05-83f9-beec664a85ee",
+                "Timestamp": "2025-08-23T19:22:49.5462607-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 1,
+                  "TaskId": "Task-71"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "01d788a9-3aac-49e0-9149-b31c6b4da9a7",
+                "Timestamp": "2025-08-23T19:22:49.5487036-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 4,
+                  "TaskId": "Task-72"
+                },
+                "Status": "Queued",
+                "Priority": 9
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "8bb4dd26-6c18-4af4-b44e-7b0c4e7233e9",
+                "Timestamp": "2025-08-23T19:22:49.551074-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 4,
+                  "TaskId": "Task-73"
+                },
+                "Status": "Queued",
+                "Priority": 5
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "4fecd2f4-ad8c-43fc-8f9d-597f566018e1",
+                "Timestamp": "2025-08-23T19:22:49.5533592-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 3,
+                  "TaskId": "Task-74"
+                },
+                "Status": "Queued",
+                "Priority": 3
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "6f82b971-114e-467f-ae21-08433beb60b3",
+                "Timestamp": "2025-08-23T19:22:49.5557841-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 7,
+                  "TaskId": "Task-75"
+                },
+                "Status": "Queued",
+                "Priority": 1
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "a2467d4c-5d15-4e74-9840-ef0bab0b4e9b",
+                "Timestamp": "2025-08-23T19:22:49.5585193-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 4,
+                  "TaskId": "Task-76"
+                },
+                "Status": "Queued",
+                "Priority": 5
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "e02dfcd0-cef1-4f6a-b1bc-b085751d2432",
+                "Timestamp": "2025-08-23T19:22:49.5611083-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 9,
+                  "TaskId": "Task-77"
+                },
+                "Status": "Queued",
+                "Priority": 9
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "6216ec79-f92d-4bcd-9e21-2338ff7c8716",
+                "Timestamp": "2025-08-23T19:22:49.5637439-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 4,
+                  "TaskId": "Task-78"
+                },
+                "Status": "Queued",
+                "Priority": 7
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "5a476af9-cfa4-4535-a31e-95d5d6c9911e",
+                "Timestamp": "2025-08-23T19:22:49.5660213-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 8,
+                  "TaskId": "Task-79"
+                },
+                "Status": "Queued",
+                "Priority": 1
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "89c39ace-e93b-483e-8d28-0c8ed0ca54da",
+                "Timestamp": "2025-08-23T19:22:49.5683643-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 5,
+                  "TaskId": "Task-80"
+                },
+                "Status": "Queued",
+                "Priority": 7
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "e4f7e143-1e0f-47fc-b1af-6c1b7871429a",
+                "Timestamp": "2025-08-23T19:22:49.5706358-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 9,
+                  "TaskId": "Task-81"
+                },
+                "Status": "Queued",
+                "Priority": 2
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "f95af916-7197-4e9b-bc36-29e101b22978",
+                "Timestamp": "2025-08-23T19:22:49.5733554-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 9,
+                  "TaskId": "Task-82"
+                },
+                "Status": "Queued",
+                "Priority": 6
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "15c74540-c832-4767-a9b5-99ea7d41c3ee",
+                "Timestamp": "2025-08-23T19:22:49.5767292-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 7,
+                  "TaskId": "Task-83"
+                },
+                "Status": "Queued",
+                "Priority": 4
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "e00e8711-a153-44fd-840e-5b13c680ea13",
+                "Timestamp": "2025-08-23T19:22:49.5790104-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 5,
+                  "TaskId": "Task-84"
+                },
+                "Status": "Queued",
+                "Priority": 5
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "54caec6a-fdb3-45dc-a0fe-75f928807c54",
+                "Timestamp": "2025-08-23T19:22:49.5816506-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 4,
+                  "TaskId": "Task-85"
+                },
+                "Status": "Queued",
+                "Priority": 5
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "59fd3050-be21-4f0e-8037-27fdf6a53e53",
+                "Timestamp": "2025-08-23T19:22:49.583859-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 3,
+                  "TaskId": "Task-86"
+                },
+                "Status": "Queued",
+                "Priority": 1
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "e090908f-3713-47fa-8f89-42411c788abe",
+                "Timestamp": "2025-08-23T19:22:49.5864462-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 5,
+                  "TaskId": "Task-87"
+                },
+                "Status": "Queued",
+                "Priority": 1
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "4da7bb3e-f57d-4876-84e4-8bfcacbec137",
+                "Timestamp": "2025-08-23T19:22:49.5891104-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 1,
+                  "TaskId": "Task-88"
+                },
+                "Status": "Queued",
+                "Priority": 7
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "eeb3cfbf-fee5-43b3-8f8c-a7dad2184cc1",
+                "Timestamp": "2025-08-23T19:22:49.5914238-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 4,
+                  "TaskId": "Task-89"
+                },
+                "Status": "Queued",
+                "Priority": 5
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "cf0271ea-948c-40ad-ab23-b01abd31f98a",
+                "Timestamp": "2025-08-23T19:22:49.5940251-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 3,
+                  "TaskId": "Task-90"
+                },
+                "Status": "Queued",
+                "Priority": 1
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "39582c39-5a44-4822-bf17-52f415c651d0",
+                "Timestamp": "2025-08-23T19:22:49.5963641-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 6,
+                  "TaskId": "Task-91"
+                },
+                "Status": "Queued",
+                "Priority": 2
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "ec420ac7-e2f8-4071-8128-330573333526",
+                "Timestamp": "2025-08-23T19:22:49.598837-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 9,
+                  "TaskId": "Task-92"
+                },
+                "Status": "Queued",
+                "Priority": 8
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "d7f5a07c-c2ad-46a6-a27f-2b21706531e4",
+                "Timestamp": "2025-08-23T19:22:49.6015231-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 4,
+                  "TaskId": "Task-93"
+                },
+                "Status": "Queued",
+                "Priority": 1
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "2b6ed0f2-b1e1-4fa5-a2d5-c8055bba8f69",
+                "Timestamp": "2025-08-23T19:22:49.6038325-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 7,
+                  "TaskId": "Task-94"
+                },
+                "Status": "Queued",
+                "Priority": 1
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "dd6a5539-ee8f-4970-b8cd-7dc36a6735bb",
+                "Timestamp": "2025-08-23T19:22:49.6062088-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 5,
+                  "TaskId": "Task-95"
+                },
+                "Status": "Queued",
+                "Priority": 9
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "7d5b1554-018f-4031-99f2-741385cf9ac0",
+                "Timestamp": "2025-08-23T19:22:49.6085264-04:00",
+                "Content": {
+                  "TaskType": "Research",
+                  "Priority": 1,
+                  "TaskId": "Task-96"
+                },
+                "Status": "Queued",
+                "Priority": 3
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "f68d6506-3055-4ce3-af95-86be389c8551",
+                "Timestamp": "2025-08-23T19:22:49.6107-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 2,
+                  "TaskId": "Task-97"
+                },
+                "Status": "Queued",
+                "Priority": 9
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "3bee4622-8491-4120-a803-45d3bf547e3f",
+                "Timestamp": "2025-08-23T19:22:49.6128706-04:00",
+                "Content": {
+                  "TaskType": "Implementation",
+                  "Priority": 5,
+                  "TaskId": "Task-98"
+                },
+                "Status": "Queued",
+                "Priority": 6
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "202d765c-1434-435b-8b6c-9494188be635",
+                "Timestamp": "2025-08-23T19:22:49.6150791-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 9,
+                  "TaskId": "Task-99"
+                },
+                "Status": "Queued",
+                "Priority": 7
+              },
+              {
+                "RetryCount": 0,
+                "Type": "AssignTask",
+                "Id": "e17bd970-de0e-4a5b-a106-001bd8cb7364",
+                "Timestamp": "2025-08-23T19:22:49.6173346-04:00",
+                "Content": {
+                  "TaskType": "Analysis",
+                  "Priority": 5,
+                  "TaskId": "Task-100"
+                },
+                "Status": "Queued",
+                "Priority": 6
+              }
+            ],
+            "MaxMessages": 500,
+            "Name": "SupervisorAgent-Control",
+            "Statistics": {
+              "CreatedAt": "2025-08-23T19:22:49.2172893-04:00",
+              "TotalErrors": 0,
+              "TotalProcessed": 0,
+              "TotalReceived": 102
+            }
+          },
+          "Name": "SupervisorAgent",
+          "Statistics": {
+            "TasksCompleted": 0,
+            "StartTime": "2025-08-23T19:22:49.2177258-04:00",
+            "TasksAssigned": 0,
+            "Errors": 0
+          },
+          "RoutingRules": []
+        },
+        {
+          "SelectedAgents": {
+            "Analysis": "AnalysisAgent",
+            "Research": "ResearchAgent",
+            "Implementation": "ImplementationAgent"
+          },
+          "Success": true
+        }
+      ],
+      "Status": "Passed",
+      "Name": "Agent Selection Logic",
+      "Error": null,
+      "Duration": 32.9397
+    },
+    {
+      "EndTime": "2025-08-23T19:22:49.3503029-04:00",
+      "StartTime": "2025-08-23T19:22:49.2281215-04:00",
+      "Result": [
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "f3465a1f-6e25-4db6-be7b-d832e0f65b56",
+          "Timestamp": "2025-08-23T19:22:49.2359962-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Description": "Analyze code quality",
+            "TaskId": "dd46021e-713d-4a5b-bfc7-82a6073c323f"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "Statistics": {
+            "TasksCompleted": 0,
+            "StartTime": "2025-08-23T19:22:49.2177258-04:00",
+            "TasksAssigned": 0,
+            "Errors": 0
+          },
+          "Success": false,
+          "QueuedMessages": 0
+        }
+      ],
+      "Status": "Failed",
+      "Name": "Message Routing Through Supervisor",
+      "Error": null,
+      "Duration": 122.1814
+    },
+    {
+      "EndTime": "2025-08-23T19:22:49.3546299-04:00",
+      "StartTime": "2025-08-23T19:22:49.3503998-04:00",
+      "Result": [
+        {
+          "RetryCount": 0,
+          "Type": "Emergency",
+          "Id": "f13f4889-9ac7-4863-8ea7-70054ba07a8a",
+          "Timestamp": "2025-08-23T19:22:49.3532801-04:00",
+          "Content": {
+            "Timestamp": "2025-08-23T19:22:49.3507591-04:00",
+            "Reason": "Critical system failure"
+          },
+          "Status": "Queued",
+          "Priority": 10
+        },
+        {
+          "Success": false,
+          "EmergencyQueued": false,
+          "QueueStatus": 0
+        }
+      ],
+      "Status": "Failed",
+      "Name": "Hierarchical Control Flow",
+      "Error": null,
+      "Duration": 4.2301
+    },
+    {
+      "EndTime": "2025-08-23T19:22:49.6184239-04:00",
+      "StartTime": "2025-08-23T19:22:49.354701-04:00",
+      "Result": [
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "329c2715-3f1b-4793-ae03-2512fa4a651a",
+          "Timestamp": "2025-08-23T19:22:49.3611334-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 1,
+            "TaskId": "Task-1"
+          },
+          "Status": "Queued",
+          "Priority": 5
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "26d63577-4e20-46d6-9076-a12a996bfdbb",
+          "Timestamp": "2025-08-23T19:22:49.3636409-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 9,
+            "TaskId": "Task-2"
+          },
+          "Status": "Queued",
+          "Priority": 9
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "c42352ae-dc98-4ef8-a6e3-34e76be4bf29",
+          "Timestamp": "2025-08-23T19:22:49.3659894-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 5,
+            "TaskId": "Task-3"
+          },
+          "Status": "Queued",
+          "Priority": 1
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "ac32f8b8-1008-4d71-b925-919b0d9177b7",
+          "Timestamp": "2025-08-23T19:22:49.36824-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 8,
+            "TaskId": "Task-4"
+          },
+          "Status": "Queued",
+          "Priority": 7
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "2d800a50-3f13-401e-a366-4884cd66e828",
+          "Timestamp": "2025-08-23T19:22:49.3707616-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 1,
+            "TaskId": "Task-5"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "68d05aaa-5131-4014-a6c7-feeb28f0602b",
+          "Timestamp": "2025-08-23T19:22:49.3740107-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 2,
+            "TaskId": "Task-6"
+          },
+          "Status": "Queued",
+          "Priority": 5
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "55009960-d498-4e4e-b3f5-e32969259d21",
+          "Timestamp": "2025-08-23T19:22:49.3766549-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 4,
+            "TaskId": "Task-7"
+          },
+          "Status": "Queued",
+          "Priority": 9
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "bacc43a7-bbf0-461d-8285-d6acd5f472b9",
+          "Timestamp": "2025-08-23T19:22:49.3789964-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 7,
+            "TaskId": "Task-8"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "b05df570-6387-4ba7-b2e2-3a4e30fff7d0",
+          "Timestamp": "2025-08-23T19:22:49.3812799-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 6,
+            "TaskId": "Task-9"
+          },
+          "Status": "Queued",
+          "Priority": 7
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "1063d0c0-0626-4163-ba63-ea3dda7c70f3",
+          "Timestamp": "2025-08-23T19:22:49.3835364-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 2,
+            "TaskId": "Task-10"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "74fe1645-6c75-43d5-ab36-f2f3dbf61553",
+          "Timestamp": "2025-08-23T19:22:49.3857826-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 2,
+            "TaskId": "Task-11"
+          },
+          "Status": "Queued",
+          "Priority": 7
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "77b07365-d55c-4d2c-b205-99ee14e42f99",
+          "Timestamp": "2025-08-23T19:22:49.3885134-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 6,
+            "TaskId": "Task-12"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "776d52be-0d3f-4064-8c4a-a1ea543b247e",
+          "Timestamp": "2025-08-23T19:22:49.3908155-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 7,
+            "TaskId": "Task-13"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "d8e8bc19-cdc9-4230-8729-aad3b49dd30a",
+          "Timestamp": "2025-08-23T19:22:49.393106-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 8,
+            "TaskId": "Task-14"
+          },
+          "Status": "Queued",
+          "Priority": 6
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "b7518bda-5743-4544-b2bc-911071c701e2",
+          "Timestamp": "2025-08-23T19:22:49.4076881-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 5,
+            "TaskId": "Task-15"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "f8c2f927-4f06-4925-bdf1-0a68b1d5cd50",
+          "Timestamp": "2025-08-23T19:22:49.4103197-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 4,
+            "TaskId": "Task-16"
+          },
+          "Status": "Queued",
+          "Priority": 5
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "da30f8a1-c7ac-47d2-a274-2263c4c3710c",
+          "Timestamp": "2025-08-23T19:22:49.4132083-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 3,
+            "TaskId": "Task-17"
+          },
+          "Status": "Queued",
+          "Priority": 4
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "eb79b005-b5ef-4cfb-94fa-162c73320268",
+          "Timestamp": "2025-08-23T19:22:49.4164764-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 9,
+            "TaskId": "Task-18"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "1c390f6a-8343-4d33-bb62-1d8dc1a2dd35",
+          "Timestamp": "2025-08-23T19:22:49.4193913-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 9,
+            "TaskId": "Task-19"
+          },
+          "Status": "Queued",
+          "Priority": 9
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "7b884b70-12e4-4c78-8fa9-07d756f06eb5",
+          "Timestamp": "2025-08-23T19:22:49.4218908-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 8,
+            "TaskId": "Task-20"
+          },
+          "Status": "Queued",
+          "Priority": 3
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "0d8f1487-36f4-4f4b-878b-bcc1ee28c7f6",
+          "Timestamp": "2025-08-23T19:22:49.4241676-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 6,
+            "TaskId": "Task-21"
+          },
+          "Status": "Queued",
+          "Priority": 4
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "69bbe635-ab5c-453b-b023-31bcf1acb7d3",
+          "Timestamp": "2025-08-23T19:22:49.4263756-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 9,
+            "TaskId": "Task-22"
+          },
+          "Status": "Queued",
+          "Priority": 1
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "7b1f0892-08b4-47c2-868a-089e9b45ed7a",
+          "Timestamp": "2025-08-23T19:22:49.4287264-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 8,
+            "TaskId": "Task-23"
+          },
+          "Status": "Queued",
+          "Priority": 3
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "3cdfdebb-22bf-4188-8f9f-76287def1aeb",
+          "Timestamp": "2025-08-23T19:22:49.4310957-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 7,
+            "TaskId": "Task-24"
+          },
+          "Status": "Queued",
+          "Priority": 9
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "c24479d8-d1ef-4b14-a11e-d92791c3d967",
+          "Timestamp": "2025-08-23T19:22:49.4340532-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 4,
+            "TaskId": "Task-25"
+          },
+          "Status": "Queued",
+          "Priority": 9
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "a6ae0a9c-3c32-4598-8c6b-78b57f9e3cf3",
+          "Timestamp": "2025-08-23T19:22:49.4366744-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 6,
+            "TaskId": "Task-26"
+          },
+          "Status": "Queued",
+          "Priority": 9
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "263f943f-b511-4786-989e-e264b2faf9e0",
+          "Timestamp": "2025-08-23T19:22:49.439018-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 5,
+            "TaskId": "Task-27"
+          },
+          "Status": "Queued",
+          "Priority": 1
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "62166761-e7f7-4e2c-9b07-11a56df16e0b",
+          "Timestamp": "2025-08-23T19:22:49.4413332-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 6,
+            "TaskId": "Task-28"
+          },
+          "Status": "Queued",
+          "Priority": 1
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "8075b293-a404-432d-a414-12576360b893",
+          "Timestamp": "2025-08-23T19:22:49.4437772-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 5,
+            "TaskId": "Task-29"
+          },
+          "Status": "Queued",
+          "Priority": 4
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "4d4b5e16-5077-4530-bc6b-981190561096",
+          "Timestamp": "2025-08-23T19:22:49.4466056-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 2,
+            "TaskId": "Task-30"
+          },
+          "Status": "Queued",
+          "Priority": 7
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "d47e7b42-47bd-480d-a5fc-c556df725a45",
+          "Timestamp": "2025-08-23T19:22:49.4489441-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 9,
+            "TaskId": "Task-31"
+          },
+          "Status": "Queued",
+          "Priority": 4
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "f05caa0e-9353-4081-9905-140cfe7880f9",
+          "Timestamp": "2025-08-23T19:22:49.4511938-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 5,
+            "TaskId": "Task-32"
+          },
+          "Status": "Queued",
+          "Priority": 1
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "525c10d5-431a-4d28-b32b-bc7b92ccf3a0",
+          "Timestamp": "2025-08-23T19:22:49.4535196-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 8,
+            "TaskId": "Task-33"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "f19d6074-52be-42d9-b739-82ea7c8c4a71",
+          "Timestamp": "2025-08-23T19:22:49.4557392-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 6,
+            "TaskId": "Task-34"
+          },
+          "Status": "Queued",
+          "Priority": 5
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "42c39d26-e360-41f8-adc4-77b6157b90f6",
+          "Timestamp": "2025-08-23T19:22:49.4580166-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 3,
+            "TaskId": "Task-35"
+          },
+          "Status": "Queued",
+          "Priority": 4
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "19328d6f-0ccf-40fd-acaf-0ece56fa5099",
+          "Timestamp": "2025-08-23T19:22:49.4602951-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 3,
+            "TaskId": "Task-36"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "7dceaebe-3d0e-4f29-908f-a1d8a560f8d3",
+          "Timestamp": "2025-08-23T19:22:49.4633925-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 3,
+            "TaskId": "Task-37"
+          },
+          "Status": "Queued",
+          "Priority": 3
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "9c8c47ca-10cf-4b83-8dee-a3a4e1a1aded",
+          "Timestamp": "2025-08-23T19:22:49.4659461-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 9,
+            "TaskId": "Task-38"
+          },
+          "Status": "Queued",
+          "Priority": 9
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "070d1cd6-a22d-4357-850e-58890c7d2624",
+          "Timestamp": "2025-08-23T19:22:49.4683129-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 4,
+            "TaskId": "Task-39"
+          },
+          "Status": "Queued",
+          "Priority": 1
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "62a7bbe8-52fd-442c-9488-9e4b9460f6e2",
+          "Timestamp": "2025-08-23T19:22:49.4706207-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 5,
+            "TaskId": "Task-40"
+          },
+          "Status": "Queued",
+          "Priority": 2
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "d221844f-1d46-48ac-bf64-b0fb76fb0654",
+          "Timestamp": "2025-08-23T19:22:49.472842-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 4,
+            "TaskId": "Task-41"
+          },
+          "Status": "Queued",
+          "Priority": 5
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "2441d0bc-207c-4387-871c-3f9b4f66855c",
+          "Timestamp": "2025-08-23T19:22:49.4751045-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 8,
+            "TaskId": "Task-42"
+          },
+          "Status": "Queued",
+          "Priority": 4
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "7c21ed14-31c7-4211-9a9e-768765965a1c",
+          "Timestamp": "2025-08-23T19:22:49.4773719-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 2,
+            "TaskId": "Task-43"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "fe34ccee-763b-4e91-9639-41cc4b6a9509",
+          "Timestamp": "2025-08-23T19:22:49.4801029-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 5,
+            "TaskId": "Task-44"
+          },
+          "Status": "Queued",
+          "Priority": 2
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "e7ca03cd-6cb3-44bf-a66a-9820f2436e20",
+          "Timestamp": "2025-08-23T19:22:49.4831289-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 3,
+            "TaskId": "Task-45"
+          },
+          "Status": "Queued",
+          "Priority": 3
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "af8b0962-a020-46ef-a18d-c93938e02637",
+          "Timestamp": "2025-08-23T19:22:49.4855123-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 2,
+            "TaskId": "Task-46"
+          },
+          "Status": "Queued",
+          "Priority": 1
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "bd34e627-4860-4f5f-8fbe-778807dd4dfa",
+          "Timestamp": "2025-08-23T19:22:49.4881535-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 2,
+            "TaskId": "Task-47"
+          },
+          "Status": "Queued",
+          "Priority": 5
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "b4cb7bb1-7edd-4e6d-a981-d2a454f31927",
+          "Timestamp": "2025-08-23T19:22:49.4905037-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 1,
+            "TaskId": "Task-48"
+          },
+          "Status": "Queued",
+          "Priority": 2
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "56851879-c865-49f9-a709-de79b75c3ccc",
+          "Timestamp": "2025-08-23T19:22:49.4929404-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 6,
+            "TaskId": "Task-49"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "dddcb5d4-04ed-4721-8315-bf1840fd6a91",
+          "Timestamp": "2025-08-23T19:22:49.4955319-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 8,
+            "TaskId": "Task-50"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "543b5dd2-1ab0-4e3b-868a-cc85855447db",
+          "Timestamp": "2025-08-23T19:22:49.4978545-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 1,
+            "TaskId": "Task-51"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "702a1c0b-ce27-450e-b026-4523dedd7e12",
+          "Timestamp": "2025-08-23T19:22:49.5003324-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 8,
+            "TaskId": "Task-52"
+          },
+          "Status": "Queued",
+          "Priority": 2
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "0d5f1522-84b7-45f2-9925-e7920d2b31b7",
+          "Timestamp": "2025-08-23T19:22:49.502513-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 3,
+            "TaskId": "Task-53"
+          },
+          "Status": "Queued",
+          "Priority": 3
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "02f63310-f7b8-4a2a-a06b-fc0c11d55349",
+          "Timestamp": "2025-08-23T19:22:49.5053405-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 2,
+            "TaskId": "Task-54"
+          },
+          "Status": "Queued",
+          "Priority": 3
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "1a658e03-6494-45d2-999c-9c760acd64df",
+          "Timestamp": "2025-08-23T19:22:49.5076354-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 2,
+            "TaskId": "Task-55"
+          },
+          "Status": "Queued",
+          "Priority": 7
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "c2ba1a9e-d1c7-4d3f-8682-60fcfe63af24",
+          "Timestamp": "2025-08-23T19:22:49.50986-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 3,
+            "TaskId": "Task-56"
+          },
+          "Status": "Queued",
+          "Priority": 9
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "b8a53a7a-d12b-4b33-8e5d-1bac59ba2002",
+          "Timestamp": "2025-08-23T19:22:49.5120984-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 7,
+            "TaskId": "Task-57"
+          },
+          "Status": "Queued",
+          "Priority": 3
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "b8511a8c-5d00-48d5-84d8-74c0d2494594",
+          "Timestamp": "2025-08-23T19:22:49.5143218-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 9,
+            "TaskId": "Task-58"
+          },
+          "Status": "Queued",
+          "Priority": 3
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "13f9b0d8-e9f1-4363-a9b8-ab2ad8cd78f6",
+          "Timestamp": "2025-08-23T19:22:49.5165909-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 7,
+            "TaskId": "Task-59"
+          },
+          "Status": "Queued",
+          "Priority": 3
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "822b5e2e-316a-433c-b637-5bc4a1b3c6d4",
+          "Timestamp": "2025-08-23T19:22:49.5188272-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 8,
+            "TaskId": "Task-60"
+          },
+          "Status": "Queued",
+          "Priority": 4
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "f04018ef-7ed3-421f-bd88-3eefd3b0874e",
+          "Timestamp": "2025-08-23T19:22:49.5215547-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 6,
+            "TaskId": "Task-61"
+          },
+          "Status": "Queued",
+          "Priority": 5
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "94641941-6244-468d-a953-fbd2cdb102c9",
+          "Timestamp": "2025-08-23T19:22:49.5239134-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 2,
+            "TaskId": "Task-62"
+          },
+          "Status": "Queued",
+          "Priority": 3
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "a50d2a4d-679b-4b33-92aa-36abfbfae900",
+          "Timestamp": "2025-08-23T19:22:49.5261985-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 5,
+            "TaskId": "Task-63"
+          },
+          "Status": "Queued",
+          "Priority": 7
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "d7be2433-6d1e-4266-9a6d-fb1cc936b415",
+          "Timestamp": "2025-08-23T19:22:49.5287168-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 7,
+            "TaskId": "Task-64"
+          },
+          "Status": "Queued",
+          "Priority": 1
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "d9805bd8-0c70-46d4-aaac-ada532258657",
+          "Timestamp": "2025-08-23T19:22:49.5312786-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 7,
+            "TaskId": "Task-65"
+          },
+          "Status": "Queued",
+          "Priority": 5
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "ac183fbc-9267-407c-bf00-3b35860e2cb0",
+          "Timestamp": "2025-08-23T19:22:49.5338208-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 7,
+            "TaskId": "Task-66"
+          },
+          "Status": "Queued",
+          "Priority": 6
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "27b2d178-2853-49de-b1fa-790d814ce59d",
+          "Timestamp": "2025-08-23T19:22:49.5367608-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 8,
+            "TaskId": "Task-67"
+          },
+          "Status": "Queued",
+          "Priority": 7
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "7f220a84-7f87-4c26-9cd8-8810c5e6d734",
+          "Timestamp": "2025-08-23T19:22:49.5391376-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 3,
+            "TaskId": "Task-68"
+          },
+          "Status": "Queued",
+          "Priority": 5
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "0d65e8bf-fdc0-47e7-9441-4fd8212ee58a",
+          "Timestamp": "2025-08-23T19:22:49.5414639-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 5,
+            "TaskId": "Task-69"
+          },
+          "Status": "Queued",
+          "Priority": 6
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "b7fde7bb-748b-4cfa-b981-95e6627d9fa2",
+          "Timestamp": "2025-08-23T19:22:49.5438466-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 6,
+            "TaskId": "Task-70"
+          },
+          "Status": "Queued",
+          "Priority": 4
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "b9bc3283-bd29-4a05-83f9-beec664a85ee",
+          "Timestamp": "2025-08-23T19:22:49.5462607-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 1,
+            "TaskId": "Task-71"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "01d788a9-3aac-49e0-9149-b31c6b4da9a7",
+          "Timestamp": "2025-08-23T19:22:49.5487036-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 4,
+            "TaskId": "Task-72"
+          },
+          "Status": "Queued",
+          "Priority": 9
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "8bb4dd26-6c18-4af4-b44e-7b0c4e7233e9",
+          "Timestamp": "2025-08-23T19:22:49.551074-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 4,
+            "TaskId": "Task-73"
+          },
+          "Status": "Queued",
+          "Priority": 5
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "4fecd2f4-ad8c-43fc-8f9d-597f566018e1",
+          "Timestamp": "2025-08-23T19:22:49.5533592-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 3,
+            "TaskId": "Task-74"
+          },
+          "Status": "Queued",
+          "Priority": 3
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "6f82b971-114e-467f-ae21-08433beb60b3",
+          "Timestamp": "2025-08-23T19:22:49.5557841-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 7,
+            "TaskId": "Task-75"
+          },
+          "Status": "Queued",
+          "Priority": 1
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "a2467d4c-5d15-4e74-9840-ef0bab0b4e9b",
+          "Timestamp": "2025-08-23T19:22:49.5585193-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 4,
+            "TaskId": "Task-76"
+          },
+          "Status": "Queued",
+          "Priority": 5
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "e02dfcd0-cef1-4f6a-b1bc-b085751d2432",
+          "Timestamp": "2025-08-23T19:22:49.5611083-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 9,
+            "TaskId": "Task-77"
+          },
+          "Status": "Queued",
+          "Priority": 9
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "6216ec79-f92d-4bcd-9e21-2338ff7c8716",
+          "Timestamp": "2025-08-23T19:22:49.5637439-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 4,
+            "TaskId": "Task-78"
+          },
+          "Status": "Queued",
+          "Priority": 7
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "5a476af9-cfa4-4535-a31e-95d5d6c9911e",
+          "Timestamp": "2025-08-23T19:22:49.5660213-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 8,
+            "TaskId": "Task-79"
+          },
+          "Status": "Queued",
+          "Priority": 1
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "89c39ace-e93b-483e-8d28-0c8ed0ca54da",
+          "Timestamp": "2025-08-23T19:22:49.5683643-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 5,
+            "TaskId": "Task-80"
+          },
+          "Status": "Queued",
+          "Priority": 7
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "e4f7e143-1e0f-47fc-b1af-6c1b7871429a",
+          "Timestamp": "2025-08-23T19:22:49.5706358-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 9,
+            "TaskId": "Task-81"
+          },
+          "Status": "Queued",
+          "Priority": 2
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "f95af916-7197-4e9b-bc36-29e101b22978",
+          "Timestamp": "2025-08-23T19:22:49.5733554-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 9,
+            "TaskId": "Task-82"
+          },
+          "Status": "Queued",
+          "Priority": 6
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "15c74540-c832-4767-a9b5-99ea7d41c3ee",
+          "Timestamp": "2025-08-23T19:22:49.5767292-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 7,
+            "TaskId": "Task-83"
+          },
+          "Status": "Queued",
+          "Priority": 4
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "e00e8711-a153-44fd-840e-5b13c680ea13",
+          "Timestamp": "2025-08-23T19:22:49.5790104-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 5,
+            "TaskId": "Task-84"
+          },
+          "Status": "Queued",
+          "Priority": 5
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "54caec6a-fdb3-45dc-a0fe-75f928807c54",
+          "Timestamp": "2025-08-23T19:22:49.5816506-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 4,
+            "TaskId": "Task-85"
+          },
+          "Status": "Queued",
+          "Priority": 5
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "59fd3050-be21-4f0e-8037-27fdf6a53e53",
+          "Timestamp": "2025-08-23T19:22:49.583859-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 3,
+            "TaskId": "Task-86"
+          },
+          "Status": "Queued",
+          "Priority": 1
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "e090908f-3713-47fa-8f89-42411c788abe",
+          "Timestamp": "2025-08-23T19:22:49.5864462-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 5,
+            "TaskId": "Task-87"
+          },
+          "Status": "Queued",
+          "Priority": 1
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "4da7bb3e-f57d-4876-84e4-8bfcacbec137",
+          "Timestamp": "2025-08-23T19:22:49.5891104-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 1,
+            "TaskId": "Task-88"
+          },
+          "Status": "Queued",
+          "Priority": 7
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "eeb3cfbf-fee5-43b3-8f8c-a7dad2184cc1",
+          "Timestamp": "2025-08-23T19:22:49.5914238-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 4,
+            "TaskId": "Task-89"
+          },
+          "Status": "Queued",
+          "Priority": 5
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "cf0271ea-948c-40ad-ab23-b01abd31f98a",
+          "Timestamp": "2025-08-23T19:22:49.5940251-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 3,
+            "TaskId": "Task-90"
+          },
+          "Status": "Queued",
+          "Priority": 1
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "39582c39-5a44-4822-bf17-52f415c651d0",
+          "Timestamp": "2025-08-23T19:22:49.5963641-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 6,
+            "TaskId": "Task-91"
+          },
+          "Status": "Queued",
+          "Priority": 2
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "ec420ac7-e2f8-4071-8128-330573333526",
+          "Timestamp": "2025-08-23T19:22:49.598837-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 9,
+            "TaskId": "Task-92"
+          },
+          "Status": "Queued",
+          "Priority": 8
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "d7f5a07c-c2ad-46a6-a27f-2b21706531e4",
+          "Timestamp": "2025-08-23T19:22:49.6015231-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 4,
+            "TaskId": "Task-93"
+          },
+          "Status": "Queued",
+          "Priority": 1
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "2b6ed0f2-b1e1-4fa5-a2d5-c8055bba8f69",
+          "Timestamp": "2025-08-23T19:22:49.6038325-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 7,
+            "TaskId": "Task-94"
+          },
+          "Status": "Queued",
+          "Priority": 1
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "dd6a5539-ee8f-4970-b8cd-7dc36a6735bb",
+          "Timestamp": "2025-08-23T19:22:49.6062088-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 5,
+            "TaskId": "Task-95"
+          },
+          "Status": "Queued",
+          "Priority": 9
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "7d5b1554-018f-4031-99f2-741385cf9ac0",
+          "Timestamp": "2025-08-23T19:22:49.6085264-04:00",
+          "Content": {
+            "TaskType": "Research",
+            "Priority": 1,
+            "TaskId": "Task-96"
+          },
+          "Status": "Queued",
+          "Priority": 3
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "f68d6506-3055-4ce3-af95-86be389c8551",
+          "Timestamp": "2025-08-23T19:22:49.6107-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 2,
+            "TaskId": "Task-97"
+          },
+          "Status": "Queued",
+          "Priority": 9
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "3bee4622-8491-4120-a803-45d3bf547e3f",
+          "Timestamp": "2025-08-23T19:22:49.6128706-04:00",
+          "Content": {
+            "TaskType": "Implementation",
+            "Priority": 5,
+            "TaskId": "Task-98"
+          },
+          "Status": "Queued",
+          "Priority": 6
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "202d765c-1434-435b-8b6c-9494188be635",
+          "Timestamp": "2025-08-23T19:22:49.6150791-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 9,
+            "TaskId": "Task-99"
+          },
+          "Status": "Queued",
+          "Priority": 7
+        },
+        {
+          "RetryCount": 0,
+          "Type": "AssignTask",
+          "Id": "e17bd970-de0e-4a5b-a106-001bd8cb7364",
+          "Timestamp": "2025-08-23T19:22:49.6173346-04:00",
+          "Content": {
+            "TaskType": "Analysis",
+            "Priority": 5,
+            "TaskId": "Task-100"
+          },
+          "Status": "Queued",
+          "Priority": 6
+        },
+        {
+          "Success": true,
+          "Reliability": 100,
+          "Sent": 100,
+          "Total": 100
+        }
+      ],
+      "Status": "Passed",
+      "Name": "Message Passing Reliability",
+      "Error": null,
+      "Duration": 263.7229
+    },
+    {
+      "EndTime": "2025-08-23T19:22:49.7357164-04:00",
+      "StartTime": "2025-08-23T19:22:49.6186535-04:00",
+      "Result": {
+        "Success": false,
+        "Metrics": {
+          "DequeueThroughput": 0.0,
+          "EnqueueThroughput": 15837.32,
+          "TotalDuration": 0.1106453
+        },
+        "Retrieved": 0
+      },
+      "Status": "Failed",
+      "Name": "Performance Benchmarking",
+      "Error": null,
+      "Duration": 117.0629
+    },
+    {
+      "EndTime": "2025-08-23T19:22:49.842657-04:00",
+      "StartTime": "2025-08-23T19:22:49.7358039-04:00",
+      "Result": {
+        "Success": true,
+        "Status": {
+          "Supervisor": {
+            "Statistics": {
+              "TasksCompleted": 0,
+              "StartTime": "2025-08-23T19:22:49.2177258-04:00",
+              "TasksAssigned": 0,
+              "Errors": 0
+            },
+            "Name": "SupervisorAgent"
+          },
+          "Agents": {
+            "ResearchAgent": {
+              "QueueStats": {
+                "CreatedAt": "2025-08-23T19:22:49.2175236-04:00",
+                "TotalErrors": 0,
+                "TotalProcessed": 0,
+                "TotalReceived": 0
+              },
+              "LastActivity": "2025-08-23T19:22:49.217599-04:00",
+              "State": "Idle"
+            },
+            "AnalysisAgent": {
+              "QueueStats": {
+                "CreatedAt": "2025-08-23T19:22:49.2173993-04:00",
+                "TotalErrors": 0,
+                "TotalProcessed": 0,
+                "TotalReceived": 0
+              },
+              "LastActivity": "2025-08-23T19:22:49.2174808-04:00",
+              "State": "Idle"
+            },
+            "ImplementationAgent": {
+              "QueueStats": {
+                "CreatedAt": "2025-08-23T19:22:49.2176399-04:00",
+                "TotalErrors": 0,
+                "TotalProcessed": 0,
+                "TotalReceived": 0
+              },
+              "LastActivity": "2025-08-23T19:22:49.217711-04:00",
+              "State": "Idle"
+            }
+          }
+        },
+        "StateUpdates": [
+          {
+            "Agent": "AnalysisAgent",
+            "State": "Processing",
+            "TaskId": "task-001"
+          },
+          {
+            "Agent": "ResearchAgent",
+            "State": "Idle",
+            "TaskId": null
+          },
+          {
+            "Agent": "ImplementationAgent",
+            "State": "Error",
+            "Error": "Resource unavailable",
+            "TaskId": "task-002"
+          }
+        ]
+      },
+      "Status": "Passed",
+      "Name": "Agent State Synchronization",
+      "Error": null,
+      "Duration": 106.8531
+    },
+    {
+      "EndTime": "2025-08-23T19:22:49.8625451-04:00",
+      "StartTime": "2025-08-23T19:22:49.8427968-04:00",
+      "Result": [
+        {
+          "HalfOpenMaxAttempts": 1,
+          "State": "Open",
+          "FailureCount": 2,
+          "HalfOpenAttempts": 0,
+          "ServiceName": "TestService",
+          "FailureThreshold": 2,
+          "ResetTimeout": 60,
+          "LastFailureTime": "2025-08-23T19:22:49.8576374-04:00",
+          "Statistics": {
+            "TotalFailures": 2,
+            "LastStateChange": "2025-08-23T19:22:49.8579148-04:00",
+            "TotalSuccesses": 0,
+            "TotalAttempts": 3
+          }
+        },
+        {
+          "BreakerState": "Open",
+          "Success": true,
+          "RecoveryLog": [
+            "Attempt 1 failed: Simulated failure 1",
+            "Attempt 2 failed: Simulated failure 2",
+            "Attempt 3 : Fallback executed"
+          ]
+        }
+      ],
+      "Status": "Passed",
+      "Name": "Error Recovery Mechanisms",
+      "Error": null,
+      "Duration": 19.7483
+    }
+  ],
+  "Timestamp": "2025-08-23 19:22:49",
+  "TotalTests": 8,
+  "Passed": 5,
+  "PerformanceMetrics": {
+    "DequeueThroughput": 0.0,
+    "EnqueueThroughput": 15837.32,
+    "TotalDuration": 0.1106453
+  },
+  "Duration": 0.8625802
+}

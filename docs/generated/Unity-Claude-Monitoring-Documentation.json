@@ -1,0 +1,255 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-Monitoring",
+  "Commands": [
+    {
+      "Parameters": [
+        "Filter",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ActiveAlerts",
+      "Synopsis": "Gets currently active alerts",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ContainerName",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ContainerMetrics",
+      "Synopsis": "Gets container resource metrics",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Query",
+        "TimeRange",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-PrometheusMetrics",
+      "Synopsis": "Queries Prometheus for metrics",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ServiceName",
+        "Detailed",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ServiceHealth",
+      "Synopsis": "Gets health status of Unity-Claude services",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ServiceName",
+        "Level",
+        "TimeRange",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ServiceLogs",
+      "Synopsis": "Gets logs for a specific service",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Query",
+        "TimeRange",
+        "Limit",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Search-Logs",
+      "Synopsis": "Searches logs in Loki",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "AlertName",
+        "Severity",
+        "Summary",
+        "Description",
+        "Labels",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Send-Alert",
+      "Synopsis": "Sends an alert to Alertmanager",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Start-MonitoringStack",
+      "Synopsis": "Starts the monitoring stack",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Stop-MonitoringStack",
+      "Synopsis": "Stops the monitoring stack",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ServiceName",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-ServiceLiveness",
+      "Synopsis": "Tests if a service is alive (liveness probe)",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ServiceName",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-ServiceReadiness",
+      "Synopsis": "Tests if a service is ready to accept traffic (readiness probe)",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-Monitoring",
+  "ExportedFunctions": [
+    "Get-ActiveAlerts",
+    "Get-ContainerMetrics",
+    "Get-PrometheusMetrics",
+    "Get-ServiceHealth",
+    "Get-ServiceLogs",
+    "Search-Logs",
+    "Send-Alert",
+    "Start-MonitoringStack",
+    "Stop-MonitoringStack",
+    "Test-ServiceLiveness",
+    "Test-ServiceReadiness"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

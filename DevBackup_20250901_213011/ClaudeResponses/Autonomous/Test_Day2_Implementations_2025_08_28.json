@@ -1,0 +1,43 @@
+{
+    "timestamp": "2025-08-28T03:00:00Z",
+    "session_id": "day2-test-callgraph-dataflow",
+    "prompt_type": "Testing",
+    "task": "Test Day 2 implementations - Call Graph Builder and Data Flow Tracker",
+    "test_details": {
+        "test_script": "./Test-Day2-CallGraphDataFlow.ps1",
+        "modules_to_test": [
+            "CPG-CallGraphBuilder.psm1",
+            "CPG-DataFlowTracker.psm1"
+        ],
+        "expected_tests": 25,
+        "requires_nuggetron": true
+    },
+    "expected_workflow": {
+        "step_1": "Orchestrator detects this JSON signal file",
+        "step_2": "Executes Test-Day2-CallGraphDataFlow.ps1",
+        "step_3": "Test creates sample PowerShell script for analysis",
+        "step_4": "Builds call graph from sample script",
+        "step_5": "Builds data flow from sample script",
+        "step_6": "Validates recursive call detection",
+        "step_7": "Validates taint analysis detection",
+        "step_8": "Generates test results JSON with metrics",
+        "step_9": "Creates boilerplate prompt with results",
+        "step_10": "Submits to Claude via clipboard paste"
+    },
+    "validation_criteria": {
+        "call_graph": [
+            "Detect at least 4 functions",
+            "Identify recursive calls in Process-Configuration",
+            "Calculate call graph metrics",
+            "Export to JSON format"
+        ],
+        "data_flow": [
+            "Track variable definitions and uses",
+            "Create def-use chains",
+            "Detect tainted variables from Invoke-Expression",
+            "Identify sensitive password variable",
+            "Find unused and undefined variables"
+        ]
+    },
+    "RESPONSE": "Testing"
+}

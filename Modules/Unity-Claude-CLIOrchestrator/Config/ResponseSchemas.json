@@ -1,0 +1,231 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "ClaudeCodeCLIResponse": {
+      "type": "object",
+      "properties": {
+        "RESPONSE": {
+          "type": "string",
+          "pattern": "RECOMMENDATION:\\s*(CONTINUE|TEST|FIX|COMPILE|RESTART|COMPLETE|ERROR)"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "prompt_type": {
+          "type": "string",
+          "enum": ["Test Results", "Continue Implementation Plan", "Analysis, Research, and Planning", "Debugging", "Review"]
+        },
+        "issue": {
+          "type": "string",
+          "description": "Brief description of the issue or task being addressed"
+        },
+        "analysis": {
+          "type": "object",
+          "description": "Detailed analysis of the situation"
+        },
+        "resolution": {
+          "type": "object",
+          "description": "Steps taken to resolve the issue"
+        }
+      },
+      "required": ["RESPONSE"],
+      "additionalProperties": true
+    },
+    "RecommendationResponse": {
+      "type": "object",
+      "properties": {
+        "recommendation": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["CONTINUE", "TEST", "FIX", "COMPILE", "RESTART", "COMPLETE", "ERROR"]
+            },
+            "details": {
+              "type": "string",
+              "description": "Specific details about what should be done"
+            },
+            "file_path": {
+              "type": "string",
+              "description": "File path for FIX or TEST recommendations"
+            },
+            "module_name": {
+              "type": "string",
+              "description": "Module name for RESTART recommendations"
+            },
+            "error_description": {
+              "type": "string",
+              "description": "Error description for ERROR recommendations"
+            },
+            "priority": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10,
+              "description": "Priority level for the recommendation"
+            },
+            "confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Confidence score for the recommendation"
+            }
+          },
+          "required": ["type", "details"],
+          "additionalProperties": false
+        },
+        "entities": {
+          "type": "object",
+          "properties": {
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "commands": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "errors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "modules": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "analysis_metadata": {
+          "type": "object",
+          "properties": {
+            "processing_time_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "parser_used": {
+              "type": "string"
+            },
+            "schema_version": {
+              "type": "string"
+            },
+            "was_repaired": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": ["recommendation"],
+      "additionalProperties": true
+    },
+    "TruncationPatterns": {
+      "type": "object",
+      "properties": {
+        "common_boundaries": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "default": [4000, 6000, 8000, 10000, 12000, 16000]
+        },
+        "tolerance": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 50,
+          "description": "Character tolerance for truncation boundary detection"
+        }
+      }
+    },
+    "ParsingConfig": {
+      "type": "object",
+      "properties": {
+        "max_retry_attempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 3
+        },
+        "retry_delay_ms": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 5000
+          },
+          "default": [500, 1000, 2000]
+        },
+        "performance_target_ms": {
+          "type": "integer",
+          "minimum": 50,
+          "maximum": 2000,
+          "default": 200
+        },
+        "circuit_breaker": {
+          "type": "object",
+          "properties": {
+            "failure_threshold": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 20,
+              "default": 5
+            },
+            "reset_timeout_ms": {
+              "type": "integer",
+              "minimum": 10000,
+              "maximum": 300000,
+              "default": 30000
+            }
+          }
+        }
+      }
+    }
+  },
+  "schemas": {
+    "claude_response": {
+      "$ref": "#/definitions/ClaudeCodeCLIResponse"
+    },
+    "recommendation": {
+      "$ref": "#/definitions/RecommendationResponse"
+    },
+    "parsing_config": {
+      "$ref": "#/definitions/ParsingConfig"
+    },
+    "truncation_patterns": {
+      "$ref": "#/definitions/TruncationPatterns"
+    }
+  },
+  "validation_rules": {
+    "recommendation_pattern": "RECOMMENDATION:\\s*(CONTINUE|TEST|FIX|COMPILE|RESTART|COMPLETE|ERROR)",
+    "file_path_pattern": "^(?:[a-zA-Z]:\\\\(?:[^\\\\/:*?\"<>|\\r\\n]+\\\\)*[^\\\\/:*?\"<>|\\r\\n]*|\\.\\\\.+)$",
+    "module_name_pattern": "^[A-Za-z][A-Za-z0-9-_]*$",
+    "priority_range": {
+      "min": 1,
+      "max": 10
+    },
+    "confidence_range": {
+      "min": 0.0,
+      "max": 1.0
+    }
+  },
+  "metadata": {
+    "schema_version": "1.0.0",
+    "created_date": "2025-08-25",
+    "description": "Response schemas for Unity-Claude-CLIOrchestrator advanced JSON processing",
+    "compatible_versions": {
+      "claude_code_cli": ">=0.1.0",
+      "powershell": ">=5.1",
+      "anthropic_sdk": ">=1.0.0"
+    },
+    "last_updated": "2025-08-25T03:00:00Z"
+  }
+}

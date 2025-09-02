@@ -1,0 +1,109 @@
+{
+    "Modules":  {
+                    "AutonomousDocumentationEngine":  {
+                                                          "Status":  "Passed",
+                                                          "Tests":  {
+                                                                        "Load AutonomousDocumentationEngine Module":  {
+                                                                                                                          "Duration":  0,
+                                                                                                                          "Status":  "Error",
+                                                                                                                          "Result":  null,
+                                                                                                                          "Error":  "Failed to load AutonomousDocumentationEngine module: Required function not found: Monitor-DocumentationFreshness"
+                                                                                                                      },
+                                                                        "Initialize AutonomousDocumentationEngine":  {
+                                                                                                                         "Duration":  149.4987,
+                                                                                                                         "Status":  "Passed",
+                                                                                                                         "Result":  true
+                                                                                                                     },
+                                                                        "AutonomousDocumentationEngine System Test":  {
+                                                                                                                          "Duration":  0,
+                                                                                                                          "Status":  "Error",
+                                                                                                                          "Result":  null,
+                                                                                                                          "Error":  "AutonomousDocumentationEngine test failed: The term \u0027Analyze-CodeChangeForDocumentation\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+                                                                                                                      }
+                                                                    }
+                                                      },
+                    "SystemIntegration":  {
+                                              "Status":  "Passed",
+                                              "Tests":  {
+                                                            "End-to-End Autonomous Documentation Workflow":  {
+                                                                                                                 "Duration":  0,
+                                                                                                                 "Status":  "Error",
+                                                                                                                 "Result":  null,
+                                                                                                                 "Error":  "End-to-end autonomous documentation workflow failed: Documentation update processing failed"
+                                                                                                             },
+                                                            "Existing System Integration Validation":  {
+                                                                                                           "Duration":  60.8552,
+                                                                                                           "Status":  "Passed",
+                                                                                                           "Result":  true
+                                                                                                       },
+                                                            "Performance and Scalability Test":  {
+                                                                                                     "Duration":  0,
+                                                                                                     "Status":  "Error",
+                                                                                                     "Result":  null,
+                                                                                                     "Error":  "Performance test failed: Too many errors in performance test: 10"
+                                                                                                 }
+                                                        }
+                                          },
+                    "IntelligentDocumentationTriggers":  {
+                                                             "Status":  "Passed",
+                                                             "Tests":  {
+                                                                           "IntelligentDocumentationTriggers System Test":  {
+                                                                                                                                "Duration":  117.1315,
+                                                                                                                                "Status":  "Passed",
+                                                                                                                                "Result":  true
+                                                                                                                            },
+                                                                           "Load IntelligentDocumentationTriggers Module":  {
+                                                                                                                                "Duration":  36.9257,
+                                                                                                                                "Status":  "Passed",
+                                                                                                                                "Result":  true
+                                                                                                                            }
+                                                                       }
+                                                         },
+                    "DocumentationVersioning":  {
+                                                    "Status":  "Partial",
+                                                    "Tests":  {
+                                                                  "DocumentationVersioning System Test":  {
+                                                                                                              "Duration":  0,
+                                                                                                              "Status":  "Error",
+                                                                                                              "Result":  null,
+                                                                                                              "Error":  "DocumentationVersioning test failed: The term \u0027Track-DocumentationChangeCorrelation\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+                                                                                                          },
+                                                                  "Load DocumentationVersioning Module":  {
+                                                                                                              "Duration":  29.832800000000002,
+                                                                                                              "Status":  "Passed",
+                                                                                                              "Result":  true
+                                                                                                          }
+                                                              }
+                                                }
+                },
+    "TotalTests":  10,
+    "PassedTests":  5,
+    "StartTime":  {
+                      "value":  "\/Date(1756582939757)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "Saturday, August 30, 2025 3:42:19 PM"
+                  },
+    "Performance":  {
+                        "EngineInitializationTime":  133.3535,
+                        "TriggerEvaluationTime":  109.13380000000001,
+                        "IntegrationTime":  0,
+                        "VersioningTime":  0
+                    },
+    "Errors":  [
+                   "[Load AutonomousDocumentationEngine Module] Failed to load AutonomousDocumentationEngine module: Required function not found: Monitor-DocumentationFreshness",
+                   "[AutonomousDocumentationEngine System Test] AutonomousDocumentationEngine test failed: The term \u0027Analyze-CodeChangeForDocumentation\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                   "[DocumentationVersioning System Test] DocumentationVersioning test failed: The term \u0027Track-DocumentationChangeCorrelation\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                   "[End-to-End Autonomous Documentation Workflow] End-to-end autonomous documentation workflow failed: Documentation update processing failed",
+                   "[Performance and Scalability Test] Performance test failed: Too many errors in performance test: 10"
+               ],
+    "TestName":  "Autonomous Documentation System Comprehensive Test",
+    "OverallStatus":  "Failed",
+    "SuccessRate":  50,
+    "TotalDuration":  0.88690669999999994,
+    "EndTime":  {
+                    "value":  "\/Date(1756582940644)\/",
+                    "DisplayHint":  2,
+                    "DateTime":  "Saturday, August 30, 2025 3:42:20 PM"
+                },
+    "FailedTests":  5
+}

@@ -1,0 +1,91 @@
+# Grafana Data Sources Configuration
+# Unity-Claude Automation
+# Version: 2025-08-24
+
+apiVersion: 1
+
+# List of data sources to automatically provision
+datasources:
+  # Prometheus for metrics
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    orgId: 1
+    uid: prometheus-uid
+    url: http://prometheus:9090
+    isDefault: true
+    version: 1
+    editable: true
+    jsonData:
+      timeInterval: "15s"
+      queryTimeout: "60s"
+      httpMethod: POST
+      manageAlerts: true
+      alertmanagerUid: alertmanager-uid
+      prometheusType: Prometheus
+      prometheusVersion: "3.4.1"
+      cacheLevel: 'High'
+      incrementalQuerying: true
+      incrementalQueryOverlapWindow: '10m'
+      disableRecordingRules: false
+
+  # Loki for logs
+  - name: Loki
+    type: loki
+    access: proxy
+    orgId: 1
+    uid: loki-uid
+    url: http://loki:3100
+    version: 1
+    editable: true
+    jsonData:
+      maxLines: 1000
+      derivedFields:
+        - datasourceUid: prometheus-uid
+          matcherRegex: "traceID=(\\w+)"
+          name: TraceID
+          url: "${__value.raw}"
+        - datasourceUid: prometheus-uid
+          matcherRegex: "container_name=\"([^\"]+)\""
+          name: Container
+          url: "/d/container-dashboard/container?var-container=${__value.raw}"
+
+  # Alertmanager
+  - name: Alertmanager
+    type: alertmanager
+    access: proxy
+    orgId: 1
+    uid: alertmanager-uid
+    url: http://alertmanager:9093
+    version: 1
+    editable: true
+    jsonData:
+      implementation: prometheus
+
+  # TestData for dashboard testing
+  - name: TestData
+    type: testdata
+    access: proxy
+    orgId: 1
+    uid: testdata-uid
+    version: 1
+    editable: true
+
+# Delete data sources before inserting new ones
+deleteDatasources:
+  - name: Prometheus-Old
+    orgId: 1
+  - name: Loki-Old
+    orgId: 1
+
+# Providers configuration
+providers:
+  - name: 'default'
+    orgId: 1
+    folder: ''
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/datasources

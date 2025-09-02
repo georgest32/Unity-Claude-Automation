@@ -1,0 +1,1595 @@
+{
+  "StartTime": "2025-08-25 14:14:27",
+  "TestSuite": "PatternRecognitionPerformance",
+  "EndTime": "2025-08-25 14:14:29",
+  "Results": [
+    {
+      "AnalysisResults": [
+        {
+          "Classification": {
+            "Features": {
+              "AllCapsWords": 2,
+              "CommandCount": 0,
+              "StartsWithError": false,
+              "HasInformationWords": false,
+              "NumberCount": 0,
+              "RecommendationCount": 1,
+              "HasQuestionWords": false,
+              "Length": 41,
+              "MaxRecommendationConfidence": 0.95,
+              "QuestionMarks": 0,
+              "HasInstructionWords": true,
+              "Colons": 2,
+              "SpecialCharCount": 5,
+              "StartsWithRecommendation": true,
+              "ExclamationMarks": 0,
+              "FilePathCount": 14,
+              "EntityCount": 1,
+              "HasCompletionWords": false,
+              "ErrorEntityCount": 0,
+              "LineCount": 1,
+              "HasCodeBlocks": false,
+              "HighPriorityRecommendations": 9,
+              "HasFilePaths": true,
+              "HasErrorWords": false,
+              "StartsWithQuestion": false,
+              "StartsWithComplete": false,
+              "HasCommandSyntax": false,
+              "UrlCount": 0,
+              "WordCount": 4,
+              "CapitalizedWords": 2,
+              "Periods": 1,
+              "HasErrorCodes": false,
+              "SentenceCount": 2,
+              "AvgRecommendationConfidence": 0.95
+            },
+            "Reasoning": "Ensemble classification with Bayesian calibration (0.0% -> 50.0%)",
+            "Type": "Instruction",
+            "EnsembleDetails": {
+              "WeightedVotes": {
+                "Complete": 0.0,
+                "Information": 0.0,
+                "Error": 0.0,
+                "Instruction": 4.027,
+                "Continuation": 0.0,
+                "TestResult": 0.0,
+                "Question": 0.0
+              },
+              "ClassifierCount": 4,
+              "Agreement": 1
+            },
+            "Confidence": 0.5,
+            "ProcessingTimeMs": 57
+          },
+          "Recommendations": {
+            "Details": "\\Test\\Script.ps1",
+            "Confidence": 0.95,
+            "Priority": "High",
+            "PatternName": "TEST",
+            "Position": 0,
+            "ActionType": "TestExecution",
+            "MatchType": "Primary",
+            "Type": "TEST",
+            "Action": "C"
+          },
+          "Entities": {
+            "Priority": "High",
+            "IsValid": true,
+            "Length": 18,
+            "Directory": "C:\\Test",
+            "Context": {
+              "Before": "RECOMMENDATION: TEST - ",
+              "Full": "RECOMMENDATION: TEST - C:\\Test\\Script.ps1",
+              "After": ""
+            },
+            "Position": 23,
+            "FileName": "Script.ps1",
+            "ValidationRequired": true,
+            "ExtractedAt": "2025-08-25T14:14:27.6719382-04:00",
+            "Exists": false,
+            "Extension": ".ps1",
+            "Confidence": 0.85,
+            "Type": "FilePath",
+            "Value": "C:\\Test\\Script.ps1"
+          },
+          "AnalysisTimestamp": "2025-08-25 14:14:27.786",
+          "ConfidenceAnalysis": {
+            "Weights": {
+              "Entity": 0.15,
+              "Uncertainty": 0.05,
+              "Classification": 0.3,
+              "Recommendation": 0.4,
+              "Bayesian": 0.1
+            },
+            "OverallConfidence": 0.10084388114293383,
+            "UncertaintyRange": {
+              "Upper": 1.0,
+              "Lower": 0.0
+            },
+            "QualityRating": "Low",
+            "Components": {
+              "ClassificationConfidence": 0.5,
+              "UncertaintyQuantification": 1.0,
+              "EntityConfidence": 0.95,
+              "RecommendationConfidence": 0.15701544535997997,
+              "BayesianAdjustment": 0.4904866876762939
+            },
+            "ProcessingTimeMs": 17
+          },
+          "ProcessingTimeMs": 189,
+          "ResponseLength": 41,
+          "ProcessingSuccess": true
+        },
+        {
+          "Classification": {
+            "Features": {
+              "AllCapsWords": 2,
+              "CommandCount": 0,
+              "StartsWithError": false,
+              "HasInformationWords": false,
+              "NumberCount": 0,
+              "RecommendationCount": 1,
+              "HasQuestionWords": false,
+              "Length": 41,
+              "MaxRecommendationConfidence": 0.95,
+              "QuestionMarks": 0,
+              "HasInstructionWords": true,
+              "Colons": 2,
+              "SpecialCharCount": 5,
+              "StartsWithRecommendation": true,
+              "ExclamationMarks": 0,
+              "FilePathCount": 14,
+              "EntityCount": 1,
+              "HasCompletionWords": false,
+              "ErrorEntityCount": 0,
+              "LineCount": 1,
+              "HasCodeBlocks": false,
+              "HighPriorityRecommendations": 9,
+              "HasFilePaths": true,
+              "HasErrorWords": false,
+              "StartsWithQuestion": false,
+              "StartsWithComplete": false,
+              "HasCommandSyntax": false,
+              "UrlCount": 0,
+              "WordCount": 4,
+              "CapitalizedWords": 2,
+              "Periods": 1,
+              "HasErrorCodes": false,
+              "SentenceCount": 2,
+              "AvgRecommendationConfidence": 0.95
+            },
+            "Reasoning": "Ensemble classification with Bayesian calibration (0.0% -> 50.0%)",
+            "Type": "Instruction",
+            "EnsembleDetails": {
+              "WeightedVotes": {
+                "Complete": 0.0,
+                "Information": 0.0,
+                "Error": 0.0,
+                "Instruction": 4.027,
+                "Continuation": 0.0,
+                "TestResult": 0.0,
+                "Question": 0.0
+              },
+              "ClassifierCount": 4,
+              "Agreement": 1
+            },
+            "Confidence": 0.5,
+            "ProcessingTimeMs": 1
+          },
+          "Recommendations": {
+            "Details": "\\Test\\Script.ps1",
+            "Confidence": 0.95,
+            "Priority": "High",
+            "PatternName": "TEST",
+            "Position": 0,
+            "ActionType": "TestExecution",
+            "MatchType": "Primary",
+            "Type": "TEST",
+            "Action": "C"
+          },
+          "Entities": {
+            "Priority": "High",
+            "IsValid": true,
+            "Length": 18,
+            "Directory": "C:\\Test",
+            "Context": {
+              "Before": "RECOMMENDATION: TEST - ",
+              "Full": "RECOMMENDATION: TEST - C:\\Test\\Script.ps1",
+              "After": ""
+            },
+            "Position": 23,
+            "FileName": "Script.ps1",
+            "ValidationRequired": true,
+            "ExtractedAt": "2025-08-25T14:14:27.7964372-04:00",
+            "Exists": false,
+            "Extension": ".ps1",
+            "Confidence": 0.85,
+            "Type": "FilePath",
+            "Value": "C:\\Test\\Script.ps1"
+          },
+          "AnalysisTimestamp": "2025-08-25 14:14:27.802",
+          "ConfidenceAnalysis": {
+            "Weights": {
+              "Entity": 0.15,
+              "Uncertainty": 0.05,
+              "Classification": 0.3,
+              "Recommendation": 0.4,
+              "Bayesian": 0.1
+            },
+            "OverallConfidence": 0.10084388114293383,
+            "UncertaintyRange": {
+              "Upper": 1.0,
+              "Lower": 0.0
+            },
+            "QualityRating": "Low",
+            "Components": {
+              "ClassificationConfidence": 0.5,
+              "UncertaintyQuantification": 1.0,
+              "EntityConfidence": 0.95,
+              "RecommendationConfidence": 0.15701544535997997,
+              "BayesianAdjustment": 0.4904866876762939
+            },
+            "ProcessingTimeMs": 0
+          },
+          "ProcessingTimeMs": 9,
+          "ResponseLength": 41,
+          "ProcessingSuccess": true
+        },
+        {
+          "Classification": {
+            "Features": {
+              "AllCapsWords": 2,
+              "CommandCount": 0,
+              "StartsWithError": false,
+              "HasInformationWords": false,
+              "NumberCount": 0,
+              "RecommendationCount": 1,
+              "HasQuestionWords": false,
+              "Length": 41,
+              "MaxRecommendationConfidence": 0.95,
+              "QuestionMarks": 0,
+              "HasInstructionWords": true,
+              "Colons": 2,
+              "SpecialCharCount": 5,
+              "StartsWithRecommendation": true,
+              "ExclamationMarks": 0,
+              "FilePathCount": 14,
+              "EntityCount": 1,
+              "HasCompletionWords": false,
+              "ErrorEntityCount": 0,
+              "LineCount": 1,
+              "HasCodeBlocks": false,
+              "HighPriorityRecommendations": 9,
+              "HasFilePaths": true,
+              "HasErrorWords": false,
+              "StartsWithQuestion": false,
+              "StartsWithComplete": false,
+              "HasCommandSyntax": false,
+              "UrlCount": 0,
+              "WordCount": 4,
+              "CapitalizedWords": 2,
+              "Periods": 1,
+              "HasErrorCodes": false,
+              "SentenceCount": 2,
+              "AvgRecommendationConfidence": 0.95
+            },
+            "Reasoning": "Ensemble classification with Bayesian calibration (0.0% -> 50.0%)",
+            "Type": "Instruction",
+            "EnsembleDetails": {
+              "WeightedVotes": {
+                "Complete": 0.0,
+                "Information": 0.0,
+                "Error": 0.0,
+                "Instruction": 4.027,
+                "Continuation": 0.0,
+                "TestResult": 0.0,
+                "Question": 0.0
+              },
+              "ClassifierCount": 4,
+              "Agreement": 1
+            },
+            "Confidence": 0.5,
+            "ProcessingTimeMs": 2
+          },
+          "Recommendations": {
+            "Details": "\\Test\\Script.ps1",
+            "Confidence": 0.95,
+            "Priority": "High",
+            "PatternName": "TEST",
+            "Position": 0,
+            "ActionType": "TestExecution",
+            "MatchType": "Primary",
+            "Type": "TEST",
+            "Action": "C"
+          },
+          "Entities": {
+            "Priority": "High",
+            "IsValid": true,
+            "Length": 18,
+            "Directory": "C:\\Test",
+            "Context": {
+              "Before": "RECOMMENDATION: TEST - ",
+              "Full": "RECOMMENDATION: TEST - C:\\Test\\Script.ps1",
+              "After": ""
+            },
+            "Position": 23,
+            "FileName": "Script.ps1",
+            "ValidationRequired": true,
+            "ExtractedAt": "2025-08-25T14:14:27.8061402-04:00",
+            "Exists": false,
+            "Extension": ".ps1",
+            "Confidence": 0.85,
+            "Type": "FilePath",
+            "Value": "C:\\Test\\Script.ps1"
+          },
+          "AnalysisTimestamp": "2025-08-25 14:14:27.810",
+          "ConfidenceAnalysis": {
+            "Weights": {
+              "Entity": 0.15,
+              "Uncertainty": 0.05,
+              "Classification": 0.3,
+              "Recommendation": 0.4,
+              "Bayesian": 0.1
+            },
+            "OverallConfidence": 0.10084388114293383,
+            "UncertaintyRange": {
+              "Upper": 1.0,
+              "Lower": 0.0
+            },
+            "QualityRating": "Low",
+            "Components": {
+              "ClassificationConfidence": 0.5,
+              "UncertaintyQuantification": 1.0,
+              "EntityConfidence": 0.95,
+              "RecommendationConfidence": 0.15701544535997997,
+              "BayesianAdjustment": 0.4904866876762939
+            },
+            "ProcessingTimeMs": 0
+          },
+          "ProcessingTimeMs": 5,
+          "ResponseLength": 41,
+          "ProcessingSuccess": true
+        },
+        {
+          "Classification": {
+            "Features": {
+              "AllCapsWords": 2,
+              "CommandCount": 0,
+              "StartsWithError": false,
+              "HasInformationWords": false,
+              "NumberCount": 0,
+              "RecommendationCount": 1,
+              "HasQuestionWords": false,
+              "Length": 41,
+              "MaxRecommendationConfidence": 0.95,
+              "QuestionMarks": 0,
+              "HasInstructionWords": true,
+              "Colons": 2,
+              "SpecialCharCount": 5,
+              "StartsWithRecommendation": true,
+              "ExclamationMarks": 0,
+              "FilePathCount": 14,
+              "EntityCount": 1,
+              "HasCompletionWords": false,
+              "ErrorEntityCount": 0,
+              "LineCount": 1,
+              "HasCodeBlocks": false,
+              "HighPriorityRecommendations": 9,
+              "HasFilePaths": true,
+              "HasErrorWords": false,
+              "StartsWithQuestion": false,
+              "StartsWithComplete": false,
+              "HasCommandSyntax": false,
+              "UrlCount": 0,
+              "WordCount": 4,
+              "CapitalizedWords": 2,
+              "Periods": 1,
+              "HasErrorCodes": false,
+              "SentenceCount": 2,
+              "AvgRecommendationConfidence": 0.95
+            },
+            "Reasoning": "Ensemble classification with Bayesian calibration (0.0% -> 50.0%)",
+            "Type": "Instruction",
+            "EnsembleDetails": {
+              "WeightedVotes": {
+                "Complete": 0.0,
+                "Information": 0.0,
+                "Error": 0.0,
+                "Instruction": 4.027,
+                "Continuation": 0.0,
+                "TestResult": 0.0,
+                "Question": 0.0
+              },
+              "ClassifierCount": 4,
+              "Agreement": 1
+            },
+            "Confidence": 0.5,
+            "ProcessingTimeMs": 2
+          },
+          "Recommendations": {
+            "Details": "\\Test\\Script.ps1",
+            "Confidence": 0.95,
+            "Priority": "High",
+            "PatternName": "TEST",
+            "Position": 0,
+            "ActionType": "TestExecution",
+            "MatchType": "Primary",
+            "Type": "TEST",
+            "Action": "C"
+          },
+          "Entities": {
+            "Priority": "High",
+            "IsValid": true,
+            "Length": 18,
+            "Directory": "C:\\Test",
+            "Context": {
+              "Before": "RECOMMENDATION: TEST - ",
+              "Full": "RECOMMENDATION: TEST - C:\\Test\\Script.ps1",
+              "After": ""
+            },
+            "Position": 23,
+            "FileName": "Script.ps1",
+            "ValidationRequired": true,
+            "ExtractedAt": "2025-08-25T14:14:27.8145651-04:00",
+            "Exists": false,
+            "Extension": ".ps1",
+            "Confidence": 0.85,
+            "Type": "FilePath",
+            "Value": "C:\\Test\\Script.ps1"
+          },
+          "AnalysisTimestamp": "2025-08-25 14:14:27.818",
+          "ConfidenceAnalysis": {
+            "Weights": {
+              "Entity": 0.15,
+              "Uncertainty": 0.05,
+              "Classification": 0.3,
+              "Recommendation": 0.4,
+              "Bayesian": 0.1
+            },
+            "OverallConfidence": 0.10084388114293383,
+            "UncertaintyRange": {
+              "Upper": 1.0,
+              "Lower": 0.0
+            },
+            "QualityRating": "Low",
+            "Components": {
+              "ClassificationConfidence": 0.5,
+              "UncertaintyQuantification": 1.0,
+              "EntityConfidence": 0.95,
+              "RecommendationConfidence": 0.15701544535997997,
+              "BayesianAdjustment": 0.4904866876762939
+            },
+            "ProcessingTimeMs": 0
+          },
+          "ProcessingTimeMs": 5,
+          "ResponseLength": 41,
+          "ProcessingSuccess": true
+        },
+        {
+          "Classification": {
+            "Features": {
+              "AllCapsWords": 2,
+              "CommandCount": 0,
+              "StartsWithError": false,
+              "HasInformationWords": false,
+              "NumberCount": 0,
+              "RecommendationCount": 1,
+              "HasQuestionWords": false,
+              "Length": 41,
+              "MaxRecommendationConfidence": 0.95,
+              "QuestionMarks": 0,
+              "HasInstructionWords": true,
+              "Colons": 2,
+              "SpecialCharCount": 5,
+              "StartsWithRecommendation": true,
+              "ExclamationMarks": 0,
+              "FilePathCount": 14,
+              "EntityCount": 1,
+              "HasCompletionWords": false,
+              "ErrorEntityCount": 0,
+              "LineCount": 1,
+              "HasCodeBlocks": false,
+              "HighPriorityRecommendations": 9,
+              "HasFilePaths": true,
+              "HasErrorWords": false,
+              "StartsWithQuestion": false,
+              "StartsWithComplete": false,
+              "HasCommandSyntax": false,
+              "UrlCount": 0,
+              "WordCount": 4,
+              "CapitalizedWords": 2,
+              "Periods": 1,
+              "HasErrorCodes": false,
+              "SentenceCount": 2,
+              "AvgRecommendationConfidence": 0.95
+            },
+            "Reasoning": "Ensemble classification with Bayesian calibration (0.0% -> 50.0%)",
+            "Type": "Instruction",
+            "EnsembleDetails": {
+              "WeightedVotes": {
+                "Complete": 0.0,
+                "Information": 0.0,
+                "Error": 0.0,
+                "Instruction": 4.027,
+                "Continuation": 0.0,
+                "TestResult": 0.0,
+                "Question": 0.0
+              },
+              "ClassifierCount": 4,
+              "Agreement": 1
+            },
+            "Confidence": 0.5,
+            "ProcessingTimeMs": 1
+          },
+          "Recommendations": {
+            "Details": "\\Test\\Script.ps1",
+            "Confidence": 0.95,
+            "Priority": "High",
+            "PatternName": "TEST",
+            "Position": 0,
+            "ActionType": "TestExecution",
+            "MatchType": "Primary",
+            "Type": "TEST",
+            "Action": "C"
+          },
+          "Entities": {
+            "Priority": "High",
+            "IsValid": true,
+            "Length": 18,
+            "Directory": "C:\\Test",
+            "Context": {
+              "Before": "RECOMMENDATION: TEST - ",
+              "Full": "RECOMMENDATION: TEST - C:\\Test\\Script.ps1",
+              "After": ""
+            },
+            "Position": 23,
+            "FileName": "Script.ps1",
+            "ValidationRequired": true,
+            "ExtractedAt": "2025-08-25T14:14:27.8226234-04:00",
+            "Exists": false,
+            "Extension": ".ps1",
+            "Confidence": 0.85,
+            "Type": "FilePath",
+            "Value": "C:\\Test\\Script.ps1"
+          },
+          "AnalysisTimestamp": "2025-08-25 14:14:27.826",
+          "ConfidenceAnalysis": {
+            "Weights": {
+              "Entity": 0.15,
+              "Uncertainty": 0.05,
+              "Classification": 0.3,
+              "Recommendation": 0.4,
+              "Bayesian": 0.1
+            },
+            "OverallConfidence": 0.10084388114293383,
+            "UncertaintyRange": {
+              "Upper": 1.0,
+              "Lower": 0.0
+            },
+            "QualityRating": "Low",
+            "Components": {
+              "ClassificationConfidence": 0.5,
+              "UncertaintyQuantification": 1.0,
+              "EntityConfidence": 0.95,
+              "RecommendationConfidence": 0.15701544535997997,
+              "BayesianAdjustment": 0.4904866876762939
+            },
+            "ProcessingTimeMs": 0
+          },
+          "ProcessingTimeMs": 5,
+          "ResponseLength": 41,
+          "ProcessingSuccess": true
+        },
+        {
+          "Classification": {
+            "Features": {
+              "AllCapsWords": 2,
+              "CommandCount": 0,
+              "StartsWithError": false,
+              "HasInformationWords": false,
+              "NumberCount": 0,
+              "RecommendationCount": 1,
+              "HasQuestionWords": false,
+              "Length": 41,
+              "MaxRecommendationConfidence": 0.95,
+              "QuestionMarks": 0,
+              "HasInstructionWords": true,
+              "Colons": 2,
+              "SpecialCharCount": 5,
+              "StartsWithRecommendation": true,
+              "ExclamationMarks": 0,
+              "FilePathCount": 14,
+              "EntityCount": 1,
+              "HasCompletionWords": false,
+              "ErrorEntityCount": 0,
+              "LineCount": 1,
+              "HasCodeBlocks": false,
+              "HighPriorityRecommendations": 9,
+              "HasFilePaths": true,
+              "HasErrorWords": false,
+              "StartsWithQuestion": false,
+              "StartsWithComplete": false,
+              "HasCommandSyntax": false,
+              "UrlCount": 0,
+              "WordCount": 4,
+              "CapitalizedWords": 2,
+              "Periods": 1,
+              "HasErrorCodes": false,
+              "SentenceCount": 2,
+              "AvgRecommendationConfidence": 0.95
+            },
+            "Reasoning": "Ensemble classification with Bayesian calibration (0.0% -> 50.0%)",
+            "Type": "Instruction",
+            "EnsembleDetails": {
+              "WeightedVotes": {
+                "Complete": 0.0,
+                "Information": 0.0,
+                "Error": 0.0,
+                "Instruction": 4.027,
+                "Continuation": 0.0,
+                "TestResult": 0.0,
+                "Question": 0.0
+              },
+              "ClassifierCount": 4,
+              "Agreement": 1
+            },
+            "Confidence": 0.5,
+            "ProcessingTimeMs": 1
+          },
+          "Recommendations": {
+            "Details": "\\Test\\Script.ps1",
+            "Confidence": 0.95,
+            "Priority": "High",
+            "PatternName": "TEST",
+            "Position": 0,
+            "ActionType": "TestExecution",
+            "MatchType": "Primary",
+            "Type": "TEST",
+            "Action": "C"
+          },
+          "Entities": {
+            "Priority": "High",
+            "IsValid": true,
+            "Length": 18,
+            "Directory": "C:\\Test",
+            "Context": {
+              "Before": "RECOMMENDATION: TEST - ",
+              "Full": "RECOMMENDATION: TEST - C:\\Test\\Script.ps1",
+              "After": ""
+            },
+            "Position": 23,
+            "FileName": "Script.ps1",
+            "ValidationRequired": true,
+            "ExtractedAt": "2025-08-25T14:14:27.8477719-04:00",
+            "Exists": false,
+            "Extension": ".ps1",
+            "Confidence": 0.85,
+            "Type": "FilePath",
+            "Value": "C:\\Test\\Script.ps1"
+          },
+          "AnalysisTimestamp": "2025-08-25 14:14:27.850",
+          "ConfidenceAnalysis": {
+            "Weights": {
+              "Entity": 0.15,
+              "Uncertainty": 0.05,
+              "Classification": 0.3,
+              "Recommendation": 0.4,
+              "Bayesian": 0.1
+            },
+            "OverallConfidence": 0.10084388114293383,
+            "UncertaintyRange": {
+              "Upper": 1.0,
+              "Lower": 0.0
+            },
+            "QualityRating": "Low",
+            "Components": {
+              "ClassificationConfidence": 0.5,
+              "UncertaintyQuantification": 1.0,
+              "EntityConfidence": 0.95,
+              "RecommendationConfidence": 0.15701544535997997,
+              "BayesianAdjustment": 0.4904866876762939
+            },
+            "ProcessingTimeMs": 0
+          },
+          "ProcessingTimeMs": 4,
+          "ResponseLength": 41,
+          "ProcessingSuccess": true
+        },
+        {
+          "Classification": {
+            "Features": {
+              "AllCapsWords": 2,
+              "CommandCount": 0,
+              "StartsWithError": false,
+              "HasInformationWords": false,
+              "NumberCount": 0,
+              "RecommendationCount": 1,
+              "HasQuestionWords": false,
+              "Length": 41,
+              "MaxRecommendationConfidence": 0.95,
+              "QuestionMarks": 0,
+              "HasInstructionWords": true,
+              "Colons": 2,
+              "SpecialCharCount": 5,
+              "StartsWithRecommendation": true,
+              "ExclamationMarks": 0,
+              "FilePathCount": 14,
+              "EntityCount": 1,
+              "HasCompletionWords": false,
+              "ErrorEntityCount": 0,
+              "LineCount": 1,
+              "HasCodeBlocks": false,
+              "HighPriorityRecommendations": 9,
+              "HasFilePaths": true,
+              "HasErrorWords": false,
+              "StartsWithQuestion": false,
+              "StartsWithComplete": false,
+              "HasCommandSyntax": false,
+              "UrlCount": 0,
+              "WordCount": 4,
+              "CapitalizedWords": 2,
+              "Periods": 1,
+              "HasErrorCodes": false,
+              "SentenceCount": 2,
+              "AvgRecommendationConfidence": 0.95
+            },
+            "Reasoning": "Ensemble classification with Bayesian calibration (0.0% -> 50.0%)",
+            "Type": "Instruction",
+            "EnsembleDetails": {
+              "WeightedVotes": {
+                "Complete": 0.0,
+                "Information": 0.0,
+                "Error": 0.0,
+                "Instruction": 4.027,
+                "Continuation": 0.0,
+                "TestResult": 0.0,
+                "Question": 0.0
+              },
+              "ClassifierCount": 4,
+              "Agreement": 1
+            },
+            "Confidence": 0.5,
+            "ProcessingTimeMs": 1
+          },
+          "Recommendations": {
+            "Details": "\\Test\\Script.ps1",
+            "Confidence": 0.95,
+            "Priority": "High",
+            "PatternName": "TEST",
+            "Position": 0,
+            "ActionType": "TestExecution",
+            "MatchType": "Primary",
+            "Type": "TEST",
+            "Action": "C"
+          },
+          "Entities": {
+            "Priority": "High",
+            "IsValid": true,
+            "Length": 18,
+            "Directory": "C:\\Test",
+            "Context": {
+              "Before": "RECOMMENDATION: TEST - ",
+              "Full": "RECOMMENDATION: TEST - C:\\Test\\Script.ps1",
+              "After": ""
+            },
+            "Position": 23,
+            "FileName": "Script.ps1",
+            "ValidationRequired": true,
+            "ExtractedAt": "2025-08-25T14:14:27.8533408-04:00",
+            "Exists": false,
+            "Extension": ".ps1",
+            "Confidence": 0.85,
+            "Type": "FilePath",
+            "Value": "C:\\Test\\Script.ps1"
+          },
+          "AnalysisTimestamp": "2025-08-25 14:14:27.856",
+          "ConfidenceAnalysis": {
+            "Weights": {
+              "Entity": 0.15,
+              "Uncertainty": 0.05,
+              "Classification": 0.3,
+              "Recommendation": 0.4,
+              "Bayesian": 0.1
+            },
+            "OverallConfidence": 0.10084388114293383,
+            "UncertaintyRange": {
+              "Upper": 1.0,
+              "Lower": 0.0
+            },
+            "QualityRating": "Low",
+            "Components": {
+              "ClassificationConfidence": 0.5,
+              "UncertaintyQuantification": 1.0,
+              "EntityConfidence": 0.95,
+              "RecommendationConfidence": 0.15701544535997997,
+              "BayesianAdjustment": 0.4904866876762939
+            },
+            "ProcessingTimeMs": 0
+          },
+          "ProcessingTimeMs": 4,
+          "ResponseLength": 41,
+          "ProcessingSuccess": true
+        },
+        {
+          "Classification": {
+            "Features": {
+              "AllCapsWords": 2,
+              "CommandCount": 0,
+              "StartsWithError": false,
+              "HasInformationWords": false,
+              "NumberCount": 0,
+              "RecommendationCount": 1,
+              "HasQuestionWords": false,
+              "Length": 41,
+              "MaxRecommendationConfidence": 0.95,
+              "QuestionMarks": 0,
+              "HasInstructionWords": true,
+              "Colons": 2,
+              "SpecialCharCount": 5,
+              "StartsWithRecommendation": true,
+              "ExclamationMarks": 0,
+              "FilePathCount": 14,
+              "EntityCount": 1,
+              "HasCompletionWords": false,
+              "ErrorEntityCount": 0,
+              "LineCount": 1,
+              "HasCodeBlocks": false,
+              "HighPriorityRecommendations": 9,
+              "HasFilePaths": true,
+              "HasErrorWords": false,
+              "StartsWithQuestion": false,
+              "StartsWithComplete": false,
+              "HasCommandSyntax": false,
+              "UrlCount": 0,
+              "WordCount": 4,
+              "CapitalizedWords": 2,
+              "Periods": 1,
+              "HasErrorCodes": false,
+              "SentenceCount": 2,
+              "AvgRecommendationConfidence": 0.95
+            },
+            "Reasoning": "Ensemble classification with Bayesian calibration (0.0% -> 50.0%)",
+            "Type": "Instruction",
+            "EnsembleDetails": {
+              "WeightedVotes": {
+                "Complete": 0.0,
+                "Information": 0.0,
+                "Error": 0.0,
+                "Instruction": 4.027,
+                "Continuation": 0.0,
+                "TestResult": 0.0,
+                "Question": 0.0
+              },
+              "ClassifierCount": 4,
+              "Agreement": 1
+            },
+            "Confidence": 0.5,
+            "ProcessingTimeMs": 1
+          },
+          "Recommendations": {
+            "Details": "\\Test\\Script.ps1",
+            "Confidence": 0.95,
+            "Priority": "High",
+            "PatternName": "TEST",
+            "Position": 0,
+            "ActionType": "TestExecution",
+            "MatchType": "Primary",
+            "Type": "TEST",
+            "Action": "C"
+          },
+          "Entities": {
+            "Priority": "High",
+            "IsValid": true,
+            "Length": 18,
+            "Directory": "C:\\Test",
+            "Context": {
+              "Before": "RECOMMENDATION: TEST - ",
+              "Full": "RECOMMENDATION: TEST - C:\\Test\\Script.ps1",
+              "After": ""
+            },
+            "Position": 23,
+            "FileName": "Script.ps1",
+            "ValidationRequired": true,
+            "ExtractedAt": "2025-08-25T14:14:27.8587351-04:00",
+            "Exists": false,
+            "Extension": ".ps1",
+            "Confidence": 0.85,
+            "Type": "FilePath",
+            "Value": "C:\\Test\\Script.ps1"
+          },
+          "AnalysisTimestamp": "2025-08-25 14:14:27.861",
+          "ConfidenceAnalysis": {
+            "Weights": {
+              "Entity": 0.15,
+              "Uncertainty": 0.05,
+              "Classification": 0.3,
+              "Recommendation": 0.4,
+              "Bayesian": 0.1
+            },
+            "OverallConfidence": 0.10084388114293383,
+            "UncertaintyRange": {
+              "Upper": 1.0,
+              "Lower": 0.0
+            },
+            "QualityRating": "Low",
+            "Components": {
+              "ClassificationConfidence": 0.5,
+              "UncertaintyQuantification": 1.0,
+              "EntityConfidence": 0.95,
+              "RecommendationConfidence": 0.15701544535997997,
+              "BayesianAdjustment": 0.4904866876762939
+            },
+            "ProcessingTimeMs": 0
+          },
+          "ProcessingTimeMs": 4,
+          "ResponseLength": 41,
+          "ProcessingSuccess": true
+        },
+        {
+          "Classification": {
+            "Features": {
+              "AllCapsWords": 2,
+              "CommandCount": 0,
+              "StartsWithError": false,
+              "HasInformationWords": false,
+              "NumberCount": 0,
+              "RecommendationCount": 1,
+              "HasQuestionWords": false,
+              "Length": 41,
+              "MaxRecommendationConfidence": 0.95,
+              "QuestionMarks": 0,
+              "HasInstructionWords": true,
+              "Colons": 2,
+              "SpecialCharCount": 5,
+              "StartsWithRecommendation": true,
+              "ExclamationMarks": 0,
+              "FilePathCount": 14,
+              "EntityCount": 1,
+              "HasCompletionWords": false,
+              "ErrorEntityCount": 0,
+              "LineCount": 1,
+              "HasCodeBlocks": false,
+              "HighPriorityRecommendations": 9,
+              "HasFilePaths": true,
+              "HasErrorWords": false,
+              "StartsWithQuestion": false,
+              "StartsWithComplete": false,
+              "HasCommandSyntax": false,
+              "UrlCount": 0,
+              "WordCount": 4,
+              "CapitalizedWords": 2,
+              "Periods": 1,
+              "HasErrorCodes": false,
+              "SentenceCount": 2,
+              "AvgRecommendationConfidence": 0.95
+            },
+            "Reasoning": "Ensemble classification with Bayesian calibration (0.0% -> 50.0%)",
+            "Type": "Instruction",
+            "EnsembleDetails": {
+              "WeightedVotes": {
+                "Complete": 0.0,
+                "Information": 0.0,
+                "Error": 0.0,
+                "Instruction": 4.027,
+                "Continuation": 0.0,
+                "TestResult": 0.0,
+                "Question": 0.0
+              },
+              "ClassifierCount": 4,
+              "Agreement": 1
+            },
+            "Confidence": 0.5,
+            "ProcessingTimeMs": 1
+          },
+          "Recommendations": {
+            "Details": "\\Test\\Script.ps1",
+            "Confidence": 0.95,
+            "Priority": "High",
+            "PatternName": "TEST",
+            "Position": 0,
+            "ActionType": "TestExecution",
+            "MatchType": "Primary",
+            "Type": "TEST",
+            "Action": "C"
+          },
+          "Entities": {
+            "Priority": "High",
+            "IsValid": true,
+            "Length": 18,
+            "Directory": "C:\\Test",
+            "Context": {
+              "Before": "RECOMMENDATION: TEST - ",
+              "Full": "RECOMMENDATION: TEST - C:\\Test\\Script.ps1",
+              "After": ""
+            },
+            "Position": 23,
+            "FileName": "Script.ps1",
+            "ValidationRequired": true,
+            "ExtractedAt": "2025-08-25T14:14:27.86454-04:00",
+            "Exists": false,
+            "Extension": ".ps1",
+            "Confidence": 0.85,
+            "Type": "FilePath",
+            "Value": "C:\\Test\\Script.ps1"
+          },
+          "AnalysisTimestamp": "2025-08-25 14:14:27.867",
+          "ConfidenceAnalysis": {
+            "Weights": {
+              "Entity": 0.15,
+              "Uncertainty": 0.05,
+              "Classification": 0.3,
+              "Recommendation": 0.4,
+              "Bayesian": 0.1
+            },
+            "OverallConfidence": 0.10084388114293383,
+            "UncertaintyRange": {
+              "Upper": 1.0,
+              "Lower": 0.0
+            },
+            "QualityRating": "Low",
+            "Components": {
+              "ClassificationConfidence": 0.5,
+              "UncertaintyQuantification": 1.0,
+              "EntityConfidence": 0.95,
+              "RecommendationConfidence": 0.15701544535997997,
+              "BayesianAdjustment": 0.4904866876762939
+            },
+            "ProcessingTimeMs": 0
+          },
+          "ProcessingTimeMs": 4,
+          "ResponseLength": 41,
+          "ProcessingSuccess": true
+        },
+        {
+          "Classification": {
+            "Features": {
+              "AllCapsWords": 2,
+              "CommandCount": 0,
+              "StartsWithError": false,
+              "HasInformationWords": false,
+              "NumberCount": 0,
+              "RecommendationCount": 1,
+              "HasQuestionWords": false,
+              "Length": 41,
+              "MaxRecommendationConfidence": 0.95,
+              "QuestionMarks": 0,
+              "HasInstructionWords": true,
+              "Colons": 2,
+              "SpecialCharCount": 5,
+              "StartsWithRecommendation": true,
+              "ExclamationMarks": 0,
+              "FilePathCount": 14,
+              "EntityCount": 1,
+              "HasCompletionWords": false,
+              "ErrorEntityCount": 0,
+              "LineCount": 1,
+              "HasCodeBlocks": false,
+              "HighPriorityRecommendations": 9,
+              "HasFilePaths": true,
+              "HasErrorWords": false,
+              "StartsWithQuestion": false,
+              "StartsWithComplete": false,
+              "HasCommandSyntax": false,
+              "UrlCount": 0,
+              "WordCount": 4,
+              "CapitalizedWords": 2,
+              "Periods": 1,
+              "HasErrorCodes": false,
+              "SentenceCount": 2,
+              "AvgRecommendationConfidence": 0.95
+            },
+            "Reasoning": "Ensemble classification with Bayesian calibration (0.0% -> 50.0%)",
+            "Type": "Instruction",
+            "EnsembleDetails": {
+              "WeightedVotes": {
+                "Complete": 0.0,
+                "Information": 0.0,
+                "Error": 0.0,
+                "Instruction": 4.027,
+                "Continuation": 0.0,
+                "TestResult": 0.0,
+                "Question": 0.0
+              },
+              "ClassifierCount": 4,
+              "Agreement": 1
+            },
+            "Confidence": 0.5,
+            "ProcessingTimeMs": 1
+          },
+          "Recommendations": {
+            "Details": "\\Test\\Script.ps1",
+            "Confidence": 0.95,
+            "Priority": "High",
+            "PatternName": "TEST",
+            "Position": 0,
+            "ActionType": "TestExecution",
+            "MatchType": "Primary",
+            "Type": "TEST",
+            "Action": "C"
+          },
+          "Entities": {
+            "Priority": "High",
+            "IsValid": true,
+            "Length": 18,
+            "Directory": "C:\\Test",
+            "Context": {
+              "Before": "RECOMMENDATION: TEST - ",
+              "Full": "RECOMMENDATION: TEST - C:\\Test\\Script.ps1",
+              "After": ""
+            },
+            "Position": 23,
+            "FileName": "Script.ps1",
+            "ValidationRequired": true,
+            "ExtractedAt": "2025-08-25T14:14:27.8707492-04:00",
+            "Exists": false,
+            "Extension": ".ps1",
+            "Confidence": 0.85,
+            "Type": "FilePath",
+            "Value": "C:\\Test\\Script.ps1"
+          },
+          "AnalysisTimestamp": "2025-08-25 14:14:27.873",
+          "ConfidenceAnalysis": {
+            "Weights": {
+              "Entity": 0.15,
+              "Uncertainty": 0.05,
+              "Classification": 0.3,
+              "Recommendation": 0.4,
+              "Bayesian": 0.1
+            },
+            "OverallConfidence": 0.10084388114293383,
+            "UncertaintyRange": {
+              "Upper": 1.0,
+              "Lower": 0.0
+            },
+            "QualityRating": "Low",
+            "Components": {
+              "ClassificationConfidence": 0.5,
+              "UncertaintyQuantification": 1.0,
+              "EntityConfidence": 0.95,
+              "RecommendationConfidence": 0.15701544535997997,
+              "BayesianAdjustment": 0.4904866876762939
+            },
+            "ProcessingTimeMs": 0
+          },
+          "ProcessingTimeMs": 4,
+          "ResponseLength": 41,
+          "ProcessingSuccess": true
+        }
+      ],
+      "ContentLength": 41,
+      "ExpectedTime": 30,
+      "Name": "Simple Recommendation",
+      "MaxTime": 195,
+      "TargetMet": true,
+      "MinTime": 5,
+      "AverageTime": 27.3,
+      "ProcessingTimes": [
+        195,
+        11,
+        8,
+        8,
+        24,
+        5,
+        5,
+        5,
+        6,
+        6
+      ]
+    },
+    {
+      "AnalysisResults": [
+        {
+          "Recommendations": [],
+          "ResponseLength": 675,
+          "ProcessingTimeMs": 185,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:28.074"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 675,
+          "ProcessingTimeMs": 71,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:28.146"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 675,
+          "ProcessingTimeMs": 71,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:28.219"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 675,
+          "ProcessingTimeMs": 68,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:28.289"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 675,
+          "ProcessingTimeMs": 64,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:28.356"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 675,
+          "ProcessingTimeMs": 65,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:28.422"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 675,
+          "ProcessingTimeMs": 80,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:28.521"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 675,
+          "ProcessingTimeMs": 71,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:28.594"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 675,
+          "ProcessingTimeMs": 69,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:28.664"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 675,
+          "ProcessingTimeMs": 64,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:28.730"
+        }
+      ],
+      "ContentLength": 675,
+      "ExpectedTime": 80,
+      "Name": "Complex Mixed Content",
+      "MaxTime": 187,
+      "TargetMet": true,
+      "MinTime": 66,
+      "AverageTime": 83.8,
+      "ProcessingTimes": [
+        187,
+        72,
+        72,
+        69,
+        67,
+        66,
+        98,
+        72,
+        69,
+        66
+      ]
+    },
+    {
+      "AnalysisResults": [
+        {
+          "Recommendations": [],
+          "ResponseLength": 1281,
+          "ProcessingTimeMs": 42,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:28.775"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 1281,
+          "ProcessingTimeMs": 43,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:28.820"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 1281,
+          "ProcessingTimeMs": 44,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:28.865"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 1281,
+          "ProcessingTimeMs": 46,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:28.912"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 1281,
+          "ProcessingTimeMs": 50,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:28.964"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 1281,
+          "ProcessingTimeMs": 44,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:29.010"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 1281,
+          "ProcessingTimeMs": 47,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:29.059"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 1281,
+          "ProcessingTimeMs": 43,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:29.104"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 1281,
+          "ProcessingTimeMs": 48,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:29.154"
+        },
+        {
+          "Recommendations": [],
+          "ResponseLength": 1281,
+          "ProcessingTimeMs": 43,
+          "ConfidenceAnalysis": {
+            "OverallConfidence": 0.1,
+            "QualityRating": "Low"
+          },
+          "Classification": {
+            "Confidence": 0.5,
+            "Reasoning": "Analysis failed",
+            "Type": "Error"
+          },
+          "ProcessingSuccess": false,
+          "Error": "Method invocation failed because [System.Object[]] does not contain a method named 'op_Subtraction'.",
+          "Entities": [],
+          "AnalysisTimestamp": "2025-08-25 14:14:29.199"
+        }
+      ],
+      "ContentLength": 1281,
+      "ExpectedTime": 120,
+      "Name": "Large Response with Multiple Entities",
+      "MaxTime": 51,
+      "TargetMet": true,
+      "MinTime": 43,
+      "AverageTime": 46.2,
+      "ProcessingTimes": [
+        43,
+        44,
+        45,
+        46,
+        51,
+        46,
+        48,
+        45,
+        50,
+        44
+      ]
+    }
+  ],
+  "TestIterations": 10,
+  "Summary": {
+    "FailedTests": 0,
+    "TotalTests": 3,
+    "TargetMet": true,
+    "AverageProcessingTime": 52.43,
+    "PassedTests": 3
+  },
+  "TargetProcessingTime": 145
+}

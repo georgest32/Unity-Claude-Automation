@@ -1,0 +1,523 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-ParallelProcessing",
+  "Commands": [
+    {
+      "Parameters": [
+        "NoArchive",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Clear-AgentLog",
+      "Synopsis": "Clears the current log file",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Subsystem",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Clear-ParallelStatus",
+      "Synopsis": "Clears status data for a subsystem or entire manager",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-AgentLogPath",
+      "Synopsis": "Gets the current log file path",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-AgentLogStatistics",
+      "Synopsis": "Gets statistics about the log file",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Subsystem",
+        "IncludeMetadata",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ParallelStatus",
+      "Synopsis": "Retrieves status information from the parallel status manager",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "SyncHash",
+        "Key",
+        "DefaultValue",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-SynchronizedValue",
+      "Synopsis": "Safely retrieves a value from a synchronized hashtable",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ThreadSafetyStats",
+      "Synopsis": "Gets current thread safety statistics",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "LogPath",
+        "RotateOnStart",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-AgentLogging",
+      "Synopsis": "Initializes logging system for autonomous agent",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "BufferSize",
+        "ProcessorIntervalMs",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-ConcurrentLogging",
+      "Synopsis": "Initializes high-performance concurrent logging system for runspace pools",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "EnablePersistence",
+        "PersistenceIntervalSeconds",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-ParallelStatusManager",
+      "Synopsis": "Initializes the parallel status management system",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-LogRotation",
+      "Synopsis": "Rotates the current log file",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ScriptBlock",
+        "SyncHash",
+        "TimeoutMs",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-ThreadSafeOperation",
+      "Synopsis": "Executes an operation in a thread-safe manner",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "SyncHash",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Lock-SynchronizedHashtable",
+      "Synopsis": "Manually locks a synchronized hashtable for exclusive access",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "InitialData",
+        "EnableStats",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "New-SynchronizedHashtable",
+      "Synopsis": "Creates a new thread-safe synchronized hashtable",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Remove-OldLogFiles",
+      "Synopsis": "Removes log files older than retention period",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "SyncHash",
+        "Key",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Remove-SynchronizedValue",
+      "Synopsis": "Safely removes a value from a synchronized hashtable",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Subsystem",
+        "StatusData",
+        "UpdateGlobalStats",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Set-ParallelStatus",
+      "Synopsis": "Sets status information in the parallel status manager",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "SyncHash",
+        "Key",
+        "Value",
+        "UpdateTimestamp",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Set-SynchronizedValue",
+      "Synopsis": "Safely sets a value in a synchronized hashtable",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Stop-ConcurrentLogging",
+      "Synopsis": "Stops concurrent logging system and flushes remaining entries",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Iterations",
+        "ConcurrencyLevel",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-ThreadSafety",
+      "Synopsis": "Tests thread safety of operations using runspace pools",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "SyncHash",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Unlock-SynchronizedHashtable",
+      "Synopsis": "Manually unlocks a synchronized hashtable",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Subsystem",
+        "Updates",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Update-ParallelStatus",
+      "Synopsis": "Updates specific fields in subsystem status",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Message",
+        "Level",
+        "Component"
+      ],
+      "Name": "Write-AgentLog",
+      "Synopsis": "\r\nWrite-AgentLog [[-Message] <string>] [[-Level] <string>] [[-Component] <string>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Message",
+        "Level",
+        "Component",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Write-ConcurrentLog",
+      "Synopsis": "High-performance thread-safe logging for runspace pool operations",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-ParallelProcessing",
+  "ExportedFunctions": [
+    "Clear-AgentLog",
+    "Clear-ParallelStatus",
+    "Get-AgentLogPath",
+    "Get-AgentLogStatistics",
+    "Get-ParallelStatus",
+    "Get-SynchronizedValue",
+    "Get-ThreadSafetyStats",
+    "Initialize-AgentLogging",
+    "Initialize-ConcurrentLogging",
+    "Initialize-ParallelStatusManager",
+    "Invoke-LogRotation",
+    "Invoke-ThreadSafeOperation",
+    "Lock-SynchronizedHashtable",
+    "New-SynchronizedHashtable",
+    "Remove-OldLogFiles",
+    "Remove-SynchronizedValue",
+    "Set-ParallelStatus",
+    "Set-SynchronizedValue",
+    "Stop-ConcurrentLogging",
+    "Test-ThreadSafety",
+    "Unlock-SynchronizedHashtable",
+    "Update-ParallelStatus",
+    "Write-AgentLog",
+    "Write-ConcurrentLog"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

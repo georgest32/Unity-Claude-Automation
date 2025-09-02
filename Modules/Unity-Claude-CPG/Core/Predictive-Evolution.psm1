@@ -1,0 +1,1377 @@
+# Predictive-Evolution.psm1
+# Week 4 Day 1: Code Evolution Analysis Module
+# Enhanced Documentation System - Advanced Features & Polish
+# Date: 2025-08-29
+
+<#
+.SYNOPSIS
+    Code evolution analysis module for tracking git history and predicting trends.
+
+.DESCRIPTION
+    This module provides comprehensive git history analysis capabilities including:
+    - Git commit analysis and parsing
+    - Code churn detection and hotspot identification
+    - Complexity trend analysis over time
+    - Pattern evolution tracking
+    - Refactoring recommendation generation
+
+.NOTES
+    Version: 1.0.0
+    Author: Unity-Claude-Automation
+    Dependencies: Git, Unity-Claude-CPG modules
+#>
+
+# Module metadata
+$ModuleVersion = "1.0.0"
+$ModuleName = "Predictive-Evolution"
+
+# Import required modules and check dependencies
+try {
+    Write-Debug "[$ModuleName] Loading required dependencies..."
+    
+    # Verify git is available
+    $gitVersion = git --version 2>$null
+    if (-not $gitVersion) {
+        throw "Git is not installed or not available in PATH"
+    }
+    Write-Debug "[$ModuleName] Git detected: $gitVersion"
+    
+    Write-Debug "[$ModuleName] Module loaded successfully - Version $ModuleVersion"
+}
+catch {
+    Write-Error "[$ModuleName] Failed to load dependencies: $($_.Exception.Message)"
+    throw
+}
+
+# Classes and Data Structures
+class GitCommitInfo {
+    [string]$Hash
+    [string]$Author
+    [string]$AuthorEmail
+    [datetime]$Date
+    [string]$Subject
+    [string[]]$FilesChanged
+    [int]$LinesAdded
+    [int]$LinesDeleted
+    [int]$LinesTotal
+    
+    GitCommitInfo() {
+        $this.FilesChanged = @()
+    }
+}
+
+class CodeChurnMetrics {
+    [string]$FilePath
+    [int]$ChangeCount
+    [int]$TotalLinesAdded
+    [int]$TotalLinesDeleted
+    [double]$ChurnScore
+    [datetime]$FirstChanged
+    [datetime]$LastChanged
+    [string[]]$Authors
+    
+    CodeChurnMetrics() {
+        $this.Authors = @()
+    }
+}
+
+#region Core Functions
+
+function Get-GitCommitHistory {
+    <#
+    .SYNOPSIS
+        Retrieves and parses git commit history for analysis.
+        
+    .DESCRIPTION
+        Extracts git commit information including hash, author, date, files changed,
+        and line counts. Uses git log with custom formatting for efficient parsing.
+        
+    .PARAMETER Path
+        Repository path to analyze (defaults to current directory)
+        
+    .PARAMETER Since
+        Start date for commit history (e.g., "1.month.ago", "2023-01-01")
+        
+    .PARAMETER Until
+        End date for commit history
+        
+    .PARAMETER MaxCount
+        Maximum number of commits to retrieve (default: 1000)
+        
+    .PARAMETER Author
+        Filter commits by specific author
+        
+    .EXAMPLE
+        $commits = Get-GitCommitHistory -Since "6.months.ago" -MaxCount 500
+        
+    .EXAMPLE
+        $commits = Get-GitCommitHistory -Path "C:\MyRepo" -Author "john@example.com"
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter()]
+        [string]$Path = (Get-Location).Path,
+        
+        [Parameter()]
+        [string]$Since = "1.year.ago",
+        
+        [Parameter()]
+        [string]$Until = $null,
+        
+        [Parameter()]
+        [int]$MaxCount = 1000,
+        
+        [Parameter()]
+        [string]$Author = $null
+    )
+    
+    begin {
+        Write-Debug "[$ModuleName] Get-GitCommitHistory: Starting analysis"
+        $originalLocation = Get-Location
+        
+        # Validate repository path
+        if (-not (Test-Path -Path $Path)) {
+            throw "Repository path does not exist: $Path"
+        }
+        
+        Set-Location -Path $Path
+        
+        # Check if it's a git repository
+        $gitDir = git rev-parse --git-dir 2>$null
+        if (-not $gitDir) {
+            throw "Path is not a git repository: $Path"
+        }
+    }
+    
+    process {
+        try {
+            # Build git log command based on research findings
+            $gitArgs = @(
+                "log"
+                "--pretty=format:%H|%an|%ae|%ai|%s"
+                "--numstat"
+                "--no-merges"
+            )
+            
+            if ($Since) { $gitArgs += "--since=$Since" }
+            if ($Until) { $gitArgs += "--until=$Until" }
+            if ($MaxCount) { $gitArgs += "--max-count=$MaxCount" }
+            if ($Author) { $gitArgs += "--author=$Author" }
+            
+            Write-Debug "[$ModuleName] Executing: git $($gitArgs -join ' ')"
+            
+            # Execute git command and capture output
+            $gitOutput = & git @gitArgs 2>&1
+            if ($LASTEXITCODE -ne 0) {
+                throw "Git command failed: $($gitOutput -join "`n")"
+            }
+            
+            # Parse git output into structured objects
+            $commits = @()
+            $currentCommit = $null
+            
+            foreach ($line in $gitOutput) {
+                if ($line -match '^[a-f0-9]{40}\|') {
+                    # Save previous commit if exists
+                    if ($currentCommit) {
+                        $commits += $currentCommit
+                    }
+                    
+                    # Parse commit header: hash|author|email|date|subject
+                    $parts = $line -split '\|', 5
+                    $currentCommit = [GitCommitInfo]::new()
+                    $currentCommit.Hash = $parts[0]
+                    $currentCommit.Author = $parts[1]
+                    $currentCommit.AuthorEmail = $parts[2]
+                    $currentCommit.Date = [datetime]::Parse($parts[3])
+                    $currentCommit.Subject = $parts[4]
+                    $currentCommit.LinesAdded = 0
+                    $currentCommit.LinesDeleted = 0
+                }
+                elseif ($line -match '^\d+\s+\d+\s+.+$' -or $line -match '^-\s+-\s+.+$') {
+                    # Parse file statistics: added, deleted, filename
+                    if ($currentCommit) {
+                        $statParts = $line -split '\s+', 3
+                        $added = if ($statParts[0] -eq '-') { 0 } else { [int]$statParts[0] }
+                        $deleted = if ($statParts[1] -eq '-') { 0 } else { [int]$statParts[1] }
+                        $filename = $statParts[2]
+                        
+                        $currentCommit.FilesChanged += $filename
+                        $currentCommit.LinesAdded += $added
+                        $currentCommit.LinesDeleted += $deleted
+                    }
+                }
+            }
+            
+            # Add last commit
+            if ($currentCommit) {
+                $commits += $currentCommit
+            }
+            
+            # Calculate total lines for each commit
+            foreach ($commit in $commits) {
+                $commit.LinesTotal = $commit.LinesAdded + $commit.LinesDeleted
+            }
+            
+            Write-Debug "[$ModuleName] Parsed $($commits.Count) commits from git history"
+            return $commits
+        }
+        catch {
+            Write-Error "[$ModuleName] Error parsing git history: $($_.Exception.Message)"
+            throw
+        }
+    }
+    
+    end {
+        Set-Location -Path $originalLocation
+    }
+}
+
+function Get-CodeChurnMetrics {
+    <#
+    .SYNOPSIS
+        Analyzes code churn patterns to identify frequently changed files.
+        
+    .DESCRIPTION
+        Calculates churn metrics for each file based on commit history,
+        implementing research-based churn analysis patterns for hotspot detection.
+        
+    .PARAMETER Commits
+        Array of GitCommitInfo objects from Get-GitCommitHistory
+        
+    .PARAMETER Path
+        Repository path (if not providing commits directly)
+        
+    .PARAMETER Since
+        Time period for analysis (default: 6.months.ago)
+        
+    .PARAMETER FilePattern
+        Filter files by pattern (e.g., "*.ps1", "*.cs")
+        
+    .EXAMPLE
+        $commits = Get-GitCommitHistory
+        $churn = Get-CodeChurnMetrics -Commits $commits
+        
+    .EXAMPLE
+        $churn = Get-CodeChurnMetrics -Path "C:\Repo" -FilePattern "*.psm1"
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(ValueFromPipeline)]
+        [GitCommitInfo[]]$Commits = $null,
+        
+        [Parameter()]
+        [string]$Path = $null,
+        
+        [Parameter()]
+        [string]$Since = "6.months.ago",
+        
+        [Parameter()]
+        [string]$FilePattern = "*"
+    )
+    
+    begin {
+        Write-Debug "[$ModuleName] Get-CodeChurnMetrics: Starting churn analysis"
+        $churnData = @{}
+    }
+    
+    process {
+        # Get commits if not provided
+        if (-not $Commits) {
+            $getCommitsParams = @{
+                Since = $Since
+            }
+            if ($Path) { $getCommitsParams.Path = $Path }
+            
+            Write-Debug "[$ModuleName] Retrieving commits for churn analysis"
+            $Commits = Get-GitCommitHistory @getCommitsParams
+        }
+        
+        # Process each commit to build churn metrics
+        foreach ($commit in $Commits) {
+            foreach ($file in $commit.FilesChanged) {
+                # Apply file pattern filter
+                if ($file -notlike $FilePattern) { continue }
+                
+                if (-not $churnData.ContainsKey($file)) {
+                    $churnData[$file] = [CodeChurnMetrics]::new()
+                    $churnData[$file].FilePath = $file
+                    $churnData[$file].FirstChanged = $commit.Date
+                    $churnData[$file].LastChanged = $commit.Date
+                }
+                
+                $metrics = $churnData[$file]
+                $metrics.ChangeCount++
+                
+                # Update date range
+                if ($commit.Date -lt $metrics.FirstChanged) {
+                    $metrics.FirstChanged = $commit.Date
+                }
+                if ($commit.Date -gt $metrics.LastChanged) {
+                    $metrics.LastChanged = $commit.Date
+                }
+                
+                # Add author if not already tracked
+                if ($metrics.Authors -notcontains $commit.Author) {
+                    $metrics.Authors += $commit.Author
+                }
+                
+                # Accumulate line changes (approximate based on commit totals)
+                $fileCount = $commit.FilesChanged.Count
+                if ($fileCount -gt 0) {
+                    $avgAdded = [math]::Round($commit.LinesAdded / $fileCount)
+                    $avgDeleted = [math]::Round($commit.LinesDeleted / $fileCount)
+                    $metrics.TotalLinesAdded += $avgAdded
+                    $metrics.TotalLinesDeleted += $avgDeleted
+                }
+            }
+        }
+        
+        # Calculate churn scores and return results
+        $results = @()
+        foreach ($filePath in $churnData.Keys) {
+            $metrics = $churnData[$filePath]
+            
+            # Calculate churn score based on research findings
+            # Higher score = more frequent changes + more lines changed
+            $daySpan = ($metrics.LastChanged - $metrics.FirstChanged).Days + 1
+            $changeFrequency = $metrics.ChangeCount / $daySpan
+            $lineChurn = $metrics.TotalLinesAdded + $metrics.TotalLinesDeleted
+            
+            # Weighted churn score (frequency 60%, volume 40%)
+            $metrics.ChurnScore = ($changeFrequency * 0.6) + (($lineChurn / 100) * 0.4)
+            
+            $results += $metrics
+        }
+        
+        # Sort by churn score descending
+        $sortedResults = $results | Sort-Object ChurnScore -Descending
+        
+        Write-Debug "[$ModuleName] Analyzed churn for $($sortedResults.Count) files"
+        return $sortedResults
+    }
+}
+
+function Get-FileHotspots {
+    <#
+    .SYNOPSIS
+        Identifies code hotspots by combining churn and complexity metrics.
+        
+    .DESCRIPTION
+        Implements the research-based hotspot analysis approach that plots
+        complexity vs. churn to identify refactoring priorities in the
+        top-right quadrant of the priority matrix.
+        
+    .PARAMETER ChurnMetrics
+        Array of CodeChurnMetrics objects from Get-CodeChurnMetrics
+        
+    .PARAMETER Path
+        Repository path for complexity analysis
+        
+    .PARAMETER Top
+        Number of top hotspots to return (default: 20)
+        
+    .PARAMETER ComplexityThreshold
+        Minimum complexity score for hotspot consideration (default: 10)
+        
+    .PARAMETER ChurnThreshold
+        Minimum churn score for hotspot consideration (default: 1.0)
+        
+    .EXAMPLE
+        $churn = Get-CodeChurnMetrics
+        $hotspots = Get-FileHotspots -ChurnMetrics $churn -Top 10
+        
+    .EXAMPLE
+        $hotspots = Get-FileHotspots -Path "C:\Repo" -ComplexityThreshold 15
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(ValueFromPipeline)]
+        [CodeChurnMetrics[]]$ChurnMetrics = $null,
+        
+        [Parameter()]
+        [string]$Path = (Get-Location).Path,
+        
+        [Parameter()]
+        [int]$Top = 20,
+        
+        [Parameter()]
+        [double]$ComplexityThreshold = 10.0,
+        
+        [Parameter()]
+        [double]$ChurnThreshold = 1.0
+    )
+    
+    begin {
+        Write-Debug "[$ModuleName] Get-FileHotspots: Starting hotspot analysis"
+        
+        # Import required modules for complexity analysis
+        try {
+            if (Get-Module -Name "Unity-Claude-CPG" -ListAvailable) {
+                Import-Module "Unity-Claude-CPG" -Force -ErrorAction SilentlyContinue
+            }
+        }
+        catch {
+            Write-Warning "[$ModuleName] CPG module not available - using simplified complexity estimation"
+        }
+    }
+    
+    process {
+        # Get churn metrics if not provided
+        if (-not $ChurnMetrics) {
+            Write-Debug "[$ModuleName] Retrieving churn metrics for hotspot analysis"
+            $ChurnMetrics = Get-CodeChurnMetrics -Path $Path
+        }
+        
+        # Build hotspot analysis results
+        $hotspots = @()
+        
+        foreach ($churnMetric in $ChurnMetrics) {
+            # Skip if below churn threshold
+            if ($churnMetric.ChurnScore -lt $ChurnThreshold) { continue }
+            
+            # Calculate or estimate complexity
+            $complexity = Get-FileComplexityEstimate -FilePath $churnMetric.FilePath -BasePath $Path
+            
+            # Skip if below complexity threshold
+            if ($complexity -lt $ComplexityThreshold) { continue }
+            
+            # Create hotspot result
+            $hotspot = [PSCustomObject]@{
+                FilePath = $churnMetric.FilePath
+                ChurnScore = [math]::Round($churnMetric.ChurnScore, 2)
+                ComplexityScore = [math]::Round($complexity, 2)
+                HotspotScore = [math]::Round(($churnMetric.ChurnScore * $complexity), 2)
+                ChangeCount = $churnMetric.ChangeCount
+                AuthorCount = $churnMetric.Authors.Count
+                FirstChanged = $churnMetric.FirstChanged
+                LastChanged = $churnMetric.LastChanged
+                TotalLinesChanged = $churnMetric.TotalLinesAdded + $churnMetric.TotalLinesDeleted
+                RefactoringPriority = Get-RefactoringPriority -Churn $churnMetric.ChurnScore -Complexity $complexity
+            }
+            
+            $hotspots += $hotspot
+        }
+        
+        # Sort by hotspot score and return top results
+        $sortedHotspots = $hotspots | Sort-Object HotspotScore -Descending | Select-Object -First $Top
+        
+        Write-Debug "[$ModuleName] Identified $($sortedHotspots.Count) hotspots from $($ChurnMetrics.Count) files"
+        return $sortedHotspots
+    }
+}
+
+function Get-FileComplexityEstimate {
+    <#
+    .SYNOPSIS
+        Estimates file complexity using simple heuristics.
+    #>
+    [CmdletBinding()]
+    param(
+        [string]$FilePath,
+        [string]$BasePath
+    )
+    
+    $fullPath = Join-Path -Path $BasePath -ChildPath $FilePath
+    
+    # Return default complexity if file doesn't exist
+    if (-not (Test-Path -Path $fullPath)) {
+        return 5.0
+    }
+    
+    try {
+        $content = Get-Content -Path $fullPath -ErrorAction SilentlyContinue
+        if (-not $content) { return 5.0 }
+        
+        $lineCount = $content.Count
+        $complexity = $lineCount / 50  # Base complexity from lines
+        
+        # Add complexity for control structures (simple heuristic)
+        $controlStructures = ($content | Select-String -Pattern '\b(if|while|for|foreach|switch|try|catch)\b' -AllMatches).Matches.Count
+        $complexity += $controlStructures * 2
+        
+        # Add complexity for function definitions
+        $functions = ($content | Select-String -Pattern '\bfunction\s+\w+' -AllMatches).Matches.Count
+        $complexity += $functions * 3
+        
+        return [math]::Max($complexity, 1.0)
+    }
+    catch {
+        Write-Debug "[$ModuleName] Error calculating complexity for $FilePath`: $($_.Exception.Message)"
+        return 5.0
+    }
+}
+
+function Get-RefactoringPriority {
+    <#
+    .SYNOPSIS
+        Determines refactoring priority based on churn/complexity quadrant.
+    #>
+    [CmdletBinding()]
+    param(
+        [double]$Churn,
+        [double]$Complexity
+    )
+    
+    # Define quadrants based on research findings
+    $churnMedian = 2.0
+    $complexityMedian = 15.0
+    
+    if ($Churn -gt $churnMedian -and $Complexity -gt $complexityMedian) {
+        return "Critical"  # Top-right quadrant
+    }
+    elseif ($Churn -gt $churnMedian) {
+        return "High"     # Top-left quadrant (high churn, lower complexity)
+    }
+    elseif ($Complexity -gt $complexityMedian) {
+        return "Medium"   # Bottom-right quadrant (high complexity, lower churn)
+    }
+    else {
+        return "Low"      # Bottom-left quadrant
+    }
+}
+
+function Get-ComplexityTrends {
+    <#
+    .SYNOPSIS
+        Analyzes complexity evolution over time periods.
+        
+    .DESCRIPTION
+        Tracks how code complexity has changed over time by analyzing
+        git history and calculating complexity trends for trend detection.
+        
+    .PARAMETER Path
+        Repository path to analyze
+        
+    .PARAMETER TimeUnit
+        Time grouping unit: 'Month', 'Quarter', 'Week' (default: Month)
+        
+    .PARAMETER Since
+        Start date for trend analysis (default: 1.year.ago)
+        
+    .PARAMETER FilePattern
+        Filter files by pattern (e.g., "*.ps1", "*.cs")
+        
+    .EXAMPLE
+        $trends = Get-ComplexityTrends -TimeUnit "Month"
+        
+    .EXAMPLE
+        $trends = Get-ComplexityTrends -Since "2.years.ago" -FilePattern "*.psm1"
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter()]
+        [string]$Path = (Get-Location).Path,
+        
+        [Parameter()]
+        [ValidateSet('Week', 'Month', 'Quarter')]
+        [string]$TimeUnit = 'Month',
+        
+        [Parameter()]
+        [string]$Since = "1.year.ago",
+        
+        [Parameter()]
+        [string]$FilePattern = "*"
+    )
+    
+    Write-Debug "[$ModuleName] Get-ComplexityTrends: Analyzing complexity trends"
+    
+    # Get git history
+    $commits = Get-GitCommitHistory -Path $Path -Since $Since
+    if (-not $commits) {
+        Write-Warning "[$ModuleName] No commits found for trend analysis"
+        return @()
+    }
+    
+    # Group commits by time period
+    $timeGroups = @{}
+    foreach ($commit in $commits) {
+        $timeKey = switch ($TimeUnit) {
+            'Week' { Get-Date $commit.Date -UFormat "%Y-W%V" }
+            'Month' { Get-Date $commit.Date -Format "yyyy-MM" }
+            'Quarter' { $quarter = [math]::Ceiling((Get-Date $commit.Date).Month / 3); "$((Get-Date $commit.Date).Year)-Q$quarter" }
+        }
+        
+        if (-not $timeGroups.ContainsKey($timeKey)) {
+            $timeGroups[$timeKey] = @()
+        }
+        $timeGroups[$timeKey] += $commit
+    }
+    
+    # Calculate complexity trends
+    $trends = @()
+    foreach ($timeKey in ($timeGroups.Keys | Sort-Object)) {
+        $periodCommits = $timeGroups[$timeKey]
+        $allFiles = $periodCommits | ForEach-Object { $_.FilesChanged } | Where-Object { $_ -like $FilePattern } | Sort-Object -Unique
+        
+        $totalComplexity = 0
+        $fileCount = 0
+        
+        foreach ($file in $allFiles) {
+            $complexity = Get-FileComplexityEstimate -FilePath $file -BasePath $Path
+            $totalComplexity += $complexity
+            $fileCount++
+        }
+        
+        $avgComplexity = if ($fileCount -gt 0) { [math]::Round($totalComplexity / $fileCount, 2) } else { 0 }
+        
+        $trendPoint = [PSCustomObject]@{
+            TimePeriod = $timeKey
+            AverageComplexity = $avgComplexity
+            TotalFiles = $fileCount
+            TotalCommits = $periodCommits.Count
+            TotalLinesChanged = ($periodCommits | Measure-Object LinesTotal -Sum).Sum
+            ActiveAuthors = ($periodCommits | Select-Object Author -Unique).Count
+        }
+        
+        $trends += $trendPoint
+    }
+    
+    Write-Debug "[$ModuleName] Generated $($trends.Count) trend data points"
+    return $trends
+}
+
+function Get-PatternEvolution {
+    <#
+    .SYNOPSIS
+        Tracks evolution of coding patterns over time.
+        
+    .DESCRIPTION
+        Analyzes how coding patterns and practices have evolved by examining
+        commit messages, file types, and change patterns over time.
+        
+    .PARAMETER Commits
+        Array of GitCommitInfo objects (optional)
+        
+    .PARAMETER Path
+        Repository path to analyze
+        
+    .PARAMETER Since
+        Start date for pattern analysis
+        
+    .EXAMPLE
+        $patterns = Get-PatternEvolution -Since "6.months.ago"
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter()]
+        [GitCommitInfo[]]$Commits = $null,
+        
+        [Parameter()]
+        [string]$Path = (Get-Location).Path,
+        
+        [Parameter()]
+        [string]$Since = "6.months.ago"
+    )
+    
+    Write-Debug "[$ModuleName] Get-PatternEvolution: Analyzing pattern evolution"
+    
+    # Get commits if not provided
+    if (-not $Commits) {
+        $Commits = Get-GitCommitHistory -Path $Path -Since $Since
+    }
+    
+    if (-not $Commits) {
+        Write-Warning "[$ModuleName] No commits found for pattern analysis"
+        return @()
+    }
+    
+    # Analyze patterns
+    $patterns = [PSCustomObject]@{
+        CommitPatterns = Get-CommitPatterns -Commits $Commits
+        FileTypeEvolution = Get-FileTypeEvolution -Commits $Commits
+        AuthorPatterns = Get-AuthorPatterns -Commits $Commits
+        TimePatterns = Get-TimePatterns -Commits $Commits
+        Summary = [PSCustomObject]@{
+            TotalCommits = $Commits.Count
+            DateRange = "$($Commits[-1].Date.ToString('yyyy-MM-dd')) to $($Commits[0].Date.ToString('yyyy-MM-dd'))"
+            UniqueAuthors = ($Commits | Select-Object Author -Unique).Count
+            UniqueFiles = ($Commits | ForEach-Object { $_.FilesChanged } | Sort-Object -Unique).Count
+        }
+    }
+    
+    Write-Debug "[$ModuleName] Pattern analysis complete"
+    return $patterns
+}
+
+function Get-CommitPatterns {
+    param([GitCommitInfo[]]$Commits)
+    
+    $patterns = @{
+        FixPatterns = ($Commits | Where-Object { $_.Subject -match '\b(fix|bug|error|issue)\b' }).Count
+        FeaturePatterns = ($Commits | Where-Object { $_.Subject -match '\b(add|new|feature|implement)\b' }).Count
+        RefactorPatterns = ($Commits | Where-Object { $_.Subject -match '\b(refactor|clean|improve|optimize)\b' }).Count
+        TestPatterns = ($Commits | Where-Object { $_.Subject -match '\b(test|spec|unit)\b' }).Count
+        DocumentationPatterns = ($Commits | Where-Object { $_.Subject -match '\b(doc|readme|comment)\b' }).Count
+    }
+    
+    return $patterns
+}
+
+function Get-FileTypeEvolution {
+    param([GitCommitInfo[]]$Commits)
+    
+    $fileTypes = @{}
+    foreach ($commit in $Commits) {
+        foreach ($file in $commit.FilesChanged) {
+            $extension = [System.IO.Path]::GetExtension($file).ToLower()
+            if ($extension) {
+                if (-not $fileTypes.ContainsKey($extension)) {
+                    $fileTypes[$extension] = 0
+                }
+                $fileTypes[$extension]++
+            }
+        }
+    }
+    
+    return $fileTypes
+}
+
+function Get-AuthorPatterns {
+    param([GitCommitInfo[]]$Commits)
+    
+    $authors = @{}
+    foreach ($commit in $Commits) {
+        if (-not $authors.ContainsKey($commit.Author)) {
+            $authors[$commit.Author] = @{
+                CommitCount = 0
+                LinesAdded = 0
+                LinesDeleted = 0
+                FirstCommit = $commit.Date
+                LastCommit = $commit.Date
+            }
+        }
+        
+        $authors[$commit.Author].CommitCount++
+        $authors[$commit.Author].LinesAdded += $commit.LinesAdded
+        $authors[$commit.Author].LinesDeleted += $commit.LinesDeleted
+        
+        if ($commit.Date -lt $authors[$commit.Author].FirstCommit) {
+            $authors[$commit.Author].FirstCommit = $commit.Date
+        }
+        if ($commit.Date -gt $authors[$commit.Author].LastCommit) {
+            $authors[$commit.Author].LastCommit = $commit.Date
+        }
+    }
+    
+    return $authors
+}
+
+function Get-TimePatterns {
+    param([GitCommitInfo[]]$Commits)
+    
+    $timePatterns = @{
+        HourDistribution = @{}
+        DayOfWeekDistribution = @{}
+        MonthDistribution = @{}
+    }
+    
+    foreach ($commit in $Commits) {
+        $hour = $commit.Date.Hour
+        $dayOfWeek = $commit.Date.DayOfWeek
+        $month = $commit.Date.Month
+        
+        # Hour distribution (convert to string keys for JSON compatibility)
+        $hourKey = $hour.ToString()
+        if (-not $timePatterns.HourDistribution.ContainsKey($hourKey)) {
+            $timePatterns.HourDistribution[$hourKey] = 0
+        }
+        $timePatterns.HourDistribution[$hourKey]++
+        
+        # Day of week distribution (convert to string keys for JSON compatibility)
+        $dayOfWeekKey = $dayOfWeek.ToString()
+        if (-not $timePatterns.DayOfWeekDistribution.ContainsKey($dayOfWeekKey)) {
+            $timePatterns.DayOfWeekDistribution[$dayOfWeekKey] = 0
+        }
+        $timePatterns.DayOfWeekDistribution[$dayOfWeekKey]++
+        
+        # Month distribution (convert to string keys for JSON compatibility)
+        $monthKey = $month.ToString()
+        if (-not $timePatterns.MonthDistribution.ContainsKey($monthKey)) {
+            $timePatterns.MonthDistribution[$monthKey] = 0
+        }
+        $timePatterns.MonthDistribution[$monthKey]++
+    }
+    
+    return $timePatterns
+}
+
+function New-EvolutionReport {
+    <#
+    .SYNOPSIS
+        Creates a comprehensive code evolution analysis report.
+        
+    .DESCRIPTION
+        Generates a complete analysis report combining all evolution metrics
+        including churn analysis, hotspots, complexity trends, and patterns.
+        
+    .PARAMETER Path
+        Repository path to analyze
+        
+    .PARAMETER OutputPath
+        Path to save the report (optional)
+        
+    .PARAMETER Since
+        Start date for analysis (default: 6.months.ago)
+        
+    .PARAMETER Format
+        Report format: 'Text', 'JSON', 'HTML' (default: Text)
+        
+    .EXAMPLE
+        New-EvolutionReport -OutputPath "evolution-report.txt"
+        
+    .EXAMPLE
+        New-EvolutionReport -Since "1.year.ago" -Format "JSON"
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter()]
+        [string]$Path = (Get-Location).Path,
+        
+        [Parameter()]
+        [string]$OutputPath = $null,
+        
+        [Parameter()]
+        [string]$Since = "6.months.ago",
+        
+        [Parameter()]
+        [ValidateSet('Text', 'JSON', 'HTML')]
+        [string]$Format = 'Text'
+    )
+    
+    Write-Host "[$ModuleName] Generating comprehensive evolution report..." -ForegroundColor Cyan
+    
+    # Gather all analysis data
+    Write-Progress -Activity "Evolution Analysis" -Status "Gathering git history" -PercentComplete 10
+    $commits = Get-GitCommitHistory -Path $Path -Since $Since
+    
+    Write-Progress -Activity "Evolution Analysis" -Status "Analyzing code churn" -PercentComplete 30
+    $churnMetrics = Get-CodeChurnMetrics -Commits $commits
+    
+    Write-Progress -Activity "Evolution Analysis" -Status "Identifying hotspots" -PercentComplete 50
+    $hotspots = Get-FileHotspots -ChurnMetrics $churnMetrics -Path $Path
+    
+    Write-Progress -Activity "Evolution Analysis" -Status "Analyzing complexity trends" -PercentComplete 70
+    $complexityTrends = Get-ComplexityTrends -Path $Path -Since $Since
+    
+    Write-Progress -Activity "Evolution Analysis" -Status "Tracking pattern evolution" -PercentComplete 90
+    $patternEvolution = Get-PatternEvolution -Commits $commits -Path $Path
+    
+    # Create comprehensive report object
+    $report = [PSCustomObject]@{
+        Metadata = [PSCustomObject]@{
+            GeneratedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+            RepositoryPath = $Path
+            AnalysisPeriod = $Since
+            ModuleVersion = $ModuleVersion
+        }
+        Summary = [PSCustomObject]@{
+            TotalCommits = $commits.Count
+            UniqueFiles = ($churnMetrics | Measure-Object).Count
+            TopHotspots = ($hotspots | Select-Object -First 5 | Select-Object FilePath, HotspotScore, RefactoringPriority)
+            CriticalFiles = ($hotspots | Where-Object { $_.RefactoringPriority -eq 'Critical' }).Count
+        }
+        ChurnAnalysis = $churnMetrics | Select-Object -First 20
+        HotspotAnalysis = $hotspots
+        ComplexityTrends = $complexityTrends
+        PatternEvolution = $patternEvolution
+    }
+    
+    Write-Progress -Activity "Evolution Analysis" -Completed
+    
+    # Format and output report
+    $reportContent = Format-EvolutionReport -Report $report -Format $Format
+    
+    if ($OutputPath) {
+        $reportContent | Out-File -FilePath $OutputPath -Encoding UTF8
+        Write-Host "[$ModuleName] Report saved to: $OutputPath" -ForegroundColor Green
+    }
+    
+    return $report
+}
+
+function Format-EvolutionReport {
+    param($Report, $Format)
+    
+    switch ($Format) {
+        'JSON' {
+            return ($Report | ConvertTo-Json -Depth 10)
+        }
+        'Text' {
+            $text = @"
+CODE EVOLUTION ANALYSIS REPORT
+==============================
+Generated: $($Report.Metadata.GeneratedAt)
+Repository: $($Report.Metadata.RepositoryPath)
+Analysis Period: $($Report.Metadata.AnalysisPeriod)
+
+SUMMARY
+-------
+Total Commits: $($Report.Summary.TotalCommits)
+Files Analyzed: $($Report.Summary.UniqueFiles)
+Critical Hotspots: $($Report.Summary.CriticalFiles)
+
+TOP 5 HOTSPOTS
+--------------
+$($Report.Summary.TopHotspots | Format-Table -AutoSize | Out-String)
+
+CHURN ANALYSIS (Top 10)
+-----------------------
+$($Report.ChurnAnalysis | Select-Object -First 10 | Format-Table FilePath, ChurnScore, ChangeCount -AutoSize | Out-String)
+
+COMPLEXITY TRENDS
+-----------------
+$($Report.ComplexityTrends | Format-Table -AutoSize | Out-String)
+
+"@
+            return $text
+        }
+        'HTML' {
+            # Simple HTML format (can be enhanced)
+            return "<html><body><h1>Code Evolution Report</h1><pre>$($Report | ConvertTo-Json -Depth 5)</pre></body></html>"
+        }
+    }
+}
+
+#endregion
+
+#region LangGraph Integration Functions
+
+function Submit-EvolutionAnalysisToLangGraph {
+    <#
+    .SYNOPSIS
+        Submits evolution analysis data to LangGraph for AI-enhanced processing.
+    .DESCRIPTION
+        Integrates code evolution analysis with LangGraph orchestrator-worker workflows
+        for AI-enhanced pattern recognition, trend forecasting, and strategic insights.
+    .PARAMETER EvolutionData
+        Output from New-EvolutionReport or related analysis functions
+    .PARAMETER WorkflowType
+        Type of LangGraph workflow: 'evolution_analysis_enhancement' (default), 'unified_analysis_orchestration'
+    .PARAMETER EnhancementConfig
+        Configuration for AI enhancement including trend analysis and pattern detection
+    .EXAMPLE
+        $evolution = New-EvolutionReport -Path "." -Since "90 days ago" -Format 'JSON'
+        $enhanced = Submit-EvolutionAnalysisToLangGraph -EvolutionData $evolution
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$EvolutionData,
+        
+        [Parameter()]
+        [ValidateSet('evolution_analysis_enhancement', 'unified_analysis_orchestration')]
+        [string]$WorkflowType = 'evolution_analysis_enhancement',
+        
+        [Parameter()]
+        [hashtable]$EnhancementConfig = @{
+            analysis_depth = 'comprehensive'
+            focus_areas = @('pattern_evolution', 'complexity_trends', 'architectural_insights')
+            ai_enhancement = $true
+            generate_predictions = $true
+        }
+    )
+    
+    Write-Debug "[$ModuleName] Submitting evolution analysis to LangGraph - Workflow: $WorkflowType"
+    
+    try {
+        # Import LangGraph bridge module
+        Import-Module -Path "..\..\..\Unity-Claude-LangGraphBridge.psm1" -Force -ErrorAction Stop
+        Write-Debug "[$ModuleName] LangGraph bridge module imported successfully"
+        
+        # Prepare workflow input data
+        $workflowInput = @{
+            git_data = $EvolutionData
+            commit_analysis = if ($EvolutionData.CommitHistory) { $EvolutionData.CommitHistory } else { @() }
+            complexity_trends = if ($EvolutionData.ComplexityTrends) { $EvolutionData.ComplexityTrends } else { @{} }
+            enhancement_config = $EnhancementConfig
+            timestamp = Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ"
+            module_version = $ModuleVersion
+        }
+        
+        Write-Debug "[$ModuleName] Workflow input prepared with $($workflowInput.Keys.Count) data elements"
+        
+        # Create LangGraph workflow
+        $graphId = "evolution-analysis-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+        $graph = New-LangGraph -GraphId $graphId -GraphType $WorkflowType
+        
+        if (-not $graph -or $graph.status -ne 'created') {
+            throw "Failed to create LangGraph workflow: $($graph.error)"
+        }
+        
+        Write-Debug "[$ModuleName] LangGraph created successfully - ID: $graphId"
+        
+        # Submit workflow for execution
+        $execution = Start-LangGraphExecution -GraphId $graphId -InputData $workflowInput
+        
+        if (-not $execution -or $execution.status -eq 'error') {
+            throw "Failed to start LangGraph execution: $($execution.error)"
+        }
+        
+        Write-Debug "[$ModuleName] LangGraph execution started - Thread: $($execution.thread_id)"
+        
+        # Wait for completion with timeout
+        $timeout = 300  # 5 minutes
+        $completed = $false
+        $startTime = Get-Date
+        
+        do {
+            Start-Sleep -Seconds 5
+            $threadInfo = Get-LangGraphThread -ThreadId $execution.thread_id
+            
+            if ($threadInfo.info.status -eq 'completed') {
+                $completed = $true
+                Write-Debug "[$ModuleName] LangGraph workflow completed successfully"
+                break
+            }
+            elseif ($threadInfo.info.status -eq 'error') {
+                throw "LangGraph workflow failed: $($threadInfo.info.error)"
+            }
+            elseif ($threadInfo.info.status -eq 'interrupted') {
+                Write-Warning "[$ModuleName] LangGraph workflow interrupted - requires human approval"
+                # Could implement HITL handling here if needed
+                break
+            }
+            
+        } while ((Get-Date) - $startTime -lt [TimeSpan]::FromSeconds($timeout))
+        
+        if (-not $completed) {
+            throw "LangGraph workflow timeout after $timeout seconds"
+        }
+        
+        # Extract enhanced results
+        $enhancedResults = $threadInfo.result
+        
+        # Cleanup LangGraph resources
+        Remove-LangGraph -GraphId $graphId -ErrorAction SilentlyContinue
+        
+        Write-Debug "[$ModuleName] LangGraph workflow completed and cleaned up"
+        
+        return [PSCustomObject]@{
+            OriginalAnalysis = $EvolutionData
+            EnhancedResults = $enhancedResults
+            WorkflowType = $WorkflowType
+            GraphId = $graphId
+            ProcessingTime = [math]::Round(((Get-Date) - $startTime).TotalSeconds, 2)
+            Status = 'completed'
+            GeneratedAt = Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ"
+        }
+    }
+    catch {
+        Write-Error "[$ModuleName] LangGraph integration failed: $($_.Exception.Message)"
+        
+        # Return original analysis with error information
+        return [PSCustomObject]@{
+            OriginalAnalysis = $EvolutionData
+            EnhancedResults = $null
+            Error = $_.Exception.Message
+            Status = 'failed'
+            FallbackMode = 'local_analysis_only'
+            GeneratedAt = Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ"
+        }
+    }
+}
+
+function Get-LangGraphEvolutionWorkflow {
+    <#
+    .SYNOPSIS
+        Retrieves LangGraph workflow configuration for evolution analysis.
+    .DESCRIPTION
+        Returns the workflow definition and configuration for code evolution
+        enhancement using LangGraph orchestrator-worker patterns.
+    .PARAMETER WorkflowType
+        Type of workflow configuration to retrieve
+    .EXAMPLE
+        $config = Get-LangGraphEvolutionWorkflow -WorkflowType 'evolution_analysis_enhancement'
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter()]
+        [ValidateSet('evolution_analysis_enhancement', 'unified_analysis_orchestration')]
+        [string]$WorkflowType = 'evolution_analysis_enhancement'
+    )
+    
+    try {
+        $workflowConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\PredictiveAnalysis-LangGraph-Workflows.json"
+        
+        if (-not (Test-Path $workflowConfigPath)) {
+            throw "LangGraph workflow configuration file not found: $workflowConfigPath"
+        }
+        
+        $workflowConfig = Get-Content $workflowConfigPath | ConvertFrom-Json
+        $workflow = $workflowConfig.workflows.$WorkflowType
+        
+        if (-not $workflow) {
+            throw "Workflow type '$WorkflowType' not found in configuration"
+        }
+        
+        Write-Debug "[$ModuleName] Retrieved LangGraph workflow configuration for: $WorkflowType"
+        return $workflow
+    }
+    catch {
+        Write-Error "[$ModuleName] Failed to retrieve LangGraph workflow configuration: $($_.Exception.Message)"
+        return $null
+    }
+}
+
+function Test-LangGraphEvolutionIntegration {
+    <#
+    .SYNOPSIS
+        Tests LangGraph integration with evolution analysis functionality.
+    .DESCRIPTION
+        Performs comprehensive testing of LangGraph integration including workflow
+        submission, state management, and enhanced result processing.
+    .EXAMPLE
+        Test-LangGraphEvolutionIntegration -Path "."
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter()]
+        [string]$Path = ".",
+        
+        [Parameter()]
+        [switch]$QuickTest
+    )
+    
+    Write-Host "[$ModuleName] Testing LangGraph evolution integration..." -ForegroundColor Cyan
+    
+    try {
+        # Test 1: Basic evolution analysis
+        Write-Host "  Test 1: Basic evolution analysis..." -ForegroundColor Yellow
+        $evolutionData = New-EvolutionReport -Path $Path -Since "30 days ago" -Format 'JSON'
+        
+        if (-not $evolutionData) {
+            throw "Basic evolution analysis failed"
+        }
+        Write-Host "    ✓ Evolution analysis completed" -ForegroundColor Green
+        
+        # Test 2: LangGraph workflow configuration
+        Write-Host "  Test 2: LangGraph workflow configuration..." -ForegroundColor Yellow
+        $workflowConfig = Get-LangGraphEvolutionWorkflow -WorkflowType 'evolution_analysis_enhancement'
+        
+        if (-not $workflowConfig) {
+            throw "LangGraph workflow configuration failed"
+        }
+        Write-Host "    ✓ Workflow configuration loaded" -ForegroundColor Green
+        
+        # Test 3: LangGraph service connectivity (if not QuickTest)
+        if (-not $QuickTest) {
+            Write-Host "  Test 3: LangGraph service connectivity..." -ForegroundColor Yellow
+            
+            # Import and test LangGraph bridge
+            Import-Module -Path "..\..\..\Unity-Claude-LangGraphBridge.psm1" -Force -ErrorAction Stop
+            $serverStatus = Test-LangGraphServer
+            
+            if (-not $serverStatus -or $serverStatus.status -ne 'healthy') {
+                Write-Warning "    ! LangGraph server not available - skipping integration test"
+                return $false
+            }
+            Write-Host "    ✓ LangGraph server connectivity verified" -ForegroundColor Green
+            
+            # Test 4: Full integration workflow
+            Write-Host "  Test 4: Full integration workflow..." -ForegroundColor Yellow
+            $enhancedResults = Submit-EvolutionAnalysisToLangGraph -EvolutionData $evolutionData
+            
+            if (-not $enhancedResults -or $enhancedResults.Status -ne 'completed') {
+                Write-Warning "    ! LangGraph integration workflow failed - check server logs"
+                return $false
+            }
+            Write-Host "    ✓ Full integration workflow completed" -ForegroundColor Green
+        }
+        
+        Write-Host "[$ModuleName] LangGraph integration test completed successfully" -ForegroundColor Green
+        return $true
+    }
+    catch {
+        Write-Error "[$ModuleName] LangGraph integration test failed: $($_.Exception.Message)"
+        return $false
+    }
+}
+
+function Invoke-UnifiedPredictiveAnalysis {
+    <#
+    .SYNOPSIS
+        Executes unified predictive analysis combining maintenance and evolution insights through LangGraph.
+    .DESCRIPTION
+        Orchestrates both maintenance prediction and evolution analysis through LangGraph
+        unified workflow for comprehensive strategic insights and recommendations.
+    .PARAMETER Path
+        Path for maintenance analysis
+    .PARAMETER RepositoryPath
+        Repository path for evolution analysis
+    .PARAMETER UnifiedConfig
+        Configuration for unified analysis including cross-analysis parameters
+    .EXAMPLE
+        $unified = Invoke-UnifiedPredictiveAnalysis -Path ".\Scripts" -RepositoryPath "."
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter()]
+        [string]$Path = ".\Scripts",
+        
+        [Parameter()]
+        [string]$RepositoryPath = ".",
+        
+        [Parameter()]
+        [hashtable]$UnifiedConfig = @{
+            analysis_scope = 'comprehensive'
+            cross_analysis = $true
+            strategic_planning = $true
+            risk_assessment = $true
+        }
+    )
+    
+    Write-Debug "[$ModuleName] Starting unified predictive analysis with LangGraph orchestration"
+    
+    try {
+        # Import LangGraph bridge module
+        Import-Module -Path "..\..\..\Unity-Claude-LangGraphBridge.psm1" -Force -ErrorAction Stop
+        
+        # Execute maintenance analysis
+        Write-Debug "[$ModuleName] Executing maintenance prediction analysis..."
+        $maintenanceData = Get-MaintenancePrediction -Path $Path
+        
+        # Execute evolution analysis  
+        Write-Debug "[$ModuleName] Executing evolution analysis..."
+        $evolutionData = New-EvolutionReport -Path $RepositoryPath -Since "90 days ago" -Format 'JSON'
+        
+        # Prepare unified workflow input
+        $unifiedInput = @{
+            unified_data = @{
+                maintenance = $maintenanceData
+                evolution = $evolutionData
+            }
+            analysis_scope = $UnifiedConfig
+            cross_analysis_config = @{
+                correlation_analysis = $true
+                strategic_synthesis = $true
+                risk_correlation = $true
+            }
+            timestamp = Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ"
+            module_version = $ModuleVersion
+        }
+        
+        Write-Debug "[$ModuleName] Unified workflow input prepared"
+        
+        # Create and execute unified LangGraph workflow
+        $graphId = "unified-analysis-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+        $graph = New-LangGraph -GraphId $graphId -GraphType 'unified_analysis_orchestration'
+        
+        if (-not $graph -or $graph.status -ne 'created') {
+            throw "Failed to create unified LangGraph workflow: $($graph.error)"
+        }
+        
+        Write-Debug "[$ModuleName] Unified LangGraph created - ID: $graphId"
+        
+        $execution = Start-LangGraphExecution -GraphId $graphId -InputData $unifiedInput
+        
+        if (-not $execution -or $execution.status -eq 'error') {
+            throw "Failed to start unified LangGraph execution: $($execution.error)"
+        }
+        
+        Write-Debug "[$ModuleName] Unified LangGraph execution started - Thread: $($execution.thread_id)"
+        
+        # Wait for completion (unified workflows may take longer)
+        $timeout = 600  # 10 minutes for unified analysis
+        $completed = $false
+        $startTime = Get-Date
+        
+        do {
+            Start-Sleep -Seconds 10
+            $threadInfo = Get-LangGraphThread -ThreadId $execution.thread_id
+            
+            if ($threadInfo.info.status -eq 'completed') {
+                $completed = $true
+                Write-Debug "[$ModuleName] Unified LangGraph workflow completed successfully"
+                break
+            }
+            elseif ($threadInfo.info.status -eq 'error') {
+                throw "Unified LangGraph workflow failed: $($threadInfo.info.error)"
+            }
+            elseif ($threadInfo.info.status -eq 'interrupted') {
+                Write-Warning "[$ModuleName] Unified LangGraph workflow interrupted - requires human approval"
+                break
+            }
+            
+        } while ((Get-Date) - $startTime -lt [TimeSpan]::FromSeconds($timeout))
+        
+        if (-not $completed) {
+            throw "Unified LangGraph workflow timeout after $timeout seconds"
+        }
+        
+        # Extract unified enhanced results
+        $unifiedResults = $threadInfo.result
+        
+        # Cleanup LangGraph resources
+        Remove-LangGraph -GraphId $graphId -ErrorAction SilentlyContinue
+        
+        Write-Debug "[$ModuleName] Unified LangGraph workflow completed and cleaned up"
+        
+        return [PSCustomObject]@{
+            MaintenanceAnalysis = $maintenanceData
+            EvolutionAnalysis = $evolutionData
+            UnifiedEnhancedResults = $unifiedResults
+            WorkflowType = $WorkflowType
+            GraphId = $graphId
+            ProcessingTime = [math]::Round(((Get-Date) - $startTime).TotalSeconds, 2)
+            Status = 'completed'
+            GeneratedAt = Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ"
+        }
+    }
+    catch {
+        Write-Error "[$ModuleName] Unified LangGraph integration failed: $($_.Exception.Message)"
+        
+        # Return original analysis with error information
+        return [PSCustomObject]@{
+            MaintenanceAnalysis = if ($maintenanceData) { $maintenanceData } else { $null }
+            EvolutionAnalysis = if ($evolutionData) { $evolutionData } else { $null }
+            UnifiedEnhancedResults = $null
+            Error = $_.Exception.Message
+            Status = 'failed'
+            FallbackMode = 'local_analysis_only'
+            GeneratedAt = Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ"
+        }
+    }
+}
+
+#endregion
+
+# Export module members
+Export-ModuleMember -Function @(
+    'Get-GitCommitHistory'
+    'Get-CodeChurnMetrics'
+    'Get-FileHotspots'
+    'Get-ComplexityTrends'
+    'Get-PatternEvolution'
+    'New-EvolutionReport'
+    'Submit-EvolutionAnalysisToLangGraph'
+    'Get-LangGraphEvolutionWorkflow'
+    'Test-LangGraphEvolutionIntegration'
+    'Invoke-UnifiedPredictiveAnalysis'
+) -Variable @(
+    'ModuleVersion'
+    'ModuleName'
+)
+
+Write-Host "[$ModuleName] Week 4 Day 1: Code Evolution Analysis module with LangGraph integration loaded successfully" -ForegroundColor Green
+
+#endregion
+
+# Export module members
+Export-ModuleMember -Function @(
+    'Get-GitCommitHistory'
+    'Get-CodeChurnMetrics'
+    'Get-FileHotspots'
+    'Get-ComplexityTrends'
+    'Get-PatternEvolution'
+    'New-EvolutionReport'
+    'Submit-EvolutionAnalysisToLangGraph'
+    'Get-LangGraphEvolutionWorkflow'
+    'Test-LangGraphEvolutionIntegration'
+    'Invoke-UnifiedPredictiveAnalysis'
+) -Variable @(
+    'ModuleVersion'
+    'ModuleName'
+)
+
+Write-Host "[$ModuleName] Week 4 Day 1: Code Evolution Analysis module with LangGraph integration loaded successfully" -ForegroundColor Green

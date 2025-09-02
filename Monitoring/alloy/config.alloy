@@ -1,0 +1,127 @@
+// Grafana Alloy Configuration for Unity-Claude Documentation System
+// Unified telemetry collection for logs, metrics, and traces
+
+// Logging configuration
+logging {
+	level  = "info"
+	format = "logfmt"
+}
+
+// HTTP server configuration is handled by command line args
+
+// Docker log collection
+loki.source.docker "docker_logs" {
+	host       = "unix:///var/run/docker.sock"
+	targets    = []
+	labels     = {
+		job = "containerlogs",
+		source = "docker",
+	}
+	relabel_rules = loki.relabel.docker_labels.rules
+	forward_to = [loki.process.unity_claude_logs.receiver]
+}
+
+// Docker label processing
+loki.relabel "docker_labels" {
+	rule {
+		source_labels = ["__meta_docker_container_name"]
+		target_label  = "container"
+	}
+	rule {
+		source_labels = ["__meta_docker_container_label_service"]
+		target_label  = "service"
+	}
+	rule {
+		source_labels = ["__meta_docker_container_id"]
+		regex         = "(.{12})"
+		target_label  = "container_id"
+	}
+}
+
+// Log processing pipeline
+loki.process "unity_claude_logs" {
+	// Add timestamp parsing
+	stage.timestamp {
+		source = "timestamp"
+		format = "RFC3339"
+	}
+	
+	// Extract log levels
+	stage.regex {
+		expression = "\\[(?P<level>INFO|WARN|ERROR|DEBUG)\\]"
+	}
+	
+	// Add labels based on extracted data
+	stage.labels {
+		values = {
+			level = "level",
+		}
+	}
+	
+	forward_to = [loki.write.unity_claude.receiver]
+}
+
+// Loki write configuration
+loki.write "unity_claude" {
+	endpoint {
+		url = "http://loki:3100/loki/api/v1/push"
+	}
+}
+
+// Prometheus metrics collection
+prometheus.scrape "unity_claude_services" {
+	targets = [
+		{"__address__" = "prometheus:9090"},
+		{"__address__" = "node-exporter:9100"},
+		{"__address__" = "cadvisor:8080"},
+		{"__address__" = "alertmanager:9093"},
+	]
+	forward_to = [prometheus.remote_write.unity_claude.receiver]
+}
+
+// Docker service discovery
+discovery.docker "docker_sd" {
+	host = "unix:///var/run/docker.sock"
+}
+
+// Docker metrics collection
+prometheus.scrape "docker_metrics" {
+	targets = discovery.docker.docker_sd.targets
+	forward_to = [prometheus.remote_write.unity_claude.receiver]
+}
+
+// Prometheus remote write
+prometheus.remote_write "unity_claude" {
+	endpoint {
+		url = "http://prometheus:9090/api/v1/write"
+	}
+}
+
+// Health monitoring
+prometheus.exporter.unix "system_metrics" {
+}
+
+prometheus.scrape "alloy_internal_metrics" {
+	targets    = prometheus.exporter.unix.system_metrics.targets
+	forward_to = [prometheus.remote_write.unity_claude.receiver]
+	scrape_interval = "15s"
+}
+
+// Discovery for Unity-Claude services
+discovery.docker "unity_claude_containers" {
+	host = "unix:///var/run/docker.sock"
+	
+	filter {
+		name   = "label"
+		values = ["unity-claude-*"]
+	}
+}
+
+// Unity-Claude specific metrics scraping
+prometheus.scrape "unity_claude_apps" {
+	targets = discovery.docker.unity_claude_containers.targets
+	scrape_interval = "30s"
+	metrics_path = "/metrics"
+	
+	forward_to = [prometheus.remote_write.unity_claude.receiver]
+}

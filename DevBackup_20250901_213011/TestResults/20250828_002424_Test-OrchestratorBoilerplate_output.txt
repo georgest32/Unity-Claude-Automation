@@ -1,0 +1,50 @@
+=============================================================
+Testing Orchestrator Boilerplate Implementation
+=============================================================
+
+STEP 1: Checking for boilerplate functions...
+  ƒo. New-BoilerplatePrompt.ps1 exists
+  ƒo. New-BoilerplatePrompt function loaded successfully
+  ƒo. Submit-ToClaudeViaTypeKeys.ps1 exists
+
+STEP 2: Testing boilerplate prompt construction...
+Building boilerplate prompt...
+  Prompt Type: Testing
+  Details: Please analyze the console output and results from running the test Test-Example.ps1 in file ./TestResults/test_output.json
+  Loaded boilerplate template (10757 characters)
+  Complete prompt built successfully
+  Total length: 10994 characters
+  ƒo. Boilerplate prompt created successfully
+  dY, Prompt length: 10994 characters
+  ƒo. Correct format detected (Testing: included)
+  ƒo. Boilerplate template included
+
+  PROMPT PREVIEW (last 200 chars):
+  ...tions, and parameters below:
+Testing: Please analyze the console output and results from running the test Test-Example.ps1 in file ./TestResults/test_output.json Files: ./TestResults/test_output.json
+
+STEP 3: Testing orchestrator submission function...
+  Expected behavior:
+    1. Load New-BoilerplatePrompt.ps1
+    2. Load Submit-ToClaudeViaTypeKeys.ps1
+    3. Build boilerplate prompt with Testing: format
+    4. Use clipboard paste (NOT line-by-line typing)
+    5. Submit complete prompt as single message
+
+  What should NOT happen:
+    ƒ?O NO pipe-separated format
+    ƒ?O NO 'Test Execution Complete: script | Exit Code: 0 |...'
+    ƒ?O NO line-by-line submission
+    ƒ?O NO character-by-character typing
+
+=============================================================
+Verification complete!
+
+CORRECT FORMAT EXAMPLE:
+[Full boilerplate template - 94 lines]
+
+Testing: Please analyze the console output and results from running the test Test-Example.ps1 in file ./TestResults/test_output.json Files: ./TestResults/test_output.json
+
+WRONG FORMAT EXAMPLE:
+Test Execution Complete: Test-Example.ps1 | Exit Code: 0 | Duration: 3.14 seconds | Success: True | Results File: ./TestResults/test_output.json
+=============================================================

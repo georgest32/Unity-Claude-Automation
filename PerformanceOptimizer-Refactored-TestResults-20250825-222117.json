@@ -1,0 +1,76 @@
+{
+  "EndTime": "2025-08-25T22:21:17.6257454-04:00",
+  "Duration": {
+    "Ticks": 30134478,
+    "Days": 0,
+    "Hours": 0,
+    "Milliseconds": 13,
+    "Microseconds": 447,
+    "Nanoseconds": 800,
+    "Minutes": 0,
+    "Seconds": 3,
+    "TotalDays": 3.4877868055555555E-05,
+    "TotalHours": 0.0008370688333333334,
+    "TotalMilliseconds": 3013.4478,
+    "TotalMicroseconds": 3013447.8,
+    "TotalNanoseconds": 3013447800.0,
+    "TotalMinutes": 0.05022413,
+    "TotalSeconds": 3.0134478
+  },
+  "StartTime": "2025-08-25T22:21:14.6122976-04:00",
+  "Tests": [
+    {
+      "Error": "The running command stopped because the preference variable \"ErrorActionPreference\" or common parameter is set to Stop: At C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-PerformanceOptimizer\\Unity-Claude-PerformanceOptimizer-Refactored.psm1:248 char:9\r\n+         $startTime = [datetime]::Now\r\n+         ~~~~~~~~~~\r\nCannot assign property, use '$this.StartTime'.",
+      "Status": "Failed",
+      "Name": "Module Import"
+    },
+    {
+      "Error": null,
+      "Status": "Passed",
+      "Name": "Component Modules",
+      "Components": [
+        {
+          "Exists": true,
+          "Name": "OptimizerConfiguration.psm1"
+        },
+        {
+          "Exists": true,
+          "Name": "FileSystemMonitoring.psm1"
+        },
+        {
+          "Exists": true,
+          "Name": "PerformanceMonitoring.psm1"
+        },
+        {
+          "Exists": true,
+          "Name": "PerformanceOptimization.psm1"
+        },
+        {
+          "Exists": true,
+          "Name": "FileProcessing.psm1"
+        },
+        {
+          "Exists": true,
+          "Name": "ReportingExport.psm1"
+        }
+      ]
+    },
+    {
+      "Error": null,
+      "Status": "Failed",
+      "Name": "Exported Functions",
+      "Functions": []
+    },
+    {
+      "Error": "The 'New-PerformanceOptimizer' command was found in the module 'Unity-Claude-PerformanceOptimizer', but the module could not be loaded. For more information, run 'Import-Module Unity-Claude-PerformanceOptimizer'.",
+      "Status": "Failed",
+      "Name": "Create PerformanceOptimizer"
+    },
+    {
+      "Error": null,
+      "Status": "Failed",
+      "Name": "Module Version"
+    }
+  ],
+  "TestSuite": "Unity-Claude-PerformanceOptimizer-Refactored"
+}

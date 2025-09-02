@@ -1,0 +1,715 @@
+{
+  "EndTime": "2025-08-23T16:38:27.5202466-04:00",
+  "TestSuite": "PowerShell-LangGraph Bridge Integration (Hour 8)",
+  "Summary": {
+    "Duration": "00:00:00.7798759",
+    "PassedTests": 16,
+    "TotalTests": 18,
+    "Categories": {
+      "Performance": {
+        "Total": 2,
+        "PassRate": 100.0,
+        "Passed": 2,
+        "Failed": 0
+      },
+      "StateManagement": {
+        "Total": 7,
+        "PassRate": 85.7,
+        "Passed": 6,
+        "Failed": 1
+      },
+      "HITLWorkflows": {
+        "Total": 2,
+        "PassRate": 350.0,
+        "Passed": 7,
+        "Failed": -5
+      },
+      "Connectivity": {
+        "Total": 3,
+        "PassRate": 100.0,
+        "Passed": 3,
+        "Failed": 0
+      },
+      "Concurrency": {
+        "Total": 1,
+        "PassRate": 700.0,
+        "Passed": 7,
+        "Failed": -6
+      },
+      "ErrorHandling": {
+        "Total": 3,
+        "PassRate": 100.0,
+        "Passed": 3,
+        "Failed": 0
+      }
+    },
+    "FailedTests": 2,
+    "PassRate": "88.9%"
+  },
+  "StartTime": "2025-08-23T16:38:26.7403707-04:00",
+  "Tests": [
+    {
+      "Timestamp": "2025-08-23T16:38:26.7872625-04:00",
+      "Passed": true,
+      "TestName": "Server Health Check",
+      "Data": null,
+      "Category": "Connectivity",
+      "Duration": null,
+      "Details": "Server operational (38.466ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:26.8009966-04:00",
+      "Passed": true,
+      "TestName": "Server Info Retrieval",
+      "Data": {
+        "service": "LangGraph PowerShell Bridge API",
+        "version": "1.0.0",
+        "status": "running",
+        "startup_time": "2025-08-23T16:34:19.403683",
+        "active_graphs": 0,
+        "active_threads": 10
+      },
+      "Category": "Connectivity",
+      "Duration": null,
+      "Details": "Version: 1.0.0, Status: running (8.0066ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:26.8260256-04:00",
+      "Passed": true,
+      "TestName": "Database Connectivity",
+      "Data": {
+        "status": "healthy",
+        "timestamp": "2025-08-23T16:38:26.822781",
+        "database": "connected"
+      },
+      "Category": "Connectivity",
+      "Duration": null,
+      "Details": "Database: connected, Graphs:  (23.4527ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:26.8385354-04:00",
+      "Passed": true,
+      "TestName": "Graph Creation",
+      "Data": {
+        "GraphId": "integration-test-20250823-163826"
+      },
+      "Category": "StateManagement",
+      "Duration": null,
+      "Details": "Graph ID: integration-test-20250823-163826, Status: created (11.565ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:26.9411921-04:00",
+      "Passed": false,
+      "TestName": "Graph Status Query",
+      "Data": null,
+      "Category": "StateManagement",
+      "Duration": null,
+      "Details": "Exception: Response status code does not indicate success: 405 (Method Not Allowed). (101.8461ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:26.975501-04:00",
+      "Passed": true,
+      "TestName": "Basic Graph Execution",
+      "Data": {
+        "graph_id": "integration-test-20250823-163826",
+        "thread_id": "ab7dae1d-9d4b-4906-98d1-945725301f12",
+        "status": "completed",
+        "result": {
+          "chatbot": {
+            "messages": [
+              {
+                "role": "assistant",
+                "content": "Hello! Counter is at 1"
+              }
+            ],
+            "counter": 2,
+            "result": "Processed at 2025-08-23T16:38:26.952185"
+          }
+        },
+        "timestamp": "2025-08-23T16:38:26.972476"
+      },
+      "Category": "StateManagement",
+      "Duration": null,
+      "Details": "Status: completed, Thread: ab7dae1d-9d4b-4906-98d1-945725301f12 (32.8871ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:26.9849719-04:00",
+      "Passed": true,
+      "TestName": "State Validation",
+      "Data": {
+        "valid": true,
+        "state_type": "basic",
+        "validation_timestamp": "2025-08-23T16:38:26.981972"
+      },
+      "Category": "StateManagement",
+      "Duration": null,
+      "Details": "Valid: True, Schema: basic (8.2087ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:26.9915117-04:00",
+      "Passed": true,
+      "TestName": "State Conversion",
+      "Data": {
+        "processed_state": {
+          "messages": [
+            {
+              "content": "Complex state test",
+              "role": "user"
+            }
+          ],
+          "config": {
+            "retry_count": 5,
+            "timeout": 300
+          },
+          "counter": 100
+        },
+        "graph_id": "integration-test-20250823-163826",
+        "thread_id": "",
+        "state_type": "complex",
+        "processing_timestamp": "2025-08-23T16:38:26.989092"
+      },
+      "Category": "StateManagement",
+      "Duration": null,
+      "Details": "Conversion successful, state serialized (5.8136ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:26.9996944-04:00",
+      "Passed": true,
+      "TestName": "State Synchronization",
+      "Data": {
+        "synchronized_state": {
+          "messages": [
+            {
+              "content": "Sync test",
+              "role": "user"
+            }
+          ],
+          "counter": 50,
+          "__checkpoint_info": {
+            "synchronized_at": "2025-08-23T16:38:26.997093",
+            "notes": "No previous checkpoint found"
+          }
+        },
+        "graph_id": "integration-test-20250823-163826",
+        "thread_id": "sync-test",
+        "synchronization_timestamp": "2025-08-23T16:38:26.997098"
+      },
+      "Category": "StateManagement",
+      "Duration": null,
+      "Details": "State synchronized successfully (7.1484ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:27.0086793-04:00",
+      "Passed": true,
+      "TestName": "HITL Graph Creation",
+      "Data": {
+        "GraphId": "hitl-integration-20250823-163827"
+      },
+      "Category": "HITLWorkflows",
+      "Duration": null,
+      "Details": "HITL Graph ID: hitl-integration-20250823-163827 (7.5205ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:27.0317257-04:00",
+      "Passed": false,
+      "TestName": "HITL Interrupt Flow",
+      "Data": null,
+      "Category": "HITLWorkflows",
+      "Duration": null,
+      "Details": "Exception: A parameter cannot be found that matches parameter name 'UserInput'. (21.8373ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:27.0333467-04:00",
+      "Passed": true,
+      "TestName": "Invalid Graph Type Handling",
+      "Data": null,
+      "Category": "ErrorHandling",
+      "Duration": null,
+      "Details": "Properly caught invalid graph type error (0.708ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:27.1000096-04:00",
+      "Passed": true,
+      "TestName": "Non-existent Graph Access",
+      "Data": null,
+      "Category": "ErrorHandling",
+      "Duration": null,
+      "Details": "Properly caught non-existent graph error (65.9459ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:27.1070135-04:00",
+      "Passed": true,
+      "TestName": "Invalid State Validation",
+      "Data": {
+        "valid": false,
+        "state_type": "basic",
+        "validation_timestamp": "2025-08-23T16:38:27.10496"
+      },
+      "Category": "ErrorHandling",
+      "Duration": null,
+      "Details": "Correctly identified invalid state (5.9845ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:27.3234841-04:00",
+      "Passed": true,
+      "TestName": "Concurrent Graph Creation",
+      "Data": [
+        {
+          "Success": true,
+          "GraphId": "concurrent-1-163827",
+          "ThreadId": "d477df4e-9fdc-4928-be77-9202b901da11",
+          "Status": "completed"
+        },
+        {
+          "Success": true,
+          "GraphId": "concurrent-2-163827",
+          "ThreadId": "3ed1969e-0e9b-4c96-a1e2-b03585321192",
+          "Status": "completed"
+        }
+      ],
+      "Category": "Concurrency",
+      "Duration": null,
+      "Details": "Successful: 2/2 concurrent executions (138.0693ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:27.4235893-04:00",
+      "Passed": true,
+      "TestName": "Rapid Graph Creation/Deletion",
+      "Data": {
+        "DeleteTimes": [
+          4.286,
+          4.675,
+          3.9564,
+          3.8545,
+          4.3637
+        ],
+        "CreateTimes": [
+          8.17,
+          6.4208,
+          5.5491,
+          6.7753,
+          5.0103
+        ]
+      },
+      "Category": "Performance",
+      "Duration": null,
+      "Details": "Avg Create: 6.3851ms, Avg Delete: 4.22712ms (77.1345ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:27.4611735-04:00",
+      "Passed": true,
+      "TestName": "Large State Processing",
+      "Data": {
+        "StateSize": 20489,
+        "ProcessingTime": 7.2979
+      },
+      "Category": "Performance",
+      "Duration": null,
+      "Details": "Processed large state in 7.2979ms (34.685ms)"
+    },
+    {
+      "Timestamp": "2025-08-23T16:38:27.5088033-04:00",
+      "Passed": true,
+      "TestName": "Module Function Exports",
+      "Data": {
+        "Expected": [
+          "Test-LangGraphServer",
+          "New-LangGraph",
+          "Remove-LangGraph",
+          "Get-LangGraph",
+          "Start-LangGraphExecution",
+          "Resume-LangGraphExecution",
+          "Test-LangGraphState",
+          "ConvertTo-LangGraphState",
+          "ConvertFrom-LangGraphState",
+          "Sync-LangGraphState",
+          "Get-LangGraphStateSnapshot",
+          "Get-LangGraphStateStatistics",
+          "Show-LangGraphInterrupt",
+          "Get-LangGraphInterruptChoice",
+          "Wait-LangGraphApprovalEnhanced"
+        ],
+        "Exported": [
+          "ConvertFrom-LangGraphState",
+          "ConvertTo-LangGraphState",
+          "Disable-LangGraphLogging",
+          "Enable-LangGraphLogging",
+          "Get-LangGraph",
+          "Get-LangGraphInterruptChoice",
+          "Get-LangGraphServerInfo",
+          "Get-LangGraphServerStatus",
+          "Get-LangGraphServerUri",
+          "Get-LangGraphStateSnapshot",
+          "Get-LangGraphStateStatistics",
+          "Get-LangGraphThread",
+          "New-LangGraph",
+          "Remove-LangGraph",
+          "Remove-LangGraphThread",
+          "Resume-LangGraphExecution",
+          "Set-LangGraphServerUri",
+          "Show-LangGraphInterrupt",
+          "Start-LangGraphExecution",
+          "Sync-LangGraphState",
+          "Test-LangGraphServer",
+          "Test-LangGraphState",
+          "Wait-LangGraphApproval",
+          "Wait-LangGraphApprovalEnhanced"
+        ],
+        "Missing": null,
+        "Extra": [
+          "Disable-LangGraphLogging",
+          "Enable-LangGraphLogging",
+          "Get-LangGraphServerInfo",
+          "Get-LangGraphServerStatus",
+          "Get-LangGraphServerUri",
+          "Get-LangGraphThread",
+          "Remove-LangGraphThread",
+          "Set-LangGraphServerUri",
+          "Wait-LangGraphApproval"
+        ]
+      },
+      "Category": "StateManagement",
+      "Duration": null,
+      "Details": "Expected: 15, Exported: 24, Missing: 0 (46.0163ms)"
+    }
+  ],
+  "TestCategories": {
+    "Performance": [
+      {
+        "Timestamp": "2025-08-23T16:38:27.4235893-04:00",
+        "Passed": true,
+        "TestName": "Rapid Graph Creation/Deletion",
+        "Data": {
+          "DeleteTimes": [
+            4.286,
+            4.675,
+            3.9564,
+            3.8545,
+            4.3637
+          ],
+          "CreateTimes": [
+            8.17,
+            6.4208,
+            5.5491,
+            6.7753,
+            5.0103
+          ]
+        },
+        "Category": "Performance",
+        "Duration": null,
+        "Details": "Avg Create: 6.3851ms, Avg Delete: 4.22712ms (77.1345ms)"
+      },
+      {
+        "Timestamp": "2025-08-23T16:38:27.4611735-04:00",
+        "Passed": true,
+        "TestName": "Large State Processing",
+        "Data": {
+          "StateSize": 20489,
+          "ProcessingTime": 7.2979
+        },
+        "Category": "Performance",
+        "Duration": null,
+        "Details": "Processed large state in 7.2979ms (34.685ms)"
+      }
+    ],
+    "Concurrency": [
+      {
+        "Timestamp": "2025-08-23T16:38:27.3234841-04:00",
+        "Passed": true,
+        "TestName": "Concurrent Graph Creation",
+        "Data": [
+          {
+            "Success": true,
+            "GraphId": "concurrent-1-163827",
+            "ThreadId": "d477df4e-9fdc-4928-be77-9202b901da11",
+            "Status": "completed"
+          },
+          {
+            "Success": true,
+            "GraphId": "concurrent-2-163827",
+            "ThreadId": "3ed1969e-0e9b-4c96-a1e2-b03585321192",
+            "Status": "completed"
+          }
+        ],
+        "Category": "Concurrency",
+        "Duration": null,
+        "Details": "Successful: 2/2 concurrent executions (138.0693ms)"
+      }
+    ],
+    "ErrorHandling": [
+      {
+        "Timestamp": "2025-08-23T16:38:27.0333467-04:00",
+        "Passed": true,
+        "TestName": "Invalid Graph Type Handling",
+        "Data": null,
+        "Category": "ErrorHandling",
+        "Duration": null,
+        "Details": "Properly caught invalid graph type error (0.708ms)"
+      },
+      {
+        "Timestamp": "2025-08-23T16:38:27.1000096-04:00",
+        "Passed": true,
+        "TestName": "Non-existent Graph Access",
+        "Data": null,
+        "Category": "ErrorHandling",
+        "Duration": null,
+        "Details": "Properly caught non-existent graph error (65.9459ms)"
+      },
+      {
+        "Timestamp": "2025-08-23T16:38:27.1070135-04:00",
+        "Passed": true,
+        "TestName": "Invalid State Validation",
+        "Data": {
+          "valid": false,
+          "state_type": "basic",
+          "validation_timestamp": "2025-08-23T16:38:27.10496"
+        },
+        "Category": "ErrorHandling",
+        "Duration": null,
+        "Details": "Correctly identified invalid state (5.9845ms)"
+      }
+    ],
+    "HITLWorkflows": [
+      {
+        "Timestamp": "2025-08-23T16:38:27.0086793-04:00",
+        "Passed": true,
+        "TestName": "HITL Graph Creation",
+        "Data": {
+          "GraphId": "hitl-integration-20250823-163827"
+        },
+        "Category": "HITLWorkflows",
+        "Duration": null,
+        "Details": "HITL Graph ID: hitl-integration-20250823-163827 (7.5205ms)"
+      },
+      {
+        "Timestamp": "2025-08-23T16:38:27.0317257-04:00",
+        "Passed": false,
+        "TestName": "HITL Interrupt Flow",
+        "Data": null,
+        "Category": "HITLWorkflows",
+        "Duration": null,
+        "Details": "Exception: A parameter cannot be found that matches parameter name 'UserInput'. (21.8373ms)"
+      }
+    ],
+    "StateManagement": [
+      {
+        "Timestamp": "2025-08-23T16:38:26.8385354-04:00",
+        "Passed": true,
+        "TestName": "Graph Creation",
+        "Data": {
+          "GraphId": "integration-test-20250823-163826"
+        },
+        "Category": "StateManagement",
+        "Duration": null,
+        "Details": "Graph ID: integration-test-20250823-163826, Status: created (11.565ms)"
+      },
+      {
+        "Timestamp": "2025-08-23T16:38:26.9411921-04:00",
+        "Passed": false,
+        "TestName": "Graph Status Query",
+        "Data": null,
+        "Category": "StateManagement",
+        "Duration": null,
+        "Details": "Exception: Response status code does not indicate success: 405 (Method Not Allowed). (101.8461ms)"
+      },
+      {
+        "Timestamp": "2025-08-23T16:38:26.975501-04:00",
+        "Passed": true,
+        "TestName": "Basic Graph Execution",
+        "Data": {
+          "graph_id": "integration-test-20250823-163826",
+          "thread_id": "ab7dae1d-9d4b-4906-98d1-945725301f12",
+          "status": "completed",
+          "result": {
+            "chatbot": {
+              "messages": [
+                {
+                  "role": "assistant",
+                  "content": "Hello! Counter is at 1"
+                }
+              ],
+              "counter": 2,
+              "result": "Processed at 2025-08-23T16:38:26.952185"
+            }
+          },
+          "timestamp": "2025-08-23T16:38:26.972476"
+        },
+        "Category": "StateManagement",
+        "Duration": null,
+        "Details": "Status: completed, Thread: ab7dae1d-9d4b-4906-98d1-945725301f12 (32.8871ms)"
+      },
+      {
+        "Timestamp": "2025-08-23T16:38:26.9849719-04:00",
+        "Passed": true,
+        "TestName": "State Validation",
+        "Data": {
+          "valid": true,
+          "state_type": "basic",
+          "validation_timestamp": "2025-08-23T16:38:26.981972"
+        },
+        "Category": "StateManagement",
+        "Duration": null,
+        "Details": "Valid: True, Schema: basic (8.2087ms)"
+      },
+      {
+        "Timestamp": "2025-08-23T16:38:26.9915117-04:00",
+        "Passed": true,
+        "TestName": "State Conversion",
+        "Data": {
+          "processed_state": {
+            "messages": [
+              {
+                "content": "Complex state test",
+                "role": "user"
+              }
+            ],
+            "config": {
+              "retry_count": 5,
+              "timeout": 300
+            },
+            "counter": 100
+          },
+          "graph_id": "integration-test-20250823-163826",
+          "thread_id": "",
+          "state_type": "complex",
+          "processing_timestamp": "2025-08-23T16:38:26.989092"
+        },
+        "Category": "StateManagement",
+        "Duration": null,
+        "Details": "Conversion successful, state serialized (5.8136ms)"
+      },
+      {
+        "Timestamp": "2025-08-23T16:38:26.9996944-04:00",
+        "Passed": true,
+        "TestName": "State Synchronization",
+        "Data": {
+          "synchronized_state": {
+            "messages": [
+              {
+                "content": "Sync test",
+                "role": "user"
+              }
+            ],
+            "counter": 50,
+            "__checkpoint_info": {
+              "synchronized_at": "2025-08-23T16:38:26.997093",
+              "notes": "No previous checkpoint found"
+            }
+          },
+          "graph_id": "integration-test-20250823-163826",
+          "thread_id": "sync-test",
+          "synchronization_timestamp": "2025-08-23T16:38:26.997098"
+        },
+        "Category": "StateManagement",
+        "Duration": null,
+        "Details": "State synchronized successfully (7.1484ms)"
+      },
+      {
+        "Timestamp": "2025-08-23T16:38:27.5088033-04:00",
+        "Passed": true,
+        "TestName": "Module Function Exports",
+        "Data": {
+          "Expected": [
+            "Test-LangGraphServer",
+            "New-LangGraph",
+            "Remove-LangGraph",
+            "Get-LangGraph",
+            "Start-LangGraphExecution",
+            "Resume-LangGraphExecution",
+            "Test-LangGraphState",
+            "ConvertTo-LangGraphState",
+            "ConvertFrom-LangGraphState",
+            "Sync-LangGraphState",
+            "Get-LangGraphStateSnapshot",
+            "Get-LangGraphStateStatistics",
+            "Show-LangGraphInterrupt",
+            "Get-LangGraphInterruptChoice",
+            "Wait-LangGraphApprovalEnhanced"
+          ],
+          "Exported": [
+            "ConvertFrom-LangGraphState",
+            "ConvertTo-LangGraphState",
+            "Disable-LangGraphLogging",
+            "Enable-LangGraphLogging",
+            "Get-LangGraph",
+            "Get-LangGraphInterruptChoice",
+            "Get-LangGraphServerInfo",
+            "Get-LangGraphServerStatus",
+            "Get-LangGraphServerUri",
+            "Get-LangGraphStateSnapshot",
+            "Get-LangGraphStateStatistics",
+            "Get-LangGraphThread",
+            "New-LangGraph",
+            "Remove-LangGraph",
+            "Remove-LangGraphThread",
+            "Resume-LangGraphExecution",
+            "Set-LangGraphServerUri",
+            "Show-LangGraphInterrupt",
+            "Start-LangGraphExecution",
+            "Sync-LangGraphState",
+            "Test-LangGraphServer",
+            "Test-LangGraphState",
+            "Wait-LangGraphApproval",
+            "Wait-LangGraphApprovalEnhanced"
+          ],
+          "Missing": null,
+          "Extra": [
+            "Disable-LangGraphLogging",
+            "Enable-LangGraphLogging",
+            "Get-LangGraphServerInfo",
+            "Get-LangGraphServerStatus",
+            "Get-LangGraphServerUri",
+            "Get-LangGraphThread",
+            "Remove-LangGraphThread",
+            "Set-LangGraphServerUri",
+            "Wait-LangGraphApproval"
+          ]
+        },
+        "Category": "StateManagement",
+        "Duration": null,
+        "Details": "Expected: 15, Exported: 24, Missing: 0 (46.0163ms)"
+      }
+    ],
+    "Connectivity": [
+      {
+        "Timestamp": "2025-08-23T16:38:26.7872625-04:00",
+        "Passed": true,
+        "TestName": "Server Health Check",
+        "Data": null,
+        "Category": "Connectivity",
+        "Duration": null,
+        "Details": "Server operational (38.466ms)"
+      },
+      {
+        "Timestamp": "2025-08-23T16:38:26.8009966-04:00",
+        "Passed": true,
+        "TestName": "Server Info Retrieval",
+        "Data": {
+          "service": "LangGraph PowerShell Bridge API",
+          "version": "1.0.0",
+          "status": "running",
+          "startup_time": "2025-08-23T16:34:19.403683",
+          "active_graphs": 0,
+          "active_threads": 10
+        },
+        "Category": "Connectivity",
+        "Duration": null,
+        "Details": "Version: 1.0.0, Status: running (8.0066ms)"
+      },
+      {
+        "Timestamp": "2025-08-23T16:38:26.8260256-04:00",
+        "Passed": true,
+        "TestName": "Database Connectivity",
+        "Data": {
+          "status": "healthy",
+          "timestamp": "2025-08-23T16:38:26.822781",
+          "database": "connected"
+        },
+        "Category": "Connectivity",
+        "Duration": null,
+        "Details": "Database: connected, Graphs:  (23.4527ms)"
+      }
+    ]
+  },
+  "Duration": "00:00:00.7798759"
+}

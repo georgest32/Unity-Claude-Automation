@@ -1,0 +1,57 @@
+
+=== Testing Day 2 Implementations ===
+Date: 2025-08-28 02:48:23
+Modules: Call Graph Builder & Data Flow Tracker
+
+
+[Test Group 1: Call Graph Builder]
+  Testing: Load Call Graph Builder Module... WARNING: The names of some imported commands from the module 'CPG-CallGraphBuilder' include unapproved verbs that might
+ make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the 
+Verbose parameter. For a list of approved verbs, type Get-Verb.
+PASS
+  Testing: Call Graph Builder Functions Available... PASS
+  Testing: Build PowerShell Call Graph... ERROR - The term 'Write-CPGDebug' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+  Testing: Call Graph Contains Functions... FAIL - Test failed
+  Testing: Call Graph Contains Edges... FAIL - Test failed
+  Testing: Detect Recursive Calls... FAIL - Test failed
+  Testing: Get Call Graph Metrics... ERROR - Cannot bind argument to parameter 'CallGraph' because it is null.
+  Testing: Metrics Show Entry Points... FAIL - Test failed
+  Testing: Metrics Show Leaf Functions... FAIL - Test failed
+  Testing: Export Call Graph to JSON... ERROR - Cannot bind argument to parameter 'CallGraph' because it is null.
+
+[Test Group 2: Data Flow Tracker]
+  Testing: Load Data Flow Tracker Module... WARNING: The names of some imported commands from the module 'CPG-DataFlowTracker' include unapproved verbs that might 
+make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the 
+Verbose parameter. For a list of approved verbs, type Get-Verb.
+PASS
+  Testing: Data Flow Tracker Functions Available... PASS
+  Testing: Build PowerShell Data Flow... ERROR - The term 'Write-CPGDebug' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+  Testing: Data Flow Contains Definitions... FAIL - Test failed
+  Testing: Data Flow Contains Uses... FAIL - Test failed
+  Testing: Def-Use Chains Created... FAIL - Test failed
+  Testing: Taint Analysis Detects Security Issues... FAIL - Test failed
+  Testing: Tainted Variables Marked... FAIL - Test failed
+  Testing: Analyze Data Sensitivity... ERROR - Cannot bind argument to parameter 'DataFlow' because it is null.
+  Testing: Detect Sensitive Variables... FAIL - Test failed
+  Testing: Get Data Flow Metrics... ERROR - Cannot bind argument to parameter 'DataFlow' because it is null.
+  Testing: Metrics Show Unused Definitions... FAIL - Test failed
+  Testing: Metrics Show Undefined Uses... FAIL - Test failed
+  Testing: Export Data Flow to JSON... ERROR - Cannot bind argument to parameter 'DataFlow' because it is null.
+
+[Test Group 3: Integration]
+  Testing: Call Graph and Data Flow Consistency... PASS
+  Testing: Performance Within Limits... PASS
+
+[Cleanup]
+  Removed test script
+
+=== Test Results Summary ===
+Total Tests: 26
+Passed: 6
+Failed: 20
+Success Rate: 23.08%
+Total Duration: 0.35 seconds
+
+Detailed results saved to: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Day2-TestResults-20250828-024823.json
+
+Test suite FAILED

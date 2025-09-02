@@ -1,0 +1,107 @@
+{
+  "StartTime": "2025-08-23T22:25:17.1807877-04:00",
+  "EndTime": "2025-08-23T22:25:17.9220084-04:00",
+  "Summary": {
+    "Total": 7,
+    "Passed": 5,
+    "Failed": 2,
+    "Skipped": 0
+  },
+  "Tests": [
+    {
+      "Name": "Module Loading and Structure",
+      "Duration": 0.520345,
+      "Timestamp": "2025-08-23 22:25:17",
+      "Details": "Module loading failed",
+      "Status": "FAILED",
+      "Error": "Cannot bind parameter because parameter 'Like' is specified more than once. To provide multiple values to parameters that can accept multiple values, use the array syntax. For example, \"-parameter value1,value2,value3\".",
+      "Metrics": {}
+    },
+    {
+      "Name": "CODEOWNERS File Creation",
+      "Duration": 0.0025316,
+      "Timestamp": "2025-08-23 22:25:17",
+      "Details": "CODEOWNERS file exists with 12 rules (12 valid, 0 warnings)",
+      "Status": "PASSED",
+      "Error": "",
+      "Metrics": {
+        "ValidRules": 12,
+        "RuleLines": 12,
+        "FileSize": 1056,
+        "InvalidRules": 0,
+        "TotalLines": 26
+      }
+    },
+    {
+      "Name": "Branch Protection Configuration",
+      "Duration": 0.0032548,
+      "Timestamp": "2025-08-23 22:25:17",
+      "Details": "Branch protection functions available and syntax valid",
+      "Status": "PASSED",
+      "Error": "",
+      "Metrics": {
+        "FunctionsAvailable": 3,
+        "ConfigurationProfiles": 3
+      }
+    },
+    {
+      "Name": "HITL Governance Integration",
+      "Duration": 0.0332163,
+      "Timestamp": "2025-08-23 22:25:17",
+      "Details": "All HITL governance integration functions available with correct parameters",
+      "Status": "PASSED",
+      "Error": "",
+      "Metrics": {
+        "ComplianceParameters": 18,
+        "IntegrationType": "Full",
+        "AvailableFunctions": 3
+      }
+    },
+    {
+      "Name": "Governance Configuration Management",
+      "Duration": 0.0148288,
+      "Timestamp": "2025-08-23 22:25:17",
+      "Details": "Governance configuration function not available",
+      "Status": "FAILED",
+      "Error": "Set-GitHubGovernanceConfiguration function not found",
+      "Metrics": {}
+    },
+    {
+      "Name": "End-to-End Integration Testing",
+      "Duration": 0.0261959,
+      "Timestamp": "2025-08-23 22:25:17",
+      "Details": "End-to-end integration workflow completed successfully",
+      "Status": "PASSED",
+      "Error": "",
+      "Metrics": {
+        "MockFilesProcessed": 3,
+        "GovernanceChecks": 3,
+        "RequiredApprovals": 2
+      }
+    },
+    {
+      "Name": "Performance and Reliability",
+      "Duration": 0.1137218,
+      "Timestamp": "2025-08-23 22:25:17",
+      "Details": "Performance metrics collected successfully",
+      "Status": "PASSED",
+      "Error": "",
+      "Metrics": {
+        "PostTestMemory": 29.53284454345703,
+        "FunctionCallTime": 2.4332,
+        "MemoryUsage": 21.920272827148438,
+        "ModuleLoadTime": 79.5625,
+        "MemoryDelta": 7.612571716308594
+      }
+    }
+  ],
+  "TotalDuration": 0.7412207,
+  "Environment": {
+    "OSVersion": "Microsoft Windows NT 10.0.22631.0",
+    "MachineName": "LAPTOP-6JCV7T48",
+    "UserName": "georg",
+    "TestDate": "2025-08-23 22:25:17",
+    "PowerShellVersion": "7.5.2"
+  },
+  "TestSuite": "GitHub Governance Implementation"
+}

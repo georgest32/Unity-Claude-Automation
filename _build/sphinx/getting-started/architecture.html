@@ -1,0 +1,570 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Architecture &mdash; Unity-Claude-Automation 3.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=acc74ff5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2b3e50" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Unity-Claude-Automation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">System Architecture</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#core-components">Core Components</a><ul>
+<li><a class="reference internal" href="#bootstrap-orchestrator">1. Bootstrap Orchestrator</a></li>
+<li><a class="reference internal" href="#monitor-service">2. Monitor Service</a></li>
+<li><a class="reference internal" href="#event-processing-pipeline">3. Event Processing Pipeline</a></li>
+<li><a class="reference internal" href="#ai-integration-layer">4. AI Integration Layer</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-system">Module System</a><ul>
+<li><a class="reference internal" href="#module-structure">Module Structure</a></li>
+<li><a class="reference internal" href="#core-modules">Core Modules</a><ul>
+<li><a class="reference internal" href="#unity-claude-systemstatus">Unity-Claude-SystemStatus</a></li>
+<li><a class="reference internal" href="#unity-claude-configuration">Unity-Claude-Configuration</a></li>
+<li><a class="reference internal" href="#unity-claude-eventlog">Unity-Claude-EventLog</a></li>
+<li><a class="reference internal" href="#unity-claude-github">Unity-Claude-GitHub</a></li>
+<li><a class="reference internal" href="#unity-claude-notificationhub">Unity-Claude-NotificationHub</a></li>
+<li><a class="reference internal" href="#unity-claude-repoanalyst">Unity-Claude-RepoAnalyst</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#communication-patterns">Communication Patterns</a><ul>
+<li><a class="reference internal" href="#event-driven-architecture">Event-Driven Architecture</a></li>
+<li><a class="reference internal" href="#message-queue">Message Queue</a></li>
+<li><a class="reference internal" href="#inter-process-communication">Inter-Process Communication</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#data-flow">Data Flow</a><ul>
+<li><a class="reference internal" href="#error-detection-to-resolution">Error Detection to Resolution</a></li>
+<li><a class="reference internal" href="#state-management">State Management</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#security-architecture">Security Architecture</a><ul>
+<li><a class="reference internal" href="#credential-management">Credential Management</a></li>
+<li><a class="reference internal" href="#access-control">Access Control</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#performance-considerations">Performance Considerations</a><ul>
+<li><a class="reference internal" href="#optimization-strategies">Optimization Strategies</a></li>
+<li><a class="reference internal" href="#resource-management">Resource Management</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deployment-architecture">Deployment Architecture</a><ul>
+<li><a class="reference internal" href="#local-deployment">Local Deployment</a></li>
+<li><a class="reference internal" href="#distributed-deployment">Distributed Deployment</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#extensibility">Extensibility</a><ul>
+<li><a class="reference internal" href="#plugin-system">Plugin System</a></li>
+<li><a class="reference internal" href="#hooks-and-filters">Hooks and Filters</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#monitoring-and-observability">Monitoring and Observability</a><ul>
+<li><a class="reference internal" href="#metrics-collection">Metrics Collection</a></li>
+<li><a class="reference internal" href="#health-checks">Health Checks</a></li>
+<li><a class="reference internal" href="#logging-strategy">Logging Strategy</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#disaster-recovery">Disaster Recovery</a><ul>
+<li><a class="reference internal" href="#backup-strategy">Backup Strategy</a></li>
+<li><a class="reference internal" href="#failover-mechanisms">Failover Mechanisms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2b3e50" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Unity-Claude-Automation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">System Architecture</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getting-started/architecture.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="system-architecture">
+<h1>System Architecture<a class="headerlink" href="#system-architecture" title="Link to this heading"></a></h1>
+<p>Unity-Claude-Automation follows a modular, event-driven architecture designed for scalability and maintainability.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<div class="highlight-mermaid notranslate"><div class="highlight"><pre><span></span>graph TB
+    subgraph &quot;Unity Environment&quot;
+        U[Unity Editor]
+        UL[Unity Logs]
+        UP[Unity Project]
+    end
+    
+    subgraph &quot;Core System&quot;
+        M[Monitor Service]
+        E[Event Processor]
+        O[Orchestrator]
+    end
+    
+    subgraph &quot;AI Layer&quot;
+        C[Claude API]
+        P[Prompt Engine]
+        R[Response Parser]
+    end
+    
+    subgraph &quot;Integration Layer&quot;
+        G[GitHub API]
+        N[Notification Hub]
+        D[Dashboard]
+    end
+    
+    U --&gt; UL
+    UL --&gt; M
+    M --&gt; E
+    E --&gt; O
+    O --&gt; P
+    P --&gt; C
+    C --&gt; R
+    R --&gt; O
+    O --&gt; G
+    O --&gt; N
+    O --&gt; D
+</pre></div>
+</div>
+</section>
+<section id="core-components">
+<h2>Core Components<a class="headerlink" href="#core-components" title="Link to this heading"></a></h2>
+<section id="bootstrap-orchestrator">
+<h3>1. Bootstrap Orchestrator<a class="headerlink" href="#bootstrap-orchestrator" title="Link to this heading"></a></h3>
+<p>The central coordination system that manages all subsystems:</p>
+<ul class="simple">
+<li><p><strong>Manifest-based initialization</strong>: Loads modules based on dependency order</p></li>
+<li><p><strong>State management</strong>: Maintains global system state</p></li>
+<li><p><strong>Event routing</strong>: Distributes events to appropriate handlers</p></li>
+<li><p><strong>Lifecycle management</strong>: Handles startup, shutdown, and recovery</p></li>
+</ul>
+</section>
+<section id="monitor-service">
+<h3>2. Monitor Service<a class="headerlink" href="#monitor-service" title="Link to this heading"></a></h3>
+<p>Watches Unity and system events:</p>
+<ul class="simple">
+<li><p><strong>FileSystemWatcher</strong>: Monitors Unity Editor logs and project files</p></li>
+<li><p><strong>Log Parser</strong>: Extracts errors, warnings, and compilation status</p></li>
+<li><p><strong>Change Detection</strong>: Identifies code changes and build triggers</p></li>
+<li><p><strong>Performance Metrics</strong>: Tracks build times and error frequencies</p></li>
+</ul>
+</section>
+<section id="event-processing-pipeline">
+<h3>3. Event Processing Pipeline<a class="headerlink" href="#event-processing-pipeline" title="Link to this heading"></a></h3>
+<p>Handles all system events asynchronously:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">Event</span> <span class="n">Flow</span><span class="p">:</span>
+<span class="n">1</span><span class="p">.</span> <span class="n">Event</span> <span class="n">Detection</span> <span class="p">(</span><span class="n">FileSystemWatcher</span><span class="p">)</span>
+<span class="n">2</span><span class="p">.</span> <span class="n">Event</span> <span class="n">Classification</span> <span class="p">(</span><span class="n">Error</span><span class="p">/</span><span class="n">Warning</span><span class="p">/</span><span class="n">Info</span><span class="p">)</span>
+<span class="n">3</span><span class="p">.</span> <span class="n">Event</span> <span class="n">Enrichment</span> <span class="p">(</span><span class="n">Add</span> <span class="n">context</span><span class="p">)</span>
+<span class="n">4</span><span class="p">.</span> <span class="n">Event</span> <span class="n">Routing</span> <span class="p">(</span><span class="n">To</span> <span class="n">appropriate</span> <span class="n">handler</span><span class="p">)</span>
+<span class="n">5</span><span class="p">.</span> <span class="n">Event</span> <span class="n">Processing</span> <span class="p">(</span><span class="n">Action</span> <span class="n">execution</span><span class="p">)</span>
+<span class="n">6</span><span class="p">.</span> <span class="n">Event</span> <span class="n">Logging</span> <span class="p">(</span><span class="n">Audit</span> <span class="n">trail</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="ai-integration-layer">
+<h3>4. AI Integration Layer<a class="headerlink" href="#ai-integration-layer" title="Link to this heading"></a></h3>
+<p>Interfaces with Claude API for intelligent assistance:</p>
+<ul class="simple">
+<li><p><strong>Prompt Generation</strong>: Creates context-aware prompts</p></li>
+<li><p><strong>Response Processing</strong>: Parses and validates AI responses</p></li>
+<li><p><strong>Code Generation</strong>: Produces fix suggestions</p></li>
+<li><p><strong>Learning System</strong>: Improves based on feedback</p></li>
+</ul>
+</section>
+</section>
+<section id="module-system">
+<h2>Module System<a class="headerlink" href="#module-system" title="Link to this heading"></a></h2>
+<section id="module-structure">
+<h3>Module Structure<a class="headerlink" href="#module-structure" title="Link to this heading"></a></h3>
+<p>Each module follows this structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Unity-Claude-ModuleName/
+├── Unity-Claude-ModuleName.psd1  # Module manifest
+├── Unity-Claude-ModuleName.psm1  # Module script
+├── Public/                        # Exported functions
+├── Private/                       # Internal functions
+├── Config/                        # Configuration files
+└── Tests/                         # Pester tests
+</pre></div>
+</div>
+</section>
+<section id="core-modules">
+<h3>Core Modules<a class="headerlink" href="#core-modules" title="Link to this heading"></a></h3>
+<section id="unity-claude-systemstatus">
+<h4>Unity-Claude-SystemStatus<a class="headerlink" href="#unity-claude-systemstatus" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>System health monitoring</p></li>
+<li><p>Resource usage tracking</p></li>
+<li><p>Performance metrics</p></li>
+<li><p>Status reporting</p></li>
+</ul>
+</section>
+<section id="unity-claude-configuration">
+<h4>Unity-Claude-Configuration<a class="headerlink" href="#unity-claude-configuration" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Settings management</p></li>
+<li><p>Configuration validation</p></li>
+<li><p>Environment setup</p></li>
+<li><p>Credential storage</p></li>
+</ul>
+</section>
+<section id="unity-claude-eventlog">
+<h4>Unity-Claude-EventLog<a class="headerlink" href="#unity-claude-eventlog" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Event logging</p></li>
+<li><p>Audit trails</p></li>
+<li><p>Error tracking</p></li>
+<li><p>Analytics</p></li>
+</ul>
+</section>
+<section id="unity-claude-github">
+<h4>Unity-Claude-GitHub<a class="headerlink" href="#unity-claude-github" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Issue creation</p></li>
+<li><p>PR management</p></li>
+<li><p>Repository integration</p></li>
+<li><p>CODEOWNERS support</p></li>
+</ul>
+</section>
+<section id="unity-claude-notificationhub">
+<h4>Unity-Claude-NotificationHub<a class="headerlink" href="#unity-claude-notificationhub" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Email notifications</p></li>
+<li><p>Webhook integration</p></li>
+<li><p>Slack/Discord alerts</p></li>
+<li><p>Custom notifications</p></li>
+</ul>
+</section>
+<section id="unity-claude-repoanalyst">
+<h4>Unity-Claude-RepoAnalyst<a class="headerlink" href="#unity-claude-repoanalyst" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Code analysis</p></li>
+<li><p>Documentation generation</p></li>
+<li><p>Dependency mapping</p></li>
+<li><p>Quality metrics</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="communication-patterns">
+<h2>Communication Patterns<a class="headerlink" href="#communication-patterns" title="Link to this heading"></a></h2>
+<section id="event-driven-architecture">
+<h3>Event-Driven Architecture<a class="headerlink" href="#event-driven-architecture" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Event emission</span>
+<span class="nb">New-Event</span> <span class="n">-SourceIdentifier</span> <span class="s2">&quot;Unity.Error.Detected&quot;</span> <span class="p">`</span>
+          <span class="n">-MessageData</span> <span class="p">@{</span>
+              <span class="n">Error</span> <span class="p">=</span> <span class="nv">$errorDetails</span>
+              <span class="n">File</span> <span class="p">=</span> <span class="nv">$filePath</span>
+              <span class="n">Line</span> <span class="p">=</span> <span class="nv">$lineNumber</span>
+          <span class="p">}</span>
+
+<span class="c"># Event handling</span>
+<span class="nb">Register-EngineEvent</span> <span class="n">-SourceIdentifier</span> <span class="s2">&quot;Unity.Error.Detected&quot;</span> <span class="p">`</span>
+                    <span class="n">-Action</span> <span class="p">{</span> 
+                        <span class="k">Process</span><span class="n">-UnityError</span> <span class="nv">$Event</span><span class="p">.</span><span class="n">MessageData</span> 
+                    <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="message-queue">
+<h3>Message Queue<a class="headerlink" href="#message-queue" title="Link to this heading"></a></h3>
+<p>Uses PowerShell runspaces for async processing:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$RunspacePool</span> <span class="p">=</span> <span class="no">[RunspaceFactory]</span><span class="p">::</span><span class="n">CreateRunspacePool</span><span class="p">(</span><span class="n">1</span><span class="p">,</span> <span class="n">10</span><span class="p">)</span>
+<span class="nv">$RunspacePool</span><span class="p">.</span><span class="n">Open</span><span class="p">()</span>
+
+<span class="nv">$Jobs</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$task</span> <span class="k">in</span> <span class="nv">$tasks</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$PowerShell</span> <span class="p">=</span> <span class="no">[PowerShell]</span><span class="p">::</span><span class="n">Create</span><span class="p">()</span>
+    <span class="nv">$PowerShell</span><span class="p">.</span><span class="n">RunspacePool</span> <span class="p">=</span> <span class="nv">$RunspacePool</span>
+    <span class="nv">$PowerShell</span><span class="p">.</span><span class="n">AddScript</span><span class="p">(</span><span class="nv">$ScriptBlock</span><span class="p">).</span><span class="n">AddArgument</span><span class="p">(</span><span class="nv">$task</span><span class="p">)</span>
+    <span class="nv">$Jobs</span> <span class="p">+=</span> <span class="nv">$PowerShell</span><span class="p">.</span><span class="n">BeginInvoke</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="inter-process-communication">
+<h3>Inter-Process Communication<a class="headerlink" href="#inter-process-communication" title="Link to this heading"></a></h3>
+<p>For Python integration:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Named pipe for IPC</span>
+<span class="nv">$PipeName</span> <span class="p">=</span> <span class="s2">&quot;Unity-Claude-IPC&quot;</span>
+<span class="nv">$Pipe</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">Pipes</span><span class="p">.</span><span class="n">NamedPipeServerStream</span><span class="p">(</span><span class="nv">$PipeName</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="data-flow">
+<h2>Data Flow<a class="headerlink" href="#data-flow" title="Link to this heading"></a></h2>
+<section id="error-detection-to-resolution">
+<h3>Error Detection to Resolution<a class="headerlink" href="#error-detection-to-resolution" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Detection</strong>: FileSystemWatcher detects change in Editor.log</p></li>
+<li><p><strong>Parsing</strong>: Extract error details (file, line, message)</p></li>
+<li><p><strong>Context</strong>: Gather surrounding code and project info</p></li>
+<li><p><strong>AI Analysis</strong>: Send to Claude for analysis</p></li>
+<li><p><strong>Solution</strong>: Receive and parse fix suggestions</p></li>
+<li><p><strong>Action</strong>: Apply fix or create GitHub issue</p></li>
+<li><p><strong>Verification</strong>: Monitor for resolution</p></li>
+</ol>
+</section>
+<section id="state-management">
+<h3>State Management<a class="headerlink" href="#state-management" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Global state stored in synchronized hashtable</span>
+<span class="nv">$Global:UnityClaudeState</span> <span class="p">=</span> <span class="no">[hashtable]</span><span class="p">::</span><span class="n">Synchronized</span><span class="p">(@{</span>
+    <span class="n">Status</span> <span class="p">=</span> <span class="s2">&quot;Running&quot;</span>
+    <span class="n">Errors</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="n">ActiveBuilds</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="n">Metrics</span> <span class="p">=</span> <span class="p">@{}</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="security-architecture">
+<h2>Security Architecture<a class="headerlink" href="#security-architecture" title="Link to this heading"></a></h2>
+<section id="credential-management">
+<h3>Credential Management<a class="headerlink" href="#credential-management" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Windows Credential Manager for API keys</p></li>
+<li><p>Encrypted configuration files</p></li>
+<li><p>Environment variable fallbacks</p></li>
+<li><p>No hardcoded secrets</p></li>
+</ul>
+</section>
+<section id="access-control">
+<h3>Access Control<a class="headerlink" href="#access-control" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>PowerShell execution policies</p></li>
+<li><p>Module signing</p></li>
+<li><p>Restricted runspaces</p></li>
+<li><p>Audit logging</p></li>
+</ul>
+</section>
+</section>
+<section id="performance-considerations">
+<h2>Performance Considerations<a class="headerlink" href="#performance-considerations" title="Link to this heading"></a></h2>
+<section id="optimization-strategies">
+<h3>Optimization Strategies<a class="headerlink" href="#optimization-strategies" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Lazy Loading</strong>: Modules loaded on-demand</p></li>
+<li><p><strong>Caching</strong>: Results cached with TTL</p></li>
+<li><p><strong>Throttling</strong>: Rate limiting for API calls</p></li>
+<li><p><strong>Parallel Processing</strong>: Runspace pools for concurrency</p></li>
+<li><p><strong>Debouncing</strong>: Prevent duplicate event processing</p></li>
+</ol>
+</section>
+<section id="resource-management">
+<h3>Resource Management<a class="headerlink" href="#resource-management" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Memory management</span>
+<span class="no">[System.GC]</span><span class="p">::</span><span class="n">Collect</span><span class="p">()</span>
+<span class="no">[System.GC]</span><span class="p">::</span><span class="n">WaitForPendingFinalizers</span><span class="p">()</span>
+
+<span class="c"># Runspace cleanup</span>
+<span class="nv">$RunspacePool</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+<span class="nv">$RunspacePool</span><span class="p">.</span><span class="n">Dispose</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="deployment-architecture">
+<h2>Deployment Architecture<a class="headerlink" href="#deployment-architecture" title="Link to this heading"></a></h2>
+<section id="local-deployment">
+<h3>Local Deployment<a class="headerlink" href="#local-deployment" title="Link to this heading"></a></h3>
+<p>Single machine setup:</p>
+<ul class="simple">
+<li><p>PowerShell modules in PSModulePath</p></li>
+<li><p>Configuration in %APPDATA%</p></li>
+<li><p>Logs in designated directory</p></li>
+</ul>
+</section>
+<section id="distributed-deployment">
+<h3>Distributed Deployment<a class="headerlink" href="#distributed-deployment" title="Link to this heading"></a></h3>
+<p>Multi-machine setup:</p>
+<ul class="simple">
+<li><p>Central configuration server</p></li>
+<li><p>Distributed agents</p></li>
+<li><p>Shared state via Redis/SQL</p></li>
+<li><p>Message queue (RabbitMQ/Azure Service Bus)</p></li>
+</ul>
+</section>
+</section>
+<section id="extensibility">
+<h2>Extensibility<a class="headerlink" href="#extensibility" title="Link to this heading"></a></h2>
+<section id="plugin-system">
+<h3>Plugin System<a class="headerlink" href="#plugin-system" title="Link to this heading"></a></h3>
+<p>Create custom modules:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Custom module manifest</span>
+<span class="p">@{</span>
+    <span class="n">ModuleVersion</span> <span class="p">=</span> <span class="s1">&#39;1.0.0&#39;</span>
+    <span class="n">RequiredModules</span> <span class="p">=</span> <span class="p">@(</span><span class="s1">&#39;Unity-Claude-Core&#39;</span><span class="p">)</span>
+    <span class="n">FunctionsToExport</span> <span class="p">=</span> <span class="p">@(</span><span class="s1">&#39;Start-CustomProcessor&#39;</span><span class="p">)</span>
+    <span class="n">PrivateData</span> <span class="p">=</span> <span class="p">@{</span>
+        <span class="n">PSData</span> <span class="p">=</span> <span class="p">@{</span>
+            <span class="n">Tags</span> <span class="p">=</span> <span class="p">@(</span><span class="s1">&#39;Unity&#39;</span><span class="p">,</span> <span class="s1">&#39;Automation&#39;</span><span class="p">,</span> <span class="s1">&#39;Custom&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="hooks-and-filters">
+<h3>Hooks and Filters<a class="headerlink" href="#hooks-and-filters" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Register custom hook</span>
+<span class="nb">Register-UnityClaudeHook</span> <span class="n">-Name</span> <span class="s2">&quot;PreProcess&quot;</span> <span class="p">`</span>
+                        <span class="n">-Action</span> <span class="p">{</span> 
+                            <span class="c"># Custom preprocessing </span>
+                        <span class="p">}</span>
+
+<span class="c"># Add filter</span>
+<span class="nb">Add-UnityClaudeFilter</span> <span class="n">-Type</span> <span class="s2">&quot;Error&quot;</span> <span class="p">`</span>
+                     <span class="n">-Pattern</span> <span class="s2">&quot;CustomPattern&quot;</span> <span class="p">`</span>
+                     <span class="n">-Action</span> <span class="p">{</span> 
+                         <span class="c"># Custom handling </span>
+                     <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="monitoring-and-observability">
+<h2>Monitoring and Observability<a class="headerlink" href="#monitoring-and-observability" title="Link to this heading"></a></h2>
+<section id="metrics-collection">
+<h3>Metrics Collection<a class="headerlink" href="#metrics-collection" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Performance counters</p></li>
+<li><p>Custom metrics</p></li>
+<li><p>Event statistics</p></li>
+<li><p>Resource usage</p></li>
+</ul>
+</section>
+<section id="health-checks">
+<h3>Health Checks<a class="headerlink" href="#health-checks" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Test-UnityClaudeHealth</span> <span class="n">-Components</span> <span class="p">@(</span>
+    <span class="s2">&quot;FileWatcher&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EventProcessor&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;AIConnection&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GitHubIntegration&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="logging-strategy">
+<h3>Logging Strategy<a class="headerlink" href="#logging-strategy" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Structured logging (JSON)</p></li>
+<li><p>Log aggregation</p></li>
+<li><p>Centralized logging</p></li>
+<li><p>Log rotation</p></li>
+</ul>
+</section>
+</section>
+<section id="disaster-recovery">
+<h2>Disaster Recovery<a class="headerlink" href="#disaster-recovery" title="Link to this heading"></a></h2>
+<section id="backup-strategy">
+<h3>Backup Strategy<a class="headerlink" href="#backup-strategy" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Configuration backups</p></li>
+<li><p>State snapshots</p></li>
+<li><p>Log archives</p></li>
+<li><p>Recovery points</p></li>
+</ul>
+</section>
+<section id="failover-mechanisms">
+<h3>Failover Mechanisms<a class="headerlink" href="#failover-mechanisms" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Automatic restart</p></li>
+<li><p>State recovery</p></li>
+<li><p>Queue persistence</p></li>
+<li><p>Transaction logs</p></li>
+</ul>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Explore <a class="reference internal" href="../modules/overview.html"><span class="std std-doc">Modules Overview</span></a> for detailed module documentation</p></li>
+<li><p>Read <a class="reference internal" href="../advanced/multi-agent.html"><span class="std std-doc">Advanced Topics</span></a> for complex scenarios</p></li>
+<li><p>Check <a class="reference internal" href="../development/contributing.html"><span class="std std-doc">Development Guide</span></a> to extend the system</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Unity-Claude-Automation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

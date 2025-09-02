@@ -1,0 +1,131 @@
+{
+  "Summary": {
+    "WarningTests": 0,
+    "PassedTests": 7,
+    "PassRate": 87.5,
+    "OverallStatus": "FAILED",
+    "TotalTests": 8,
+    "FailedTests": 1
+  },
+  "Duration": 0.009494385,
+  "StartTime": "2025-08-25T13:58:13.019181-04:00",
+  "TestName": "Phase 3 Day 1-2: Performance Optimization",
+  "EndTime": "2025-08-25T13:58:13.5888441-04:00",
+  "Configuration": {
+    "TargetThroughput": 100,
+    "TestType": "Cache",
+    "GenerateTestFiles": true,
+    "TestFileCount": 200,
+    "BasePath": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation"
+  },
+  "Results": [
+    {
+      "Name": "Import Unity-Claude-CPG",
+      "Status": "PASS",
+      "Details": "",
+      "Data": null,
+      "Duration": 0.0,
+      "Error": "",
+      "Timestamp": "2025-08-25T13:58:13.1288479-04:00"
+    },
+    {
+      "Name": "Import Unity-Claude-Cache",
+      "Status": "PASS",
+      "Details": "",
+      "Data": null,
+      "Duration": 0.0,
+      "Error": "",
+      "Timestamp": "2025-08-25T13:58:13.1579194-04:00"
+    },
+    {
+      "Name": "Import Unity-Claude-IncrementalProcessor",
+      "Status": "PASS",
+      "Details": "",
+      "Data": null,
+      "Duration": 0.0,
+      "Error": "",
+      "Timestamp": "2025-08-25T13:58:13.1697873-04:00"
+    },
+    {
+      "Name": "Import Unity-Claude-ParallelProcessor",
+      "Status": "PASS",
+      "Details": "",
+      "Data": null,
+      "Duration": 0.0,
+      "Error": "",
+      "Timestamp": "2025-08-25T13:58:13.1823544-04:00"
+    },
+    {
+      "Name": "Import Unity-Claude-PerformanceOptimizer",
+      "Status": "FAIL",
+      "Details": "",
+      "Data": null,
+      "Duration": 0.0,
+      "Error": "The module manifest 'C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-PerformanceOptimizer\\Unity-Claude-PerformanceOptimizer.psd1' could not be processed because it is not a valid PowerShell module manifest file. Remove the elements that are not permitted: At C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-PerformanceOptimizer\\Unity-Claude-PerformanceOptimizer.psd1:85 char:34\r\n+             MaxConcurrentJobs = ([Environment]::ProcessorCount * 4)\r\n+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\nProperty references are not allowed in restricted language mode or a Data section.\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-PerformanceOptimizer\\Unity-Claude-PerformanceOptimizer.psd1:85 char:34\r\n+             MaxConcurrentJobs = ([Environment]::ProcessorCount * 4)\r\n+                                  ~~~~~~~~~~~~~\r\nThe type Environment is not allowed in restricted language mode or a Data section.",
+      "Timestamp": "2025-08-25T13:58:13.1882423-04:00"
+    },
+    {
+      "Name": "Generate Test Files",
+      "Status": "PASS",
+      "Details": "200 files created",
+      "Data": null,
+      "Duration": 0.0,
+      "Error": "",
+      "Timestamp": "2025-08-25T13:58:13.3222233-04:00"
+    },
+    {
+      "Name": "Cache Performance Test",
+      "Status": "PASS",
+      "Details": "Hit Rate: 100%, Ops/sec: 4897",
+      "Data": {
+        "OpsPerSecond": 4897.375496471441,
+        "Stats": {
+          "MaxSize": 1000,
+          "Evictions": 0,
+          "TotalGets": 500,
+          "TotalSets": 500,
+          "Expirations": 0,
+          "CurrentSize": 0,
+          "Hits": 500,
+          "ItemCount": 500,
+          "AverageGetTime": 0.04,
+          "Uptime": {
+            "Ticks": 1964464,
+            "Days": 0,
+            "Hours": 0,
+            "Milliseconds": 196,
+            "Microseconds": 446,
+            "Nanoseconds": 400,
+            "Minutes": 0,
+            "Seconds": 0,
+            "TotalDays": 2.273685185185185E-06,
+            "TotalHours": 5.4568444444444447E-05,
+            "TotalMilliseconds": 196.4464,
+            "TotalMicroseconds": 196446.4,
+            "TotalNanoseconds": 196446400.0,
+            "TotalMinutes": 0.0032741066666666665,
+            "TotalSeconds": 0.1964464
+          },
+          "AverageSetTime": 0.11,
+          "LastCleanup": "2025-08-25T13:58:13.3394651-04:00",
+          "TotalRemoves": 0,
+          "Misses": 0,
+          "HitRate": 100.0
+        },
+        "HitRate": 100
+      },
+      "Duration": 204.191,
+      "Error": "",
+      "Timestamp": "2025-08-25T13:58:13.5401974-04:00"
+    },
+    {
+      "Name": "Test Cleanup",
+      "Status": "PASS",
+      "Details": "",
+      "Data": null,
+      "Duration": 0.0,
+      "Error": "",
+      "Timestamp": "2025-08-25T13:58:13.588373-04:00"
+    }
+  ]
+}

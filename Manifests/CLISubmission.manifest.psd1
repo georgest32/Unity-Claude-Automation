@@ -8,6 +8,7 @@
     Version = "1.0.0"
     Description = "CLI interface for submitting Unity errors to Claude AI for analysis and fixes"
     StartScript = ".\API-Integration\Submit-ErrorsToClaude-API.ps1"
+    WorkingDirectory = "C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation"
     
     # Dependencies
     Dependencies = @("SystemMonitoring")

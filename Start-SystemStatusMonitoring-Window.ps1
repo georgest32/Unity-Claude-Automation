@@ -60,18 +60,26 @@ Write-Host 'Execution policy set to Bypass for this window' -ForegroundColor Gre
 Import-Module '.\Modules\Unity-Claude-SystemStatus\Unity-Claude-SystemStatus.psd1' -Force
 Write-Host 'SystemStatus module loaded' -ForegroundColor Green
 
-# Verify critical functions
-if (Get-Command Test-AutonomousAgentStatus -ErrorAction SilentlyContinue) {
-    Write-Host '  [OK] Test-AutonomousAgentStatus available' -ForegroundColor Green
+# Verify critical functions - try CLIOrchestrator first, fall back to AutonomousAgent
+`$testFunc = `$null
+`$startFunc = `$null
+if (Get-Command Test-CLIOrchestratorStatus -ErrorAction SilentlyContinue) {
+    Write-Host '  [OK] Test-CLIOrchestratorStatus available' -ForegroundColor Green
+    `$testFunc = 'Test-CLIOrchestratorStatus'
+    `$startFunc = 'Start-CLIOrchestratorSafe'
+} elseif (Get-Command Test-AutonomousAgentStatus -ErrorAction SilentlyContinue) {
+    Write-Host '  [OK] Test-AutonomousAgentStatus available (legacy)' -ForegroundColor Yellow
+    `$testFunc = 'Test-AutonomousAgentStatus'
+    `$startFunc = 'Start-AutonomousAgentSafe'
 } else {
-    Write-Host '  [ERROR] Test-AutonomousAgentStatus NOT FOUND' -ForegroundColor Red
+    Write-Host '  [ERROR] No monitoring functions found!' -ForegroundColor Red
     exit 1
 }
 
-if (Get-Command Start-AutonomousAgentSafe -ErrorAction SilentlyContinue) {
-    Write-Host '  [OK] Start-AutonomousAgentSafe available' -ForegroundColor Green
+if (Get-Command `$startFunc -ErrorAction SilentlyContinue) {
+    Write-Host "  [OK] `$startFunc available" -ForegroundColor Green
 } else {
-    Write-Host '  [ERROR] Start-AutonomousAgentSafe NOT FOUND' -ForegroundColor Red
+    Write-Host "  [ERROR] `$startFunc NOT FOUND" -ForegroundColor Red
     exit 1
 }
 
@@ -88,39 +96,43 @@ while (`$true) {
     `$checkCount++
     `$timestamp = Get-Date -Format 'HH:mm:ss'
     
-    Write-Host "[`$timestamp] Check #`$checkCount - Testing AutonomousAgent..." -ForegroundColor Cyan
+    Write-Host "[`$timestamp] Check #`$checkCount - Testing orchestrator..." -ForegroundColor Cyan
     
     try {
-        `$agentRunning = Test-AutonomousAgentStatus
+        `$agentRunning = & `$testFunc
         
         if (`$agentRunning) {
             `$status = Read-SystemStatus
             `$agentPid = `$null
-            if (`$status.Subsystems.ContainsKey('AutonomousAgent')) {
+            if (`$status.Subsystems.ContainsKey('CLIOrchestrator')) {
+                `$agentPid = `$status.Subsystems['CLIOrchestrator'].ProcessId
+            } elseif (`$status.Subsystems.ContainsKey('AutonomousAgent')) {
                 `$agentPid = `$status.Subsystems['AutonomousAgent'].ProcessId
             }
-            Write-Host "  [OK] Agent RUNNING (PID: `$agentPid)" -ForegroundColor Green
+            Write-Host "  [OK] Orchestrator RUNNING (PID: `$agentPid)" -ForegroundColor Green
         }
         else {
-            Write-Host "  [WARN] Agent NOT running!" -ForegroundColor Yellow
-            Write-Host "  [ACTION] Restarting agent..." -ForegroundColor Magenta
+            Write-Host "  [WARN] Orchestrator NOT running!" -ForegroundColor Yellow
+            Write-Host "  [ACTION] Restarting orchestrator..." -ForegroundColor Magenta
             
-            `$restartResult = Start-AutonomousAgentSafe
+            `$restartResult = & `$startFunc
             
             if (`$restartResult) {
                 `$status = Read-SystemStatus
                 `$newPid = `$null
-                if (`$status.Subsystems.ContainsKey('AutonomousAgent')) {
+                if (`$status.Subsystems.ContainsKey('CLIOrchestrator')) {
+                    `$newPid = `$status.Subsystems['CLIOrchestrator'].ProcessId
+                } elseif (`$status.Subsystems.ContainsKey('AutonomousAgent')) {
                     `$newPid = `$status.Subsystems['AutonomousAgent'].ProcessId
                 }
-                Write-Host "  [SUCCESS] Agent RESTARTED (PID: `$newPid)" -ForegroundColor Green
+                Write-Host "  [SUCCESS] Orchestrator RESTARTED (PID: `$newPid)" -ForegroundColor Green
                 
                 # Log restart
-                `$logEntry = "`$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Agent restarted (PID: `$newPid)"
+                `$logEntry = "`$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Orchestrator restarted (PID: `$newPid)"
                 Add-Content -Path '.\agent_restart_log.txt' -Value `$logEntry
             }
             else {
-                Write-Host "  [ERROR] Failed to restart agent!" -ForegroundColor Red
+                Write-Host "  [ERROR] Failed to restart orchestrator!" -ForegroundColor Red
             }
         }
     }
@@ -192,38 +204,36 @@ Write-Host "==========================================" -ForegroundColor Cyan
 Write-Host "SETUP COMPLETE" -ForegroundColor Cyan
 Write-Host "==========================================" -ForegroundColor Cyan
 # SIG # Begin signature block
-# MIIFqQYJKoZIhvcNAQcCoIIFmjCCBZYCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
-# gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU/ot50wELUO0jVcLp8NIwhZxP
-# ea2gggMwMIIDLDCCAhSgAwIBAgIQdR0W2SKoK5VE8JId4ZxrRTANBgkqhkiG9w0B
-# AQsFADAuMSwwKgYDVQQDDCNVbml0eS1DbGF1ZGUtQXV0b21hdGlvbi1EZXZlbG9w
-# bWVudDAeFw0yNTA4MjAyMTE1MTdaFw0yNjA4MjAyMTM1MTdaMC4xLDAqBgNVBAMM
-# I1VuaXR5LUNsYXVkZS1BdXRvbWF0aW9uLURldmVsb3BtZW50MIIBIjANBgkqhkiG
-# 9w0BAQEFAAOCAQ8AMIIBCgKCAQEAseH3qinVEOhrn2OLpjc5TNT4vGh1BkfB5X4S
-# FhY7K0QMQsYYnkZVmx3tB8PqVQXl++l+e3uT7uCscc7vjMTK8tDSWH98ji0U34WL
-# JBwXC62l1ArazMKp4Tyr7peksei7vL4pZOtOVgAyTYn5d1hbnsVQmCSTPRtpn7mC
-# Azfq2ec5qZ9Kgl7puPW5utvYfh8idtOWa5/WgYSKwOIvyZawIdZKLFpwqOtqbJe4
-# sWzVahasFhLfoAKkniKOAocJDkJexh5pO/EOSKEZ3mOCU1ZSs4XWRGISRhV3qGZp
-# f+Y3JlHKMeFDWKynaJBO8/GU5sqMATlDUvrByBtU2OQ2Um/L3QIDAQABo0YwRDAO
-# BgNVHQ8BAf8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUHAwMwHQYDVR0OBBYEFHw5
-# rOy6xlW6B45sJUsiI2A/yS0MMA0GCSqGSIb3DQEBCwUAA4IBAQAUTLH0+w8ysvmh
-# YuBw4NDKcZm40MTh9Zc1M2p2hAkYsgNLJ+/rAP+I74rNfqguTYwxpCyjkwrg8yF5
-# wViwggboLpF2yDu4N/dgDainR4wR8NVpS7zFZOFkpmNPepc6bw3d4yQKa/wJXKeC
-# pkRjS50N77/hfVI+fFKNao7POb7en5fcXuZaN6xWoTRy+J4I4MhfHpjZuxSLSXjb
-# VXtPD4RZ9HGjl9BU8162cRhjujr/Lc3/dY/6ikHQYnxuxcdxRew4nzaqAQaOeWu6
-# tGp899JPKfldM5Zay5IBl3zs15gNS9+0Jrd0ARQnSVYoI0DLh3KybFnfK4POezoN
-# Lp/dbX2SMYIB4zCCAd8CAQEwQjAuMSwwKgYDVQQDDCNVbml0eS1DbGF1ZGUtQXV0
-# b21hdGlvbi1EZXZlbG9wbWVudAIQdR0W2SKoK5VE8JId4ZxrRTAJBgUrDgMCGgUA
-# oHgwGAYKKwYBBAGCNwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYB
-# BAGCNwIBBDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0B
-# CQQxFgQUx3wdS1jjhwBccMWmvtPLH07qvU8wDQYJKoZIhvcNAQEBBQAEggEARNqJ
-# ExC12e7y1BLPm21cI80z2qbkOTaSUimCl/ltRQIR5cci5otFBsIiCwGtrUVI/wAB
-# d2Kr+I59HwnPtpfalnLbk6BhQrn1O4llmjejdhNo0bp+LoiqWLGO67ROK0rLCT1N
-# qSm9MOrN9CUibFcTVz/PWD2vaSO+1Qsh8yDIvbI6JGdJ8vqGOg83YczQUfCvWXed
-# iJtq+TtQMUcjgWhEQqcMyd/jqxVWpO/FbLaiyY6nAMkCkhDFWZ+JxaxdYQc6iU7O
-# oSlnuHZwnRLZEKrNmNI65WpHUSfaYTxfXBTwiOJE7TpX3CDIijGdgVQQTtokz2Cq
-# 1C8/LFHeXZl8XQti2A==
+# MIIFzgYJKoZIhvcNAQcCoIIFvzCCBbsCAQExDzANBglghkgBZQMEAgEFADB5Bgor
+# BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCAdb3Iv0I/AwYoz
+# jRc2QfOGXmHs3mpaeRPPA4ofdsE+qqCCAzAwggMsMIICFKADAgECAhB1HRbZIqgr
+# lUTwkh3hnGtFMA0GCSqGSIb3DQEBCwUAMC4xLDAqBgNVBAMMI1VuaXR5LUNsYXVk
+# ZS1BdXRvbWF0aW9uLURldmVsb3BtZW50MB4XDTI1MDgyMDIxMTUxN1oXDTI2MDgy
+# MDIxMzUxN1owLjEsMCoGA1UEAwwjVW5pdHktQ2xhdWRlLUF1dG9tYXRpb24tRGV2
+# ZWxvcG1lbnQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCx4feqKdUQ
+# 6GufY4umNzlM1Pi8aHUGR8HlfhIWFjsrRAxCxhieRlWbHe0Hw+pVBeX76X57e5Pu
+# 4Kxxzu+MxMry0NJYf3yOLRTfhYskHBcLraXUCtrMwqnhPKvul6Sx6Lu8vilk605W
+# ADJNifl3WFuexVCYJJM9G2mfuYIDN+rZ5zmpn0qCXum49bm629h+HyJ205Zrn9aB
+# hIrA4i/JlrAh1kosWnCo62psl7ixbNVqFqwWEt+gAqSeIo4ChwkOQl7GHmk78Q5I
+# oRneY4JTVlKzhdZEYhJGFXeoZml/5jcmUcox4UNYrKdokE7z8ZTmyowBOUNS+sHI
+# G1TY5DZSb8vdAgMBAAGjRjBEMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUEDDAKBggr
+# BgEFBQcDAzAdBgNVHQ4EFgQUfDms7LrGVboHjmwlSyIjYD/JLQwwDQYJKoZIhvcN
+# AQELBQADggEBABRMsfT7DzKy+aFi4HDg0MpxmbjQxOH1lzUzanaECRiyA0sn7+sA
+# /4jvis1+qC5NjDGkLKOTCuDzIXnBWLCCBugukXbIO7g392ANqKdHjBHw1WlLvMVk
+# 4WSmY096lzpvDd3jJApr/Alcp4KmRGNLnQ3vv+F9Uj58Uo1qjs85vt6fl9xe5lo3
+# rFahNHL4ngjgyF8emNm7FItJeNtVe08PhFn0caOX0FTzXrZxGGO6Ov8tzf91j/qK
+# QdBifG7Fx3FF7DifNqoBBo55a7q0anz30k8p+V0zllrLkgGXfOzXmA1L37Qmt3QB
+# FCdJVigjQMuHcrJsWd8rg857Og0un91tfZIxggH0MIIB8AIBATBCMC4xLDAqBgNV
+# BAMMI1VuaXR5LUNsYXVkZS1BdXRvbWF0aW9uLURldmVsb3BtZW50AhB1HRbZIqgr
+# lUTwkh3hnGtFMA0GCWCGSAFlAwQCAQUAoIGEMBgGCisGAQQBgjcCAQwxCjAIoAKA
+# AKECgAAwGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEO
+# MAwGCisGAQQBgjcCARUwLwYJKoZIhvcNAQkEMSIEIGy2hK+KIlgQi7pAr5zTzB9t
+# B142nhAsNH2Br94py7KvMA0GCSqGSIb3DQEBAQUABIIBAHHxittwUxtsqADRY/pv
+# KNhjBBvVAdt+EKP0ZeE1GGd0mByjp4iHHQtrsVVHMHt5SO8zpSGfLsUze0U/LHk5
+# p9mOGkjiDVsfDCl0Zx4T8vxMGYb5+7wmn6cden0TtzuH9Yc5Rz0l/ivWapg2xAlX
+# +JFvTS+662Jzokg6OZK6q1qs9c8DbUtkJUEU+I7nC1V0B6OQYXhkv/IzdEyYla9q
+# x+UE/X71+KIA+UNToqXhfxwzG9NnlPhlvmuiE5mrgV4qtTPQxdAqcGhsbMF64xHB
+# 2/9Dmn2aUPL7UUGHiaq6VCj+Z4yJLs+GuvWsTtyphPc/B3nqsMZvuPwvgbGEt+2j
+# hMw=
 # SIG # End signature block
-
-
-

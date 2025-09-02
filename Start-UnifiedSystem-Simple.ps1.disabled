@@ -1,0 +1,100 @@
+# Start-UnifiedSystem-Simple.ps1
+# Simple unified system startup - monitor handles agent lifecycle
+# Date: 2025-08-21
+
+Write-Host ""
+Write-Host "==========================================" -ForegroundColor Cyan
+Write-Host "UNIFIED SYSTEM STARTUP (SIMPLE)" -ForegroundColor Cyan
+Write-Host "==========================================" -ForegroundColor Cyan
+Write-Host ""
+
+# Set working directory
+Set-Location "C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation"
+
+# Kill any existing agents BEFORE starting monitor
+Write-Host "Cleaning up any existing agents..." -ForegroundColor Yellow
+Get-Process | Where-Object { 
+    $_.MainWindowTitle -like "*AUTONOMOUS*" -or 
+    $_.MainWindowTitle -like "*MONITORING*" 
+} | ForEach-Object {
+    Write-Host "  Killing existing process: $($_.ProcessName) (PID: $($_.Id))" -ForegroundColor Gray
+    Stop-Process -Id $_.Id -Force -ErrorAction SilentlyContinue
+}
+Start-Sleep -Seconds 2
+
+# Clear any stale registrations
+Write-Host "Clearing stale registrations..." -ForegroundColor Yellow
+try {
+    Import-Module ".\Modules\Unity-Claude-SystemStatus\Unity-Claude-SystemStatus.psd1" -Force -ErrorAction SilentlyContinue
+    $status = Read-SystemStatus
+    if ($status -and $status.subsystems -and $status.subsystems.ContainsKey("CLIOrchestrator")) {
+        Write-Host "  Removing old AutonomousAgent registration" -ForegroundColor Gray
+        $status.subsystems.Remove("CLIOrchestrator")
+        Write-SystemStatus -StatusData $status
+    }
+} catch {
+    Write-Host "  Could not clear registrations: $_" -ForegroundColor Yellow
+}
+
+Write-Host ""
+Write-Host "Starting SystemStatus Monitor..." -ForegroundColor Cyan
+Write-Host "The monitor will:" -ForegroundColor Gray
+Write-Host "  1. Detect if CLI Orchestrator is running" -ForegroundColor Gray
+Write-Host "  2. Automatically start it if not running" -ForegroundColor Gray
+Write-Host "  3. Restart it if it crashes" -ForegroundColor Gray
+Write-Host "  4. Prevent duplicate agents" -ForegroundColor Gray
+Write-Host ""
+
+# Start the SystemStatus monitor
+# It will handle starting and monitoring the AutonomousAgent
+$monitorScript = ".\Start-SystemStatusMonitoring-Enhanced.ps1"
+if (-not (Test-Path $monitorScript)) {
+    $monitorScript = ".\Start-SystemStatusMonitoring.ps1"
+}
+
+if (Test-Path $monitorScript) {
+    Write-Host "Launching monitor: $monitorScript" -ForegroundColor Green
+    & $monitorScript
+} else {
+    Write-Host "ERROR: No SystemStatus monitoring script found!" -ForegroundColor Red
+    Write-Host "Expected: Start-SystemStatusMonitoring-Enhanced.ps1 or Start-SystemStatusMonitoring.ps1" -ForegroundColor Red
+}
+
+Write-Host ""
+Write-Host "==========================================" -ForegroundColor Cyan
+Write-Host "UNIFIED SYSTEM ACTIVE" -ForegroundColor Cyan
+Write-Host "==========================================" -ForegroundColor Cyan
+# SIG # Begin signature block
+# MIIFzgYJKoZIhvcNAQcCoIIFvzCCBbsCAQExDzANBglghkgBZQMEAgEFADB5Bgor
+# BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCBIAFYNQ9kHP4cW
+# M8K+g0qdQ/6RcVJrTHUZh92EPLmqLaCCAzAwggMsMIICFKADAgECAhB1HRbZIqgr
+# lUTwkh3hnGtFMA0GCSqGSIb3DQEBCwUAMC4xLDAqBgNVBAMMI1VuaXR5LUNsYXVk
+# ZS1BdXRvbWF0aW9uLURldmVsb3BtZW50MB4XDTI1MDgyMDIxMTUxN1oXDTI2MDgy
+# MDIxMzUxN1owLjEsMCoGA1UEAwwjVW5pdHktQ2xhdWRlLUF1dG9tYXRpb24tRGV2
+# ZWxvcG1lbnQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCx4feqKdUQ
+# 6GufY4umNzlM1Pi8aHUGR8HlfhIWFjsrRAxCxhieRlWbHe0Hw+pVBeX76X57e5Pu
+# 4Kxxzu+MxMry0NJYf3yOLRTfhYskHBcLraXUCtrMwqnhPKvul6Sx6Lu8vilk605W
+# ADJNifl3WFuexVCYJJM9G2mfuYIDN+rZ5zmpn0qCXum49bm629h+HyJ205Zrn9aB
+# hIrA4i/JlrAh1kosWnCo62psl7ixbNVqFqwWEt+gAqSeIo4ChwkOQl7GHmk78Q5I
+# oRneY4JTVlKzhdZEYhJGFXeoZml/5jcmUcox4UNYrKdokE7z8ZTmyowBOUNS+sHI
+# G1TY5DZSb8vdAgMBAAGjRjBEMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUEDDAKBggr
+# BgEFBQcDAzAdBgNVHQ4EFgQUfDms7LrGVboHjmwlSyIjYD/JLQwwDQYJKoZIhvcN
+# AQELBQADggEBABRMsfT7DzKy+aFi4HDg0MpxmbjQxOH1lzUzanaECRiyA0sn7+sA
+# /4jvis1+qC5NjDGkLKOTCuDzIXnBWLCCBugukXbIO7g392ANqKdHjBHw1WlLvMVk
+# 4WSmY096lzpvDd3jJApr/Alcp4KmRGNLnQ3vv+F9Uj58Uo1qjs85vt6fl9xe5lo3
+# rFahNHL4ngjgyF8emNm7FItJeNtVe08PhFn0caOX0FTzXrZxGGO6Ov8tzf91j/qK
+# QdBifG7Fx3FF7DifNqoBBo55a7q0anz30k8p+V0zllrLkgGXfOzXmA1L37Qmt3QB
+# FCdJVigjQMuHcrJsWd8rg857Og0un91tfZIxggH0MIIB8AIBATBCMC4xLDAqBgNV
+# BAMMI1VuaXR5LUNsYXVkZS1BdXRvbWF0aW9uLURldmVsb3BtZW50AhB1HRbZIqgr
+# lUTwkh3hnGtFMA0GCWCGSAFlAwQCAQUAoIGEMBgGCisGAQQBgjcCAQwxCjAIoAKA
+# AKECgAAwGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEO
+# MAwGCisGAQQBgjcCARUwLwYJKoZIhvcNAQkEMSIEIEx/K/uvjyv4NgpAnDZS9pjt
+# YYwpT6pTygalW3WIdSwxMA0GCSqGSIb3DQEBAQUABIIBABOjGSQbP9pXgNNG04Q2
+# OHnq7deiLRjMtGFZknUwEiB2k3pEZoic9Wyva7Kqtjngq+OA6IVGUY4iAYJgIgcV
+# fHid5uumZcHL5rswGnzEPzF4qs6lsbJafKEgBCrQxwiVMPpAnfJIwRbMzpBOIvfv
+# aO6IrqZnqkPoQRZ4y0Df8RJ4U1JmxVsWNUYQKHuTNC/J0gsE8ntG8aEmcTAJllie
+# /+mn4mfqQbR9yxizDt07e9ePlbQeJ50RQprb94rLK8o9ONcjyJIO0rcYX9d6d9cs
+# bOKXPpGncNdcMFOAbr9fPVBeyLyLBir8PqJ4oXO9hVOIdMxZjjMMoMOSTf1tClmG
+# GKc=
+# SIG # End signature block

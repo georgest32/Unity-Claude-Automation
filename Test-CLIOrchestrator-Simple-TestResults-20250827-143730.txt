@@ -1,0 +1,75 @@
+====================================
+Test Execution Report
+====================================
+
+Test Script: ./Test-CLIOrchestrator-Simple.ps1
+Execution Time: 2025-08-27 14:37:31
+Duration: 1.11 seconds
+Exit Code: 0
+Status: SUCCESS
+
+Test Output:
+============
+================================================================
+  Unity-Claude CLIOrchestrator Simple Test
+  Started: 2025-08-27 14:37:31
+================================================================
+
+Importing Unity-Claude-CLIOrchestrator module...
+ERROR: Failed to import CLIOrchestrator module
+Error: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:265 char:54
++                                         Write-Host "[DEBUG] TESTING F ...
++                                                      ~
+Array index expression is missing or not valid.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:271 char:50
++                                     Write-Host "[DEBUG] TESTING FLOW: ...
++                                                  ~
+Array index expression is missing or not valid.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:272 char:50
++                                     Write-Host "[DEBUG] TESTING FLOW: ...
++                                                  ~
+Array index expression is missing or not valid.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:276 char:46
++                                 Write-Host "[DEBUG] TESTING FLOW: [AR ...
++                                              ~
+Array index expression is missing or not valid.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:284 char:50
++                                     Write-Host "[DEBUG] TESTING FLOW: ...
++                                                  ~
+Array index expression is missing or not valid.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:460 char:85
++ ... tions = [regex]::Matches($responseText, "RECOMMENDATION:\s*([^`r`n]+) ...
++                                                                  ~
+Missing type name after '['.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:511 char:22
++         Write-Host "[DEBUG] Invoke-AutonomousDecisionMaking: Reading  ...
++                      ~
+Array index expression is missing or not valid.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:539 char:26
++             Write-Host "[DEBUG] Response text found: $($responseText. ...
++                          ~
+Array index expression is missing or not valid.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:558 char:45
++                         "Testing\s*[-:]\s*([^\s]+\.ps1)",  # Testing: ...
++                                             ~
+Missing type name after '['.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:559 char:45
++                         "Test\s*Path[:\s]*([^\s\n]+\.ps1)",  # Test P ...
++                                             ~
+Missing type name after '['.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+False
+
+====================================
+End of Test Report
+====================================

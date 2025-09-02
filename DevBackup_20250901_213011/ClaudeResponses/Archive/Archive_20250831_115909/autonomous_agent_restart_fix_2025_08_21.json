@@ -1,0 +1,55 @@
+{
+  "session_id": "autonomous_agent_auto_restart_fix",
+  "timestamp": "2025-08-21",
+  "status": "Complete",
+  "problem_identified": {
+    "issue": "SystemStatusMonitoring not restarting AutonomousAgent when it crashes",
+    "root_cause": "Missing functions Test-AutonomousAgentStatus and Start-AutonomousAgentSafe",
+    "impact": "Agent stays down when closed or crashed"
+  },
+  "solution_implemented": {
+    "created_functions": [
+      {
+        "function": "Test-AutonomousAgentStatus",
+        "purpose": "Check if AutonomousAgent process is running",
+        "checks": [
+          "Process ID exists in SystemStatus",
+          "Process is actually running",
+          "Heartbeat is not stale (< 5 minutes)"
+        ]
+      },
+      {
+        "function": "Start-AutonomousAgentSafe",
+        "purpose": "Safely start or restart the AutonomousAgent",
+        "features": [
+          "Kills zombie processes",
+          "Starts in new PowerShell window",
+          "Updates SystemStatus with new PID",
+          "Handles errors gracefully"
+        ]
+      }
+    ],
+    "files_created": [
+      "Modules/Unity-Claude-SystemStatus/Monitoring/Test-AutonomousAgentStatus.ps1"
+    ],
+    "files_modified": [
+      "Modules/Unity-Claude-SystemStatus/Unity-Claude-SystemStatus.psm1",
+      "Modules/Unity-Claude-SystemStatus/Unity-Claude-SystemStatus.psd1"
+    ],
+    "test_script": "Test-AutonomousAgentRestart.ps1"
+  },
+  "how_it_works": {
+    "monitoring_loop": "SystemStatusMonitoring runs heartbeat check every 60 seconds",
+    "detection": "Test-AllSubsystemHeartbeats identifies unhealthy subsystems",
+    "restart_logic": "If Unity-Claude-AutonomousAgent is unhealthy, calls Start-AutonomousAgentSafe",
+    "verification": "Updates SystemStatus with new PID and status"
+  },
+  "testing_instructions": {
+    "restart_monitoring": "./Test-AutonomousAgentRestart.ps1 -Force",
+    "manual_test": "Close AutonomousAgent window and wait 60 seconds",
+    "verify_logs": "Get-Content .\\SystemStatusMonitoring_Job_*.log -Tail 50",
+    "check_job": "Receive-Job -Name SystemStatusMonitoring -Keep"
+  },
+  "important_note": "The SystemStatusMonitoring job needs to be restarted to load the new functions. Use -Force flag on test script or restart the entire system.",
+  "recommendation": "TEST - Run ./Test-AutonomousAgentRestart.ps1 -Force to restart monitoring with new functions and test auto-restart"
+}

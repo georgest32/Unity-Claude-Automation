@@ -1,0 +1,62 @@
+
+=== Testing Day 2 Implementations ===
+Date: 2025-08-28 02:29:57
+Modules: Call Graph Builder & Data Flow Tracker
+
+
+[Test Group 1: Call Graph Builder]
+  Testing: Load Call Graph Builder Module... ERROR - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CPG\Core\CPG-CallGraphBuilder.psm1:45 char:6
++     [CPGNodeType]$NodeType
++      ~~~~~~~~~~~
+Unable to find type [CPGNodeType].
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CPG\Core\CPG-CallGraphBuilder.psm1:59 char:30
++     CallNode([string]$name, [CPGNodeType]$type) {
++                              ~~~~~~~~~~~
+Unable to find type [CPGNodeType].
+  Testing: Call Graph Builder Functions Available... FAIL - Test failed
+  Testing: Build PowerShell Call Graph... ERROR - The term 'Build-PowerShellCallGraph' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+  Testing: Call Graph Contains Functions... FAIL - Test failed
+  Testing: Call Graph Contains Edges... FAIL - Test failed
+  Testing: Detect Recursive Calls... FAIL - Test failed
+  Testing: Get Call Graph Metrics... ERROR - The term 'Get-CallGraphMetrics' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+  Testing: Metrics Show Entry Points... FAIL - Test failed
+  Testing: Metrics Show Leaf Functions... FAIL - Test failed
+  Testing: Export Call Graph to JSON... ERROR - The term 'Export-CallGraph' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+
+[Test Group 2: Data Flow Tracker]
+  Testing: Load Data Flow Tracker Module... ERROR - The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CPG\Core\CPG-DataFlowTracker.psm1:222 char:9
++         $reachingDefs = $this.GetReachingDefinitions($use.Line, $use. ...
++         ~~~~~~~~~~~~~
+Cannot assign property, use '$this.ReachingDefs'.
+  Testing: Data Flow Tracker Functions Available... FAIL - Test failed
+  Testing: Build PowerShell Data Flow... ERROR - The term 'Build-PowerShellDataFlow' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+  Testing: Data Flow Contains Definitions... FAIL - Test failed
+  Testing: Data Flow Contains Uses... FAIL - Test failed
+  Testing: Def-Use Chains Created... FAIL - Test failed
+  Testing: Taint Analysis Detects Security Issues... FAIL - Test failed
+  Testing: Tainted Variables Marked... FAIL - Test failed
+  Testing: Analyze Data Sensitivity... ERROR - The term 'Analyze-DataSensitivity' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+  Testing: Detect Sensitive Variables... FAIL - Test failed
+  Testing: Get Data Flow Metrics... ERROR - The term 'Get-DataFlowMetrics' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+  Testing: Metrics Show Unused Definitions... FAIL - Test failed
+  Testing: Metrics Show Undefined Uses... FAIL - Test failed
+  Testing: Export Data Flow to JSON... ERROR - The term 'Export-DataFlow' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+
+[Test Group 3: Integration]
+  Testing: Call Graph and Data Flow Consistency... PASS
+  Testing: Performance Within Limits... PASS
+
+[Cleanup]
+  Removed test script
+
+=== Test Results Summary ===
+Total Tests: 26
+Passed: 2
+Failed: 24
+Success Rate: 7.69%
+Total Duration: 0.29 seconds
+
+Detailed results saved to: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Day2-TestResults-20250828-022957.json
+
+Test suite FAILED

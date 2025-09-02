@@ -1,0 +1,60 @@
+{
+  "timestamp": "2025-08-27T11:20:00",
+  "prompt_type": "Test Execution Results",
+  "issue": "CLIOrchestrator module test failures",
+  "analysis": {
+    "test_execution": {
+      "test_file": "Test-CLIOrchestrator-Clean.ps1",
+      "execution_status": "COMPLETED",
+      "exit_code": 0,
+      "duration_seconds": 1.19,
+      "signal_file_created": true
+    },
+    "test_results": {
+      "total_tests": 5,
+      "passed": 1,
+      "failed": 4,
+      "success_rate": "20%",
+      "failures": [
+        {
+          "test": "Module Import",
+          "error": "Syntax errors in ResponseAnalysisEngine-Core.psm1"
+        },
+        {
+          "test": "Function Availability",
+          "error": "Missing functions due to module load failure"
+        },
+        {
+          "test": "Pattern Recognition",
+          "error": "Find-RecommendationPatterns not available"
+        },
+        {
+          "test": "Decision Engine",
+          "error": "Invoke-RuleBasedDecision not available"
+        }
+      ]
+    },
+    "root_cause": {
+      "file": "ResponseAnalysisEngine-Core.psm1",
+      "issues": [
+        "Line 315: Unexpected token 'Graceful' in expression",
+        "Line 309: Missing closing '}' in statement block",
+        "Line 357-358: Unexpected token ')' in regex pattern",
+        "Line 447: String missing terminator quote",
+        "Line 498: Missing closing ')' in expression"
+      ]
+    }
+  },
+  "resolution": {
+    "immediate_action": "Fix syntax errors in ResponseAnalysisEngine-Core.psm1",
+    "critical_fixes": [
+      "Line 309: Fix JSON string literal - escape or use here-string",
+      "Line 315: Quote 'Graceful Fallback' properly",
+      "Line 357-358: Escape regex pattern properly",
+      "Line 447: Complete string literal with closing quote",
+      "Line 498: Add missing closing parenthesis"
+    ],
+    "expected_outcome": "After fixing syntax errors, all 5 tests should pass"
+  },
+  "RESPONSE": "RECOMMENDATION: FIX - C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CLIOrchestrator\\Core\\Components\\ResponseAnalysisEngine-Core.psm1: Fix syntax errors on lines 309, 315, 357-358, 447, and 498 to resolve module loading failure. The test execution framework is working correctly and detected these issues."
+}

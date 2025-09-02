@@ -1,0 +1,74 @@
+{
+  "Duration": 69.6356671,
+  "Tests": [
+    {
+      "Status": "Passed",
+      "Error": null,
+      "Duration": 2,
+      "StartTime": "2025-08-23T21:14:55.1146517-04:00",
+      "Name": "Get-DocumentationDriftConfig"
+    },
+    {
+      "Status": "Failed",
+      "Error": "A parameter cannot be found that matches parameter name 'DriftDetectionSensitivity'.",
+      "Duration": null,
+      "StartTime": "2025-08-23T21:14:55.1209564-04:00",
+      "Name": "Set-DocumentationDriftConfig"
+    },
+    {
+      "Status": "Passed",
+      "Error": null,
+      "Duration": 19,
+      "StartTime": "2025-08-23T21:14:55.1259887-04:00",
+      "Name": "Clear-DriftCache"
+    },
+    {
+      "Status": "Failed",
+      "Error": "Missing TotalFiles metric",
+      "Duration": null,
+      "StartTime": "2025-08-23T21:14:55.1473595-04:00",
+      "Name": "Get-DocumentationMetrics (empty)"
+    },
+    {
+      "Status": "Passed",
+      "Error": null,
+      "Duration": 68533,
+      "StartTime": "2025-08-23T21:14:55.1716594-04:00",
+      "Name": "Initialize-DocumentationDrift"
+    },
+    {
+      "Status": "Failed",
+      "Error": "A parameter cannot be found that matches parameter name 'BasePath'.",
+      "Duration": null,
+      "StartTime": "2025-08-23T21:16:03.7063016-04:00",
+      "Name": "Build-CodeToDocMapping (basic)"
+    },
+    {
+      "Status": "Passed",
+      "Error": null,
+      "Duration": 0,
+      "StartTime": "2025-08-23T21:16:03.7080009-04:00",
+      "Name": "Get-DriftDetectionResults (empty)"
+    },
+    {
+      "Status": "Failed",
+      "Error": "A parameter cannot be found that matches parameter name 'FilePath'.",
+      "Duration": null,
+      "StartTime": "2025-08-23T21:16:03.7096602-04:00",
+      "Name": "Test-DocumentationQuality (basic)"
+    },
+    {
+      "Status": "Failed",
+      "Error": "A parameter cannot be found that matches parameter name 'FilePath'.",
+      "Duration": null,
+      "StartTime": "2025-08-23T21:16:03.7163282-04:00",
+      "Name": "Validate-DocumentationLinks (basic)"
+    }
+  ],
+  "TestSuite": "Unity-Claude-DocumentationDrift-Quick",
+  "FailedTests": 5,
+  "EndTime": "2025-08-23T21:16:03.7211658-04:00",
+  "PassedTests": 4,
+  "StartTime": "2025-08-23T21:14:54.0854987-04:00",
+  "TotalTests": 9
+}

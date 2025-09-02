@@ -1,0 +1,120 @@
+{
+  "Summary": {
+    "FailedTests": 2,
+    "PassRate": "86.7%",
+    "PassedTests": 13,
+    "TotalTests": 15,
+    "Duration": "00:00:00.4957460"
+  },
+  "Tests": [
+    {
+      "Details": "State management server operational",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:11:05.6152017-04:00",
+      "Data": null,
+      "TestName": "Server Health Check"
+    },
+    {
+      "Details": "Valid: True",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:11:05.6313903-04:00",
+      "Data": null,
+      "TestName": "Basic State Validation"
+    },
+    {
+      "Details": "Valid: True",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:11:05.6382008-04:00",
+      "Data": null,
+      "TestName": "HITL State Validation"
+    },
+    {
+      "Details": "Should detect invalid state",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:11:05.6573281-04:00",
+      "Data": null,
+      "TestName": "Invalid State Detection"
+    },
+    {
+      "Details": "Graph: state-test-20250823-161105, Thread: thread-3127",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:11:05.7068743-04:00",
+      "Data": null,
+      "TestName": "Complex State Processing"
+    },
+    {
+      "Details": "No thread ID - no snapshot created",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:11:05.7132698-04:00",
+      "Data": null,
+      "TestName": "Simple State Processing"
+    },
+    {
+      "Details": "Synchronized with checkpoint info",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:11:05.8053705-04:00",
+      "Data": null,
+      "TestName": "State Synchronization"
+    },
+    {
+      "Details": "Handled missing checkpoint gracefully",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:11:05.8409454-04:00",
+      "Data": null,
+      "TestName": "Sync Without Checkpoint"
+    },
+    {
+      "Details": "Found 2 snapshots",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:11:05.9220954-04:00",
+      "Data": null,
+      "TestName": "List All Snapshots"
+    },
+    {
+      "Details": "Found 1 snapshots for graph sync-test-20250823-161105",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:11:05.9451089-04:00",
+      "Data": null,
+      "TestName": "Filter Snapshots by Graph"
+    },
+    {
+      "Details": "Retrieved snapshot: sync-test-20250823-161105_sync-thread-459_20250823_161105",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:11:05.9688569-04:00",
+      "Data": null,
+      "TestName": "Get Specific Snapshot"
+    },
+    {
+      "Details": "Total snapshots: 2, Unique graphs: 2",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:11:05.9917065-04:00",
+      "Data": null,
+      "TestName": "State Statistics"
+    },
+    {
+      "Details": "State converted for PowerShell consumption",
+      "Passed": true,
+      "Timestamp": "2025-08-23T16:11:06.0016108-04:00",
+      "Data": null,
+      "TestName": "Python to PowerShell Conversion"
+    },
+    {
+      "Details": "Metadata included: False",
+      "Passed": false,
+      "Timestamp": "2025-08-23T16:11:06.0113789-04:00",
+      "Data": null,
+      "TestName": "PowerShell State with Metadata"
+    },
+    {
+      "Details": "Exception: Cannot process argument transformation on parameter 'InitialState'. Cannot convert value \"@{counter=1; messages=System.Object[]}\" to type \"System.Collections.Hashtable\". Error: \"Cannot convert the \"@{counter=1; messages=System.Object[]}\" value of type \"System.Management.Automation.PSCustomObject\" to type \"System.Collections.Hashtable\".\"",
+      "Passed": false,
+      "Timestamp": "2025-08-23T16:11:06.0690236-04:00",
+      "Data": null,
+      "TestName": "Integration Tests"
+    }
+  ],
+  "TestSuite": "LangGraph State Management (Hour 6)",
+  "Duration": "00:00:00.4957460",
+  "EndTime": "2025-08-23T16:11:06.0694958-04:00",
+  "StartTime": "2025-08-23T16:11:05.5737498-04:00"
+}

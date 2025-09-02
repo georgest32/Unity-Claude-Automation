@@ -1,0 +1,75 @@
+====================================
+Test Execution Report
+====================================
+
+Test Script: ./Test-CLIOrchestrator-Simple.ps1
+Execution Time: 2025-08-27 14:39:49
+Duration: 2.72 seconds
+Exit Code: 0
+Status: SUCCESS
+
+Test Output:
+============
+================================================================
+  Unity-Claude CLIOrchestrator Simple Test
+  Started: 2025-08-27 14:39:48
+================================================================
+
+Importing Unity-Claude-CLIOrchestrator module...
+ERROR: Failed to import CLIOrchestrator module
+Error: The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:460 char:85
++ ... tions = [regex]::Matches($responseText, "RECOMMENDATION:\s*([^`r`n]+) ...
++                                                                  ~
+Missing type name after '['.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:558 char:45
++                         "Testing\s*[-:]\s*([^\s]+\.ps1)"  # Testing:  ...
++                                             ~
+Missing type name after '['.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:559 char:43
++                         "Test\s*Path:\s*([^\s\n]+\.ps1)"  # Test Path ...
++                                           ~
+Missing type name after '['.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:560 char:42
++                         "TEST\s*[-:]\s*([^\s]+\.ps1)"     # TEST - pa ...
++                                          ~
+Missing type name after '['.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:561 char:28
++                         "([A-Za-z0-9_-]+\.ps1)"          # Any .ps1 f ...
++                            ~
+Missing ] at end of attribute or type literal.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:561 char:29
++                         "([A-Za-z0-9_-]+\.ps1)"          # Any .ps1 f ...
++                             ~~~
+Unexpected token '-Za' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:561 char:32
++                         "([A-Za-z0-9_-]+\.ps1)"          # Any .ps1 f ...
++                                ~~~~~~~~~~
+Unexpected token '-z0-9_-]+\' in expression or statement.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:561 char:32
++                         "([A-Za-z0-9_-]+\.ps1)"          # Any .ps1 f ...
++                                ~
+Missing closing ')' in expression.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:252 char:60
++                                     if ($submissionResult) {
++                                                            ~
+Missing closing '}' in statement block or type definition.
+
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CLIOrchestrator\Core\OrchestrationManager.psm1:248 char:37
++                                 try {
++                                     ~
+Missing closing '}' in statement block or type definition.
+
+Not all parse errors were reported.  Correct the reported errors and try again.
+False
+
+====================================
+End of Test Report
+====================================

@@ -1,33 +1,49 @@
-1. Can we use the new tools to communicate directly between modules? can we communicate directly with the Claude Code CLI or do we have to depend on the file watcher, communicating via files, etc
-2. Behavior tree for prompt interpretation and response choice
-3. GitHub: commit after every successful feature/validation of a feature; every time we start a new feature, start a new branch, and on full validation merge/pull?
-4. Teams of Specialized Agents
-	- Self improvement
-		- Prompt Engineers
+- Can we use the new tools to communicate directly between modules? can we communicate directly with the Claude Code CLI or do we have to depend on the file watcher, communicating via files, etc
+- Much of the project was built with PowerShell 5.1, but we have upgraded to 7.5.2--what can we now do that we couldn't do before?
+- Behavior tree for prompt interpretation and response choice
+- GitHub: commit after every successful feature/validation of a feature; every time we start a new feature, start a new branch, and on full validation merge/pull?
+- Goal: This application is an autonomous system for creating, implementing, and maintaining code projects (including itself). It should be able to run completely by itself, as the autonomous agent layer should be a zero-touch layer that is responsible for researching, iterating on, experimenting with, and implementing self improvements; building/carrying out/completing specified projects (EG: build a clone of Twitter; continue implementing and improve on the Symbolic Memory project in the Sound-and-Shoal repo; optimize my Unity codebase); Testing; construction, QA, and mantainance of an iPhone app; creation and maintanance of documentation; identification, creation, and maintenance of "Prefab" system, where blocks of code are identified as highly recyclable and parameterizable, then made parameterizable/generic, then managed and served to other agents in an ad-hoc system for fast, modular code construction.
+- Teams of Specialized Agents
+	- Self-Improvement Build Squads
+		- Prompt Engineer
 		- Architect/Systems Designer
 		- Researcher (emerging technologies)
 		- Test Expert (updates, QA's testing)
-		- Refiner (streamlining)
+		- Refiner (streamlining/optimizing current code and pruning obsolete/unused code)
+		- Refactorer (refactoring monolithic scripts into smaller scripts, ideally max script length for autonomous agent consumption should be researched online)
 	
+	- Testing
+		- TestRunner (runs tests)
+		- TestCreator (writes/creates/edits tests)
+		- TestResultsInterpreter (interprets and prepares test results for other agents)
+		- TestLogger (writes copious logs to trace the flow of logic so aid in debugging)
+
 	- Documentation
 		- Documentarian
 		- Editor
 		- Indexer
 		- Consolidator
 		- Organizer
+		- AI helper (creates documents to remind AI of important, context-specific information (EG use ASCII only when writing PowerShell 5.1 scripts) and signposting/micro-instructions to guide autonomous agents through complex workflows)
 	
-	- Build squads
+	- Deliverable Build squads (builds software solutions for external projects)
 		- Architect/Systems Designer
 		- Researcher
 		- Researcher
-		- Engineers
+		- Engineer
 		- Debugger
+
+	- Prefabs
+		- Identifier (finds blocks of code that can be reused - EG basic autonomous agent scaffold our of document agent)
+		- Generic-Maker (makes the prefab parameterizeable - EG remove bespoke/unique logic from documentation agent, so the scaffold can be used to quickly create other agents later using parameters)
+		- Manager (organizes and indexes Prefabs by function)
+		- Deployer (deploys prefabs in unique contexts - EG fill in parameters of the agent scaffold to make a new monitor agent in a different project, then serve that agent code for a builder agent to use)
 	
-	- App
+	- App (GUI): iPhone app should allow user to track activity of each agent layer, provide alternative instructions, pause, resume, etc. it should be aesthetically designed with lots of graphics and beautiful visualizations.  
 		- Graphic designer
 		- UX Designer
 		- UI Designer
-		- Engineers
+		- Engineer
 		- QA/Tester
 	
 	- Symbolic Memory

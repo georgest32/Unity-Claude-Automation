@@ -1,0 +1,270 @@
+# Module: Unity-Claude-ResponseMonitoring
+
+**Version:** 0.0  
+**Path:** `C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-ResponseMonitoring.psm1`  
+**Last Modified:** 08/20/2025 17:25:22  
+**Total Functions:** 11  
+
+## Description
+
+
+## Exported Commands
+- `Format-ResponseSummary`
+- `Get-ResponseMonitoringStatus`
+- `Start-ClaudeResponseMonitoring`
+- `Stop-ClaudeResponseMonitoring`
+
+
+## Functions
+
+
+### Read-SafeResponseFile
+**Lines:** 37 - 78
+
+
+
+
+**Parameters:**
+*No parameters*
+
+**Code Preview:**
+```powershell
+{
+    <#
+    .SYNOPSIS
+    Safely reads and parses Claude response JSON file with retry logic
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$FilePath
+    )
+``` 
+### Test-ResponseFileChanged
+**Lines:** 80 - 111
+
+
+
+
+**Parameters:**
+*No parameters*
+
+**Code Preview:**
+```powershell
+{
+    <#
+    .SYNOPSIS
+    Checks if the Claude response file has been updated
+    #>
+    [CmdletBinding()]
+    param()
+    
+    try {
+        if (-not (Test-Path $script:ResponseConfig.ResponseJsonPath)) {
+``` 
+### Process-ClaudeResponse
+**Lines:** 117 - 169
+
+**Synopsis:** Starts monitoring Claude Code CLI responses for autonomous feedback loop Monitors for Claude Code CLI responses to autonomous prompts
+
+**Description:** Watches for new responses from Claude and triggers autonomous processing
+
+
+**Parameters:**
+*No parameters*
+
+**Code Preview:**
+```powershell
+{
+    <#
+    .SYNOPSIS
+    Processes new Claude responses and triggers appropriate actions
+    #>
+    [CmdletBinding()]
+    param()
+    
+    try {
+        $responseData = Read-SafeResponseFile -FilePath $script:ResponseConfig.ResponseJsonPath
+``` 
+### Start-ResponseFileWatcher
+**Lines:** 175 - 222
+
+
+
+
+**Parameters:**
+*No parameters*
+
+**Code Preview:**
+```powershell
+{
+    <#
+    .SYNOPSIS
+    Starts FileSystemWatcher for Claude response file
+    #>
+    [CmdletBinding()]
+    param()
+    
+    try {
+        $watchDirectory = Split-Path $script:ResponseConfig.ResponseJsonPath -Parent
+``` 
+### Stop-ResponseFileWatcher
+**Lines:** 224 - 251
+
+
+
+
+**Parameters:**
+*No parameters*
+
+**Code Preview:**
+```powershell
+{
+    <#
+    .SYNOPSIS
+    Stops response FileSystemWatcher and cleans up events
+    #>
+    [CmdletBinding()]
+    param()
+    
+    try {
+        # Unregister events
+``` 
+### Start-ResponsePollingTimer
+**Lines:** 253 - 290
+
+
+
+
+**Parameters:**
+*No parameters*
+
+**Code Preview:**
+```powershell
+{
+    <#
+    .SYNOPSIS
+    Starts polling timer as backup for response file monitoring
+    #>
+    [CmdletBinding()]
+    param()
+    
+    try {
+        $script:ResponsePollingTimer = New-Object System.Timers.Timer
+``` 
+### Stop-ResponsePollingTimer
+**Lines:** 292 - 312
+
+
+
+
+**Parameters:**
+*No parameters*
+
+**Code Preview:**
+```powershell
+{
+    <#
+    .SYNOPSIS
+    Stops response polling timer
+    #>
+    [CmdletBinding()]
+    param()
+    
+    try {
+        if ($script:ResponsePollingTimer) {
+``` 
+### Start-ClaudeResponseMonitoring
+**Lines:** 318 - 372
+
+**Synopsis:** Starts monitoring Claude Code CLI responses for autonomous feedback loop
+
+
+
+**Parameters:**
+*No parameters*
+
+**Code Preview:**
+```powershell
+{
+    <#
+    .SYNOPSIS
+    Starts monitoring Claude Code CLI responses for autonomous feedback loop
+    
+    .PARAMETER OnResponseDetected
+    Script block to execute when new responses are detected
+    
+    .EXAMPLE
+    Start-ClaudeResponseMonitoring -OnResponseDetected { param($responses) Process-ClaudeResponses $responses }
+``` 
+### Stop-ClaudeResponseMonitoring
+**Lines:** 374 - 390
+
+**Synopsis:** Stops Claude response monitoring and cleans up resources
+
+
+
+**Parameters:**
+*No parameters*
+
+**Code Preview:**
+```powershell
+{
+    <#
+    .SYNOPSIS
+    Stops Claude response monitoring and cleans up resources
+    #>
+    [CmdletBinding()]
+    param()
+    
+    Write-Host "[ResponseMonitoring] Stopping Claude response monitoring..." -ForegroundColor Yellow
+``` 
+### Get-ResponseMonitoringStatus
+**Lines:** 392 - 409
+
+**Synopsis:** Gets current status of Claude response monitoring
+
+
+
+**Parameters:**
+*No parameters*
+
+**Code Preview:**
+```powershell
+{
+    <#
+    .SYNOPSIS
+    Gets current status of Claude response monitoring
+    #>
+    [CmdletBinding()]
+    param()
+    
+    return @{
+        FileWatcherActive = $script:ResponseWatcher -ne $null -and $script:ResponseWatcher.EnableRaisingEvents
+``` 
+### Format-ResponseSummary
+**Lines:** 415 - 445
+
+**Synopsis:** Formats Claude response for logging/display
+
+
+
+**Parameters:**
+*No parameters*
+
+**Code Preview:**
+```powershell
+{
+    <#
+    .SYNOPSIS
+    Formats Claude response for logging/display
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [object]$Response
+    )
+```
+
+---
+*Generated by Unity-Claude Documentation System*

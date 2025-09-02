@@ -1,0 +1,232 @@
+# Enhanced Documentation System - Working Docker Compose Configuration
+# Fixed to match actual Docker directory structure with research-validated optimizations
+# Date: 2025-08-29
+
+# Custom network for service isolation
+networks:
+  unity-claude-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# Named volumes for data persistence
+volumes:
+  module-data:
+    driver: local
+  langgraph-data:
+    driver: local
+  monitoring-logs:
+    driver: local
+  shared-config:
+    driver: local
+  docs-generated:
+    driver: local
+  docs-cache:
+    driver: local
+
+services:
+  # PowerShell Module Service
+  powershell-modules:
+    build:
+      context: ./docker/powershell
+      dockerfile: Dockerfile
+    container_name: unity-claude-powershell
+    networks:
+      - unity-claude-net
+    volumes:
+      - module-data:/opt/modules
+      - shared-config:/app/config:ro
+      - ./Modules:/opt/modules:ro
+    environment:
+      - POWERSHELL_TELEMETRY_OPTOUT=1
+      - PSModulePath=/opt/modules:/usr/local/share/powershell/Modules
+      # Research-validated binding configuration
+      - BIND_ADDRESS=0.0.0.0
+      - HOST=0.0.0.0
+    ports:
+      - "5985:5985"
+      - "5986:5986"
+    restart: unless-stopped
+    # Research-optimized health check
+    healthcheck:
+      test: ["CMD", "pwsh", "-Command", "Get-Process pwsh"]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 120s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Documentation Web Server
+  docs-server:
+    build:
+      context: ./docker/docs
+      dockerfile: Dockerfile
+    container_name: unity-claude-docs
+    networks:
+      - unity-claude-net
+    environment:
+      # Research-validated binding configuration
+      - HOST=0.0.0.0
+      - PORT=80
+      - BIND_ADDRESS=0.0.0.0
+    ports:
+      - "8080:80"
+    depends_on:
+      powershell-modules:
+        condition: service_healthy
+    restart: unless-stopped
+    # Enhanced health check for web service
+    healthcheck:
+      test: ["CMD", "sh", "-c", "nc -z 0.0.0.0 80 || exit 1"]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 90s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+  # Documentation API Service
+  docs-api:
+    build:
+      context: ./docker/documentation
+      dockerfile: Dockerfile.docs-api
+    container_name: unity-claude-docs-api
+    networks:
+      - unity-claude-net
+    environment:
+      # Research-validated API binding configuration
+      - HOST=0.0.0.0
+      - PORT=8091
+      - API_HOST=0.0.0.0
+      - BIND_ADDRESS=0.0.0.0:8091
+    ports:
+      - "8091:8091"
+    depends_on:
+      powershell-modules:
+        condition: service_healthy
+    restart: unless-stopped
+    # Research-optimized API health check
+    healthcheck:
+      test: ["CMD", "sh", "-c", "nc -z 0.0.0.0 8091 || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 75s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # LangGraph API Service  
+  langgraph-api:
+    build:
+      context: ./docker/python/langgraph
+      dockerfile: Dockerfile
+    container_name: unity-claude-langgraph
+    networks:
+      - unity-claude-net
+    volumes:
+      - langgraph-data:/app/data
+      - shared-config:/app/config:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+      # Research-validated Python binding configuration
+      - HOST=0.0.0.0
+      - PORT=8000
+      - BIND_HOST=0.0.0.0
+    ports:
+      - "8000:8000"
+    depends_on:
+      powershell-modules:
+        condition: service_healthy
+    restart: unless-stopped
+    # Research-optimized Python service health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('0.0.0.0', 8000), timeout=5)"]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 150s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # AutoGen GroupChat Service
+  autogen-groupchat:
+    build:
+      context: ./docker/python/autogen
+      dockerfile: Dockerfile
+    container_name: unity-claude-autogen
+    networks:
+      - unity-claude-net
+    volumes:
+      - shared-config:/app/config:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+      - AUTOGEN_USE_DOCKER=0
+      # Research-validated AutoGen binding configuration
+      - HOST=0.0.0.0
+      - PORT=8001
+      - AUTOGEN_HOST=0.0.0.0
+    ports:
+      - "8001:8001"
+    depends_on:
+      langgraph-api:
+        condition: service_healthy
+      powershell-modules:
+        condition: service_healthy
+    restart: unless-stopped
+    # Research-optimized AutoGen health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('0.0.0.0', 8001), timeout=10)"]
+      interval: 45s
+      timeout: 20s
+      retries: 3
+      start_period: 180s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Monitoring Service
+  monitoring:
+    build:
+      context: ./docker/monitoring
+      dockerfile: Dockerfile
+    container_name: unity-claude-monitoring
+    networks:
+      - unity-claude-net
+    volumes:
+      - monitoring-logs:/var/log
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      docs-server:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "sh", "-c", "nc -z 0.0.0.0 3000 || exit 1"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"

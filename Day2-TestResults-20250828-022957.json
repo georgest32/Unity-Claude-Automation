@@ -1,0 +1,163 @@
+﻿{
+    "Timestamp":  "\/Date(1756362597104)\/",
+    "Tests":  [
+                  {
+                      "Duration":  99.2608,
+                      "Message":  "The running command stopped because the preference variable \"ErrorActionPreference\" or common parameter is set to Stop: At C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CPG\\Core\\CPG-CallGraphBuilder.psm1:45 char:6\r\n+     [CPGNodeType]$NodeType\r\n+      ~~~~~~~~~~~\nUnable to find type [CPGNodeType].\r\n\r\nAt C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CPG\\Core\\CPG-CallGraphBuilder.psm1:59 char:30\r\n+     CallNode([string]$name, [CPGNodeType]$type) {\r\n+                              ~~~~~~~~~~~\nUnable to find type [CPGNodeType].",
+                      "Name":  "Load Call Graph Builder Module",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  123.2591,
+                      "Message":  "Test failed",
+                      "Name":  "Call Graph Builder Functions Available",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  139.5123,
+                      "Message":  "The term \u0027Build-PowerShellCallGraph\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "Name":  "Build PowerShell Call Graph",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  143.5002,
+                      "Message":  "Test failed",
+                      "Name":  "Call Graph Contains Functions",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  147.4992,
+                      "Message":  "Test failed",
+                      "Name":  "Call Graph Contains Edges",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  147.4992,
+                      "Message":  "Test failed",
+                      "Name":  "Detect Recursive Calls",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  159.50830000000002,
+                      "Message":  "The term \u0027Get-CallGraphMetrics\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "Name":  "Get Call Graph Metrics",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  164.23170000000002,
+                      "Message":  "Test failed",
+                      "Name":  "Metrics Show Entry Points",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  166.7853,
+                      "Message":  "Test failed",
+                      "Name":  "Metrics Show Leaf Functions",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  180.106,
+                      "Message":  "The term \u0027Export-CallGraph\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "Name":  "Export Call Graph to JSON",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  187.7039,
+                      "Message":  "The running command stopped because the preference variable \"ErrorActionPreference\" or common parameter is set to Stop: At C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-CPG\\Core\\CPG-DataFlowTracker.psm1:222 char:9\r\n+         $reachingDefs = $this.GetReachingDefinitions($use.Line, $use. ...\r\n+         ~~~~~~~~~~~~~\nCannot assign property, use \u0027$this.ReachingDefs\u0027.",
+                      "Name":  "Load Data Flow Tracker Module",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  204.032,
+                      "Message":  "Test failed",
+                      "Name":  "Data Flow Tracker Functions Available",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  216.15970000000002,
+                      "Message":  "The term \u0027Build-PowerShellDataFlow\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "Name":  "Build PowerShell Data Flow",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  220.1489,
+                      "Message":  "Test failed",
+                      "Name":  "Data Flow Contains Definitions",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  220.1489,
+                      "Message":  "Test failed",
+                      "Name":  "Data Flow Contains Uses",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  220.1489,
+                      "Message":  "Test failed",
+                      "Name":  "Def-Use Chains Created",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  224.1485,
+                      "Message":  "Test failed",
+                      "Name":  "Taint Analysis Detects Security Issues",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  224.1485,
+                      "Message":  "Test failed",
+                      "Name":  "Tainted Variables Marked",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  240.156,
+                      "Message":  "The term \u0027Analyze-DataSensitivity\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "Name":  "Analyze Data Sensitivity",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  240.156,
+                      "Message":  "Test failed",
+                      "Name":  "Detect Sensitive Variables",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  256.5125,
+                      "Message":  "The term \u0027Get-DataFlowMetrics\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "Name":  "Get Data Flow Metrics",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  256.5125,
+                      "Message":  "Test failed",
+                      "Name":  "Metrics Show Unused Definitions",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  260.5054,
+                      "Message":  "Test failed",
+                      "Name":  "Metrics Show Undefined Uses",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  272.5881,
+                      "Message":  "The term \u0027Export-DataFlow\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+                      "Name":  "Export Data Flow to JSON",
+                      "Passed":  false
+                  },
+                  {
+                      "Duration":  277.3535,
+                      "Message":  "OK",
+                      "Name":  "Call Graph and Data Flow Consistency",
+                      "Passed":  true
+                  },
+                  {
+                      "Duration":  280.8768,
+                      "Message":  "OK",
+                      "Name":  "Performance Within Limits",
+                      "Passed":  true
+                  }
+              ],
+    "Failed":  24,
+    "Passed":  2
+}

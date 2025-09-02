@@ -1,0 +1,216 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-Safety",
+  "Commands": [
+    {
+      "Parameters": [
+        "Message",
+        "Level",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Add-SafetyLog",
+      "Synopsis": "Adds an entry to the safety framework log",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-SafetyConfiguration",
+      "Synopsis": "Returns current safety framework configuration",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ConfigPath",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-SafetyFramework",
+      "Synopsis": "Initializes the safety framework with configuration",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Fixes",
+        "OutputFormat",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-DryRun",
+      "Synopsis": "Performs a dry-run of fixes without applying them",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Fixes",
+        "DryRun",
+        "SkipBackup",
+        "MonitoringCallback",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-SafeFixApplication",
+      "Synopsis": "Applies fixes with full safety checks and monitoring integration",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "FilePath",
+        "BackupReason",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-SafetyBackup",
+      "Synopsis": "Creates a backup of a file before modification",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ConfidenceThreshold",
+        "DryRunMode",
+        "MaxChangesPerRun",
+        "BackupEnabled",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Set-SafetyConfiguration",
+      "Synopsis": "Updates safety framework configuration",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "FilePath",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-CriticalFile",
+      "Synopsis": "Checks if a file is in a critical path",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "FilePath",
+        "Confidence",
+        "FixContent",
+        "Force",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-FixSafety",
+      "Synopsis": "Evaluates if a fix is safe to apply based on confidence and file criticality",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-Safety",
+  "ExportedFunctions": [
+    "Add-SafetyLog",
+    "Get-SafetyConfiguration",
+    "Initialize-SafetyFramework",
+    "Invoke-DryRun",
+    "Invoke-SafeFixApplication",
+    "Invoke-SafetyBackup",
+    "Set-SafetyConfiguration",
+    "Test-CriticalFile",
+    "Test-FixSafety"
+  ],
+  "Version": {
+    "Major": 1,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

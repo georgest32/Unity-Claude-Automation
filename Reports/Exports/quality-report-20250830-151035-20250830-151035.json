@@ -1,0 +1,156 @@
+{
+  "ReportMetadata": {
+    "ReportId": "quality-report-20250830-151035",
+    "ReportType": "Daily",
+    "GeneratedAt": "2025-08-30T15:10:35.4378952-04:00",
+    "Period": {
+      "StartDate": "2025-08-29T15:10:35.4240713-04:00",
+      "Description": "Daily period",
+      "EndDate": "2025-08-30T15:10:35.4240958-04:00"
+    },
+    "AlertSources": [
+      "FeedbackLoopTest"
+    ],
+    "Version": "1.0.0"
+  },
+  "ExecutiveSummary": "Alert quality metrics show good performance across 1 sources",
+  "QualityMetrics": {
+    "CalculatedAt": "2025-08-30T15:10:35.4378265-04:00",
+    "Period": {
+      "StartDate": "2025-08-29T15:10:35.4240713-04:00",
+      "Description": "Daily period",
+      "EndDate": "2025-08-30T15:10:35.4240958-04:00"
+    },
+    "DataSummary": {
+      "FeedbackEntries": 50,
+      "AlertEntries": 100,
+      "AnalysisPeriod": "Daily period"
+    },
+    "PrecisionRecall": {
+      "Available": true,
+      "Precision": 0.76,
+      "Recall": 0.66,
+      "F1Score": 0.706,
+      "TruePositives": 38,
+      "FalsePositives": 12,
+      "FalsePositiveRate": 0.24,
+      "TotalAlerts": 50,
+      "ActionableAlerts": 33,
+      "ActionabilityRate": 0.66
+    },
+    "Effectiveness": {
+      "AverageEffectiveness": 0.556
+    },
+    "ResponseTime": {
+      "AverageResponseTime": 1925.5
+    },
+    "UserSatisfaction": {
+      "CSATScore": 47.2
+    },
+    "Trends": {
+      "TrendStrength": 0.1,
+      "TrendDirection": "Stable"
+    },
+    "OverallQuality": {
+      "Level": "Good",
+      "Score": 75
+    }
+  },
+  "AnalyticsInsights": {
+    "PrimaryInsight": "Quality stable",
+    "InsightCount": 1
+  },
+  "OptimizationRecommendations": [
+    "Maintain current thresholds",
+    "Monitor false positive rate"
+  ],
+  "TechnicalDetails": {
+    "DataSources": [
+      "FeedbackLoopTest"
+    ],
+    "AnalysisMethod": "Research-validated enterprise patterns",
+    "CalculationTimestamp": "2025-08-30T15:10:35.4379241-04:00",
+    "DataQuality": {
+      "Completeness": 95,
+      "DataQuality": "Good",
+      "Accuracy": 90
+    }
+  },
+  "Dashboard": {
+    "LastUpdated": "2025-08-30T15:10:35.4380807-04:00",
+    "REDMetrics": {
+      "Rate": {
+        "AlertsPerHour": 25,
+        "TrendDirection": "Stable",
+        "ChartType": "TimeSeries"
+      },
+      "Errors": {
+        "FalsePositiveRate": 0.24,
+        "ErrorTrend": "Decreasing",
+        "ChartType": "LineChart"
+      },
+      "Duration": {
+        "AverageResponseTime": 1925.5,
+        "ResponseTimeTrend": "Improving",
+        "ChartType": "Histogram"
+      }
+    },
+    "QualityGauges": {
+      "OverallQuality": {
+        "Value": 75,
+        "Level": "Good",
+        "ChartType": "Gauge",
+        "Threshold": 70
+      },
+      "Precision": {
+        "Value": 76.0,
+        "ChartType": "Gauge",
+        "Threshold": 80
+      },
+      "Recall": {
+        "Value": 66.0,
+        "ChartType": "Gauge",
+        "Threshold": 70
+      },
+      "UserSatisfaction": {
+        "Value": 47.2,
+        "ChartType": "Gauge",
+        "Threshold": 70
+      }
+    },
+    "TrendCharts": {
+      "QualityTrends": {
+        "Data": {
+          "x": "2025-08-30",
+          "y": 75
+        },
+        "ChartType": "LineChart",
+        "Title": "Alert Quality Trends"
+      },
+      "VolumePatterns": {
+        "Data": {
+          "category": "Daily",
+          "value": 100
+        },
+        "ChartType": "BarChart",
+        "Title": "Alert Volume Patterns"
+      },
+      "EffectivenessHeatmap": {
+        "Data": {
+          "effectiveness": 0.8,
+          "hour": 9,
+          "day": "Monday"
+        },
+        "ChartType": "HeatMap",
+        "Title": "Alert Effectiveness by Time and Source"
+      }
+    },
+    "Summary": {
+      "OverallQualityScore": 75,
+      "QualityLevel": "Good",
+      "TotalAlerts": 50,
+      "FalsePositiveRate": 24.0,
+      "UserSatisfaction": 47.2
+    }
+  }
+}

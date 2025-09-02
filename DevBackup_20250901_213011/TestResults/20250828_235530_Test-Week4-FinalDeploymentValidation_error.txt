@@ -1,0 +1,44 @@
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CPG\Core\TreeSitter-CSTConverter.psm1:
+100 char:6
++     [CPGNode] ConvertToCPGNode() {
++      ~~~~~~~
+Unable to find type [CPGNode].
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CPG\Core\TreeSitter-CSTConverter.psm1:
+113 char:21
++         $cpgNode = [CPGNode]::new($this.Text, $cpgType)
++                     ~~~~~~~
+Unable to find type [CPGNode].
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CPG\Core\TreeSitter-CSTConverter.psm1:
+182 char:6
++     [CPGEdge] ConvertToCPGEdge() {
++      ~~~~~~~
+Unable to find type [CPGEdge].
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CPG\Core\TreeSitter-CSTConverter.psm1:
+199 char:21
++         $cpgEdge = [CPGEdge]::new($this.Source, $this.Target, $cpgTyp ...
++                     ~~~~~~~
+Unable to find type [CPGEdge].
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+Import-Module : The specified module '.\Modules\Unity-Claude-CPG\Core\TreeSitter-CSTConverter.psm1' was not loaded 
+because no valid module file was found in any module directory.
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-Week4-FinalDeploymentValidation.ps1:129 char:21
++                     Import-Module $module -Force -DisableNameChecking
++                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ResourceUnavailable: (.\Modules\Unity...TConverter.psm1:String) [Import-Module], FileNot 
+   FoundException
+    + FullyQualifiedErrorId : Modules_ModuleNotFound,Microsoft.PowerShell.Commands.ImportModuleCommand
+ 
+Measure-Object : The property "Duration" cannot be found in the input for any objects.
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-Week4-FinalDeploymentValidation.ps1:282 char:68
++ ... workflowSteps.Values | Measure-Object -Property Duration -Sum).Sum, 2 ...
++                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Measure-Object], PSArgumentException
+    + FullyQualifiedErrorId : GenericMeasurePropertyNotFound,Microsoft.PowerShell.Commands.MeasureObjectCommand
+Measure-Object : The property "Lines" cannot be found in the input for any objects.
+At C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-Week4-FinalDeploymentValidation.ps1:430 char:72
++ ... re-Object { $_.Available } | Measure-Object -Property Lines -Sum).Sum
++                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Measure-Object], PSArgumentException
+    + FullyQualifiedErrorId : GenericMeasurePropertyNotFound,Microsoft.PowerShell.Commands.MeasureObjectCommand

@@ -1,0 +1,112 @@
+=== Enhanced Documentation System Test Runner ===
+Test Script: Test-EnhancedDocumentationSystem.ps1
+Test Scope: All
+Output Path: \TestResults
+Start Time: 08/28/2025 21:17:07
+
+=== Executing Pester Tests ===
+[95m
+[95mStarting discovery in 1 files.[0m
+========== SCRIPT INITIALIZATION START ==========
+[SCRIPT-INIT] Initializing Enhanced Documentation System test script...
+[SCRIPT-INIT] PSScriptRoot: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation
+[SCRIPT-INIT] Initializing module availability hashtables...
+[SCRIPT-INIT] Testing CPG module availability...
+[SCRIPT-INIT] Testing LLM module availability...
+[SCRIPT-INIT] Testing Template module availability...
+[SCRIPT-INIT] Testing Performance module availability...
+[SCRIPT-INIT] Module availability testing complete
+[SCRIPT-INIT] CPG module results:
+  CPG-Unified: FOUND
+  CPG-CallGraphBuilder: FOUND
+  CPG-ThreadSafeOperations: FOUND
+  CPG-DataFlowTracker: FOUND
+[SCRIPT-INIT] LLM module results:
+  LLM-PromptTemplates: FOUND
+  LLM-ResponseCache: FOUND
+[SCRIPT-INIT] Template module results:
+  Templates-PerLanguage: FOUND
+  AutoGenerationTriggers: FOUND
+[SCRIPT-INIT] Performance module results:
+  Performance-Cache: FOUND
+  Performance-IncrementalUpdates: FOUND
+  ParallelProcessing: FOUND
+========== SCRIPT INITIALIZATION COMPLETE ==========
+>>>>>> [DESCRIBE-CPG] CPG Describe block ENTERED <<<<<<
+[BeforeDiscovery-CPG] Ensuring CPG module variables available in run phase...
+[BeforeDiscovery-CPG] CPG variables re-initialized for run phase
+>>>>>> [DESCRIBE-LLM] LLM Describe block ENTERED <<<<<<
+[BeforeDiscovery-LLM] Ensuring LLM module variables available in run phase...
+[BeforeDiscovery-LLM] LLM variables re-initialized for run phase
+>>>>>> [DESCRIBE-TEMPLATES] Templates Describe block ENTERED <<<<<<
+[BeforeDiscovery-Templates] Ensuring Template module variables available in run phase...
+[BeforeDiscovery-Templates] Template variables re-initialized for run phase
+>>>>>> [DESCRIBE-PERFORMANCE] Performance Describe block ENTERED <<<<<<
+[BeforeDiscovery-Performance] Ensuring Performance module variables available in run phase...
+[BeforeDiscovery-Performance] Performance variables re-initialized for run phase
+[95mDiscovery found 28 tests in 222ms.[0m
+[95mRunning tests.[0m
+!!!!!! [BeforeAll-CPG] BEFOREALL BLOCK REACHED DURING RUN PHASE !!!!!!
+========== [BeforeAll-CPG] STARTING CPG MODULE TESTING ==========
+[BeforeAll-CPG] Initializing CPG test environment...
+[BeforeAll-CPG] Module paths configured:
+  CPG-Unified: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CPG\Core\CPG-Unified.psm1
+  CPG-CallGraphBuilder: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CPG\Core\CPG-CallGraphBuilder.psm1
+  CPG-ThreadSafeOperations: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CPG\Core\CPG-ThreadSafeOperations.psm1
+  CPG-DataFlowTracker: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Modules\Unity-Claude-CPG\Core\CPG-DataFlowTracker.psm1
+[BeforeAll-CPG] Current script variable status:
+  CPGModulesAvailable: NULL
+[BeforeAll-CPG] Importing available CPG modules...
+[91m[-] Describe Enhanced Documentation System - CPG Components failed[0m
+[91m RuntimeException: Cannot index into a null array.
+[91m at <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1:337[0m
+!!!!!! [BeforeAll-LLM] BEFOREALL BLOCK REACHED DURING RUN PHASE !!!!!!
+  Initializing LLM test environment...
+    Ollama service detected: Available
+[BeforeAll-LLM] Importing available LLM modules...
+[91m[-] Describe Enhanced Documentation System - LLM Integration failed[0m
+[91m RuntimeException: Cannot index into a null array.
+[91m at <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1:532[0m
+!!!!!! [BeforeAll-TEMPLATES] BEFOREALL BLOCK REACHED DURING RUN PHASE !!!!!!
+  Initializing Templates test environment...
+[BeforeAll-Templates] Importing available Template modules...
+[91m[-] Describe Enhanced Documentation System - Templates & Automation failed[0m
+[91m RuntimeException: Cannot index into a null array.
+[91m at <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1:689[0m
+!!!!!! [BeforeAll-PERFORMANCE] BEFOREALL BLOCK REACHED DURING RUN PHASE !!!!!!
+  Initializing Performance test environment...
+[91m[-] Enhanced Documentation System - Performance.Cache Performance.Should meet cache performance benchmarks[0m[90m 32ms (19ms|13ms)[0m
+[91m CommandNotFoundException: The term 'New-PerformanceCache' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[91m at <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1:832[0m
+[91m[-] Enhanced Documentation System - Performance.Cache Performance.Should handle cache warming efficiently[0m[90m 14ms (14ms|1ms)[0m
+[91m CommandNotFoundException: The term 'New-PerformanceCache' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+[91m at <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1:854[0m
+    Generated 50 test files
+    Processed 50 files in 17ms
+    Rate: 2941.18 files/second
+[91m[-] Enhanced Documentation System - Performance.Parallel Processing Performance.Should demonstrate parallel processing benefits[0m[90m 829ms (829ms|0ms)[0m
+[91m ParameterBindingException: Parameter set cannot be resolved using the specified named parameters.
+[91m at <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1:963
+[91m at <ScriptBlock>, C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\Test-EnhancedDocumentationSystem.ps1:962[0m
+    Cleaned up test files
+[97mTests completed in 3.75s[0m
+[97mTests Passed: 2, [0m[91mFailed: 26, [0m[90mSkipped: 0, [0m[90mInconclusive: 0, [0m[37m[0m[90mNotRun: 0[0m
+[91mBeforeAll \ AfterAll failed: 3[0m
+[91m  - Enhanced Documentation System - CPG Components
+[91m  - Enhanced Documentation System - LLM Integration
+[91m  - Enhanced Documentation System - Templates & Automation[0m
+
+=== Test Results Summary ===
+  Total Tests: 28
+  Passed: 2
+  Failed: 26
+  Skipped: 0
+  Duration: 3.7548138 seconds
+  Success Rate: 7.1%
+
+=== Test Artifacts ===
+  XML Report: Path relative to the current directory where test result report is saved. (\TestResults\EnhancedDocumentationSystem-UnitTests-20250828-211707.xml, default: testResults.xml)
+  JSON Results: \TestResults\EnhancedDocumentationSystem-TestRunner-Results-20250828-211711.json
+  Test Output Directory: \TestResults
+
+[FAIL] Some tests failed. Review the detailed results above.

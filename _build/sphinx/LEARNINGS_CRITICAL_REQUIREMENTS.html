@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Critical Requirements - Unity-Claude Automation &mdash; Unity-Claude-Automation 3.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=acc74ff5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2b3e50" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Unity-Claude-Automation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Critical Requirements - Unity-Claude Automation</a><ul>
+<li><a class="reference internal" href="#critical-must-know-before-starting">🚨 CRITICAL: Must Know Before Starting</a><ul>
+<li><a class="reference internal" href="#claude-cli-limitations-critical">1. Claude CLI Limitations (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#powershell-version-compatibility-critical">2. PowerShell Version Compatibility (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#unity-batch-mode-compilation-resolved">3. Unity Batch Mode Compilation (✅ RESOLVED)</a></li>
+<li><a class="reference internal" href="#powershell-script-encoding-requirements-critical">4. PowerShell Script Encoding Requirements (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#powershell-error-location-reporting-critical">5. PowerShell Error Location Reporting (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#development-environment-setup-requirements">6. Development Environment Setup Requirements</a></li>
+<li><a class="reference internal" href="#file-and-directory-structure-requirements">7. File and Directory Structure Requirements</a></li>
+<li><a class="reference internal" href="#security-and-safety-requirements-critical">8. Security and Safety Requirements (⚠️ CRITICAL)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2b3e50" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Unity-Claude-Automation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Critical Requirements - Unity-Claude Automation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/LEARNINGS_CRITICAL_REQUIREMENTS.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="critical-requirements-unity-claude-automation">
+<h1>Critical Requirements - Unity-Claude Automation<a class="headerlink" href="#critical-requirements-unity-claude-automation" title="Link to this heading"></a></h1>
+<p><em>Essential knowledge that must be understood before starting any work</em>
+<em>Last Updated: 2025-08-19</em></p>
+<section id="critical-must-know-before-starting">
+<h2>🚨 CRITICAL: Must Know Before Starting<a class="headerlink" href="#critical-must-know-before-starting" title="Link to this heading"></a></h2>
+<section id="claude-cli-limitations-critical">
+<h3>1. Claude CLI Limitations (⚠️ CRITICAL)<a class="headerlink" href="#claude-cli-limitations-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Claude Code CLI v1.0.53 does NOT support piped input or headless mode
+<strong>Discovery</strong>: Extensive testing confirmed CLI uses Ink (React for terminals) requiring interactive terminal
+<strong>Evidence</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">echo</span> <span class="pre">&quot;test&quot;</span> <span class="pre">|</span> <span class="pre">claude</span> <span class="pre">chat</span></code> fails with “raw mode” error</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">claude</span> <span class="pre">chat</span> <span class="pre">&lt;</span> <span class="pre">input.txt</span></code> hangs indefinitely</p></li>
+<li><p>No –headless or –batch flags available
+<strong>Resolution</strong>: SendKeys automation is the ONLY reliable method for CLI automation
+<strong>Critical Learning</strong>: Do not waste time trying to pipe input to Claude CLI - it fundamentally cannot work with current version</p></li>
+</ul>
+</section>
+<section id="powershell-version-compatibility-critical">
+<h3>2. PowerShell Version Compatibility (⚠️ CRITICAL)<a class="headerlink" href="#powershell-version-compatibility-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Script must maintain PowerShell 5.1 compatibility
+<strong>Discovery</strong>: Many organizations still on PS5.1; PS7 features break compatibility
+<strong>Evidence</strong>:</p>
+<ul class="simple">
+<li><p>No <code class="docutils literal notranslate"><span class="pre">??</span></code> null coalescing operator in PS5.1</p></li>
+<li><p>No <code class="docutils literal notranslate"><span class="pre">ForEach-Object</span> <span class="pre">-Parallel</span></code> in PS5.1</p></li>
+<li><p>Different module loading behavior
+<strong>Resolution</strong>: Avoid PS7-only syntax; use ThreadJob module for parallelization
+<strong>Critical Learning</strong>: Always test on PS5.1 before deployment</p></li>
+</ul>
+</section>
+<section id="unity-batch-mode-compilation-resolved">
+<h3>3. Unity Batch Mode Compilation (✅ RESOLVED)<a class="headerlink" href="#unity-batch-mode-compilation-resolved" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: EditorApplication.isCompiling always returns true in batch mode
+<strong>Discovery</strong>: Unity’s compilation detection APIs don’t work properly in batch mode
+<strong>Evidence</strong>: CompilationPipeline.compilationFinished is reliable; EditorApplication.isCompiling is not
+<strong>Resolution</strong>: Use CompilationPipeline events and SessionState for domain reload survival
+<strong>Critical Learning</strong>: Don’t trust EditorApplication properties in batch mode</p>
+</section>
+<section id="powershell-script-encoding-requirements-critical">
+<h3>4. PowerShell Script Encoding Requirements (⚠️ CRITICAL)<a class="headerlink" href="#powershell-script-encoding-requirements-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: UTF-8 BOM Requirement for Windows PowerShell 5.1
+<strong>Discovery</strong>: Scripts created with UTF-8 without BOM cause “unexpected token” errors
+<strong>Evidence</strong>: Start-UnityClaudeAutomation.ps1 failed with multiple syntax errors
+<strong>Resolution</strong>: Convert files to UTF-8 with BOM using Fix-ScriptEncoding.ps1
+<strong>Critical Learning</strong>: Always save PowerShell scripts as UTF-8 with BOM for compatibility
+<strong>Error Pattern</strong>:</p>
+<ul class="simple">
+<li><p>Unexpected token ‘}’ errors</p></li>
+<li><p>String missing terminator errors</p></li>
+<li><p>Missing closing brace errors at wrong lines</p></li>
+</ul>
+</section>
+<section id="powershell-error-location-reporting-critical">
+<h3>5. PowerShell Error Location Reporting (⚠️ CRITICAL)<a class="headerlink" href="#powershell-error-location-reporting-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Syntax errors reported at different lines than actual problem
+<strong>Discovery</strong>: Missing braces and syntax errors often detected later in code
+<strong>Evidence</strong>: Errors at lines 82, 84, 91, 149 but actual issue was encoding
+<strong>Resolution</strong>: Check lines before reported errors and verify file encoding
+<strong>Critical Learning</strong>: Always expand analysis range beyond reported error lines</p>
+</section>
+<section id="development-environment-setup-requirements">
+<h3>6. Development Environment Setup Requirements<a class="headerlink" href="#development-environment-setup-requirements" title="Link to this heading"></a></h3>
+<p><strong>Required Software</strong>:</p>
+<ul class="simple">
+<li><p><strong>PowerShell</strong>: 5.1+ (PS5.1 compatibility required)</p></li>
+<li><p><strong>Unity</strong>: 2021.1.14f1 (.NET Standard 2.0)</p></li>
+<li><p><strong>Claude CLI</strong>: v1.0.53+ or API key</p></li>
+<li><p><strong>Memory</strong>: 4GB minimum</p></li>
+<li><p><strong>Storage</strong>: 1GB for logs/database</p></li>
+</ul>
+<p><strong>Required Modules</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># For advanced features (optional)</span>
+<span class="nb">Install-Module</span> <span class="n">PSSQLite</span> <span class="n">-Scope</span> <span class="n">CurrentUser</span>
+<span class="nb">Install-Module</span> <span class="n">ThreadJob</span> <span class="n">-Scope</span> <span class="n">CurrentUser</span>  <span class="c"># For PS5.1 parallelization</span>
+</pre></div>
+</div>
+<p><strong>Environment Variables</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$env:ANTHROPIC_API_KEY</span> <span class="p">=</span> <span class="s2">&quot;sk-ant-...&quot;</span>  <span class="c"># For API mode</span>
+<span class="nv">$env:PSModulePath</span> <span class="p">=</span> <span class="s2">&quot;$PWD\Modules;$env:PSModulePath&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="file-and-directory-structure-requirements">
+<h3>7. File and Directory Structure Requirements<a class="headerlink" href="#file-and-directory-structure-requirements" title="Link to this heading"></a></h3>
+<p><strong>Critical Paths</strong>:</p>
+<ul class="simple">
+<li><p><strong>Unity Editor.log location</strong>: <code class="docutils literal notranslate"><span class="pre">C:\Users\georg\AppData\Local\Unity\Editor\Editor.log</span></code></p></li>
+<li><p><strong>Centralized Logging</strong>: All logs must write to <code class="docutils literal notranslate"><span class="pre">unity_claude_automation.log</span></code> at project root</p></li>
+<li><p><strong>Module Directory</strong>: <code class="docutils literal notranslate"><span class="pre">.\Modules\</span></code> with proper PowerShell module structure</p></li>
+<li><p><strong>Session Data</strong>: <code class="docutils literal notranslate"><span class="pre">.\SessionData\</span></code> for state persistence and checkpoints</p></li>
+</ul>
+</section>
+<section id="security-and-safety-requirements-critical">
+<h3>8. Security and Safety Requirements (⚠️ CRITICAL)<a class="headerlink" href="#security-and-safety-requirements-critical" title="Link to this heading"></a></h3>
+<p><strong>Never Use in Autonomous Operation</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--dangerously-skip-permissions</span></code> flag in Claude Code CLI</p></li>
+<li><p>Direct code execution without validation</p></li>
+<li><p>Automated file modifications without backup</p></li>
+<li><p>Network operations without timeout/retry limits</p></li>
+</ul>
+<p><strong>Always Required</strong>:</p>
+<ul class="simple">
+<li><p>Constrained runspace for command execution</p></li>
+<li><p>Parameter validation and sanitization</p></li>
+<li><p>Path safety validation within project boundaries</p></li>
+<li><p>Comprehensive logging for all operations</p></li>
+</ul>
+<hr class="docutils" />
+<p><em>This document contains only the most critical information needed before starting development.</em>
+<em>For detailed implementation specifics, see the other LEARNINGS_</em>.md documents.*</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Unity-Claude-Automation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

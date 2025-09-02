@@ -1,0 +1,72 @@
+{
+  "Results": [
+    {
+      "Duration": 315,
+      "Timestamp": "2025-08-25T02:15:07.6704603-04:00",
+      "Details": "",
+      "Name": "Module Import and Validation",
+      "Error": "Required nested module not loaded: ResponseAnalysisEngine",
+      "Status": "Failed"
+    },
+    {
+      "Duration": 9,
+      "Timestamp": "2025-08-25T02:15:07.6867538-04:00",
+      "Details": "",
+      "Name": "Response Analysis Engine",
+      "Error": "The term 'Extract-ResponseEntities' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+      "Status": "Failed"
+    },
+    {
+      "Duration": 2,
+      "Timestamp": "2025-08-25T02:15:07.6912206-04:00",
+      "Details": "",
+      "Name": "Pattern Recognition Engine",
+      "Error": "A parameter cannot be found that matches parameter name 'ResponseText'.",
+      "Status": "Failed"
+    },
+    {
+      "Duration": 26,
+      "Timestamp": "2025-08-25T02:15:07.7195582-04:00",
+      "Details": "",
+      "Name": "Decision Engine",
+      "Error": "Decision engine returned unexpected decision: BLOCK",
+      "Status": "Failed"
+    },
+    {
+      "Duration": 21,
+      "Timestamp": "2025-08-25T02:15:07.7435205-04:00",
+      "Details": "",
+      "Name": "Action Execution Framework",
+      "Error": "The term 'Test-ActionSafety' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+      "Status": "Failed"
+    },
+    {
+      "Duration": 13,
+      "Timestamp": "2025-08-25T02:15:07.7604697-04:00",
+      "Details": "Decision trees: OK, Safety policies: OK, Learning parameters: OK",
+      "Name": "Configuration Loading",
+      "Error": "",
+      "Status": "Passed"
+    },
+    {
+      "Duration": 1866,
+      "Timestamp": "2025-08-25T02:15:09.6331412-04:00",
+      "Details": "",
+      "Name": "End-to-End Workflow",
+      "Error": "Response analysis failed: Schema validation failed",
+      "Status": "Failed"
+    }
+  ],
+  "Summary": {
+    "Failed": 6,
+    "Total": 7,
+    "Errors": 0,
+    "Skipped": 0,
+    "Passed": 1
+  },
+  "TotalDuration": 2295.4858,
+  "EndTime": "2025-08-25T02:15:09.6345163-04:00",
+  "TestType": "All",
+  "StartTime": "2025-08-25T02:15:07.3390305-04:00",
+  "TestSuite": "CLIOrchestrator-Complete"
+}

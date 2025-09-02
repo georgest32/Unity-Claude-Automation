@@ -1,0 +1,71 @@
+{
+  "SuccessRate": 62.5,
+  "Results": {
+    "Passed": 5,
+    "Warnings": 0,
+    "Failed": 3,
+    "Details": [
+      {
+        "Status": "Pass",
+        "Details": "Initialize base orchestrator",
+        "Component": "Orchestrator Initialization"
+      },
+      {
+        "Status": "Pass",
+        "Details": "Initialize permission handling integration",
+        "Component": "Permission Integration"
+      },
+      {
+        "Status": "Pass",
+        "Details": "Test destructive command conversion",
+        "Component": "Safe Operations"
+      },
+      {
+        "Status": "Error",
+        "Details": "The term 'Test-ClaudePermissionPrompt' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+        "Component": "Permission Detection"
+      },
+      {
+        "Status": "Pass",
+        "Details": "Verify integration status reporting",
+        "Component": "Integration Status"
+      },
+      {
+        "Status": "Error",
+        "Details": "The term 'Prepare-PromptSubmission' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+        "Component": "Safe Prompt Submission"
+      },
+      {
+        "Status": "Pass",
+        "Details": "Test integrated permission handler",
+        "Component": "Permission Handler"
+      },
+      {
+        "Status": "Fail",
+        "Details": "Test dangerous operation denial",
+        "Component": "Dangerous Operation"
+      }
+    ]
+  },
+  "Timestamp": "2025-08-31T02:16:45.531869-04:00",
+  "TestType": "Full",
+  "IntegrationStatus": {
+    "Statistics": {
+      "SafeConversions": 0,
+      "PermissionsHandled": 0,
+      "PromptsProcessed": 0
+    },
+    "Components": {
+      "SafeOperations": {
+        "Enabled": true,
+        "Status": "Active"
+      },
+      "Interceptor": {
+        "Enabled": false,
+        "Status": "Disabled"
+      }
+    },
+    "Mode": "Intelligent",
+    "Initialized": true
+  }
+}

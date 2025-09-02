@@ -1,0 +1,153 @@
+{
+  "EndTime": "2025-08-22T20:45:34.4588506-04:00",
+  "Details": [
+    {
+      "Test": "Get-GitHubIssueStatus exists",
+      "Result": "Passed",
+      "Error": null,
+      "Duration": 0.0182584
+    },
+    {
+      "Test": "Update-GitHubIssueState exists",
+      "Result": "Passed",
+      "Error": null,
+      "Duration": 0.0101465
+    },
+    {
+      "Test": "Test-UnityErrorResolved exists",
+      "Result": "Passed",
+      "Error": null,
+      "Duration": 0.0171362
+    },
+    {
+      "Test": "Close-GitHubIssueIfResolved exists",
+      "Result": "Failed",
+      "Error": "Test returned false",
+      "Duration": 0.0252869
+    },
+    {
+      "Test": "Test-UnityErrorResolved with mock data",
+      "Result": "Passed",
+      "Error": null,
+      "Duration": 0.0411831
+    },
+    {
+      "Test": "Get-GitHubRepositories exists",
+      "Result": "Passed",
+      "Error": null,
+      "Duration": 0.0157174
+    },
+    {
+      "Test": "Test-GitHubRepositoryAccess exists",
+      "Result": "Passed",
+      "Error": null,
+      "Duration": 0.0089564
+    },
+    {
+      "Test": "Get-UnityProjectCategory exists",
+      "Result": "Passed",
+      "Error": null,
+      "Duration": 0.0158825
+    },
+    {
+      "Test": "Search-GitHubIssuesMultiRepo exists",
+      "Result": "Passed",
+      "Error": null,
+      "Duration": 0.0120278
+    },
+    {
+      "Test": "Get-UnityProjectCategory categorization",
+      "Result": "Passed",
+      "Error": null,
+      "Duration": 0.0565372
+    },
+    {
+      "Test": "Get-UnityProjectCategory networking detection",
+      "Result": "Passed",
+      "Error": null,
+      "Duration": 0.0158439
+    },
+    {
+      "Test": "Get-UnityProjectCategory physics detection",
+      "Result": "Passed",
+      "Error": null,
+      "Duration": 0.0209907
+    },
+    {
+      "Test": "Get-UnityProjectCategory UI detection",
+      "Result": "Passed",
+      "Error": null,
+      "Duration": 0.0156182
+    },
+    {
+      "Test": "Get-GitHubAPIUsageStats exists",
+      "Result": "Passed",
+      "Error": null,
+      "Duration": 0.0160621
+    },
+    {
+      "Test": "Get-GitHubAPIUsageStats without history",
+      "Result": "Failed",
+      "Error": "Skipping API test",
+      "Duration": 0.0119978
+    },
+    {
+      "Test": "Initialize-GitHubIssueCache function exists",
+      "Result": "Passed",
+      "Error": null,
+      "Duration": 0.0300787
+    },
+    {
+      "Test": "Cache initialization creates directory",
+      "Result": "Failed",
+      "Error": "A Using variable cannot be retrieved. A Using variable can be used only with Invoke-Command, Start-Job, or InlineScript in the script workflow. When it is used with Invoke-Command, the Using variable is valid only if the script block is invoked on a remote computer.",
+      "Duration": 0.0346586
+    },
+    {
+      "Test": "Module exports all Week 9 functions",
+      "Result": "Failed",
+      "Error": "Test returned false",
+      "Duration": 0.017939
+    },
+    {
+      "Test": "Test-GitHubRepositoryAccess with invalid repo",
+      "Result": "Failed",
+      "Error": "Skipping API test",
+      "Duration": 0.0177389
+    },
+    {
+      "Test": "Get-UnityProjectCategory handles null project",
+      "Result": "Passed",
+      "Error": null,
+      "Duration": 0.0292093
+    },
+    {
+      "Test": "Test-UnityErrorResolved handles missing files",
+      "Result": "Failed",
+      "Error": "Test returned false",
+      "Duration": 0.0178159
+    }
+  ],
+  "Passed": 15,
+  "Skipped": 0,
+  "Duration": {
+    "Ticks": 5147013,
+    "Days": 0,
+    "Hours": 0,
+    "Milliseconds": 514,
+    "Microseconds": 701,
+    "Nanoseconds": 300,
+    "Minutes": 0,
+    "Seconds": 0,
+    "TotalDays": 5.957190972222222E-06,
+    "TotalHours": 0.00014297258333333332,
+    "TotalMilliseconds": 514.7013,
+    "TotalMicroseconds": 514701.3,
+    "TotalNanoseconds": 514701300.0,
+    "TotalMinutes": 0.008578355,
+    "TotalSeconds": 0.5147013
+  },
+  "TotalTests": 21,
+  "Failed": 6,
+  "StartTime": "2025-08-22T20:45:33.9441493-04:00"
+}

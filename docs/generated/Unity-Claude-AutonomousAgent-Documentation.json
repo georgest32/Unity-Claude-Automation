@@ -1,0 +1,1784 @@
+{
+  "Path": "C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-AutonomousAgent",
+  "Commands": [
+    {
+      "Parameters": [
+        "Type",
+        "Content",
+        "Priority",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Add-ContextItem",
+      "Synopsis": "Adds an item to working memory context",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Type",
+        "Content",
+        "Metadata",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Add-ConversationHistoryItem",
+      "Synopsis": "Adds an item to conversation history",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Recommendation",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Add-RecommendationToQueue",
+      "Synopsis": "Adds a recommendation to the execution queue",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Item",
+        "CurrentTask",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Calculate-ContextRelevance",
+      "Synopsis": "Calculates relevance score for context items",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "NoArchive",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Clear-AgentLog",
+      "Synopsis": "Clears the current log file",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "KeepPersisted"
+      ],
+      "Name": "Clear-ConversationHistory",
+      "Synopsis": "Clears conversation history",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [],
+      "Name": "Clear-ExpiredSessions",
+      "Synopsis": "Removes expired session files",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "WorkingMemory",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Compress-Context",
+      "Synopsis": "Compresses working memory context",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ActionText",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Convert-ActionToType",
+      "Synopsis": "Converts action descriptions to command types",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Type",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Convert-TypeToStandard",
+      "Synopsis": "Converts various command types to standard format",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseText",
+        "RequireRecommended",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Extract-CommandsFromResponse",
+      "Synopsis": "Extracts actionable commands from Claude response",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseText",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Find-ClaudeRecommendations",
+      "Synopsis": "Finds and extracts RECOMMENDED commands from Claude response text",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "UnityVersion",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Find-UnityExecutable",
+      "Synopsis": "Locates Unity Editor executable for automation",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Setting",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-AgentConfig",
+      "Synopsis": "Gets the current agent configuration",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-AgentLogPath",
+      "Synopsis": "Gets the current log file path",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-AgentLogStatistics",
+      "Synopsis": "Gets statistics about the log file",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Property",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-AgentState",
+      "Synopsis": "Gets the current agent state",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ClassificationHistory",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ClassificationMetrics",
+      "Synopsis": "Gets classification performance metrics",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "OutputDirectory",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ClaudeResponseStatus",
+      "Synopsis": "Checks status of pending Claude responses",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Entities",
+        "Relationships",
+        "PreviousContext",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ContextRelevanceScores",
+      "Synopsis": "Calculates relevance scores for extracted context",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [],
+      "Name": "Get-ContextSummary",
+      "Synopsis": "Gets a summary of current context state",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "MaxItems",
+        "IncludeErrors"
+      ],
+      "Name": "Get-ConversationContext",
+      "Synopsis": "Gets relevant conversation context for prompt generation",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Last",
+        "Type",
+        "Since"
+      ],
+      "Name": "Get-ConversationHistory",
+      "Synopsis": "Retrieves conversation history",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "IncludeHistory",
+        "IncludeMetrics"
+      ],
+      "Name": "Get-ConversationState",
+      "Synopsis": "Gets the current conversation state",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Nodes",
+        "Edges",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-EntityClusters",
+      "Synopsis": "Identifies clusters of related entities",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Entities",
+        "Relationships",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-EntityRelationshipMap",
+      "Synopsis": "Creates a relationship map between extracted entities",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ModuleStatus",
+      "Synopsis": "Gets the status of all loaded sub-modules",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-MonitoringStatus",
+      "Synopsis": "Gets the current status of file system monitoring",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "MaxSize",
+        "Focus"
+      ],
+      "Name": "Get-OptimizedContext",
+      "Synopsis": "Gets optimized context for prompt generation",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Pattern",
+        "MatchText",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-PatternConfidence",
+      "Synopsis": "Gets confidence score for pattern matching results",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseText",
+        "ParseResults",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ResponseCategorization",
+      "Synopsis": "Categorizes Claude response using decision tree logic",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseText",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ResponseEntities",
+      "Synopsis": "Extracts entities from Claude response",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseText",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ResponseIntent",
+      "Synopsis": "Detects the intent of the Claude response",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseText",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ResponseQualityScore",
+      "Synopsis": "Calculates quality score for Claude response",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseText",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ResponseSentiment",
+      "Synopsis": "Analyzes sentiment of Claude response",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "IncludeExpired"
+      ],
+      "Name": "Get-SessionList",
+      "Synopsis": "Gets list of available sessions",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [],
+      "Name": "Get-SessionMetadata",
+      "Synopsis": "Gets session metadata and statistics",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseText",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-SimpleClassification",
+      "Synopsis": "Provides simple classification without decision tree",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "String1",
+        "String2",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-StringSimilarity",
+      "Synopsis": "Calculates similarity between two strings",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "CurrentState",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Get-ValidStateTransitions",
+      "Synopsis": "Gets valid state transitions from current state",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-AgentCore",
+      "Synopsis": "Initializes the agent core configuration and state",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "LogPath",
+        "RotateOnStart",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Initialize-AgentLogging",
+      "Synopsis": "Initializes logging system for autonomous agent",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "SessionId",
+        "LoadPersisted"
+      ],
+      "Name": "Initialize-ConversationState",
+      "Synopsis": "Initializes the conversation state machine",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Clean"
+      ],
+      "Name": "Initialize-WorkingMemory",
+      "Synopsis": "Initializes the working memory system",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseText",
+        "PreviousContext",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-AdvancedContextExtraction",
+      "Synopsis": "Performs advanced context extraction from Claude responses",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "AnalysisType",
+        "ReportFormat",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-AnalyzeCommand",
+      "Synopsis": "Executes Unity ANALYZE command for project analysis",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "BuildTarget",
+        "BuildOptions",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-BuildCommand",
+      "Synopsis": "Executes Unity BUILD command with comprehensive automation",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "CommandResult",
+        "CommandType",
+        "Context",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-CommandResultAnalysis",
+      "Synopsis": "\r\nInvoke-CommandResultAnalysis [-CommandResult] <hashtable> [-CommandType] <string> [[-Context] <hashtable>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "TimeoutSeconds",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-CompilationTest",
+      "Synopsis": "Tests Unity compilation without hanging",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ExtractionResults",
+        "AutoAdd",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-ContextIntegration",
+      "Synopsis": "Integrates extraction results with context management system",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseText",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-DecisionTreeClassification",
+      "Synopsis": "Applies decision tree classification logic",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseText",
+        "PatternFilter",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-EnhancedResponseParsing",
+      "Synopsis": "Performs comprehensive parsing of Claude responses using enhanced pattern library",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-LogRotation",
+      "Synopsis": "Rotates the current log file",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "TestScope",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-PowerShellTests",
+      "Synopsis": "Executes PowerShell-specific tests for the automation system",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseFilePath",
+        "MaxRetries",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-ProcessClaudeResponse",
+      "Synopsis": "Processes a Claude Code CLI response file and extracts actionable recommendations",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-ProcessCommandQueue",
+      "Synopsis": "Processes pending commands in the execution queue",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResultAnalysis",
+        "ConversationContext",
+        "HistoricalData",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-PromptTypeSelection",
+      "Synopsis": "\r\nInvoke-PromptTypeSelection [-ResultAnalysis] <hashtable> [[-ConversationContext] <hashtable>] [[-HistoricalData] <hashtable>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseText",
+        "UseAdvancedTree",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-ResponseClassification",
+      "Synopsis": "Classifies Claude response using decision tree logic",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "CommandText",
+        "Parameters",
+        "TimeoutMs",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-SafeConstrainedCommand",
+      "Synopsis": "Executes a command in a constrained runspace with safety validation",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Recommendation",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-SafeRecommendedCommand",
+      "Synopsis": "Executes a recommended command with full safety validation",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Details",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-TestCommand",
+      "Synopsis": "Executes Unity TEST command with hanging prevention",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "TestMode",
+        "TestFilter",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Invoke-UnityTests",
+      "Synopsis": "Enhanced Unity test execution with multiple test modes",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "AdditionalCmdlets",
+        "TimeoutMs",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "New-ConstrainedRunspace",
+      "Synopsis": "Creates a constrained runspace with whitelisted cmdlets for safe command execution",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Entities",
+        "Relationships",
+        "RelevanceScores",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "New-ContextItemsFromExtraction",
+      "Synopsis": "Creates context items from extraction results",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Recommendation",
+        "Result",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "New-FollowUpPrompt",
+      "Synopsis": "Generates intelligent follow-up prompts based on command execution results",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "TemplateType",
+        "ResultAnalysis",
+        "ConversationContext",
+        "HistoricalData",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "New-PromptTemplate",
+      "Synopsis": "\r\nNew-PromptTemplate [-TemplateType] <string> [-ResultAnalysis] <hashtable> [[-ConversationContext] <hashtable>] [[-HistoricalData] <hashtable>] [<CommonParameters>]\r\n",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [],
+      "Name": "New-SessionIdentifier",
+      "Synopsis": "Generates a new session identifier",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Recommendation",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Normalize-RecommendationType",
+      "Synopsis": "Normalizes recommendation types for consistent processing",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Recommendations",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Remove-DuplicateRecommendations",
+      "Synopsis": "Removes duplicate recommendations from a collection",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Remove-OldLogFiles",
+      "Synopsis": "Removes log files older than retention period",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "KeepStatistics",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Reset-AgentState",
+      "Synopsis": "Resets the agent state to defaults",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "PreserveFiles"
+      ],
+      "Name": "Reset-ConversationState",
+      "Synopsis": "Resets the conversation state machine",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "SessionId",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Restore-SessionState",
+      "Synopsis": "Restores a previous session state",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Value",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Sanitize-ParameterValue",
+      "Synopsis": "Sanitizes parameter values for safe execution",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "SessionId",
+        "State",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Save-SessionState",
+      "Synopsis": "Saves current session state",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Settings",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Set-AgentConfig",
+      "Synopsis": "Updates agent configuration settings",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Properties",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Set-AgentState",
+      "Synopsis": "Updates agent state properties",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "NewState",
+        "Reason",
+        "Metadata",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Set-ConversationState",
+      "Synopsis": "Transitions the conversation to a new state",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "OutputDirectory",
+        "DebounceMs",
+        "Filter",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Start-ClaudeResponseMonitoring",
+      "Synopsis": "Starts FileSystemWatcher monitoring for Claude Code CLI responses",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Stop-ClaudeResponseMonitoring",
+      "Synopsis": "Stops FileSystemWatcher monitoring and cleans up resources",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "PromptText",
+        "OutputDirectory",
+        "WaitForResponse",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Submit-PromptToClaude",
+      "Synopsis": "Submits a prompt to Claude Code CLI",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "PromptFile",
+        "OutputDirectory",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Submit-ToClaude",
+      "Synopsis": "Internal function to handle Claude CLI/API submission",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-ClassificationEngine",
+      "Synopsis": "Tests the classification engine functionality",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "CommandText",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-CommandSafety",
+      "Synopsis": "Tests if a command is safe for autonomous execution",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "TestDirectory",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-FileSystemMonitoring",
+      "Synopsis": "Tests the file system monitoring capability",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "ResponseText",
+        "Node",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-NodeCondition",
+      "Synopsis": "Tests if response text matches node conditions",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Parameters",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-ParameterSafety",
+      "Synopsis": "Tests if command parameters are safe",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Path",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-PathSafety",
+      "Synopsis": "Tests if a file path is within safe boundaries",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Test-ResponseParsingModule",
+      "Synopsis": "Tests the response parsing module functionality",
+      "CommandType": 2
+    },
+    {
+      "Parameters": [
+        "Message",
+        "Level",
+        "Component",
+        "NoConsole",
+        "Verbose",
+        "Debug",
+        "ErrorAction",
+        "WarningAction",
+        "InformationAction",
+        "ProgressAction",
+        "ErrorVariable",
+        "WarningVariable",
+        "InformationVariable",
+        "OutVariable",
+        "OutBuffer",
+        "PipelineVariable"
+      ],
+      "Name": "Write-AgentLog",
+      "Synopsis": "Thread-safe logging function for autonomous agent operations",
+      "CommandType": 2
+    }
+  ],
+  "Name": "Unity-Claude-AutonomousAgent",
+  "ExportedFunctions": [
+    "Add-ContextItem",
+    "Add-ConversationHistoryItem",
+    "Add-RecommendationToQueue",
+    "Calculate-ContextRelevance",
+    "Clear-AgentLog",
+    "Clear-ConversationHistory",
+    "Clear-ExpiredSessions",
+    "Compress-Context",
+    "Convert-ActionToType",
+    "Convert-TypeToStandard",
+    "Extract-CommandsFromResponse",
+    "Find-ClaudeRecommendations",
+    "Find-UnityExecutable",
+    "Get-AgentConfig",
+    "Get-AgentLogPath",
+    "Get-AgentLogStatistics",
+    "Get-AgentState",
+    "Get-ClassificationMetrics",
+    "Get-ClaudeResponseStatus",
+    "Get-ContextRelevanceScores",
+    "Get-ContextSummary",
+    "Get-ConversationContext",
+    "Get-ConversationHistory",
+    "Get-ConversationState",
+    "Get-EntityClusters",
+    "Get-EntityRelationshipMap",
+    "Get-ModuleStatus",
+    "Get-MonitoringStatus",
+    "Get-OptimizedContext",
+    "Get-PatternConfidence",
+    "Get-ResponseCategorization",
+    "Get-ResponseEntities",
+    "Get-ResponseIntent",
+    "Get-ResponseQualityScore",
+    "Get-ResponseSentiment",
+    "Get-SessionList",
+    "Get-SessionMetadata",
+    "Get-SimpleClassification",
+    "Get-StringSimilarity",
+    "Get-ValidStateTransitions",
+    "Initialize-AgentCore",
+    "Initialize-AgentLogging",
+    "Initialize-ConversationState",
+    "Initialize-WorkingMemory",
+    "Invoke-AdvancedContextExtraction",
+    "Invoke-AnalyzeCommand",
+    "Invoke-BuildCommand",
+    "Invoke-CommandResultAnalysis",
+    "Invoke-CompilationTest",
+    "Invoke-ContextIntegration",
+    "Invoke-DecisionTreeClassification",
+    "Invoke-EnhancedResponseParsing",
+    "Invoke-LogRotation",
+    "Invoke-PowerShellTests",
+    "Invoke-ProcessClaudeResponse",
+    "Invoke-ProcessCommandQueue",
+    "Invoke-PromptTypeSelection",
+    "Invoke-ResponseClassification",
+    "Invoke-SafeConstrainedCommand",
+    "Invoke-SafeRecommendedCommand",
+    "Invoke-TestCommand",
+    "Invoke-UnityTests",
+    "New-ConstrainedRunspace",
+    "New-ContextItemsFromExtraction",
+    "New-FollowUpPrompt",
+    "New-PromptTemplate",
+    "New-SessionIdentifier",
+    "Normalize-RecommendationType",
+    "Remove-DuplicateRecommendations",
+    "Remove-OldLogFiles",
+    "Reset-AgentState",
+    "Reset-ConversationState",
+    "Restore-SessionState",
+    "Sanitize-ParameterValue",
+    "Save-SessionState",
+    "Set-AgentConfig",
+    "Set-AgentState",
+    "Set-ConversationState",
+    "Start-ClaudeResponseMonitoring",
+    "Stop-ClaudeResponseMonitoring",
+    "Submit-PromptToClaude",
+    "Submit-ToClaude",
+    "Test-ClassificationEngine",
+    "Test-CommandSafety",
+    "Test-FileSystemMonitoring",
+    "Test-NodeCondition",
+    "Test-ParameterSafety",
+    "Test-PathSafety",
+    "Test-ResponseParsingModule",
+    "Write-AgentLog"
+  ],
+  "Version": {
+    "Major": 3,
+    "Minor": 0,
+    "Build": 0,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  }
+}

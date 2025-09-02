@@ -1,0 +1,17 @@
+# Grafana Dashboard Provisioning Configuration
+# Unity-Claude Automation
+# Version: 2025-08-24
+
+apiVersion: 1
+
+providers:
+  # Default dashboard provider - using foldersFromFilesStructure
+  - name: 'Unity-Claude Dashboards'
+    orgId: 1
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: true

@@ -1,0 +1,64 @@
+{
+  "TestSuite": "CLIOrchestrator-Complete",
+  "EndTime": "2025-08-25T02:52:25.8298595-04:00",
+  "Results": [
+    {
+      "Error": "",
+      "Details": "All core modules and functions loaded successfully",
+      "Timestamp": "2025-08-25T02:52:25.5935973-04:00",
+      "Duration": 689,
+      "Name": "Module Import and Validation",
+      "Status": "Passed"
+    },
+    {
+      "Error": "",
+      "Details": "Entities: 10, Sentiment: Negative (0.45), Relevance: 0.09",
+      "Timestamp": "2025-08-25T02:52:25.6547415-04:00",
+      "Duration": 53,
+      "Name": "Response Analysis Engine",
+      "Status": "Passed"
+    },
+    {
+      "Error": "Response type classification failed or returned no type",
+      "Details": "",
+      "Timestamp": "2025-08-25T02:52:25.6995314-04:00",
+      "Duration": 41,
+      "Name": "Pattern Recognition Engine",
+      "Status": "Failed"
+    },
+    {
+      "Error": "",
+      "Details": "Decision: TEST, Safety: True, Confidence: ",
+      "Timestamp": "2025-08-25T02:52:25.7834615-04:00",
+      "Duration": 79,
+      "Name": "Decision Engine",
+      "Status": "Passed"
+    },
+    {
+      "Error": "",
+      "Details": "Path validation: OK, Command validation: OK, Action safety: OK, Queue operations: OK",
+      "Timestamp": "2025-08-25T02:52:25.8130756-04:00",
+      "Duration": 26,
+      "Name": "Action Execution Framework",
+      "Status": "Passed"
+    },
+    {
+      "Error": "",
+      "Details": "Decision trees: OK, Safety policies: OK, Learning parameters: OK",
+      "Timestamp": "2025-08-25T02:52:25.8293606-04:00",
+      "Duration": 13,
+      "Name": "Configuration Loading",
+      "Status": "Passed"
+    }
+  ],
+  "Summary": {
+    "Total": 6,
+    "Failed": 1,
+    "Errors": 0,
+    "Skipped": 0,
+    "Passed": 5
+  },
+  "StartTime": "2025-08-25T02:52:24.8886499-04:00",
+  "TotalDuration": 941.2096,
+  "TestType": "Unit"
+}

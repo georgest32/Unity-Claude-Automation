@@ -1,0 +1,82 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src"],
+  "entryPointStrategy": "expand",
+  "out": "./docs/typescript",
+  "json": "./docs/typescript/documentation.json",
+  "name": "Unity-Claude-Automation TypeScript Documentation",
+  "includeVersion": true,
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeExternals": true,
+  "excludeInternal": true,
+  "disableSources": false,
+  "includes": "./includes",
+  "media": "./media",
+  "theme": "default",
+  "lightHighlightTheme": "light-plus",
+  "darkHighlightTheme": "dark-plus",
+  "customCss": "./custom.css",
+  "markedOptions": {
+    "mangle": false,
+    "headerIds": true
+  },
+  "readme": "README.md",
+  "navigationLinks": {
+    "GitHub": "https://github.com/your-repo",
+    "Documentation": "https://docs.your-site.com"
+  },
+  "sidebarLinks": {
+    "API Reference": "modules.html",
+    "Getting Started": "https://docs.your-site.com/getting-started"
+  },
+  "plugin": [
+    "typedoc-plugin-markdown",
+    "typedoc-plugin-missing-exports"
+  ],
+  "githubPages": true,
+  "hideGenerator": false,
+  "searchInComments": true,
+  "cleanOutputDir": true,
+  "skipErrorChecking": false,
+  "validation": {
+    "notExported": true,
+    "invalidLink": true,
+    "notDocumented": false
+  },
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "exclude": [
+    "**/node_modules/**",
+    "**/test/**",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ],
+  "externalPattern": [
+    "**/node_modules/**"
+  ],
+  "excludeCategories": [],
+  "categorizeByGroup": true,
+  "defaultCategory": "Other",
+  "categoryOrder": [
+    "Core",
+    "Components",
+    "Services",
+    "Utilities",
+    "*",
+    "Other"
+  ],
+  "sort": ["source-order"],
+  "visibilityFilters": {
+    "protected": false,
+    "private": false,
+    "inherited": true,
+    "external": false
+  }
+}

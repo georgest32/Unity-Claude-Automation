@@ -1,0 +1,470 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration Guide &mdash; Unity-Claude-Automation 3.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=acc74ff5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2b3e50" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Unity-Claude-Automation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Configuration Guide</a><ul>
+<li><a class="reference internal" href="#configuration-files">Configuration Files</a></li>
+<li><a class="reference internal" href="#main-configuration">Main Configuration</a><ul>
+<li><a class="reference internal" href="#location">Location</a></li>
+<li><a class="reference internal" href="#basic-settings">Basic Settings</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
+<li><a class="reference internal" href="#powershell-module-configuration">PowerShell Module Configuration</a><ul>
+<li><a class="reference internal" href="#import-modules">Import Modules</a></li>
+<li><a class="reference internal" href="#set-configuration-values">Set Configuration Values</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#claude-integration-settings">Claude Integration Settings</a><ul>
+<li><a class="reference internal" href="#api-configuration">API Configuration</a></li>
+<li><a class="reference internal" href="#prompt-templates">Prompt Templates</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#github-integration">GitHub Integration</a><ul>
+<li><a class="reference internal" href="#repository-settings">Repository Settings</a></li>
+<li><a class="reference internal" href="#issue-templates">Issue Templates</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#notification-settings">Notification Settings</a><ul>
+<li><a class="reference internal" href="#email-notifications">Email Notifications</a></li>
+<li><a class="reference internal" href="#webhook-notifications">Webhook Notifications</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dashboard-configuration">Dashboard Configuration</a><ul>
+<li><a class="reference internal" href="#web-dashboard-settings">Web Dashboard Settings</a></li>
+<li><a class="reference internal" href="#start-dashboard">Start Dashboard</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#performance-tuning">Performance Tuning</a><ul>
+<li><a class="reference internal" href="#parallel-processing">Parallel Processing</a></li>
+<li><a class="reference internal" href="#memory-management">Memory Management</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#security-configuration">Security Configuration</a><ul>
+<li><a class="reference internal" href="#api-key-storage">API Key Storage</a></li>
+<li><a class="reference internal" href="#access-control">Access Control</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#logging-configuration">Logging Configuration</a><ul>
+<li><a class="reference internal" href="#log-levels">Log Levels</a></li>
+<li><a class="reference internal" href="#configure-logging">Configure Logging</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#validation">Validation</a></li>
+<li><a class="reference internal" href="#backup-and-restore">Backup and Restore</a><ul>
+<li><a class="reference internal" href="#backup-configuration">Backup Configuration</a></li>
+<li><a class="reference internal" href="#restore-configuration">Restore Configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2b3e50" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Unity-Claude-Automation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Configuration Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getting-started/configuration.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configuration-guide">
+<h1>Configuration Guide<a class="headerlink" href="#configuration-guide" title="Link to this heading"></a></h1>
+<p>This guide covers all configuration options for Unity-Claude-Automation.</p>
+<section id="configuration-files">
+<h2>Configuration Files<a class="headerlink" href="#configuration-files" title="Link to this heading"></a></h2>
+<p>The system uses multiple configuration files:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config.json</span></code> - Main configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unity-settings.json</span></code> - Unity-specific settings</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">claude-config.json</span></code> - Claude API settings</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">github-config.json</span></code> - GitHub integration settings</p></li>
+</ul>
+</section>
+<section id="main-configuration">
+<h2>Main Configuration<a class="headerlink" href="#main-configuration" title="Link to this heading"></a></h2>
+<section id="location">
+<h3>Location<a class="headerlink" href="#location" title="Link to this heading"></a></h3>
+<p>Configuration files are stored in:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">APPDATA</span><span class="o">%</span>\<span class="n">Unity</span><span class="o">-</span><span class="n">Claude</span><span class="o">-</span><span class="n">Automation</span>\<span class="n">Config</span>\
+</pre></div>
+</div>
+</section>
+<section id="basic-settings">
+<h3>Basic Settings<a class="headerlink" href="#basic-settings" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;system&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;logLevel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Information&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;maxLogFiles&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;enableTelemetry&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;parallelProcessing&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;unity&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;projectPath&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;C:\\UnityProjects\\YourProject&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;editorPath&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;C:\\Program Files\\Unity\\Hub\\Editor\\2021.3.16f1\\Editor\\Unity.exe&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;logPath&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;%LOCALAPPDATA%\\Unity\\Editor\\Editor.log&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;buildTimeout&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3600</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;monitoring&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;pollInterval&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;enableFileWatcher&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;autoRestartOnCrash&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="environment-variables">
+<h2>Environment Variables<a class="headerlink" href="#environment-variables" title="Link to this heading"></a></h2>
+<p>Set these environment variables to override defaults:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">UNITY_CLAUDE_CONFIG</span></code></p></td>
+<td><p>Config directory path</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">%APPDATA%\Unity-Claude-Automation</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">UNITY_PROJECT_PATH</span></code></p></td>
+<td><p>Unity project location</p></td>
+<td><p>Current directory</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">UNITY_EDITOR_LOG</span></code></p></td>
+<td><p>Unity Editor log path</p></td>
+<td><p>Auto-detected</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CLAUDE_API_KEY</span></code></p></td>
+<td><p>Claude API key</p></td>
+<td><p>Required for AI features</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GITHUB_PAT</span></code></p></td>
+<td><p>GitHub Personal Access Token</p></td>
+<td><p>Required for GitHub integration</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="powershell-module-configuration">
+<h2>PowerShell Module Configuration<a class="headerlink" href="#powershell-module-configuration" title="Link to this heading"></a></h2>
+<section id="import-modules">
+<h3>Import Modules<a class="headerlink" href="#import-modules" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Import-Module</span> <span class="n">Unity-Claude-SystemStatus</span>
+<span class="nb">Import-Module</span> <span class="n">Unity-Claude-Configuration</span>
+<span class="nb">Import-Module</span> <span class="n">Unity-Claude-GitHub</span>
+</pre></div>
+</div>
+</section>
+<section id="set-configuration-values">
+<h3>Set Configuration Values<a class="headerlink" href="#set-configuration-values" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Set Unity project path</span>
+<span class="nb">Set-UnityClaudeConfig</span> <span class="n">-Key</span> <span class="s2">&quot;UnityProjectPath&quot;</span> <span class="n">-Value</span> <span class="s2">&quot;C:\MyProject&quot;</span>
+
+<span class="c"># Configure monitoring interval</span>
+<span class="nb">Set-UnityClaudeConfig</span> <span class="n">-Key</span> <span class="s2">&quot;MonitoringInterval&quot;</span> <span class="n">-Value</span> <span class="n">10</span>
+
+<span class="c"># Enable auto-fix mode</span>
+<span class="nb">Set-UnityClaudeConfig</span> <span class="n">-Key</span> <span class="s2">&quot;AutoFixEnabled&quot;</span> <span class="n">-Value</span> <span class="nv">$true</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="claude-integration-settings">
+<h2>Claude Integration Settings<a class="headerlink" href="#claude-integration-settings" title="Link to this heading"></a></h2>
+<section id="api-configuration">
+<h3>API Configuration<a class="headerlink" href="#api-configuration" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Set Claude API key</span>
+<span class="nb">Set-ClaudeAPIKey</span> <span class="n">-Key</span> <span class="s2">&quot;your-api-key-here&quot;</span>
+
+<span class="c"># Configure Claude model</span>
+<span class="nb">Set-ClaudeConfig</span> <span class="n">-Model</span> <span class="s2">&quot;claude-3-opus-20240229&quot;</span> <span class="p">`</span>
+                <span class="n">-MaxTokens</span> <span class="n">4096</span> <span class="p">`</span>
+                <span class="n">-Temperature</span> <span class="n">0</span><span class="p">.</span><span class="n">7</span>
+</pre></div>
+</div>
+</section>
+<section id="prompt-templates">
+<h3>Prompt Templates<a class="headerlink" href="#prompt-templates" title="Link to this heading"></a></h3>
+<p>Customize AI prompts in <code class="docutils literal notranslate"><span class="pre">prompt-templates.json</span></code>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;errorAnalysis&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Analyze this Unity error and suggest a fix: {error}&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;codeReview&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Review this Unity C# code for best practices: {code}&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;optimization&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Suggest performance optimizations for: {context}&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="github-integration">
+<h2>GitHub Integration<a class="headerlink" href="#github-integration" title="Link to this heading"></a></h2>
+<section id="repository-settings">
+<h3>Repository Settings<a class="headerlink" href="#repository-settings" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Configure GitHub repository</span>
+<span class="nb">Set-GitHubConfig</span> <span class="n">-Owner</span> <span class="s2">&quot;your-org&quot;</span> <span class="p">`</span>
+                 <span class="n">-Repo</span> <span class="s2">&quot;your-repo&quot;</span> <span class="p">`</span>
+                 <span class="n">-PAT</span> <span class="nv">$env:GITHUB_PAT</span>
+
+<span class="c"># Set issue labels</span>
+<span class="nb">Set-GitHubLabels</span> <span class="n">-ErrorLabel</span> <span class="s2">&quot;unity-error&quot;</span> <span class="p">`</span>
+                 <span class="n">-AutoLabel</span> <span class="s2">&quot;auto-generated&quot;</span> <span class="p">`</span>
+                 <span class="n">-PriorityLabels</span> <span class="p">@(</span><span class="s2">&quot;critical&quot;</span><span class="p">,</span> <span class="s2">&quot;high&quot;</span><span class="p">,</span> <span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;low&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="issue-templates">
+<h3>Issue Templates<a class="headerlink" href="#issue-templates" title="Link to this heading"></a></h3>
+<p>Configure issue templates in <code class="docutils literal notranslate"><span class="pre">.github/ISSUE_TEMPLATE/</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unity Compilation Error</span>
+<span class="nt">about</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Auto-generated from Unity compilation errors</span>
+<span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[Unity</span><span class="nv"> </span><span class="s">Error]</span><span class="nv"> </span><span class="s">{error_type}&#39;</span>
+<span class="nt">labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;unity-error&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;auto-generated&#39;</span><span class="p p-Indicator">]</span>
+<span class="nt">body</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">markdown</span>
+<span class="w">    </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">## Error Details</span>
+<span class="w">        </span><span class="no">**File**: {file_path}</span>
+<span class="w">        </span><span class="no">**Line**: {line_number}</span>
+<span class="w">        </span><span class="no">**Error**: {error_message}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="notification-settings">
+<h2>Notification Settings<a class="headerlink" href="#notification-settings" title="Link to this heading"></a></h2>
+<section id="email-notifications">
+<h3>Email Notifications<a class="headerlink" href="#email-notifications" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-NotificationConfig</span> <span class="n">-EnableEmail</span> <span class="nv">$true</span> <span class="p">`</span>
+                       <span class="n">-SmtpServer</span> <span class="s2">&quot;smtp.gmail.com&quot;</span> <span class="p">`</span>
+                       <span class="n">-SmtpPort</span> <span class="n">587</span> <span class="p">`</span>
+                       <span class="n">-FromEmail</span> <span class="s2">&quot;automation@example.com&quot;</span> <span class="p">`</span>
+                       <span class="n">-ToEmail</span> <span class="s2">&quot;team@example.com&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="webhook-notifications">
+<h3>Webhook Notifications<a class="headerlink" href="#webhook-notifications" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Configure Slack webhook</span>
+<span class="nb">Set-WebhookConfig</span> <span class="n">-Type</span> <span class="s2">&quot;Slack&quot;</span> <span class="p">`</span>
+                  <span class="n">-Url</span> <span class="s2">&quot;https://hooks.slack.com/services/YOUR/WEBHOOK/URL&quot;</span>
+
+<span class="c"># Configure Discord webhook</span>
+<span class="nb">Set-WebhookConfig</span> <span class="n">-Type</span> <span class="s2">&quot;Discord&quot;</span> <span class="p">`</span>
+                  <span class="n">-Url</span> <span class="s2">&quot;https://discord.com/api/webhooks/YOUR/WEBHOOK&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="dashboard-configuration">
+<h2>Dashboard Configuration<a class="headerlink" href="#dashboard-configuration" title="Link to this heading"></a></h2>
+<section id="web-dashboard-settings">
+<h3>Web Dashboard Settings<a class="headerlink" href="#web-dashboard-settings" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;dashboard&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8080</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;enableAuth&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;refreshInterval&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;theme&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dark&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="start-dashboard">
+<h3>Start Dashboard<a class="headerlink" href="#start-dashboard" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Start-UnityClaudeDashboard</span> <span class="n">-Port</span> <span class="n">8080</span> <span class="n">-Theme</span> <span class="s2">&quot;dark&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="performance-tuning">
+<h2>Performance Tuning<a class="headerlink" href="#performance-tuning" title="Link to this heading"></a></h2>
+<section id="parallel-processing">
+<h3>Parallel Processing<a class="headerlink" href="#parallel-processing" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Configure parallel processing</span>
+<span class="nb">Set-ParallelConfig</span> <span class="n">-MaxDegreeOfParallelism</span> <span class="n">4</span> <span class="p">`</span>
+                   <span class="n">-ThrottleLimit</span> <span class="n">10</span>
+</pre></div>
+</div>
+</section>
+<section id="memory-management">
+<h3>Memory Management<a class="headerlink" href="#memory-management" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Set memory limits</span>
+<span class="nb">Set-MemoryConfig</span> <span class="n">-MaxMemoryGB</span> <span class="n">8</span> <span class="p">`</span>
+                 <span class="n">-GCMode</span> <span class="s2">&quot;Workstation&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="security-configuration">
+<h2>Security Configuration<a class="headerlink" href="#security-configuration" title="Link to this heading"></a></h2>
+<section id="api-key-storage">
+<h3>API Key Storage<a class="headerlink" href="#api-key-storage" title="Link to this heading"></a></h3>
+<p>Store API keys securely:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Store API key in Windows Credential Manager</span>
+<span class="nb">Set-SecureCredential</span> <span class="n">-Name</span> <span class="s2">&quot;ClaudeAPIKey&quot;</span> <span class="n">-Value</span> <span class="s2">&quot;your-key&quot;</span>
+<span class="nb">Set-SecureCredential</span> <span class="n">-Name</span> <span class="s2">&quot;GitHubPAT&quot;</span> <span class="n">-Value</span> <span class="s2">&quot;your-pat&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="access-control">
+<h3>Access Control<a class="headerlink" href="#access-control" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Restrict access to configuration</span>
+<span class="nb">Set-ConfigAccess</span> <span class="n">-ReadOnly</span> <span class="nv">$false</span> <span class="p">`</span>
+                 <span class="n">-RequireElevation</span> <span class="nv">$true</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="logging-configuration">
+<h2>Logging Configuration<a class="headerlink" href="#logging-configuration" title="Link to this heading"></a></h2>
+<section id="log-levels">
+<h3>Log Levels<a class="headerlink" href="#log-levels" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Verbose</span></code> - All messages</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Debug</span></code> - Debug and above</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Information</span></code> - Info and above</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Warning</span></code> - Warnings and errors</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Error</span></code> - Only errors</p></li>
+</ul>
+</section>
+<section id="configure-logging">
+<h3>Configure Logging<a class="headerlink" href="#configure-logging" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Set-LogConfig</span> <span class="n">-Level</span> <span class="s2">&quot;Information&quot;</span> <span class="p">`</span>
+              <span class="n">-MaxFiles</span> <span class="n">30</span> <span class="p">`</span>
+              <span class="n">-MaxSizeMB</span> <span class="n">100</span> <span class="p">`</span>
+              <span class="n">-ArchivePath</span> <span class="s2">&quot;.\Logs\Archive&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="validation">
+<h2>Validation<a class="headerlink" href="#validation" title="Link to this heading"></a></h2>
+<p>Validate your configuration:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Test-UnityClaudeConfiguration</span> <span class="n">-Verbose</span>
+</pre></div>
+</div>
+<p>This will check:</p>
+<ul class="simple">
+<li><p>File paths exist</p></li>
+<li><p>API keys are valid</p></li>
+<li><p>Network connectivity</p></li>
+<li><p>Required permissions</p></li>
+</ul>
+</section>
+<section id="backup-and-restore">
+<h2>Backup and Restore<a class="headerlink" href="#backup-and-restore" title="Link to this heading"></a></h2>
+<section id="backup-configuration">
+<h3>Backup Configuration<a class="headerlink" href="#backup-configuration" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Backup-UnityClaudeConfig</span> <span class="n">-Path</span> <span class="s2">&quot;.\Backups\config-backup.zip&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="restore-configuration">
+<h3>Restore Configuration<a class="headerlink" href="#restore-configuration" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Restore-UnityClaudeConfig</span> <span class="n">-Path</span> <span class="s2">&quot;.\Backups\config-backup.zip&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Review <a class="reference internal" href="architecture.html"><span class="std std-doc">Architecture</span></a> to understand system design</p></li>
+<li><p>Check <a class="reference internal" href="../user-guide/overview.html"><span class="std std-doc">User Guide</span></a> for usage examples</p></li>
+<li><p>See <a class="reference internal" href="../resources/troubleshooting.html"><span class="std std-doc">Troubleshooting</span></a> for common issues</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Unity-Claude-Automation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+# PowerShell Module Testing Workflow
+# Runs PSScriptAnalyzer and Pester tests on PowerShell modules
+# Supports both Windows and Linux environments
+
+name: PowerShell Tests
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+    paths:
+      - 'Modules/**/*.ps1'
+      - 'Modules/**/*.psm1'
+      - 'Modules/**/*.psd1'
+      - 'Tests/**/*.ps1'
+      - '.github/workflows/powershell-tests.yml'
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'Modules/**/*.ps1'
+      - 'Modules/**/*.psm1'
+      - 'Modules/**/*.psd1'
+      - 'Tests/**/*.ps1'
+  workflow_dispatch:
+    inputs:
+      verbose:
+        description: 'Enable verbose output'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  POWERSHELL_TELEMETRY_OPTOUT: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+jobs:
+  test:
+    name: Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+        powershell: ['7.4']
+        include:
+          - os: windows-latest
+            shell: pwsh
+          - os: ubuntu-latest
+            shell: pwsh
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for accurate git diff
+
+      - name: Setup PowerShell ${{ matrix.powershell }}
+        uses: PowerShell/setup-powershell@v1
+        with:
+          powershell-version: ${{ matrix.powershell }}
+
+      - name: Cache PowerShell modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.local/share/powershell/Modules
+            ~/Documents/PowerShell/Modules
+            C:\Users\runneradmin\Documents\PowerShell\Modules
+            C:\Program Files\PowerShell\Modules
+          key: ${{ runner.os }}-psgallery-${{ hashFiles('**/requirements.psd1') }}
+          restore-keys: |
+            ${{ runner.os }}-psgallery-
+
+      - name: Install required modules
+        shell: ${{ matrix.shell }}
+        run: |
+          Write-Host "Installing required PowerShell modules..." -ForegroundColor Cyan
+          
+          # Install modules
+          $modules = @(
+            @{Name = 'PSScriptAnalyzer'; MinimumVersion = '1.22.0'}
+            @{Name = 'Pester'; MinimumVersion = '5.5.0'}
+            @{Name = 'PSFramework'; MinimumVersion = '1.10.318'}
+          )
+          
+          foreach ($module in $modules) {
+            if (!(Get-Module -ListAvailable -Name $module.Name | Where-Object Version -ge $module.MinimumVersion)) {
+              Write-Host "Installing $($module.Name) v$($module.MinimumVersion)..." -ForegroundColor Yellow
+              Install-Module @module -Force -AllowClobber -Scope CurrentUser -SkipPublisherCheck
+            } else {
+              Write-Host "$($module.Name) already installed" -ForegroundColor Green
+            }
+          }
+          
+          # Import modules
+          Import-Module PSScriptAnalyzer, Pester -Force
+          
+          # Show versions
+          Get-Module PSScriptAnalyzer, Pester | Format-Table Name, Version
+
+      - name: Run PSScriptAnalyzer
+        shell: ${{ matrix.shell }}
+        run: |
+          Write-Host "Running PSScriptAnalyzer..." -ForegroundColor Cyan
+          $results = @()
+          
+          # Analyze all PowerShell files
+          Get-ChildItem -Path "./Modules" -Include "*.ps1", "*.psm1", "*.psd1" -Recurse | ForEach-Object {
+            Write-Host "Analyzing: $($_.FullName)" -ForegroundColor Gray
+            $analysis = Invoke-ScriptAnalyzer -Path $_.FullName -Recurse -ReportSummary -Settings PSGallery
+            if ($analysis) {
+              $results += $analysis
+            }
+          }
+          
+          if ($results.Count -gt 0) {
+            Write-Host "`nPSScriptAnalyzer found $($results.Count) issues:" -ForegroundColor Yellow
+            $results | Group-Object Severity | ForEach-Object {
+              Write-Host "$($_.Name): $($_.Count) issues" -ForegroundColor $(
+                switch($_.Name) {
+                  'Error' { 'Red' }
+                  'Warning' { 'Yellow' }
+                  'Information' { 'Cyan' }
+                  default { 'White' }
+                }
+              )
+            }
+            
+            # Output detailed results
+            $results | Format-Table -AutoSize
+            
+            # Fail on errors
+            if ($results | Where-Object Severity -eq 'Error') {
+              throw "PSScriptAnalyzer found errors that must be fixed"
+            }
+          } else {
+            Write-Host "No PSScriptAnalyzer issues found!" -ForegroundColor Green
+          }
+
+      - name: Validate module manifests
+        shell: ${{ matrix.shell }}
+        run: |
+          Write-Host "Validating module manifests..." -ForegroundColor Cyan
+          $manifestFiles = Get-ChildItem -Path "./Modules" -Filter "*.psd1" -Recurse
+          
+          foreach ($manifest in $manifestFiles) {
+            Write-Host "Testing manifest: $($manifest.FullName)" -ForegroundColor Gray
+            try {
+              $null = Test-ModuleManifest -Path $manifest.FullName -ErrorAction Stop
+              Write-Host "  ✓ Valid" -ForegroundColor Green
+            } catch {
+              Write-Host "  ✗ Invalid: $_" -ForegroundColor Red
+              throw "Module manifest validation failed for $($manifest.Name)"
+            }
+          }
+
+      - name: Run Pester tests
+        shell: ${{ matrix.shell }}
+        run: |
+          Write-Host "Running Pester tests..." -ForegroundColor Cyan
+          
+          # Configure Pester
+          $config = New-PesterConfiguration
+          $config.Run.Path = @('./Tests', './Modules')
+          $config.Run.Recurse = $true
+          $config.Output.Verbosity = if ('${{ inputs.verbose }}' -eq 'true') { 'Detailed' } else { 'Normal' }
+          $config.CodeCoverage.Enabled = $true
+          $config.CodeCoverage.Path = @('./Modules/**/*.ps1', './Modules/**/*.psm1')
+          $config.CodeCoverage.OutputFormat = 'JaCoCo'
+          $config.CodeCoverage.OutputPath = './coverage.xml'
+          $config.TestResult.Enabled = $true
+          $config.TestResult.OutputFormat = 'NUnitXml'
+          $config.TestResult.OutputPath = './test-results.xml'
+          
+          # Run tests
+          $results = Invoke-Pester -Configuration $config
+          
+          # Output summary
+          Write-Host "`nTest Results Summary:" -ForegroundColor Cyan
+          Write-Host "  Total: $($results.TotalCount)" -ForegroundColor White
+          Write-Host "  Passed: $($results.PassedCount)" -ForegroundColor Green
+          Write-Host "  Failed: $($results.FailedCount)" -ForegroundColor Red
+          Write-Host "  Skipped: $($results.SkippedCount)" -ForegroundColor Yellow
+          Write-Host "  Code Coverage: $([math]::Round($results.CodeCoverage.CoveragePercent, 2))%" -ForegroundColor Magenta
+          
+          # Fail if tests failed
+          if ($results.FailedCount -gt 0) {
+            throw "$($results.FailedCount) tests failed"
+          }
+          
+          # Warn if coverage is low
+          if ($results.CodeCoverage.CoveragePercent -lt 70) {
+            Write-Warning "Code coverage is below 70% threshold"
+          }
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.os }}
+          path: |
+            test-results.xml
+            coverage.xml
+          retention-days: 30
+
+      - name: Upload coverage to Codecov
+        if: matrix.os == 'ubuntu-latest' && github.event_name != 'workflow_dispatch'
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          flags: powershell
+          name: PowerShell Coverage
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Generate test report
+        if: always()
+        shell: ${{ matrix.shell }}
+        run: |
+          Write-Host "Generating test report..." -ForegroundColor Cyan
+          
+          $report = @{
+            Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+            OS = '${{ matrix.os }}'
+            PowerShellVersion = '${{ matrix.powershell }}'
+            Branch = '${{ github.ref_name }}'
+            Commit = '${{ github.sha }}'
+            TestsRun = Test-Path "./test-results.xml"
+            CoverageGenerated = Test-Path "./coverage.xml"
+          }
+          
+          $report | ConvertTo-Json -Depth 3 | Set-Content -Path "./test-report.json"
+          Write-Host "Test report saved to test-report.json" -ForegroundColor Green
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request' && matrix.os == 'windows-latest'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('./test-report.json', 'utf8'));
+            
+            const comment = `## PowerShell Test Results
+            
+            **Platform**: ${report.OS}
+            **PowerShell Version**: ${report.PowerShellVersion}
+            **Timestamp**: ${report.Timestamp}
+            
+            ✅ Tests completed successfully!
+            
+            View full test artifacts in the [Actions tab](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  # Summary job to check all matrix results
+  test-summary:
+    name: Test Summary
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check test results
+        run: |
+          if [ "${{ needs.test.result }}" == "success" ]; then
+            echo "✅ All PowerShell tests passed!"
+            exit 0
+          else
+            echo "❌ PowerShell tests failed"
+            exit 1
+          fi

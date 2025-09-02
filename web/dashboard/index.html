@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity-Claude Enhanced Documentation Dashboard</title>
+    
+    <!-- D3.js v7 -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <!-- Canvas Rendering Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-capture@1.2.0/dist/canvas-capture.min.js"></script>
+    
+    <!-- Export Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- Chart.js for metrics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<body>
+    <div id="app" class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <h1>Documentation Intelligence Dashboard</h1>
+            <div class="header-controls">
+                <button id="refreshBtn" class="btn btn-primary">Refresh</button>
+                <button id="exportBtn" class="btn btn-secondary">Export</button>
+                <div class="connection-status">
+                    <span id="wsStatus" class="status-indicator offline">Disconnected</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="dashboard-main">
+            <!-- Left Panel - Graph Visualization -->
+            <div class="panel graph-panel">
+                <div class="panel-header">
+                    <h3>Code Relationship Graph</h3>
+                    <div class="graph-controls">
+                        <label>
+                            <input type="range" id="nodeRadius" min="2" max="20" value="8">
+                            Node Size
+                        </label>
+                        <label>
+                            <input type="range" id="linkDistance" min="50" max="200" value="100">
+                            Link Distance
+                        </label>
+                        <label>
+                            <input type="range" id="chargeStrength" min="-500" max="-50" value="-200">
+                            Repulsion
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Graph Container -->
+                <div class="graph-container">
+                    <canvas id="graphCanvas" width="800" height="600"></canvas>
+                    <svg id="graphSvg" class="graph-overlay"></svg>
+                    
+                    <!-- Zoom/Pan Controls -->
+                    <div class="graph-controls-overlay">
+                        <button id="zoomIn" class="control-btn">+</button>
+                        <button id="zoomOut" class="control-btn">−</button>
+                        <button id="resetZoom" class="control-btn">⌂</button>
+                        <button id="fitToScreen" class="control-btn">⤢</button>
+                    </div>
+                </div>
+
+                <!-- Node Selection Info -->
+                <div id="nodeInfo" class="node-info hidden">
+                    <h4 id="nodeTitle">Node Details</h4>
+                    <div id="nodeDetails">
+                        <p><strong>Type:</strong> <span id="nodeType"></span></p>
+                        <p><strong>Name:</strong> <span id="nodeName"></span></p>
+                        <p><strong>File:</strong> <span id="nodeFile"></span></p>
+                        <p><strong>Line:</strong> <span id="nodeLine"></span></p>
+                        <p><strong>Dependencies:</strong> <span id="nodeDependencies"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Filters and Metrics -->
+            <div class="panel controls-panel">
+                <!-- Filters Section -->
+                <div class="section">
+                    <h3>Filters</h3>
+                    <div class="filter-group">
+                        <label>Node Types:</label>
+                        <div class="checkbox-group" id="nodeTypeFilters">
+                            <label><input type="checkbox" value="function" checked> Functions</label>
+                            <label><input type="checkbox" value="class" checked> Classes</label>
+                            <label><input type="checkbox" value="module" checked> Modules</label>
+                            <label><input type="checkbox" value="variable" checked> Variables</label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Search:</label>
+                        <input type="text" id="searchFilter" placeholder="Search nodes...">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>File Extensions:</label>
+                        <div class="checkbox-group" id="fileExtFilters">
+                            <label><input type="checkbox" value="ps1" checked> PowerShell (.ps1)</label>
+                            <label><input type="checkbox" value="psm1" checked> Modules (.psm1)</label>
+                            <label><input type="checkbox" value="py" checked> Python (.py)</label>
+                            <label><input type="checkbox" value="js" checked> JavaScript (.js)</label>
+                            <label><input type="checkbox" value="cs" checked> C# (.cs)</label>
+                        </div>
+                    </div>
+                    
+                    <button id="applyFilters" class="btn btn-primary full-width">Apply Filters</button>
+                    <button id="clearFilters" class="btn btn-outline full-width">Clear All</button>
+                </div>
+
+                <!-- Path Highlighting -->
+                <div class="section">
+                    <h3>Relationship Paths</h3>
+                    <div class="path-controls">
+                        <input type="text" id="sourceNode" placeholder="Source node...">
+                        <input type="text" id="targetNode" placeholder="Target node...">
+                        <button id="highlightPath" class="btn btn-primary">Show Path</button>
+                        <button id="clearPaths" class="btn btn-outline">Clear Paths</button>
+                    </div>
+                    
+                    <div class="path-options">
+                        <label><input type="checkbox" id="showAllPaths"> Show All Paths</label>
+                        <label><input type="checkbox" id="animatePath"> Animate Path</label>
+                        <label>Max Depth: <input type="number" id="maxDepth" value="3" min="1" max="10"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Panel - Metrics Dashboard -->
+        <div class="dashboard-bottom">
+            <div class="metrics-container">
+                <!-- Code Health Metrics -->
+                <div class="metric-card">
+                    <h4>Code Health</h4>
+                    <canvas id="healthChart" width="300" height="200"></canvas>
+                    <div class="metric-stats">
+                        <div class="stat">
+                            <span class="stat-label">Overall Score:</span>
+                            <span class="stat-value" id="healthScore">85%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Issues Found:</span>
+                            <span class="stat-value" id="healthIssues">12</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Obsolescence Rate -->
+                <div class="metric-card">
+                    <h4>Obsolescence Rate</h4>
+                    <canvas id="obsolescenceChart" width="300" height="200"></canvas>
+                    <div class="metric-stats">
+                        <div class="stat">
+                            <span class="stat-label">Dead Code:</span>
+                            <span class="stat-value" id="deadCodePercent">3.2%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Unused Functions:</span>
+                            <span class="stat-value" id="unusedFunctions">8</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coverage Visualization -->
+                <div class="metric-card">
+                    <h4>Coverage Analysis</h4>
+                    <canvas id="coverageChart" width="300" height="200"></canvas>
+                    <div class="metric-stats">
+                        <div class="stat">
+                            <span class="stat-label">Documentation:</span>
+                            <span class="stat-value" id="docCoverage">78%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Test Coverage:</span>
+                            <span class="stat-value" id="testCoverage">65%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Metrics -->
+                <div class="metric-card">
+                    <h4>Performance</h4>
+                    <canvas id="performanceChart" width="300" height="200"></canvas>
+                    <div class="metric-stats">
+                        <div class="stat">
+                            <span class="stat-label">Nodes Rendered:</span>
+                            <span class="stat-value" id="nodeCount">1,247</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Render Time:</span>
+                            <span class="stat-value" id="renderTime">32ms</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Modal -->
+        <div id="exportModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Export Dashboard</h3>
+                    <button id="closeModal" class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="export-options">
+                        <label><input type="radio" name="exportType" value="png" checked> PNG Image</label>
+                        <label><input type="radio" name="exportType" value="svg"> SVG Vector</label>
+                        <label><input type="radio" name="exportType" value="pdf"> PDF Document</label>
+                        <label><input type="radio" name="exportType" value="json"> JSON Data</label>
+                    </div>
+                    
+                    <div class="export-settings">
+                        <label>Width: <input type="number" id="exportWidth" value="1920"></label>
+                        <label>Height: <input type="number" id="exportHeight" value="1080"></label>
+                        <label>Quality: <input type="range" id="exportQuality" min="0.1" max="1" step="0.1" value="0.9"></label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirmExport" class="btn btn-primary">Export</button>
+                    <button id="cancelExport" class="btn btn-outline">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay hidden">
+            <div class="loading-spinner"></div>
+            <p>Loading documentation graph...</p>
+        </div>
+    </div>
+
+    <!-- Core JavaScript Files -->
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/websocket.js"></script>
+    <script src="assets/js/data-manager.js"></script>
+    <script src="assets/js/graph-renderer.js"></script>
+    <script src="assets/js/graph-controls.js"></script>
+    <script src="assets/js/metrics-charts.js"></script>
+    <script src="assets/js/export-handler.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+</body>
+</html>

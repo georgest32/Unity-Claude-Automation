@@ -1,0 +1,118 @@
+{
+    "Version":  "1.0.0",
+    "Rules":  [
+                  {
+                      "RuleId":  "critical-immediate",
+                      "Name":  "Critical Immediate Response",
+                      "Priority":  1,
+                      "Enabled":  true,
+                      "Conditions":  [
+                                         {
+                                             "Field":  "Severity",
+                                             "Operator":  "Equals",
+                                             "Value":  "Critical"
+                                         }
+                                     ],
+                      "Actions":  [
+                                      {
+                                          "Type":  "SendNotification",
+                                          "Channels":  [
+                                                           "Email",
+                                                           "SMS",
+                                                           "Teams",
+                                                           "Slack",
+                                                           "Dashboard"
+                                                       ],
+                                          "Template":  "critical-alert"
+                                      },
+                                      {
+                                          "Type":  "EscalateAfter",
+                                          "TimeoutSeconds":  300,
+                                          "EscalationChannels":  [
+                                                                     "SMS",
+                                                                     "Teams"
+                                                                 ]
+                                      }
+                                  ]
+                  },
+                  {
+                      "RuleId":  "high-priority",
+                      "Name":  "High Priority Alerts",
+                      "Priority":  2,
+                      "Enabled":  true,
+                      "Conditions":  [
+                                         {
+                                             "Field":  "Severity",
+                                             "Operator":  "Equals",
+                                             "Value":  "High"
+                                         }
+                                     ],
+                      "Actions":  [
+                                      {
+                                          "Type":  "SendNotification",
+                                          "Channels":  [
+                                                           "Email",
+                                                           "Teams",
+                                                           "Dashboard"
+                                                       ],
+                                          "Template":  "standard-alert"
+                                      },
+                                      {
+                                          "Type":  "EscalateAfter",
+                                          "TimeoutSeconds":  600,
+                                          "EscalationChannels":  [
+                                                                     "Teams"
+                                                                 ]
+                                      }
+                                  ]
+                  },
+                  {
+                      "RuleId":  "standard-alerts",
+                      "Name":  "Standard Monitoring Alerts",
+                      "Priority":  3,
+                      "Enabled":  true,
+                      "Conditions":  [
+                                         {
+                                             "Field":  "Severity",
+                                             "Operator":  "In",
+                                             "Value":  [
+                                                           "Medium",
+                                                           "Low"
+                                                       ]
+                                         }
+                                     ],
+                      "Actions":  [
+                                      {
+                                          "Type":  "SendNotification",
+                                          "Channels":  [
+                                                           "Dashboard",
+                                                           "Webhook"
+                                                       ],
+                                          "Template":  "standard-alert"
+                                      }
+                                  ]
+                  },
+                  {
+                      "RuleId":  "info-notifications",
+                      "Name":  "Information Notifications",
+                      "Priority":  4,
+                      "Enabled":  true,
+                      "Conditions":  [
+                                         {
+                                             "Field":  "Severity",
+                                             "Operator":  "Equals",
+                                             "Value":  "Info"
+                                         }
+                                     ],
+                      "Actions":  [
+                                      {
+                                          "Type":  "SendNotification",
+                                          "Channels":  [
+                                                           "Dashboard"
+                                                       ],
+                                          "Template":  "info-notification"
+                                      }
+                                  ]
+                  }
+              ]
+}

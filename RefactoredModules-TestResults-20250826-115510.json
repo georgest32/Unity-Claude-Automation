@@ -1,0 +1,244 @@
+{
+  "ModulesTotal": 19,
+  "TestType": "All",
+  "SuccessRate": 84.2,
+  "ModulesFailed": 3,
+  "Timestamp": "2025-08-26 11:55:10",
+  "ModulesSuccess": 16,
+  "AverageLoadTime": 413.0,
+  "Details": [
+    {
+      "Module": "Unity-Claude-CPG",
+      "Status": "Success",
+      "LoadTime": 150,
+      "FunctionsFound": 1,
+      "ExpectedFunctionsMissing": [],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "Unity-Claude-CPG"
+    },
+    {
+      "Module": "Unity-Claude-MasterOrchestrator",
+      "Status": "Loaded",
+      "LoadTime": 101,
+      "FunctionsFound": 0,
+      "ExpectedFunctionsMissing": [
+        "Start-MasterOrchestration",
+        "Get-OrchestrationStatus"
+      ],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "Unity-Claude-MasterOrchestrator"
+    },
+    {
+      "Module": "SafeCommandExecution",
+      "Status": "Failed",
+      "LoadTime": 0,
+      "FunctionsFound": 0,
+      "ExpectedFunctionsMissing": [],
+      "IsRefactoredVersion": false,
+      "Error": "The module manifest 'C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\SafeCommandExecution\\SafeCommandExecution.psd1' could not be processed because it is not a valid PowerShell module manifest file. Remove the elements that are not permitted: At C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\SafeCommandExecution\\SafeCommandExecution.psd1:1 char:3\r\n+ @{\r\n+   ~\r\nMissing closing '}' in statement block or type definition.",
+      "ActualModuleName": null
+    },
+    {
+      "Module": "Unity-Claude-UnityParallelization",
+      "Status": "Loaded",
+      "LoadTime": 484,
+      "FunctionsFound": 0,
+      "ExpectedFunctionsMissing": [
+        "Start-ParallelUnityBuild",
+        "Get-BuildWorkerStatus"
+      ],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "Unity-Claude-UnityParallelization"
+    },
+    {
+      "Module": "Unity-Claude-IntegratedWorkflow",
+      "Status": "Loaded",
+      "LoadTime": 446,
+      "FunctionsFound": 0,
+      "ExpectedFunctionsMissing": [
+        "Get-WorkflowStatus"
+      ],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "Unity-Claude-IntegratedWorkflow"
+    },
+    {
+      "Module": "Unity-Claude-Learning",
+      "Status": "Failed",
+      "LoadTime": 0,
+      "FunctionsFound": 0,
+      "ExpectedFunctionsMissing": [],
+      "IsRefactoredVersion": false,
+      "Error": "The module manifest 'C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-Learning\\Unity-Claude-Learning.psd1' could not be processed because it is not a valid PowerShell module manifest file. Remove the elements that are not permitted: At C:\\UnityProjects\\Sound-and-Shoal\\Unity-Claude-Automation\\Modules\\Unity-Claude-Learning\\Unity-Claude-Learning.psd1:1 char:3\r\n+ @{\r\n+   ~\r\nMissing closing '}' in statement block or type definition.",
+      "ActualModuleName": null
+    },
+    {
+      "Module": "Unity-Claude-RunspaceManagement",
+      "Status": "Success",
+      "LoadTime": 41,
+      "FunctionsFound": 3,
+      "ExpectedFunctionsMissing": [
+        "New-ManagedRunspace",
+        "Get-RunspaceStatus"
+      ],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "Unity-Claude-RunspaceManagement"
+    },
+    {
+      "Module": "Unity-Claude-PredictiveAnalysis",
+      "Status": "Success",
+      "LoadTime": 331,
+      "FunctionsFound": 2,
+      "ExpectedFunctionsMissing": [
+        "Get-PredictedOutcome",
+        "Update-PredictionModel"
+      ],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "Unity-Claude-PredictiveAnalysis"
+    },
+    {
+      "Module": "Unity-Claude-ObsolescenceDetection",
+      "Status": "Failed",
+      "LoadTime": 743,
+      "FunctionsFound": 0,
+      "ExpectedFunctionsMissing": [],
+      "IsRefactoredVersion": false,
+      "Error": "Module imported but not found in session. Available modules: AnalyticsReporting, CompilationIntegration, CPG-AnalysisOperations, CPG-BasicOperations, CPG-DataStructures, CPG-QueryOperations, CPG-SerializationOperations, ErrorExport, ImprovementRoadmaps, Microsoft.PowerShell.Management, Microsoft.PowerShell.Utility, ModuleVariablePreloading, OrchestratorManagement, PerformanceAnalysis, PerformanceOptimization, ProductionRunspacePool, RiskAssessment, RunspaceCore, RunspacePoolManagement, SessionStateConfiguration, ThrottlingResourceControl, Unity-Claude-CPG-ASTConverter, Unity-Claude-CPG-Enums, Unity-Claude-IntegratedWorkflow, Unity-Claude-MasterOrchestrator, Unity-Claude-ObsolescenceDetection-Refactored, Unity-Claude-PredictiveAnalysis, Unity-Claude-RunspaceManagement, Unity-Claude-UnityParallelization, VariableSharing, WorkflowMonitoring, WorkflowOrchestration",
+      "ActualModuleName": null
+    },
+    {
+      "Module": "Unity-Claude-AutonomousStateTracker-Enhanced",
+      "Status": "Success",
+      "LoadTime": 69,
+      "FunctionsFound": 3,
+      "ExpectedFunctionsMissing": [
+        "Get-StateConfiguration",
+        "Update-StateTracking"
+      ],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "Unity-Claude-AutonomousStateTracker-Enhanced"
+    },
+    {
+      "Module": "IntelligentPromptEngine",
+      "Status": "Success",
+      "LoadTime": 57,
+      "FunctionsFound": 7,
+      "ExpectedFunctionsMissing": [
+        "New-IntelligentPrompt",
+        "Get-PromptConfiguration"
+      ],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "IntelligentPromptEngine-Refactored"
+    },
+    {
+      "Module": "Unity-Claude-DocumentationAutomation",
+      "Status": "Success",
+      "LoadTime": 54,
+      "FunctionsFound": 3,
+      "ExpectedFunctionsMissing": [
+        "Update-Documentation"
+      ],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "Unity-Claude-DocumentationAutomation"
+    },
+    {
+      "Module": "Unity-Claude-CLIOrchestrator",
+      "Status": "Success",
+      "LoadTime": 3622,
+      "FunctionsFound": 4,
+      "ExpectedFunctionsMissing": [
+        "Get-CLIStatus"
+      ],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "Unity-Claude-CLIOrchestrator"
+    },
+    {
+      "Module": "Unity-Claude-ScalabilityEnhancements",
+      "Status": "Success",
+      "LoadTime": 43,
+      "FunctionsFound": 38,
+      "ExpectedFunctionsMissing": [
+        "Optimize-Performance",
+        "Get-ScalabilityMetrics"
+      ],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "Unity-Claude-ScalabilityEnhancements"
+    },
+    {
+      "Module": "Unity-Claude-DecisionEngine",
+      "Status": "Success",
+      "LoadTime": 97,
+      "FunctionsFound": 4,
+      "ExpectedFunctionsMissing": [
+        "Invoke-DecisionEngine",
+        "Get-DecisionMetrics"
+      ],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "Unity-Claude-DecisionEngine"
+    },
+    {
+      "Module": "DecisionEngine-Bayesian",
+      "Status": "Loaded",
+      "LoadTime": 749,
+      "FunctionsFound": 0,
+      "ExpectedFunctionsMissing": [
+        "Invoke-BayesianDecision",
+        "Update-BayesianPriors"
+      ],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "Unity-Claude-DecisionEngine-Bayesian"
+    },
+    {
+      "Module": "Unity-Claude-HITL",
+      "Status": "Success",
+      "LoadTime": 114,
+      "FunctionsFound": 3,
+      "ExpectedFunctionsMissing": [
+        "Request-HumanApproval",
+        "Get-HITLStatus"
+      ],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "Unity-Claude-HITL"
+    },
+    {
+      "Module": "Unity-Claude-ParallelProcessor",
+      "Status": "Success",
+      "LoadTime": 289,
+      "FunctionsFound": 1,
+      "ExpectedFunctionsMissing": [
+        "Start-ParallelProcessing",
+        "Get-ProcessorStatus"
+      ],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "Unity-Claude-ParallelProcessor"
+    },
+    {
+      "Module": "Unity-Claude-PerformanceOptimizer",
+      "Status": "Success",
+      "LoadTime": 450,
+      "FunctionsFound": 9,
+      "ExpectedFunctionsMissing": [
+        "Optimize-Performance",
+        "Get-OptimizationMetrics"
+      ],
+      "IsRefactoredVersion": true,
+      "Error": null,
+      "ActualModuleName": "Unity-Claude-PerformanceOptimizer"
+    }
+  ],
+  "MaxLoadTime": 3622.0
+}

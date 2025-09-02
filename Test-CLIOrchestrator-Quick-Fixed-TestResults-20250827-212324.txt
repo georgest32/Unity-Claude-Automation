@@ -1,0 +1,52 @@
+﻿====================================
+Test Execution Report
+====================================
+
+Test Script: C:\UnityProjects\Sound-and-Shoal\Unity-Claude-Automation\.\Test-CLIOrchestrator-Quick-Fixed.ps1
+Execution Time: 2025-08-27 21:23:26
+Duration: 0.93 seconds
+Exit Code: 0
+Status: SUCCESS
+
+Test Output:
+============
+
+Running quick validation tests...
+
+1. Testing module import...
+WARNING: The names of some imported commands from the module 'Unity-Claude-CLIOrchestrator' include unapproved verbs 
+that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again
+ with the Verbose parameter. For a list of approved verbs, type Get-Verb.
+  Pass: Module Import
+
+2. Testing function availability...
+  Fail: Core Functions Available
+    Error: Missing: Extract-ResponseEntities, Analyze-ResponseSentiment, Find-RecommendationPatterns, Invoke-RuleBasedDecision, Test-SafetyValidation
+
+3. Testing decision making...
+  Fail: Decision Making
+    Error: The term 'Invoke-RuleBasedDecision' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+
+4. Testing safety validation...
+  Fail: Safety Validation
+    Error: The term 'Test-SafetyValidation' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+
+5. Testing window detection...
+  Fail: Window Detection
+    Error: The term 'Get-ClaudeWindowInfo' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+
+6. Testing response processing...
+  Pass: Response Processing
+
+ + ==================================================
+Test Summary:
+  Total: 6
+  Passed: 2
+  Failed: 4
+==================================================
+
+CLIOrchestrator quick validation completed.
+
+====================================
+End of Test Report
+====================================

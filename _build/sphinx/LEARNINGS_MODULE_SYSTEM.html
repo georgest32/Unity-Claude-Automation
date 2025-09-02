@@ -1,0 +1,349 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PowerShell Module System - Unity-Claude Automation &mdash; Unity-Claude-Automation 3.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=acc74ff5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2b3e50" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Unity-Claude-Automation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">PowerShell Module System - Unity-Claude Automation</a><ul>
+<li><a class="reference internal" href="#module-system-learnings">📋 Module System Learnings</a><ul>
+<li><a class="reference internal" href="#module-manifest-requirements-documented">4. Module Manifest Requirements (📝 DOCUMENTED)</a></li>
+<li><a class="reference internal" href="#module-state-management-resolved">5. Module State Management (✅ RESOLVED)</a></li>
+<li><a class="reference internal" href="#module-reloading-limitations-critical">6. Module Reloading Limitations (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#powershell-module-manifest-requirements-for-nested-modules-critical">19. PowerShell Module Manifest Requirements for Nested Modules (⚠️ CRITICAL)</a></li>
+<li><a class="reference internal" href="#powershell-module-import-path-resolution-documented">22. PowerShell Module Import Path Resolution (📝 DOCUMENTED)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-architecture-best-practices">🏗️ Module Architecture Best Practices</a><ul>
+<li><a class="reference internal" href="#modular-architecture-patterns">Modular Architecture Patterns</a></li>
+<li><a class="reference internal" href="#module-manifest-template-psd1">Module Manifest Template (.psd1)</a></li>
+<li><a class="reference internal" href="#function-export-best-practices">Function Export Best Practices</a></li>
+<li><a class="reference internal" href="#module-loading-and-import-patterns">Module Loading and Import Patterns</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-development-workflow">🔧 Module Development Workflow</a><ul>
+<li><a class="reference internal" href="#module-creation-checklist">Module Creation Checklist</a></li>
+<li><a class="reference internal" href="#module-debugging-patterns">Module Debugging Patterns</a></li>
+<li><a class="reference internal" href="#common-module-pitfalls">Common Module Pitfalls</a></li>
+<li><a class="reference internal" href="#module-performance-considerations">Module Performance Considerations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2b3e50" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Unity-Claude-Automation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">PowerShell Module System - Unity-Claude Automation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/LEARNINGS_MODULE_SYSTEM.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="powershell-module-system-unity-claude-automation">
+<h1>PowerShell Module System - Unity-Claude Automation<a class="headerlink" href="#powershell-module-system-unity-claude-automation" title="Link to this heading"></a></h1>
+<p><em>Module architecture, manifests, exports, and PowerShell module best practices</em>
+<em>Last Updated: 2025-08-19</em></p>
+<section id="module-system-learnings">
+<h2>📋 Module System Learnings<a class="headerlink" href="#module-system-learnings" title="Link to this heading"></a></h2>
+<section id="module-manifest-requirements-documented">
+<h3>4. Module Manifest Requirements (📝 DOCUMENTED)<a class="headerlink" href="#module-manifest-requirements-documented" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Confusion about required manifest fields
+<strong>Discovery</strong>: Only ModuleVersion is truly required in .psd1
+<strong>Evidence</strong>: Modules load without other fields but Gallery publishing needs more
+<strong>Resolution</strong>: Include ModuleVersion, GUID, Author, and FunctionsToExport minimum
+<strong>Critical Learning</strong>: Start minimal, add fields as needed</p>
+</section>
+<section id="module-state-management-resolved">
+<h3>5. Module State Management (✅ RESOLVED)<a class="headerlink" href="#module-state-management-resolved" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Sharing state between modules
+<strong>Discovery</strong>: Each module has isolated SessionState
+<strong>Evidence</strong>: Global variables don’t work; script scope limited to module
+<strong>Resolution</strong>: Use module-scoped variables with explicit exports
+<strong>Critical Learning</strong>: Design for isolation; use return values not shared state</p>
+</section>
+<section id="module-reloading-limitations-critical">
+<h3>6. Module Reloading Limitations (⚠️ CRITICAL)<a class="headerlink" href="#module-reloading-limitations-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: No true hot reload in PowerShell
+<strong>Discovery</strong>: Import-Module -Force requires manual intervention
+<strong>Evidence</strong>: Remove-Module needed before reload; references may persist
+<strong>Resolution</strong>: Design for restart; use watchdog pattern for auto-updates
+<strong>Critical Learning</strong>: Plan for full restart cycles, not hot swapping</p>
+</section>
+<section id="powershell-module-manifest-requirements-for-nested-modules-critical">
+<h3>19. PowerShell Module Manifest Requirements for Nested Modules (⚠️ CRITICAL)<a class="headerlink" href="#powershell-module-manifest-requirements-for-nested-modules-critical" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: “The specified module…was not loaded because no valid module file was found” when importing modular architecture
+<strong>Discovery</strong>: Must create .psd1 manifest file with NestedModules configuration for multi-module architecture
+<strong>Evidence</strong>: Test-EnhancedResponseProcessing-Day11.ps1 failed with 0% success rate, all functions missing
+<strong>Resolution</strong>: Create .psd1 manifest with NestedModules array listing all sub-modules and FunctionsToExport
+<strong>Critical Learning</strong>: PowerShell requires .psd1 manifest for proper nested module loading and function export
+<strong>Error Pattern</strong>: Missing manifest causes “module not found” errors even when .psm1 files exist</p>
+</section>
+<section id="powershell-module-import-path-resolution-documented">
+<h3>22. PowerShell Module Import Path Resolution (📝 DOCUMENTED)<a class="headerlink" href="#powershell-module-import-path-resolution-documented" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: “The specified module…was not loaded because no valid module file was found” for relative paths
+<strong>Discovery</strong>: Module import paths are relative to current module location, not project root
+<strong>Evidence</strong>: ContextExtraction.psm1 importing “Intelligence\ContextOptimization.psm1” but file in root
+<strong>Resolution</strong>: Use correct relative path based on actual file location: “ContextOptimization.psm1”
+<strong>Critical Learning</strong>: Always verify actual file locations when using relative paths in Import-Module statements
+<strong>Error Pattern</strong>: FileNotFoundException for modules that exist but are in different directories</p>
+</section>
+</section>
+<section id="module-architecture-best-practices">
+<h2>🏗️ Module Architecture Best Practices<a class="headerlink" href="#module-architecture-best-practices" title="Link to this heading"></a></h2>
+<section id="modular-architecture-patterns">
+<h3>Modular Architecture Patterns<a class="headerlink" href="#modular-architecture-patterns" title="Link to this heading"></a></h3>
+<p><strong>Successful Pattern</strong>: Category-based organization</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Modules/
+├── Core/               # Basic functionality
+├── Monitoring/         # File watching, logging
+├── Parsing/           # Response processing
+├── Execution/         # Safe command execution
+├── Commands/          # Unity operations
+├── Intelligence/      # AI and analytics
+└── Integration/       # External system integration
+</pre></div>
+</div>
+</section>
+<section id="module-manifest-template-psd1">
+<h3>Module Manifest Template (.psd1)<a class="headerlink" href="#module-manifest-template-psd1" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">@{</span>
+    <span class="c"># Required fields</span>
+    <span class="n">ModuleVersion</span> <span class="p">=</span> <span class="s1">&#39;1.0.0&#39;</span>
+    <span class="n">GUID</span> <span class="p">=</span> <span class="s1">&#39;unique-guid-here&#39;</span>
+    <span class="n">Author</span> <span class="p">=</span> <span class="s1">&#39;Your Name&#39;</span>
+    
+    <span class="c"># Module structure</span>
+    <span class="n">RootModule</span> <span class="p">=</span> <span class="s1">&#39;MainModule.psm1&#39;</span>  <span class="c"># For single modules</span>
+    <span class="n">NestedModules</span> <span class="p">=</span> <span class="p">@(</span>              <span class="c"># For multi-module architecture</span>
+        <span class="s1">&#39;Core\AgentCore.psm1&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Monitoring\FileSystemMonitoring.psm1&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Parsing\ResponseParsing.psm1&#39;</span>
+    <span class="p">)</span>
+    
+    <span class="c"># Exports</span>
+    <span class="n">FunctionsToExport</span> <span class="p">=</span> <span class="p">@(</span>
+        <span class="s1">&#39;Get-AgentState&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Set-AgentState&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;ConvertTo-HashTable&#39;</span>
+    <span class="p">)</span>
+    
+    <span class="c"># Dependencies</span>
+    <span class="n">RequiredModules</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="n">RequiredAssemblies</span> <span class="p">=</span> <span class="p">@()</span>
+    
+    <span class="c"># Compatibility</span>
+    <span class="n">PowerShellVersion</span> <span class="p">=</span> <span class="s1">&#39;5.1&#39;</span>
+    <span class="n">CompatiblePSEditions</span> <span class="p">=</span> <span class="p">@(</span><span class="s1">&#39;Desktop&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="function-export-best-practices">
+<h3>Function Export Best Practices<a class="headerlink" href="#function-export-best-practices" title="Link to this heading"></a></h3>
+<p><strong>Always Export Required Functions</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># At end of .psm1 file</span>
+<span class="nb">Export-ModuleMember</span> <span class="n">-Function</span> <span class="p">@(</span>
+    <span class="s1">&#39;Initialize-EnhancedAutonomousStateTracking&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Set-EnhancedAutonomousState&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;Get-EnhancedAutonomousState&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Get-AgentState&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ConvertTo-HashTable&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Validation Pattern</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Test function exports</span>
+<span class="nv">$module</span> <span class="p">=</span> <span class="nb">Get-Module</span> <span class="n">ModuleName</span>
+<span class="nv">$expectedFunctions</span> <span class="p">=</span> <span class="p">@(</span><span class="s1">&#39;Function1&#39;</span><span class="p">,</span> <span class="s1">&#39;Function2&#39;</span><span class="p">,</span> <span class="s1">&#39;Function3&#39;</span><span class="p">)</span>
+<span class="nv">$actualFunctions</span> <span class="p">=</span> <span class="nv">$module</span><span class="p">.</span><span class="n">ExportedCommands</span><span class="p">.</span><span class="n">Keys</span>
+<span class="nv">$missingFunctions</span> <span class="p">=</span> <span class="nv">$expectedFunctions</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span> <span class="n">-notin</span> <span class="nv">$actualFunctions</span> <span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$missingFunctions</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Error</span> <span class="s2">&quot;Missing functions: </span><span class="p">$(</span><span class="nv">$missingFunctions</span> <span class="n">-join</span> <span class="s1">&#39;, &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="module-loading-and-import-patterns">
+<h3>Module Loading and Import Patterns<a class="headerlink" href="#module-loading-and-import-patterns" title="Link to this heading"></a></h3>
+<p><strong>Proper Module Path Setup</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Add modules to path</span>
+<span class="nv">$env:PSModulePath</span> <span class="p">=</span> <span class="s2">&quot;$PWD\Modules;$env:PSModulePath&quot;</span>
+
+<span class="c"># Import with error handling</span>
+<span class="k">try</span> <span class="p">{</span>
+    <span class="nb">Import-Module</span> <span class="n">Unity-Claude-AutonomousAgent-Refactored</span> <span class="n">-Force</span>
+    <span class="nb">Write-Host</span> <span class="s2">&quot;Module loaded successfully&quot;</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+    <span class="nb">Write-Error</span> <span class="s2">&quot;Failed to load module: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Individual Module Testing</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Test each module separately before integration</span>
+<span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">Modules</span><span class="p">\</span><span class="n">Core</span><span class="p">\</span><span class="n">AgentCore</span><span class="p">.</span><span class="n">psm1</span> <span class="n">-Force</span>
+<span class="nv">$coreTest</span> <span class="p">=</span> <span class="nb">Test-ModuleFunctions</span> <span class="n">-ModuleName</span> <span class="s2">&quot;AgentCore&quot;</span>
+
+<span class="nb">Import-Module</span> <span class="p">.\</span><span class="n">Modules</span><span class="p">\</span><span class="n">Monitoring</span><span class="p">\</span><span class="n">FileSystemMonitoring</span><span class="p">.</span><span class="n">psm1</span> <span class="n">-Force</span>  
+<span class="nv">$monitoringTest</span> <span class="p">=</span> <span class="nb">Test-ModuleFunctions</span> <span class="n">-ModuleName</span> <span class="s2">&quot;FileSystemMonitoring&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="module-development-workflow">
+<h2>🔧 Module Development Workflow<a class="headerlink" href="#module-development-workflow" title="Link to this heading"></a></h2>
+<section id="module-creation-checklist">
+<h3>Module Creation Checklist<a class="headerlink" href="#module-creation-checklist" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Create .psm1 file</strong> with functions and proper Export-ModuleMember</p></li>
+<li><p><strong>Create .psd1 manifest</strong> with required fields and exports</p></li>
+<li><p><strong>Test module individually</strong> before integration</p></li>
+<li><p><strong>Validate function exports</strong> using Get-Module</p></li>
+<li><p><strong>Test module reload</strong> with Remove-Module/Import-Module cycle</p></li>
+<li><p><strong>Integration testing</strong> with dependent modules</p></li>
+</ol>
+</section>
+<section id="module-debugging-patterns">
+<h3>Module Debugging Patterns<a class="headerlink" href="#module-debugging-patterns" title="Link to this heading"></a></h3>
+<p><strong>Function Export Debugging</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Check what&#39;s actually exported</span>
+<span class="nv">$module</span> <span class="p">=</span> <span class="nb">Get-Module</span> <span class="n">ModuleName</span>
+<span class="nv">$module</span><span class="p">.</span><span class="n">ExportedCommands</span><span class="p">.</span><span class="n">Keys</span> <span class="p">|</span> <span class="nb">Sort-Object</span>
+
+<span class="c"># Check module file path</span>
+<span class="nv">$module</span><span class="p">.</span><span class="n">ModuleBase</span>
+<span class="nv">$module</span><span class="p">.</span><span class="n">Path</span>
+
+<span class="c"># Check nested modules</span>
+<span class="nv">$module</span><span class="p">.</span><span class="n">NestedModules</span>
+</pre></div>
+</div>
+<p><strong>Module Loading Debugging</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Verbose import to see loading process</span>
+<span class="nb">Import-Module</span> <span class="n">ModuleName</span> <span class="n">-Verbose</span>
+
+<span class="c"># Check module search paths</span>
+<span class="nv">$env:PSModulePath</span> <span class="n">-split</span> <span class="s1">&#39;;&#39;</span>
+
+<span class="c"># Manual path verification</span>
+<span class="nb">Test-Path</span> <span class="s2">&quot;.\Modules\ModuleName\ModuleName.psm1&quot;</span>
+<span class="nb">Test-Path</span> <span class="s2">&quot;.\Modules\ModuleName\ModuleName.psd1&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="common-module-pitfalls">
+<h3>Common Module Pitfalls<a class="headerlink" href="#common-module-pitfalls" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Missing Export-ModuleMember</strong> - Functions defined but not exported</p></li>
+<li><p><strong>Wrong Manifest Path</strong> - RootModule/NestedModules pointing to wrong files</p></li>
+<li><p><strong>Relative Path Issues</strong> - Import-Module paths relative to wrong location</p></li>
+<li><p><strong>Function Name Conflicts</strong> - Same function name in multiple modules</p></li>
+<li><p><strong>State Persistence</strong> - Expecting global variables to work across modules</p></li>
+</ol>
+</section>
+<section id="module-performance-considerations">
+<h3>Module Performance Considerations<a class="headerlink" href="#module-performance-considerations" title="Link to this heading"></a></h3>
+<p><strong>Lazy Loading Pattern</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Only import when needed</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Get-Module</span> <span class="n">ModuleName</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nb">Import-Module</span> <span class="n">ModuleName</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Function Scope Optimization</strong>:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Use script scope for shared variables within module</span>
+<span class="nv">$script:SharedConfig</span> <span class="p">=</span> <span class="p">@{}</span>
+
+<span class="c"># Export only public interface</span>
+<span class="nb">Export-ModuleMember</span> <span class="n">-Function</span> <span class="p">@(</span><span class="s1">&#39;Public-Function1&#39;</span><span class="p">,</span> <span class="s1">&#39;Public-Function2&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p><em>This document covers PowerShell module system specifics.</em>
+<em>For broader architecture patterns, see IMPLEMENTATION_GUIDE.md</em></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Unity-Claude-Automation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

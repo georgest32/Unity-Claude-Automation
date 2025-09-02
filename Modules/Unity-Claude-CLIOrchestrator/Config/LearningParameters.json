@@ -1,0 +1,311 @@
+{
+  "version": "1.0.0",
+  "description": "Learning parameters configuration for CLIOrchestrator autonomous improvement",
+  "lastUpdated": "2025-08-25",
+  "learningParameters": {
+    "bayesianLearning": {
+      "description": "Bayesian inference parameters for confidence adjustment",
+      "parameters": {
+        "prior_alpha": 1.0,
+        "prior_beta": 1.0,
+        "success_weight": 0.8,
+        "failure_weight": 0.2,
+        "confidence_decay": 0.95,
+        "minimum_samples": 5,
+        "maximum_history": 1000,
+        "learning_rate": 0.1,
+        "convergence_threshold": 0.01
+      },
+      "confidence_bands": {
+        "very_high": {
+          "threshold": 0.95,
+          "action_modifier": 1.0,
+          "timeout_modifier": 1.0
+        },
+        "high": {
+          "threshold": 0.85,
+          "action_modifier": 1.0,
+          "timeout_modifier": 1.2
+        },
+        "medium": {
+          "threshold": 0.65,
+          "action_modifier": 0.9,
+          "timeout_modifier": 1.5
+        },
+        "low": {
+          "threshold": 0.45,
+          "action_modifier": 0.7,
+          "timeout_modifier": 2.0
+        },
+        "very_low": {
+          "threshold": 0.30,
+          "action_modifier": 0.5,
+          "timeout_modifier": 3.0
+        }
+      }
+    },
+    "patternRecognition": {
+      "description": "Machine learning parameters for pattern recognition improvement",
+      "nlp_parameters": {
+        "entity_recognition": {
+          "confidence_threshold": 0.7,
+          "pattern_weight_decay": 0.9,
+          "new_pattern_learning_rate": 0.05,
+          "pattern_pruning_threshold": 0.1,
+          "max_patterns_per_type": 100
+        },
+        "sentiment_analysis": {
+          "baseline_weights": {
+            "positive": 1.0,
+            "negative": 1.2,
+            "neutral": 0.8,
+            "uncertainty": 1.1
+          },
+          "context_window": 50,
+          "sentiment_smoothing": 0.3,
+          "confidence_calibration": true
+        },
+        "command_classification": {
+          "trie_optimization": true,
+          "command_frequency_tracking": true,
+          "success_rate_weighting": 0.7,
+          "temporal_decay": 0.95,
+          "classification_threshold": 0.6
+        }
+      },
+      "feature_engineering": {
+        "n_gram_size": [1, 2, 3],
+        "tf_idf_features": true,
+        "positional_features": true,
+        "context_features": true,
+        "temporal_features": true,
+        "success_correlation_features": true
+      }
+    },
+    "contextCompression": {
+      "description": "Context window management and compression parameters",
+      "compression_strategy": "relevance_based",
+      "parameters": {
+        "max_context_tokens": 200000,
+        "compression_trigger_threshold": 180000,
+        "target_compression_ratio": 0.6,
+        "relevance_scoring": {
+          "recency_weight": 0.3,
+          "frequency_weight": 0.2,
+          "success_correlation_weight": 0.3,
+          "error_correlation_weight": 0.2
+        },
+        "compression_methods": {
+          "summarization": {
+            "enabled": true,
+            "target_ratio": 0.3,
+            "preserve_entities": true,
+            "preserve_recommendations": true
+          },
+          "clustering": {
+            "enabled": true,
+            "similarity_threshold": 0.8,
+            "cluster_representatives": 3
+          },
+          "importance_filtering": {
+            "enabled": true,
+            "importance_threshold": 0.5,
+            "preserve_recent": 1000
+          }
+        }
+      },
+      "state_management": {
+        "context_checkpoints": true,
+        "checkpoint_interval": 50,
+        "max_checkpoints": 20,
+        "state_compression": true
+      }
+    },
+    "adaptiveDecisionMaking": {
+      "description": "Adaptive parameters for decision tree optimization",
+      "optimization_parameters": {
+        "decision_tree_pruning": true,
+        "confidence_threshold_adaptation": true,
+        "success_rate_tracking": true,
+        "failure_pattern_analysis": true,
+        "temporal_pattern_detection": true
+      },
+      "adaptation_triggers": {
+        "success_rate_change": {
+          "threshold": 0.1,
+          "window_size": 20,
+          "adaptation_rate": 0.05
+        },
+        "new_failure_pattern": {
+          "confidence_threshold": 0.8,
+          "minimum_occurrences": 3,
+          "pattern_weight": 0.2
+        },
+        "context_shift_detection": {
+          "entropy_threshold": 0.5,
+          "adaptation_rate": 0.1,
+          "stability_requirement": 10
+        }
+      },
+      "meta_learning": {
+        "enabled": true,
+        "learning_to_learn_rate": 0.01,
+        "meta_parameters": [
+          "learning_rate",
+          "confidence_threshold",
+          "pattern_weight",
+          "adaptation_rate"
+        ]
+      }
+    },
+    "performanceOptimization": {
+      "description": "Performance learning and optimization parameters",
+      "metrics_tracking": {
+        "response_time": {
+          "target_percentile": 95,
+          "target_value_ms": 200,
+          "improvement_threshold": 0.1
+        },
+        "accuracy": {
+          "target_value": 0.95,
+          "measurement_window": 100,
+          "improvement_threshold": 0.02
+        },
+        "resource_usage": {
+          "memory_threshold_mb": 512,
+          "cpu_threshold_percent": 80,
+          "optimization_trigger": 0.9
+        }
+      },
+      "optimization_strategies": {
+        "caching": {
+          "pattern_cache_size": 1000,
+          "decision_cache_size": 500,
+          "context_cache_size": 100,
+          "cache_hit_rate_target": 0.8
+        },
+        "parallelization": {
+          "max_parallel_tasks": 4,
+          "task_size_threshold": 1000,
+          "load_balancing": true
+        },
+        "algorithmic_optimization": {
+          "regex_compilation": true,
+          "trie_optimization": true,
+          "bloom_filters": true,
+          "approximate_matching": true
+        }
+      }
+    },
+    "qualityAssurance": {
+      "description": "Quality assurance and validation parameters",
+      "validation_framework": {
+        "cross_validation_folds": 5,
+        "holdout_percentage": 0.2,
+        "validation_frequency": 100,
+        "quality_threshold": 0.9
+      },
+      "testing_parameters": {
+        "unit_test_coverage": 0.9,
+        "integration_test_frequency": 50,
+        "regression_test_threshold": 0.05,
+        "performance_regression_threshold": 0.1
+      },
+      "monitoring": {
+        "drift_detection": true,
+        "anomaly_detection": true,
+        "performance_monitoring": true,
+        "quality_degradation_alerts": true
+      }
+    },
+    "memoryManagement": {
+      "description": "Memory and state management optimization",
+      "memory_limits": {
+        "pattern_memory_mb": 100,
+        "context_memory_mb": 200,
+        "cache_memory_mb": 50,
+        "total_memory_limit_mb": 512
+      },
+      "cleanup_policies": {
+        "stale_pattern_cleanup": {
+          "age_threshold_days": 30,
+          "usage_threshold": 5,
+          "cleanup_frequency": "daily"
+        },
+        "context_cleanup": {
+          "relevance_threshold": 0.1,
+          "age_threshold_hours": 24,
+          "cleanup_frequency": "hourly"
+        },
+        "cache_cleanup": {
+          "lru_policy": true,
+          "size_based_cleanup": true,
+          "cleanup_frequency": "continuous"
+        }
+      },
+      "persistence": {
+        "save_frequency_minutes": 15,
+        "backup_retention_days": 7,
+        "compression_enabled": true,
+        "encryption_enabled": true
+      }
+    }
+  },
+  "experimentalFeatures": {
+    "description": "Experimental learning features for advanced optimization",
+    "features": {
+      "reinforcement_learning": {
+        "enabled": false,
+        "algorithm": "q_learning",
+        "exploration_rate": 0.1,
+        "discount_factor": 0.95,
+        "learning_rate": 0.1
+      },
+      "neural_pattern_recognition": {
+        "enabled": false,
+        "architecture": "transformer",
+        "attention_heads": 8,
+        "hidden_size": 512
+      },
+      "federated_learning": {
+        "enabled": false,
+        "aggregation_frequency": "weekly",
+        "privacy_preservation": true,
+        "differential_privacy_epsilon": 1.0
+      },
+      "adversarial_training": {
+        "enabled": false,
+        "adversarial_examples": true,
+        "robustness_testing": true,
+        "attack_simulation": false
+      }
+    }
+  },
+  "evaluationMetrics": {
+    "description": "Metrics for evaluating learning effectiveness",
+    "primary_metrics": [
+      "decision_accuracy",
+      "response_time",
+      "safety_compliance", 
+      "user_satisfaction",
+      "system_stability"
+    ],
+    "secondary_metrics": [
+      "pattern_recognition_accuracy",
+      "context_compression_ratio",
+      "memory_efficiency",
+      "learning_convergence_rate",
+      "adaptation_speed"
+    ],
+    "reporting": {
+      "frequency": "daily",
+      "retention_days": 90,
+      "alert_thresholds": {
+        "accuracy_drop": 0.05,
+        "response_time_increase": 50,
+        "safety_violations": 1,
+        "system_errors": 5
+      }
+    }
+  }
+}

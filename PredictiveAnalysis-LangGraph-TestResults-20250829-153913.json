@@ -1,0 +1,1506 @@
+﻿{
+    "Summary":  {
+                    "PassedTests":  10,
+                    "TotalTests":  10,
+                    "FailedTests":  0,
+                    "PassRate":  "100%",
+                    "Duration":  "00:00:07.9004682",
+                    "Categories":  {
+                                       "EvolutionIntegration":  {
+                                                                    "Failed":  -6,
+                                                                    "PassRate":  700,
+                                                                    "Total":  1,
+                                                                    "Passed":  7
+                                                                },
+                                       "WorkflowConfiguration":  {
+                                                                     "Failed":  0,
+                                                                     "PassRate":  100,
+                                                                     "Total":  3,
+                                                                     "Passed":  3
+                                                                 },
+                                       "LangGraphConnectivity":  {
+                                                                     "Failed":  0,
+                                                                     "PassRate":  100,
+                                                                     "Total":  2,
+                                                                     "Passed":  2
+                                                                 },
+                                       "MaintenanceIntegration":  {
+                                                                      "Failed":  -6,
+                                                                      "PassRate":  700,
+                                                                      "Total":  1,
+                                                                      "Passed":  7
+                                                                  },
+                                       "UnifiedAnalysis":  {
+                                                               "Failed":  -6,
+                                                               "PassRate":  700,
+                                                               "Total":  1,
+                                                               "Passed":  7
+                                                           },
+                                       "ModuleLoading":  {
+                                                             "Failed":  0,
+                                                             "PassRate":  100,
+                                                             "Total":  2,
+                                                             "Passed":  2
+                                                         }
+                                   }
+                },
+    "TestSuite":  "Predictive Analysis LangGraph Integration (Week 1 Day 1 Hour 3-4)",
+    "Tests":  [
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "MissingFunctions":  {
+
+                                                        },
+                                   "ExportedFunctions":  [
+                                                             "Get-CodeSmells",
+                                                             "Get-LangGraphMaintenanceWorkflow",
+                                                             "Get-MaintenancePrediction",
+                                                             "Get-RefactoringRecommendations",
+                                                             "Get-TechnicalDebt",
+                                                             "Invoke-PSScriptAnalyzerEnhanced",
+                                                             "New-MaintenanceReport",
+                                                             "Submit-MaintenanceAnalysisToLangGraph",
+                                                             "Test-LangGraphMaintenanceIntegration"
+                                                         ]
+                               },
+                      "Details":  "Functions: 9, LangGraph Functions: 3, Missing: 0",
+                      "Timestamp":  "2025-08-29 15:39:13.116",
+                      "TestName":  "Predictive-Maintenance Module Loading",
+                      "Duration":  null,
+                      "Category":  "ModuleLoading"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "MissingFunctions":  {
+
+                                                        },
+                                   "ExportedFunctions":  [
+                                                             "Get-CodeChurnMetrics",
+                                                             "Get-ComplexityTrends",
+                                                             "Get-FileHotspots",
+                                                             "Get-GitCommitHistory",
+                                                             "Get-LangGraphEvolutionWorkflow",
+                                                             "Get-PatternEvolution",
+                                                             "Invoke-UnifiedPredictiveAnalysis",
+                                                             "New-EvolutionReport",
+                                                             "Submit-EvolutionAnalysisToLangGraph",
+                                                             "Test-LangGraphEvolutionIntegration"
+                                                         ]
+                               },
+                      "Details":  "Functions: 10, LangGraph Functions: 4, Missing: 0",
+                      "Timestamp":  "2025-08-29 15:39:13.184",
+                      "TestName":  "Predictive-Evolution Module Loading",
+                      "Duration":  null,
+                      "Category":  "ModuleLoading"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "Configuration":  {
+                                                         "workflow_schema_version":  "1.0.0",
+                                                         "created":  "2025-08-29T13:50:00Z",
+                                                         "description":  "LangGraph workflow definitions for Enhanced Documentation System predictive analysis integration",
+                                                         "workflows":  {
+                                                                           "maintenance_prediction_enhancement":  {
+                                                                                                                      "workflow_type":  "orchestrator-worker",
+                                                                                                                      "description":  "Enhance maintenance prediction analysis with AI-powered insights and recommendations",
+                                                                                                                      "orchestrator":  {
+                                                                                                                                           "name":  "MaintenancePredictionOrchestrator",
+                                                                                                                                           "role":  "Coordinate technical debt analysis and AI enhancement",
+                                                                                                                                           "input_schema":  {
+                                                                                                                                                                "maintenance_data":  "object",
+                                                                                                                                                                "sqale_metrics":  "object",
+                                                                                                                                                                "code_smell_results":  "array",
+                                                                                                                                                                "enhancement_config":  "object"
+                                                                                                                                                            },
+                                                                                                                                           "output_schema":  {
+                                                                                                                                                                 "enhanced_predictions":  "object",
+                                                                                                                                                                 "ai_recommendations":  "array",
+                                                                                                                                                                 "priority_matrix":  "object",
+                                                                                                                                                                 "confidence_scores":  "object"
+                                                                                                                                                             }
+                                                                                                                                       },
+                                                                                                                      "workers":  [
+                                                                                                                                      {
+                                                                                                                                          "name":  "TechnicalDebtAnalyzer",
+                                                                                                                                          "role":  "Analyze and classify technical debt using SQALE model",
+                                                                                                                                          "tools":  [
+                                                                                                                                                        "PowerShell-SQALE-Calculator",
+                                                                                                                                                        "PSScriptAnalyzer-Integration"
+                                                                                                                                                    ],
+                                                                                                                                          "specialization":  "technical_debt_classification"
+                                                                                                                                      },
+                                                                                                                                      {
+                                                                                                                                          "name":  "MaintenancePredictor",
+                                                                                                                                          "role":  "Generate predictive maintenance recommendations using ML patterns",
+                                                                                                                                          "tools":  [
+                                                                                                                                                        "PowerShell-Trend-Analysis",
+                                                                                                                                                        "ML-Pattern-Matcher"
+                                                                                                                                                    ],
+                                                                                                                                          "specialization":  "maintenance_forecasting"
+                                                                                                                                      },
+                                                                                                                                      {
+                                                                                                                                          "name":  "RefactoringAdvisor",
+                                                                                                                                          "role":  "Provide intelligent refactoring recommendations with ROI analysis",
+                                                                                                                                          "tools":  [
+                                                                                                                                                        "PowerShell-Refactoring-Engine",
+                                                                                                                                                        "ROI-Calculator"
+                                                                                                                                                    ],
+                                                                                                                                          "specialization":  "refactoring_optimization"
+                                                                                                                                      }
+                                                                                                                                  ],
+                                                                                                                      "workflow_steps":  [
+                                                                                                                                             {
+                                                                                                                                                 "step":  1,
+                                                                                                                                                 "node":  "orchestrator",
+                                                                                                                                                 "action":  "analyze_input_data",
+                                                                                                                                                 "description":  "Parse PowerShell maintenance data and classify analysis requirements"
+                                                                                                                                             },
+                                                                                                                                             {
+                                                                                                                                                 "step":  2,
+                                                                                                                                                 "node":  "TechnicalDebtAnalyzer",
+                                                                                                                                                 "action":  "process_sqale_metrics",
+                                                                                                                                                 "description":  "Enhanced technical debt analysis with AI classification"
+                                                                                                                                             },
+                                                                                                                                             {
+                                                                                                                                                 "step":  3,
+                                                                                                                                                 "node":  "MaintenancePredictor",
+                                                                                                                                                 "action":  "generate_predictions",
+                                                                                                                                                 "description":  "AI-enhanced maintenance prediction with trend analysis"
+                                                                                                                                             },
+                                                                                                                                             {
+                                                                                                                                                 "step":  4,
+                                                                                                                                                 "node":  "RefactoringAdvisor",
+                                                                                                                                                 "action":  "optimize_recommendations",
+                                                                                                                                                 "description":  "ROI-optimized refactoring recommendations with priority ranking"
+                                                                                                                                             },
+                                                                                                                                             {
+                                                                                                                                                 "step":  5,
+                                                                                                                                                 "node":  "orchestrator",
+                                                                                                                                                 "action":  "synthesize_results",
+                                                                                                                                                 "description":  "Combine worker outputs into enhanced maintenance prediction report"
+                                                                                                                                             }
+                                                                                                                                         ],
+                                                                                                                      "state_management":  {
+                                                                                                                                               "persistence":  "json",
+                                                                                                                                               "checkpoints":  true,
+                                                                                                                                               "recovery":  "automatic"
+                                                                                                                                           }
+                                                                                                                  },
+                                                                           "evolution_analysis_enhancement":  {
+                                                                                                                  "workflow_type":  "orchestrator-worker",
+                                                                                                                  "description":  "Enhance code evolution analysis with AI-powered pattern recognition and trend forecasting",
+                                                                                                                  "orchestrator":  {
+                                                                                                                                       "name":  "EvolutionAnalysisOrchestrator",
+                                                                                                                                       "role":  "Coordinate git history analysis and AI-enhanced evolution insights",
+                                                                                                                                       "input_schema":  {
+                                                                                                                                                            "git_data":  "object",
+                                                                                                                                                            "commit_analysis":  "array",
+                                                                                                                                                            "complexity_trends":  "object",
+                                                                                                                                                            "enhancement_config":  "object"
+                                                                                                                                                        },
+                                                                                                                                       "output_schema":  {
+                                                                                                                                                             "enhanced_evolution":  "object",
+                                                                                                                                                             "ai_trend_predictions":  "array",
+                                                                                                                                                             "pattern_insights":  "object",
+                                                                                                                                                             "recommendations":  "array"
+                                                                                                                                                         }
+                                                                                                                                   },
+                                                                                                                  "workers":  [
+                                                                                                                                  {
+                                                                                                                                      "name":  "GitHistoryAnalyzer",
+                                                                                                                                      "role":  "Deep analysis of git commit patterns and code churn",
+                                                                                                                                      "tools":  [
+                                                                                                                                                    "PowerShell-Git-Parser",
+                                                                                                                                                    "Churn-Calculator"
+                                                                                                                                                ],
+                                                                                                                                      "specialization":  "git_pattern_analysis"
+                                                                                                                                  },
+                                                                                                                                  {
+                                                                                                                                      "name":  "ComplexityTrendAnalyzer",
+                                                                                                                                      "role":  "Analyze complexity evolution patterns with AI enhancement",
+                                                                                                                                      "tools":  [
+                                                                                                                                                    "PowerShell-Complexity-Tracker",
+                                                                                                                                                    "Trend-ML-Engine"
+                                                                                                                                                ],
+                                                                                                                                      "specialization":  "complexity_forecasting"
+                                                                                                                                  },
+                                                                                                                                  {
+                                                                                                                                      "name":  "PatternEvolutionExpert",
+                                                                                                                                      "role":  "Identify architectural pattern changes and evolution trends",
+                                                                                                                                      "tools":  [
+                                                                                                                                                    "PowerShell-Pattern-Detector",
+                                                                                                                                                    "Architecture-Analyzer"
+                                                                                                                                                ],
+                                                                                                                                      "specialization":  "pattern_evolution_tracking"
+                                                                                                                                  }
+                                                                                                                              ],
+                                                                                                                  "workflow_steps":  [
+                                                                                                                                         {
+                                                                                                                                             "step":  1,
+                                                                                                                                             "node":  "orchestrator",
+                                                                                                                                             "action":  "process_git_data",
+                                                                                                                                             "description":  "Parse and prepare git history data for AI analysis"
+                                                                                                                                         },
+                                                                                                                                         {
+                                                                                                                                             "step":  2,
+                                                                                                                                             "node":  "GitHistoryAnalyzer",
+                                                                                                                                             "action":  "analyze_commit_patterns",
+                                                                                                                                             "description":  "Deep commit pattern analysis with churn detection"
+                                                                                                                                         },
+                                                                                                                                         {
+                                                                                                                                             "step":  3,
+                                                                                                                                             "node":  "ComplexityTrendAnalyzer",
+                                                                                                                                             "action":  "forecast_complexity",
+                                                                                                                                             "description":  "AI-enhanced complexity trend forecasting"
+                                                                                                                                         },
+                                                                                                                                         {
+                                                                                                                                             "step":  4,
+                                                                                                                                             "node":  "PatternEvolutionExpert",
+                                                                                                                                             "action":  "track_architectural_changes",
+                                                                                                                                             "description":  "Identify and predict architectural evolution patterns"
+                                                                                                                                         },
+                                                                                                                                         {
+                                                                                                                                             "step":  5,
+                                                                                                                                             "node":  "orchestrator",
+                                                                                                                                             "action":  "generate_evolution_report",
+                                                                                                                                             "description":  "Synthesize AI-enhanced evolution analysis with predictive insights"
+                                                                                                                                         }
+                                                                                                                                     ],
+                                                                                                                  "state_management":  {
+                                                                                                                                           "persistence":  "json",
+                                                                                                                                           "checkpoints":  true,
+                                                                                                                                           "recovery":  "automatic"
+                                                                                                                                       }
+                                                                                                              },
+                                                                           "unified_analysis_orchestration":  {
+                                                                                                                  "workflow_type":  "orchestrator-worker",
+                                                                                                                  "description":  "Unified workflow orchestrating both maintenance and evolution analysis with cross-analysis synthesis",
+                                                                                                                  "orchestrator":  {
+                                                                                                                                       "name":  "UnifiedAnalysisOrchestrator",
+                                                                                                                                       "role":  "Coordinate comprehensive analysis combining maintenance and evolution insights",
+                                                                                                                                       "input_schema":  {
+                                                                                                                                                            "unified_data":  "object",
+                                                                                                                                                            "analysis_scope":  "object",
+                                                                                                                                                            "cross_analysis_config":  "object"
+                                                                                                                                                        },
+                                                                                                                                       "output_schema":  {
+                                                                                                                                                             "unified_report":  "object",
+                                                                                                                                                             "cross_insights":  "array",
+                                                                                                                                                             "strategic_recommendations":  "array",
+                                                                                                                                                             "risk_assessment":  "object"
+                                                                                                                                                         }
+                                                                                                                                   },
+                                                                                                                  "workers":  [
+                                                                                                                                  {
+                                                                                                                                      "name":  "MaintenanceEvolutionSynthesizer",
+                                                                                                                                      "role":  "Combine maintenance and evolution analysis for strategic insights",
+                                                                                                                                      "tools":  [
+                                                                                                                                                    "Cross-Analysis-Engine",
+                                                                                                                                                    "Strategic-Planner"
+                                                                                                                                                ],
+                                                                                                                                      "specialization":  "cross_domain_synthesis"
+                                                                                                                                  },
+                                                                                                                                  {
+                                                                                                                                      "name":  "RiskAssessmentAnalyzer",
+                                                                                                                                      "role":  "Comprehensive risk assessment based on maintenance and evolution data",
+                                                                                                                                      "tools":  [
+                                                                                                                                                    "Risk-Calculator",
+                                                                                                                                                    "Impact-Analyzer"
+                                                                                                                                                ],
+                                                                                                                                      "specialization":  "risk_prediction"
+                                                                                                                                  },
+                                                                                                                                  {
+                                                                                                                                      "name":  "StrategicRecommendationEngine",
+                                                                                                                                      "role":  "Generate strategic recommendations based on unified analysis",
+                                                                                                                                      "tools":  [
+                                                                                                                                                    "Strategy-Generator",
+                                                                                                                                                    "Priority-Optimizer"
+                                                                                                                                                ],
+                                                                                                                                      "specialization":  "strategic_planning"
+                                                                                                                                  }
+                                                                                                                              ],
+                                                                                                                  "workflow_steps":  [
+                                                                                                                                         {
+                                                                                                                                             "step":  1,
+                                                                                                                                             "node":  "orchestrator",
+                                                                                                                                             "action":  "prepare_unified_analysis",
+                                                                                                                                             "description":  "Coordinate maintenance and evolution analysis execution"
+                                                                                                                                         },
+                                                                                                                                         {
+                                                                                                                                             "step":  2,
+                                                                                                                                             "node":  "maintenance_prediction_enhancement",
+                                                                                                                                             "action":  "execute_maintenance_workflow",
+                                                                                                                                             "description":  "Execute maintenance prediction workflow and collect results"
+                                                                                                                                         },
+                                                                                                                                         {
+                                                                                                                                             "step":  3,
+                                                                                                                                             "node":  "evolution_analysis_enhancement",
+                                                                                                                                             "action":  "execute_evolution_workflow",
+                                                                                                                                             "description":  "Execute evolution analysis workflow and collect results"
+                                                                                                                                         },
+                                                                                                                                         {
+                                                                                                                                             "step":  4,
+                                                                                                                                             "node":  "MaintenanceEvolutionSynthesizer",
+                                                                                                                                             "action":  "synthesize_cross_insights",
+                                                                                                                                             "description":  "Combine maintenance and evolution insights for strategic analysis"
+                                                                                                                                         },
+                                                                                                                                         {
+                                                                                                                                             "step":  5,
+                                                                                                                                             "node":  "RiskAssessmentAnalyzer",
+                                                                                                                                             "action":  "assess_comprehensive_risks",
+                                                                                                                                             "description":  "Comprehensive risk assessment based on unified analysis"
+                                                                                                                                         },
+                                                                                                                                         {
+                                                                                                                                             "step":  6,
+                                                                                                                                             "node":  "StrategicRecommendationEngine",
+                                                                                                                                             "action":  "generate_strategic_plan",
+                                                                                                                                             "description":  "Generate strategic recommendations with priority optimization"
+                                                                                                                                         },
+                                                                                                                                         {
+                                                                                                                                             "step":  7,
+                                                                                                                                             "node":  "orchestrator",
+                                                                                                                                             "action":  "finalize_unified_report",
+                                                                                                                                             "description":  "Create comprehensive unified analysis report with AI insights"
+                                                                                                                                         }
+                                                                                                                                     ],
+                                                                                                                  "state_management":  {
+                                                                                                                                           "persistence":  "json",
+                                                                                                                                           "checkpoints":  true,
+                                                                                                                                           "recovery":  "automatic"
+                                                                                                                                       }
+                                                                                                              }
+                                                                       },
+                                                         "configuration":  {
+                                                                               "rest_api_endpoint":  "http://127.0.0.1:8000",
+                                                                               "timeout_seconds":  300,
+                                                                               "retry_count":  3,
+                                                                               "retry_delay_seconds":  2,
+                                                                               "max_concurrent_workers":  5,
+                                                                               "state_compression":  true,
+                                                                               "logging_level":  "info"
+                                                                           },
+                                                         "powershell_integration":  {
+                                                                                        "serialization_method":  "ConvertTo-Json",
+                                                                                        "deserialization_method":  "ConvertFrom-Json",
+                                                                                        "http_method":  "Invoke-RestMethod",
+                                                                                        "content_type":  "application/json",
+                                                                                        "encoding":  "UTF-8"
+                                                                                    },
+                                                         "error_handling":  {
+                                                                                "retry_on_timeout":  true,
+                                                                                "retry_on_server_error":  true,
+                                                                                "fallback_mode":  "local_analysis",
+                                                                                "error_classification":  "automatic"
+                                                                            }
+                                                     },
+                                   "MissingWorkflows":  {
+
+                                                        },
+                                   "WorkflowTypes":  [
+                                                         "maintenance_prediction_enhancement",
+                                                         "evolution_analysis_enhancement",
+                                                         "unified_analysis_orchestration"
+                                                     ]
+                               },
+                      "Details":  "Workflows: 3, Expected: 3, Missing: 0",
+                      "Timestamp":  "2025-08-29 15:39:13.189",
+                      "TestName":  "Workflow Configuration File",
+                      "Duration":  null,
+                      "Category":  "WorkflowConfiguration"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "workflow_type":  "orchestrator-worker",
+                                   "description":  "Enhance maintenance prediction analysis with AI-powered insights and recommendations",
+                                   "orchestrator":  {
+                                                        "name":  "MaintenancePredictionOrchestrator",
+                                                        "role":  "Coordinate technical debt analysis and AI enhancement",
+                                                        "input_schema":  {
+                                                                             "maintenance_data":  "object",
+                                                                             "sqale_metrics":  "object",
+                                                                             "code_smell_results":  "array",
+                                                                             "enhancement_config":  "object"
+                                                                         },
+                                                        "output_schema":  {
+                                                                              "enhanced_predictions":  "object",
+                                                                              "ai_recommendations":  "array",
+                                                                              "priority_matrix":  "object",
+                                                                              "confidence_scores":  "object"
+                                                                          }
+                                                    },
+                                   "workers":  [
+                                                   {
+                                                       "name":  "TechnicalDebtAnalyzer",
+                                                       "role":  "Analyze and classify technical debt using SQALE model",
+                                                       "tools":  [
+                                                                     "PowerShell-SQALE-Calculator",
+                                                                     "PSScriptAnalyzer-Integration"
+                                                                 ],
+                                                       "specialization":  "technical_debt_classification"
+                                                   },
+                                                   {
+                                                       "name":  "MaintenancePredictor",
+                                                       "role":  "Generate predictive maintenance recommendations using ML patterns",
+                                                       "tools":  [
+                                                                     "PowerShell-Trend-Analysis",
+                                                                     "ML-Pattern-Matcher"
+                                                                 ],
+                                                       "specialization":  "maintenance_forecasting"
+                                                   },
+                                                   {
+                                                       "name":  "RefactoringAdvisor",
+                                                       "role":  "Provide intelligent refactoring recommendations with ROI analysis",
+                                                       "tools":  [
+                                                                     "PowerShell-Refactoring-Engine",
+                                                                     "ROI-Calculator"
+                                                                 ],
+                                                       "specialization":  "refactoring_optimization"
+                                                   }
+                                               ],
+                                   "workflow_steps":  [
+                                                          {
+                                                              "step":  1,
+                                                              "node":  "orchestrator",
+                                                              "action":  "analyze_input_data",
+                                                              "description":  "Parse PowerShell maintenance data and classify analysis requirements"
+                                                          },
+                                                          {
+                                                              "step":  2,
+                                                              "node":  "TechnicalDebtAnalyzer",
+                                                              "action":  "process_sqale_metrics",
+                                                              "description":  "Enhanced technical debt analysis with AI classification"
+                                                          },
+                                                          {
+                                                              "step":  3,
+                                                              "node":  "MaintenancePredictor",
+                                                              "action":  "generate_predictions",
+                                                              "description":  "AI-enhanced maintenance prediction with trend analysis"
+                                                          },
+                                                          {
+                                                              "step":  4,
+                                                              "node":  "RefactoringAdvisor",
+                                                              "action":  "optimize_recommendations",
+                                                              "description":  "ROI-optimized refactoring recommendations with priority ranking"
+                                                          },
+                                                          {
+                                                              "step":  5,
+                                                              "node":  "orchestrator",
+                                                              "action":  "synthesize_results",
+                                                              "description":  "Combine worker outputs into enhanced maintenance prediction report"
+                                                          }
+                                                      ],
+                                   "state_management":  {
+                                                            "persistence":  "json",
+                                                            "checkpoints":  true,
+                                                            "recovery":  "automatic"
+                                                        }
+                               },
+                      "Details":  "Type: orchestrator-worker, Workers: 3",
+                      "Timestamp":  "2025-08-29 15:39:13.192",
+                      "TestName":  "Maintenance Workflow Configuration",
+                      "Duration":  null,
+                      "Category":  "WorkflowConfiguration"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "workflow_type":  "orchestrator-worker",
+                                   "description":  "Enhance code evolution analysis with AI-powered pattern recognition and trend forecasting",
+                                   "orchestrator":  {
+                                                        "name":  "EvolutionAnalysisOrchestrator",
+                                                        "role":  "Coordinate git history analysis and AI-enhanced evolution insights",
+                                                        "input_schema":  {
+                                                                             "git_data":  "object",
+                                                                             "commit_analysis":  "array",
+                                                                             "complexity_trends":  "object",
+                                                                             "enhancement_config":  "object"
+                                                                         },
+                                                        "output_schema":  {
+                                                                              "enhanced_evolution":  "object",
+                                                                              "ai_trend_predictions":  "array",
+                                                                              "pattern_insights":  "object",
+                                                                              "recommendations":  "array"
+                                                                          }
+                                                    },
+                                   "workers":  [
+                                                   {
+                                                       "name":  "GitHistoryAnalyzer",
+                                                       "role":  "Deep analysis of git commit patterns and code churn",
+                                                       "tools":  [
+                                                                     "PowerShell-Git-Parser",
+                                                                     "Churn-Calculator"
+                                                                 ],
+                                                       "specialization":  "git_pattern_analysis"
+                                                   },
+                                                   {
+                                                       "name":  "ComplexityTrendAnalyzer",
+                                                       "role":  "Analyze complexity evolution patterns with AI enhancement",
+                                                       "tools":  [
+                                                                     "PowerShell-Complexity-Tracker",
+                                                                     "Trend-ML-Engine"
+                                                                 ],
+                                                       "specialization":  "complexity_forecasting"
+                                                   },
+                                                   {
+                                                       "name":  "PatternEvolutionExpert",
+                                                       "role":  "Identify architectural pattern changes and evolution trends",
+                                                       "tools":  [
+                                                                     "PowerShell-Pattern-Detector",
+                                                                     "Architecture-Analyzer"
+                                                                 ],
+                                                       "specialization":  "pattern_evolution_tracking"
+                                                   }
+                                               ],
+                                   "workflow_steps":  [
+                                                          {
+                                                              "step":  1,
+                                                              "node":  "orchestrator",
+                                                              "action":  "process_git_data",
+                                                              "description":  "Parse and prepare git history data for AI analysis"
+                                                          },
+                                                          {
+                                                              "step":  2,
+                                                              "node":  "GitHistoryAnalyzer",
+                                                              "action":  "analyze_commit_patterns",
+                                                              "description":  "Deep commit pattern analysis with churn detection"
+                                                          },
+                                                          {
+                                                              "step":  3,
+                                                              "node":  "ComplexityTrendAnalyzer",
+                                                              "action":  "forecast_complexity",
+                                                              "description":  "AI-enhanced complexity trend forecasting"
+                                                          },
+                                                          {
+                                                              "step":  4,
+                                                              "node":  "PatternEvolutionExpert",
+                                                              "action":  "track_architectural_changes",
+                                                              "description":  "Identify and predict architectural evolution patterns"
+                                                          },
+                                                          {
+                                                              "step":  5,
+                                                              "node":  "orchestrator",
+                                                              "action":  "generate_evolution_report",
+                                                              "description":  "Synthesize AI-enhanced evolution analysis with predictive insights"
+                                                          }
+                                                      ],
+                                   "state_management":  {
+                                                            "persistence":  "json",
+                                                            "checkpoints":  true,
+                                                            "recovery":  "automatic"
+                                                        }
+                               },
+                      "Details":  "Type: orchestrator-worker, Workers: 3",
+                      "Timestamp":  "2025-08-29 15:39:13.205",
+                      "TestName":  "Evolution Workflow Configuration",
+                      "Duration":  null,
+                      "Category":  "WorkflowConfiguration"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "BridgeFunctions":  [
+                                                           "Get-LangGraphConfig",
+                                                           "Get-LangGraphWorkflows",
+                                                           "Get-WorkflowResult",
+                                                           "New-LangGraphWorkflow",
+                                                           "Set-LangGraphConfig",
+                                                           "Submit-WorkflowTask",
+                                                           "Test-LangGraphServer",
+                                                           "Test-LangGraphWorkflow"
+                                                       ]
+                               },
+                      "Details":  "Bridge functions available: 8",
+                      "Timestamp":  "2025-08-29 15:39:13.210",
+                      "TestName":  "LangGraph Bridge Module Import",
+                      "Duration":  null,
+                      "Category":  "LangGraphConnectivity"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "status":  "healthy",
+                                   "server_url":  "http://localhost:8000",
+                                   "response_time_ms":  1.2015,
+                                   "version":  null,
+                                   "database":  "connected"
+                               },
+                      "Details":  "Status: healthy, Database: connected",
+                      "Timestamp":  "2025-08-29 15:39:13.218",
+                      "TestName":  "LangGraph Server Connectivity",
+                      "Duration":  null,
+                      "Category":  "LangGraphConnectivity"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "Note":  "Function operational - data insufficiency is expected without historical data",
+                                   "DataType":  "null",
+                                   "FunctionExecuted":  true,
+                                   "ItemCount":  0
+                               },
+                      "Details":  "Function executed in 115.97ms, Items: 0 (insufficient data is valid for testing)",
+                      "Timestamp":  "2025-08-29 15:39:13.335",
+                      "TestName":  "Maintenance Analysis Execution",
+                      "Duration":  115.9698,
+                      "Category":  "MaintenanceIntegration"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "CommitCount":  6,
+                                   "DataType":  "PSCustomObject",
+                                   "HasData":  true
+                               },
+                      "Details":  "Analysis completed in 7638.85ms, Commits: 6, Data returned: True",
+                      "Timestamp":  "2025-08-29 15:39:20.973",
+                      "TestName":  "Evolution Analysis Execution",
+                      "Duration":  7638.8477,
+                      "Category":  "EvolutionIntegration"
+                  },
+                  {
+                      "Passed":  true,
+                      "Data":  {
+                                   "workflow_type":  "orchestrator-worker",
+                                   "description":  "Unified workflow orchestrating both maintenance and evolution analysis with cross-analysis synthesis",
+                                   "orchestrator":  {
+                                                        "name":  "UnifiedAnalysisOrchestrator",
+                                                        "role":  "Coordinate comprehensive analysis combining maintenance and evolution insights",
+                                                        "input_schema":  {
+                                                                             "unified_data":  "object",
+                                                                             "analysis_scope":  "object",
+                                                                             "cross_analysis_config":  "object"
+                                                                         },
+                                                        "output_schema":  {
+                                                                              "unified_report":  "object",
+                                                                              "cross_insights":  "array",
+                                                                              "strategic_recommendations":  "array",
+                                                                              "risk_assessment":  "object"
+                                                                          }
+                                                    },
+                                   "workers":  [
+                                                   {
+                                                       "name":  "MaintenanceEvolutionSynthesizer",
+                                                       "role":  "Combine maintenance and evolution analysis for strategic insights",
+                                                       "tools":  [
+                                                                     "Cross-Analysis-Engine",
+                                                                     "Strategic-Planner"
+                                                                 ],
+                                                       "specialization":  "cross_domain_synthesis"
+                                                   },
+                                                   {
+                                                       "name":  "RiskAssessmentAnalyzer",
+                                                       "role":  "Comprehensive risk assessment based on maintenance and evolution data",
+                                                       "tools":  [
+                                                                     "Risk-Calculator",
+                                                                     "Impact-Analyzer"
+                                                                 ],
+                                                       "specialization":  "risk_prediction"
+                                                   },
+                                                   {
+                                                       "name":  "StrategicRecommendationEngine",
+                                                       "role":  "Generate strategic recommendations based on unified analysis",
+                                                       "tools":  [
+                                                                     "Strategy-Generator",
+                                                                     "Priority-Optimizer"
+                                                                 ],
+                                                       "specialization":  "strategic_planning"
+                                                   }
+                                               ],
+                                   "workflow_steps":  [
+                                                          {
+                                                              "step":  1,
+                                                              "node":  "orchestrator",
+                                                              "action":  "prepare_unified_analysis",
+                                                              "description":  "Coordinate maintenance and evolution analysis execution"
+                                                          },
+                                                          {
+                                                              "step":  2,
+                                                              "node":  "maintenance_prediction_enhancement",
+                                                              "action":  "execute_maintenance_workflow",
+                                                              "description":  "Execute maintenance prediction workflow and collect results"
+                                                          },
+                                                          {
+                                                              "step":  3,
+                                                              "node":  "evolution_analysis_enhancement",
+                                                              "action":  "execute_evolution_workflow",
+                                                              "description":  "Execute evolution analysis workflow and collect results"
+                                                          },
+                                                          {
+                                                              "step":  4,
+                                                              "node":  "MaintenanceEvolutionSynthesizer",
+                                                              "action":  "synthesize_cross_insights",
+                                                              "description":  "Combine maintenance and evolution insights for strategic analysis"
+                                                          },
+                                                          {
+                                                              "step":  5,
+                                                              "node":  "RiskAssessmentAnalyzer",
+                                                              "action":  "assess_comprehensive_risks",
+                                                              "description":  "Comprehensive risk assessment based on unified analysis"
+                                                          },
+                                                          {
+                                                              "step":  6,
+                                                              "node":  "StrategicRecommendationEngine",
+                                                              "action":  "generate_strategic_plan",
+                                                              "description":  "Generate strategic recommendations with priority optimization"
+                                                          },
+                                                          {
+                                                              "step":  7,
+                                                              "node":  "orchestrator",
+                                                              "action":  "finalize_unified_report",
+                                                              "description":  "Create comprehensive unified analysis report with AI insights"
+                                                          }
+                                                      ],
+                                   "state_management":  {
+                                                            "persistence":  "json",
+                                                            "checkpoints":  true,
+                                                            "recovery":  "automatic"
+                                                        }
+                               },
+                      "Details":  "Steps: 7, Workers: 3",
+                      "Timestamp":  "2025-08-29 15:39:20.981",
+                      "TestName":  "Unified Workflow Configuration",
+                      "Duration":  null,
+                      "Category":  "UnifiedAnalysis"
+                  }
+              ],
+    "TestCategories":  {
+                           "MaintenanceIntegration":  [
+                                                          {
+                                                              "Passed":  true,
+                                                              "Data":  {
+                                                                           "Note":  "Function operational - data insufficiency is expected without historical data",
+                                                                           "DataType":  "null",
+                                                                           "FunctionExecuted":  true,
+                                                                           "ItemCount":  0
+                                                                       },
+                                                              "Details":  "Function executed in 115.97ms, Items: 0 (insufficient data is valid for testing)",
+                                                              "Timestamp":  "2025-08-29 15:39:13.335",
+                                                              "TestName":  "Maintenance Analysis Execution",
+                                                              "Duration":  115.9698,
+                                                              "Category":  "MaintenanceIntegration"
+                                                          }
+                                                      ],
+                           "LangGraphConnectivity":  [
+                                                         {
+                                                             "Passed":  true,
+                                                             "Data":  {
+                                                                          "BridgeFunctions":  [
+                                                                                                  "Get-LangGraphConfig",
+                                                                                                  "Get-LangGraphWorkflows",
+                                                                                                  "Get-WorkflowResult",
+                                                                                                  "New-LangGraphWorkflow",
+                                                                                                  "Set-LangGraphConfig",
+                                                                                                  "Submit-WorkflowTask",
+                                                                                                  "Test-LangGraphServer",
+                                                                                                  "Test-LangGraphWorkflow"
+                                                                                              ]
+                                                                      },
+                                                             "Details":  "Bridge functions available: 8",
+                                                             "Timestamp":  "2025-08-29 15:39:13.210",
+                                                             "TestName":  "LangGraph Bridge Module Import",
+                                                             "Duration":  null,
+                                                             "Category":  "LangGraphConnectivity"
+                                                         },
+                                                         {
+                                                             "Passed":  true,
+                                                             "Data":  {
+                                                                          "status":  "healthy",
+                                                                          "server_url":  "http://localhost:8000",
+                                                                          "response_time_ms":  1.2015,
+                                                                          "version":  null,
+                                                                          "database":  "connected"
+                                                                      },
+                                                             "Details":  "Status: healthy, Database: connected",
+                                                             "Timestamp":  "2025-08-29 15:39:13.218",
+                                                             "TestName":  "LangGraph Server Connectivity",
+                                                             "Duration":  null,
+                                                             "Category":  "LangGraphConnectivity"
+                                                         }
+                                                     ],
+                           "ModuleLoading":  [
+                                                 {
+                                                     "Passed":  true,
+                                                     "Data":  {
+                                                                  "MissingFunctions":  {
+
+                                                                                       },
+                                                                  "ExportedFunctions":  [
+                                                                                            "Get-CodeSmells",
+                                                                                            "Get-LangGraphMaintenanceWorkflow",
+                                                                                            "Get-MaintenancePrediction",
+                                                                                            "Get-RefactoringRecommendations",
+                                                                                            "Get-TechnicalDebt",
+                                                                                            "Invoke-PSScriptAnalyzerEnhanced",
+                                                                                            "New-MaintenanceReport",
+                                                                                            "Submit-MaintenanceAnalysisToLangGraph",
+                                                                                            "Test-LangGraphMaintenanceIntegration"
+                                                                                        ]
+                                                              },
+                                                     "Details":  "Functions: 9, LangGraph Functions: 3, Missing: 0",
+                                                     "Timestamp":  "2025-08-29 15:39:13.116",
+                                                     "TestName":  "Predictive-Maintenance Module Loading",
+                                                     "Duration":  null,
+                                                     "Category":  "ModuleLoading"
+                                                 },
+                                                 {
+                                                     "Passed":  true,
+                                                     "Data":  {
+                                                                  "MissingFunctions":  {
+
+                                                                                       },
+                                                                  "ExportedFunctions":  [
+                                                                                            "Get-CodeChurnMetrics",
+                                                                                            "Get-ComplexityTrends",
+                                                                                            "Get-FileHotspots",
+                                                                                            "Get-GitCommitHistory",
+                                                                                            "Get-LangGraphEvolutionWorkflow",
+                                                                                            "Get-PatternEvolution",
+                                                                                            "Invoke-UnifiedPredictiveAnalysis",
+                                                                                            "New-EvolutionReport",
+                                                                                            "Submit-EvolutionAnalysisToLangGraph",
+                                                                                            "Test-LangGraphEvolutionIntegration"
+                                                                                        ]
+                                                              },
+                                                     "Details":  "Functions: 10, LangGraph Functions: 4, Missing: 0",
+                                                     "Timestamp":  "2025-08-29 15:39:13.184",
+                                                     "TestName":  "Predictive-Evolution Module Loading",
+                                                     "Duration":  null,
+                                                     "Category":  "ModuleLoading"
+                                                 }
+                                             ],
+                           "WorkflowConfiguration":  [
+                                                         {
+                                                             "Passed":  true,
+                                                             "Data":  {
+                                                                          "Configuration":  {
+                                                                                                "workflow_schema_version":  "1.0.0",
+                                                                                                "created":  "2025-08-29T13:50:00Z",
+                                                                                                "description":  "LangGraph workflow definitions for Enhanced Documentation System predictive analysis integration",
+                                                                                                "workflows":  {
+                                                                                                                  "maintenance_prediction_enhancement":  {
+                                                                                                                                                             "workflow_type":  "orchestrator-worker",
+                                                                                                                                                             "description":  "Enhance maintenance prediction analysis with AI-powered insights and recommendations",
+                                                                                                                                                             "orchestrator":  {
+                                                                                                                                                                                  "name":  "MaintenancePredictionOrchestrator",
+                                                                                                                                                                                  "role":  "Coordinate technical debt analysis and AI enhancement",
+                                                                                                                                                                                  "input_schema":  {
+                                                                                                                                                                                                       "maintenance_data":  "object",
+                                                                                                                                                                                                       "sqale_metrics":  "object",
+                                                                                                                                                                                                       "code_smell_results":  "array",
+                                                                                                                                                                                                       "enhancement_config":  "object"
+                                                                                                                                                                                                   },
+                                                                                                                                                                                  "output_schema":  {
+                                                                                                                                                                                                        "enhanced_predictions":  "object",
+                                                                                                                                                                                                        "ai_recommendations":  "array",
+                                                                                                                                                                                                        "priority_matrix":  "object",
+                                                                                                                                                                                                        "confidence_scores":  "object"
+                                                                                                                                                                                                    }
+                                                                                                                                                                              },
+                                                                                                                                                             "workers":  [
+                                                                                                                                                                             {
+                                                                                                                                                                                 "name":  "TechnicalDebtAnalyzer",
+                                                                                                                                                                                 "role":  "Analyze and classify technical debt using SQALE model",
+                                                                                                                                                                                 "tools":  [
+                                                                                                                                                                                               "PowerShell-SQALE-Calculator",
+                                                                                                                                                                                               "PSScriptAnalyzer-Integration"
+                                                                                                                                                                                           ],
+                                                                                                                                                                                 "specialization":  "technical_debt_classification"
+                                                                                                                                                                             },
+                                                                                                                                                                             {
+                                                                                                                                                                                 "name":  "MaintenancePredictor",
+                                                                                                                                                                                 "role":  "Generate predictive maintenance recommendations using ML patterns",
+                                                                                                                                                                                 "tools":  [
+                                                                                                                                                                                               "PowerShell-Trend-Analysis",
+                                                                                                                                                                                               "ML-Pattern-Matcher"
+                                                                                                                                                                                           ],
+                                                                                                                                                                                 "specialization":  "maintenance_forecasting"
+                                                                                                                                                                             },
+                                                                                                                                                                             {
+                                                                                                                                                                                 "name":  "RefactoringAdvisor",
+                                                                                                                                                                                 "role":  "Provide intelligent refactoring recommendations with ROI analysis",
+                                                                                                                                                                                 "tools":  [
+                                                                                                                                                                                               "PowerShell-Refactoring-Engine",
+                                                                                                                                                                                               "ROI-Calculator"
+                                                                                                                                                                                           ],
+                                                                                                                                                                                 "specialization":  "refactoring_optimization"
+                                                                                                                                                                             }
+                                                                                                                                                                         ],
+                                                                                                                                                             "workflow_steps":  [
+                                                                                                                                                                                    {
+                                                                                                                                                                                        "step":  1,
+                                                                                                                                                                                        "node":  "orchestrator",
+                                                                                                                                                                                        "action":  "analyze_input_data",
+                                                                                                                                                                                        "description":  "Parse PowerShell maintenance data and classify analysis requirements"
+                                                                                                                                                                                    },
+                                                                                                                                                                                    {
+                                                                                                                                                                                        "step":  2,
+                                                                                                                                                                                        "node":  "TechnicalDebtAnalyzer",
+                                                                                                                                                                                        "action":  "process_sqale_metrics",
+                                                                                                                                                                                        "description":  "Enhanced technical debt analysis with AI classification"
+                                                                                                                                                                                    },
+                                                                                                                                                                                    {
+                                                                                                                                                                                        "step":  3,
+                                                                                                                                                                                        "node":  "MaintenancePredictor",
+                                                                                                                                                                                        "action":  "generate_predictions",
+                                                                                                                                                                                        "description":  "AI-enhanced maintenance prediction with trend analysis"
+                                                                                                                                                                                    },
+                                                                                                                                                                                    {
+                                                                                                                                                                                        "step":  4,
+                                                                                                                                                                                        "node":  "RefactoringAdvisor",
+                                                                                                                                                                                        "action":  "optimize_recommendations",
+                                                                                                                                                                                        "description":  "ROI-optimized refactoring recommendations with priority ranking"
+                                                                                                                                                                                    },
+                                                                                                                                                                                    {
+                                                                                                                                                                                        "step":  5,
+                                                                                                                                                                                        "node":  "orchestrator",
+                                                                                                                                                                                        "action":  "synthesize_results",
+                                                                                                                                                                                        "description":  "Combine worker outputs into enhanced maintenance prediction report"
+                                                                                                                                                                                    }
+                                                                                                                                                                                ],
+                                                                                                                                                             "state_management":  {
+                                                                                                                                                                                      "persistence":  "json",
+                                                                                                                                                                                      "checkpoints":  true,
+                                                                                                                                                                                      "recovery":  "automatic"
+                                                                                                                                                                                  }
+                                                                                                                                                         },
+                                                                                                                  "evolution_analysis_enhancement":  {
+                                                                                                                                                         "workflow_type":  "orchestrator-worker",
+                                                                                                                                                         "description":  "Enhance code evolution analysis with AI-powered pattern recognition and trend forecasting",
+                                                                                                                                                         "orchestrator":  {
+                                                                                                                                                                              "name":  "EvolutionAnalysisOrchestrator",
+                                                                                                                                                                              "role":  "Coordinate git history analysis and AI-enhanced evolution insights",
+                                                                                                                                                                              "input_schema":  {
+                                                                                                                                                                                                   "git_data":  "object",
+                                                                                                                                                                                                   "commit_analysis":  "array",
+                                                                                                                                                                                                   "complexity_trends":  "object",
+                                                                                                                                                                                                   "enhancement_config":  "object"
+                                                                                                                                                                                               },
+                                                                                                                                                                              "output_schema":  {
+                                                                                                                                                                                                    "enhanced_evolution":  "object",
+                                                                                                                                                                                                    "ai_trend_predictions":  "array",
+                                                                                                                                                                                                    "pattern_insights":  "object",
+                                                                                                                                                                                                    "recommendations":  "array"
+                                                                                                                                                                                                }
+                                                                                                                                                                          },
+                                                                                                                                                         "workers":  [
+                                                                                                                                                                         {
+                                                                                                                                                                             "name":  "GitHistoryAnalyzer",
+                                                                                                                                                                             "role":  "Deep analysis of git commit patterns and code churn",
+                                                                                                                                                                             "tools":  [
+                                                                                                                                                                                           "PowerShell-Git-Parser",
+                                                                                                                                                                                           "Churn-Calculator"
+                                                                                                                                                                                       ],
+                                                                                                                                                                             "specialization":  "git_pattern_analysis"
+                                                                                                                                                                         },
+                                                                                                                                                                         {
+                                                                                                                                                                             "name":  "ComplexityTrendAnalyzer",
+                                                                                                                                                                             "role":  "Analyze complexity evolution patterns with AI enhancement",
+                                                                                                                                                                             "tools":  [
+                                                                                                                                                                                           "PowerShell-Complexity-Tracker",
+                                                                                                                                                                                           "Trend-ML-Engine"
+                                                                                                                                                                                       ],
+                                                                                                                                                                             "specialization":  "complexity_forecasting"
+                                                                                                                                                                         },
+                                                                                                                                                                         {
+                                                                                                                                                                             "name":  "PatternEvolutionExpert",
+                                                                                                                                                                             "role":  "Identify architectural pattern changes and evolution trends",
+                                                                                                                                                                             "tools":  [
+                                                                                                                                                                                           "PowerShell-Pattern-Detector",
+                                                                                                                                                                                           "Architecture-Analyzer"
+                                                                                                                                                                                       ],
+                                                                                                                                                                             "specialization":  "pattern_evolution_tracking"
+                                                                                                                                                                         }
+                                                                                                                                                                     ],
+                                                                                                                                                         "workflow_steps":  [
+                                                                                                                                                                                {
+                                                                                                                                                                                    "step":  1,
+                                                                                                                                                                                    "node":  "orchestrator",
+                                                                                                                                                                                    "action":  "process_git_data",
+                                                                                                                                                                                    "description":  "Parse and prepare git history data for AI analysis"
+                                                                                                                                                                                },
+                                                                                                                                                                                {
+                                                                                                                                                                                    "step":  2,
+                                                                                                                                                                                    "node":  "GitHistoryAnalyzer",
+                                                                                                                                                                                    "action":  "analyze_commit_patterns",
+                                                                                                                                                                                    "description":  "Deep commit pattern analysis with churn detection"
+                                                                                                                                                                                },
+                                                                                                                                                                                {
+                                                                                                                                                                                    "step":  3,
+                                                                                                                                                                                    "node":  "ComplexityTrendAnalyzer",
+                                                                                                                                                                                    "action":  "forecast_complexity",
+                                                                                                                                                                                    "description":  "AI-enhanced complexity trend forecasting"
+                                                                                                                                                                                },
+                                                                                                                                                                                {
+                                                                                                                                                                                    "step":  4,
+                                                                                                                                                                                    "node":  "PatternEvolutionExpert",
+                                                                                                                                                                                    "action":  "track_architectural_changes",
+                                                                                                                                                                                    "description":  "Identify and predict architectural evolution patterns"
+                                                                                                                                                                                },
+                                                                                                                                                                                {
+                                                                                                                                                                                    "step":  5,
+                                                                                                                                                                                    "node":  "orchestrator",
+                                                                                                                                                                                    "action":  "generate_evolution_report",
+                                                                                                                                                                                    "description":  "Synthesize AI-enhanced evolution analysis with predictive insights"
+                                                                                                                                                                                }
+                                                                                                                                                                            ],
+                                                                                                                                                         "state_management":  {
+                                                                                                                                                                                  "persistence":  "json",
+                                                                                                                                                                                  "checkpoints":  true,
+                                                                                                                                                                                  "recovery":  "automatic"
+                                                                                                                                                                              }
+                                                                                                                                                     },
+                                                                                                                  "unified_analysis_orchestration":  {
+                                                                                                                                                         "workflow_type":  "orchestrator-worker",
+                                                                                                                                                         "description":  "Unified workflow orchestrating both maintenance and evolution analysis with cross-analysis synthesis",
+                                                                                                                                                         "orchestrator":  {
+                                                                                                                                                                              "name":  "UnifiedAnalysisOrchestrator",
+                                                                                                                                                                              "role":  "Coordinate comprehensive analysis combining maintenance and evolution insights",
+                                                                                                                                                                              "input_schema":  {
+                                                                                                                                                                                                   "unified_data":  "object",
+                                                                                                                                                                                                   "analysis_scope":  "object",
+                                                                                                                                                                                                   "cross_analysis_config":  "object"
+                                                                                                                                                                                               },
+                                                                                                                                                                              "output_schema":  {
+                                                                                                                                                                                                    "unified_report":  "object",
+                                                                                                                                                                                                    "cross_insights":  "array",
+                                                                                                                                                                                                    "strategic_recommendations":  "array",
+                                                                                                                                                                                                    "risk_assessment":  "object"
+                                                                                                                                                                                                }
+                                                                                                                                                                          },
+                                                                                                                                                         "workers":  [
+                                                                                                                                                                         {
+                                                                                                                                                                             "name":  "MaintenanceEvolutionSynthesizer",
+                                                                                                                                                                             "role":  "Combine maintenance and evolution analysis for strategic insights",
+                                                                                                                                                                             "tools":  [
+                                                                                                                                                                                           "Cross-Analysis-Engine",
+                                                                                                                                                                                           "Strategic-Planner"
+                                                                                                                                                                                       ],
+                                                                                                                                                                             "specialization":  "cross_domain_synthesis"
+                                                                                                                                                                         },
+                                                                                                                                                                         {
+                                                                                                                                                                             "name":  "RiskAssessmentAnalyzer",
+                                                                                                                                                                             "role":  "Comprehensive risk assessment based on maintenance and evolution data",
+                                                                                                                                                                             "tools":  [
+                                                                                                                                                                                           "Risk-Calculator",
+                                                                                                                                                                                           "Impact-Analyzer"
+                                                                                                                                                                                       ],
+                                                                                                                                                                             "specialization":  "risk_prediction"
+                                                                                                                                                                         },
+                                                                                                                                                                         {
+                                                                                                                                                                             "name":  "StrategicRecommendationEngine",
+                                                                                                                                                                             "role":  "Generate strategic recommendations based on unified analysis",
+                                                                                                                                                                             "tools":  [
+                                                                                                                                                                                           "Strategy-Generator",
+                                                                                                                                                                                           "Priority-Optimizer"
+                                                                                                                                                                                       ],
+                                                                                                                                                                             "specialization":  "strategic_planning"
+                                                                                                                                                                         }
+                                                                                                                                                                     ],
+                                                                                                                                                         "workflow_steps":  [
+                                                                                                                                                                                {
+                                                                                                                                                                                    "step":  1,
+                                                                                                                                                                                    "node":  "orchestrator",
+                                                                                                                                                                                    "action":  "prepare_unified_analysis",
+                                                                                                                                                                                    "description":  "Coordinate maintenance and evolution analysis execution"
+                                                                                                                                                                                },
+                                                                                                                                                                                {
+                                                                                                                                                                                    "step":  2,
+                                                                                                                                                                                    "node":  "maintenance_prediction_enhancement",
+                                                                                                                                                                                    "action":  "execute_maintenance_workflow",
+                                                                                                                                                                                    "description":  "Execute maintenance prediction workflow and collect results"
+                                                                                                                                                                                },
+                                                                                                                                                                                {
+                                                                                                                                                                                    "step":  3,
+                                                                                                                                                                                    "node":  "evolution_analysis_enhancement",
+                                                                                                                                                                                    "action":  "execute_evolution_workflow",
+                                                                                                                                                                                    "description":  "Execute evolution analysis workflow and collect results"
+                                                                                                                                                                                },
+                                                                                                                                                                                {
+                                                                                                                                                                                    "step":  4,
+                                                                                                                                                                                    "node":  "MaintenanceEvolutionSynthesizer",
+                                                                                                                                                                                    "action":  "synthesize_cross_insights",
+                                                                                                                                                                                    "description":  "Combine maintenance and evolution insights for strategic analysis"
+                                                                                                                                                                                },
+                                                                                                                                                                                {
+                                                                                                                                                                                    "step":  5,
+                                                                                                                                                                                    "node":  "RiskAssessmentAnalyzer",
+                                                                                                                                                                                    "action":  "assess_comprehensive_risks",
+                                                                                                                                                                                    "description":  "Comprehensive risk assessment based on unified analysis"
+                                                                                                                                                                                },
+                                                                                                                                                                                {
+                                                                                                                                                                                    "step":  6,
+                                                                                                                                                                                    "node":  "StrategicRecommendationEngine",
+                                                                                                                                                                                    "action":  "generate_strategic_plan",
+                                                                                                                                                                                    "description":  "Generate strategic recommendations with priority optimization"
+                                                                                                                                                                                },
+                                                                                                                                                                                {
+                                                                                                                                                                                    "step":  7,
+                                                                                                                                                                                    "node":  "orchestrator",
+                                                                                                                                                                                    "action":  "finalize_unified_report",
+                                                                                                                                                                                    "description":  "Create comprehensive unified analysis report with AI insights"
+                                                                                                                                                                                }
+                                                                                                                                                                            ],
+                                                                                                                                                         "state_management":  {
+                                                                                                                                                                                  "persistence":  "json",
+                                                                                                                                                                                  "checkpoints":  true,
+                                                                                                                                                                                  "recovery":  "automatic"
+                                                                                                                                                                              }
+                                                                                                                                                     }
+                                                                                                              },
+                                                                                                "configuration":  {
+                                                                                                                      "rest_api_endpoint":  "http://127.0.0.1:8000",
+                                                                                                                      "timeout_seconds":  300,
+                                                                                                                      "retry_count":  3,
+                                                                                                                      "retry_delay_seconds":  2,
+                                                                                                                      "max_concurrent_workers":  5,
+                                                                                                                      "state_compression":  true,
+                                                                                                                      "logging_level":  "info"
+                                                                                                                  },
+                                                                                                "powershell_integration":  {
+                                                                                                                               "serialization_method":  "ConvertTo-Json",
+                                                                                                                               "deserialization_method":  "ConvertFrom-Json",
+                                                                                                                               "http_method":  "Invoke-RestMethod",
+                                                                                                                               "content_type":  "application/json",
+                                                                                                                               "encoding":  "UTF-8"
+                                                                                                                           },
+                                                                                                "error_handling":  {
+                                                                                                                       "retry_on_timeout":  true,
+                                                                                                                       "retry_on_server_error":  true,
+                                                                                                                       "fallback_mode":  "local_analysis",
+                                                                                                                       "error_classification":  "automatic"
+                                                                                                                   }
+                                                                                            },
+                                                                          "MissingWorkflows":  {
+
+                                                                                               },
+                                                                          "WorkflowTypes":  [
+                                                                                                "maintenance_prediction_enhancement",
+                                                                                                "evolution_analysis_enhancement",
+                                                                                                "unified_analysis_orchestration"
+                                                                                            ]
+                                                                      },
+                                                             "Details":  "Workflows: 3, Expected: 3, Missing: 0",
+                                                             "Timestamp":  "2025-08-29 15:39:13.189",
+                                                             "TestName":  "Workflow Configuration File",
+                                                             "Duration":  null,
+                                                             "Category":  "WorkflowConfiguration"
+                                                         },
+                                                         {
+                                                             "Passed":  true,
+                                                             "Data":  {
+                                                                          "workflow_type":  "orchestrator-worker",
+                                                                          "description":  "Enhance maintenance prediction analysis with AI-powered insights and recommendations",
+                                                                          "orchestrator":  {
+                                                                                               "name":  "MaintenancePredictionOrchestrator",
+                                                                                               "role":  "Coordinate technical debt analysis and AI enhancement",
+                                                                                               "input_schema":  {
+                                                                                                                    "maintenance_data":  "object",
+                                                                                                                    "sqale_metrics":  "object",
+                                                                                                                    "code_smell_results":  "array",
+                                                                                                                    "enhancement_config":  "object"
+                                                                                                                },
+                                                                                               "output_schema":  {
+                                                                                                                     "enhanced_predictions":  "object",
+                                                                                                                     "ai_recommendations":  "array",
+                                                                                                                     "priority_matrix":  "object",
+                                                                                                                     "confidence_scores":  "object"
+                                                                                                                 }
+                                                                                           },
+                                                                          "workers":  [
+                                                                                          {
+                                                                                              "name":  "TechnicalDebtAnalyzer",
+                                                                                              "role":  "Analyze and classify technical debt using SQALE model",
+                                                                                              "tools":  [
+                                                                                                            "PowerShell-SQALE-Calculator",
+                                                                                                            "PSScriptAnalyzer-Integration"
+                                                                                                        ],
+                                                                                              "specialization":  "technical_debt_classification"
+                                                                                          },
+                                                                                          {
+                                                                                              "name":  "MaintenancePredictor",
+                                                                                              "role":  "Generate predictive maintenance recommendations using ML patterns",
+                                                                                              "tools":  [
+                                                                                                            "PowerShell-Trend-Analysis",
+                                                                                                            "ML-Pattern-Matcher"
+                                                                                                        ],
+                                                                                              "specialization":  "maintenance_forecasting"
+                                                                                          },
+                                                                                          {
+                                                                                              "name":  "RefactoringAdvisor",
+                                                                                              "role":  "Provide intelligent refactoring recommendations with ROI analysis",
+                                                                                              "tools":  [
+                                                                                                            "PowerShell-Refactoring-Engine",
+                                                                                                            "ROI-Calculator"
+                                                                                                        ],
+                                                                                              "specialization":  "refactoring_optimization"
+                                                                                          }
+                                                                                      ],
+                                                                          "workflow_steps":  [
+                                                                                                 {
+                                                                                                     "step":  1,
+                                                                                                     "node":  "orchestrator",
+                                                                                                     "action":  "analyze_input_data",
+                                                                                                     "description":  "Parse PowerShell maintenance data and classify analysis requirements"
+                                                                                                 },
+                                                                                                 {
+                                                                                                     "step":  2,
+                                                                                                     "node":  "TechnicalDebtAnalyzer",
+                                                                                                     "action":  "process_sqale_metrics",
+                                                                                                     "description":  "Enhanced technical debt analysis with AI classification"
+                                                                                                 },
+                                                                                                 {
+                                                                                                     "step":  3,
+                                                                                                     "node":  "MaintenancePredictor",
+                                                                                                     "action":  "generate_predictions",
+                                                                                                     "description":  "AI-enhanced maintenance prediction with trend analysis"
+                                                                                                 },
+                                                                                                 {
+                                                                                                     "step":  4,
+                                                                                                     "node":  "RefactoringAdvisor",
+                                                                                                     "action":  "optimize_recommendations",
+                                                                                                     "description":  "ROI-optimized refactoring recommendations with priority ranking"
+                                                                                                 },
+                                                                                                 {
+                                                                                                     "step":  5,
+                                                                                                     "node":  "orchestrator",
+                                                                                                     "action":  "synthesize_results",
+                                                                                                     "description":  "Combine worker outputs into enhanced maintenance prediction report"
+                                                                                                 }
+                                                                                             ],
+                                                                          "state_management":  {
+                                                                                                   "persistence":  "json",
+                                                                                                   "checkpoints":  true,
+                                                                                                   "recovery":  "automatic"
+                                                                                               }
+                                                                      },
+                                                             "Details":  "Type: orchestrator-worker, Workers: 3",
+                                                             "Timestamp":  "2025-08-29 15:39:13.192",
+                                                             "TestName":  "Maintenance Workflow Configuration",
+                                                             "Duration":  null,
+                                                             "Category":  "WorkflowConfiguration"
+                                                         },
+                                                         {
+                                                             "Passed":  true,
+                                                             "Data":  {
+                                                                          "workflow_type":  "orchestrator-worker",
+                                                                          "description":  "Enhance code evolution analysis with AI-powered pattern recognition and trend forecasting",
+                                                                          "orchestrator":  {
+                                                                                               "name":  "EvolutionAnalysisOrchestrator",
+                                                                                               "role":  "Coordinate git history analysis and AI-enhanced evolution insights",
+                                                                                               "input_schema":  {
+                                                                                                                    "git_data":  "object",
+                                                                                                                    "commit_analysis":  "array",
+                                                                                                                    "complexity_trends":  "object",
+                                                                                                                    "enhancement_config":  "object"
+                                                                                                                },
+                                                                                               "output_schema":  {
+                                                                                                                     "enhanced_evolution":  "object",
+                                                                                                                     "ai_trend_predictions":  "array",
+                                                                                                                     "pattern_insights":  "object",
+                                                                                                                     "recommendations":  "array"
+                                                                                                                 }
+                                                                                           },
+                                                                          "workers":  [
+                                                                                          {
+                                                                                              "name":  "GitHistoryAnalyzer",
+                                                                                              "role":  "Deep analysis of git commit patterns and code churn",
+                                                                                              "tools":  [
+                                                                                                            "PowerShell-Git-Parser",
+                                                                                                            "Churn-Calculator"
+                                                                                                        ],
+                                                                                              "specialization":  "git_pattern_analysis"
+                                                                                          },
+                                                                                          {
+                                                                                              "name":  "ComplexityTrendAnalyzer",
+                                                                                              "role":  "Analyze complexity evolution patterns with AI enhancement",
+                                                                                              "tools":  [
+                                                                                                            "PowerShell-Complexity-Tracker",
+                                                                                                            "Trend-ML-Engine"
+                                                                                                        ],
+                                                                                              "specialization":  "complexity_forecasting"
+                                                                                          },
+                                                                                          {
+                                                                                              "name":  "PatternEvolutionExpert",
+                                                                                              "role":  "Identify architectural pattern changes and evolution trends",
+                                                                                              "tools":  [
+                                                                                                            "PowerShell-Pattern-Detector",
+                                                                                                            "Architecture-Analyzer"
+                                                                                                        ],
+                                                                                              "specialization":  "pattern_evolution_tracking"
+                                                                                          }
+                                                                                      ],
+                                                                          "workflow_steps":  [
+                                                                                                 {
+                                                                                                     "step":  1,
+                                                                                                     "node":  "orchestrator",
+                                                                                                     "action":  "process_git_data",
+                                                                                                     "description":  "Parse and prepare git history data for AI analysis"
+                                                                                                 },
+                                                                                                 {
+                                                                                                     "step":  2,
+                                                                                                     "node":  "GitHistoryAnalyzer",
+                                                                                                     "action":  "analyze_commit_patterns",
+                                                                                                     "description":  "Deep commit pattern analysis with churn detection"
+                                                                                                 },
+                                                                                                 {
+                                                                                                     "step":  3,
+                                                                                                     "node":  "ComplexityTrendAnalyzer",
+                                                                                                     "action":  "forecast_complexity",
+                                                                                                     "description":  "AI-enhanced complexity trend forecasting"
+                                                                                                 },
+                                                                                                 {
+                                                                                                     "step":  4,
+                                                                                                     "node":  "PatternEvolutionExpert",
+                                                                                                     "action":  "track_architectural_changes",
+                                                                                                     "description":  "Identify and predict architectural evolution patterns"
+                                                                                                 },
+                                                                                                 {
+                                                                                                     "step":  5,
+                                                                                                     "node":  "orchestrator",
+                                                                                                     "action":  "generate_evolution_report",
+                                                                                                     "description":  "Synthesize AI-enhanced evolution analysis with predictive insights"
+                                                                                                 }
+                                                                                             ],
+                                                                          "state_management":  {
+                                                                                                   "persistence":  "json",
+                                                                                                   "checkpoints":  true,
+                                                                                                   "recovery":  "automatic"
+                                                                                               }
+                                                                      },
+                                                             "Details":  "Type: orchestrator-worker, Workers: 3",
+                                                             "Timestamp":  "2025-08-29 15:39:13.205",
+                                                             "TestName":  "Evolution Workflow Configuration",
+                                                             "Duration":  null,
+                                                             "Category":  "WorkflowConfiguration"
+                                                         }
+                                                     ],
+                           "UnifiedAnalysis":  [
+                                                   {
+                                                       "Passed":  true,
+                                                       "Data":  {
+                                                                    "workflow_type":  "orchestrator-worker",
+                                                                    "description":  "Unified workflow orchestrating both maintenance and evolution analysis with cross-analysis synthesis",
+                                                                    "orchestrator":  {
+                                                                                         "name":  "UnifiedAnalysisOrchestrator",
+                                                                                         "role":  "Coordinate comprehensive analysis combining maintenance and evolution insights",
+                                                                                         "input_schema":  {
+                                                                                                              "unified_data":  "object",
+                                                                                                              "analysis_scope":  "object",
+                                                                                                              "cross_analysis_config":  "object"
+                                                                                                          },
+                                                                                         "output_schema":  {
+                                                                                                               "unified_report":  "object",
+                                                                                                               "cross_insights":  "array",
+                                                                                                               "strategic_recommendations":  "array",
+                                                                                                               "risk_assessment":  "object"
+                                                                                                           }
+                                                                                     },
+                                                                    "workers":  [
+                                                                                    {
+                                                                                        "name":  "MaintenanceEvolutionSynthesizer",
+                                                                                        "role":  "Combine maintenance and evolution analysis for strategic insights",
+                                                                                        "tools":  [
+                                                                                                      "Cross-Analysis-Engine",
+                                                                                                      "Strategic-Planner"
+                                                                                                  ],
+                                                                                        "specialization":  "cross_domain_synthesis"
+                                                                                    },
+                                                                                    {
+                                                                                        "name":  "RiskAssessmentAnalyzer",
+                                                                                        "role":  "Comprehensive risk assessment based on maintenance and evolution data",
+                                                                                        "tools":  [
+                                                                                                      "Risk-Calculator",
+                                                                                                      "Impact-Analyzer"
+                                                                                                  ],
+                                                                                        "specialization":  "risk_prediction"
+                                                                                    },
+                                                                                    {
+                                                                                        "name":  "StrategicRecommendationEngine",
+                                                                                        "role":  "Generate strategic recommendations based on unified analysis",
+                                                                                        "tools":  [
+                                                                                                      "Strategy-Generator",
+                                                                                                      "Priority-Optimizer"
+                                                                                                  ],
+                                                                                        "specialization":  "strategic_planning"
+                                                                                    }
+                                                                                ],
+                                                                    "workflow_steps":  [
+                                                                                           {
+                                                                                               "step":  1,
+                                                                                               "node":  "orchestrator",
+                                                                                               "action":  "prepare_unified_analysis",
+                                                                                               "description":  "Coordinate maintenance and evolution analysis execution"
+                                                                                           },
+                                                                                           {
+                                                                                               "step":  2,
+                                                                                               "node":  "maintenance_prediction_enhancement",
+                                                                                               "action":  "execute_maintenance_workflow",
+                                                                                               "description":  "Execute maintenance prediction workflow and collect results"
+                                                                                           },
+                                                                                           {
+                                                                                               "step":  3,
+                                                                                               "node":  "evolution_analysis_enhancement",
+                                                                                               "action":  "execute_evolution_workflow",
+                                                                                               "description":  "Execute evolution analysis workflow and collect results"
+                                                                                           },
+                                                                                           {
+                                                                                               "step":  4,
+                                                                                               "node":  "MaintenanceEvolutionSynthesizer",
+                                                                                               "action":  "synthesize_cross_insights",
+                                                                                               "description":  "Combine maintenance and evolution insights for strategic analysis"
+                                                                                           },
+                                                                                           {
+                                                                                               "step":  5,
+                                                                                               "node":  "RiskAssessmentAnalyzer",
+                                                                                               "action":  "assess_comprehensive_risks",
+                                                                                               "description":  "Comprehensive risk assessment based on unified analysis"
+                                                                                           },
+                                                                                           {
+                                                                                               "step":  6,
+                                                                                               "node":  "StrategicRecommendationEngine",
+                                                                                               "action":  "generate_strategic_plan",
+                                                                                               "description":  "Generate strategic recommendations with priority optimization"
+                                                                                           },
+                                                                                           {
+                                                                                               "step":  7,
+                                                                                               "node":  "orchestrator",
+                                                                                               "action":  "finalize_unified_report",
+                                                                                               "description":  "Create comprehensive unified analysis report with AI insights"
+                                                                                           }
+                                                                                       ],
+                                                                    "state_management":  {
+                                                                                             "persistence":  "json",
+                                                                                             "checkpoints":  true,
+                                                                                             "recovery":  "automatic"
+                                                                                         }
+                                                                },
+                                                       "Details":  "Steps: 7, Workers: 3",
+                                                       "Timestamp":  "2025-08-29 15:39:20.981",
+                                                       "TestName":  "Unified Workflow Configuration",
+                                                       "Duration":  null,
+                                                       "Category":  "UnifiedAnalysis"
+                                                   }
+                                               ],
+                           "EvolutionIntegration":  [
+                                                        {
+                                                            "Passed":  true,
+                                                            "Data":  {
+                                                                         "CommitCount":  6,
+                                                                         "DataType":  "PSCustomObject",
+                                                                         "HasData":  true
+                                                                     },
+                                                            "Details":  "Analysis completed in 7638.85ms, Commits: 6, Data returned: True",
+                                                            "Timestamp":  "2025-08-29 15:39:20.973",
+                                                            "TestName":  "Evolution Analysis Execution",
+                                                            "Duration":  7638.8477,
+                                                            "Category":  "EvolutionIntegration"
+                                                        }
+                                                    ]
+                       },
+    "StartTime":  "2025-08-29 15:39:13.085",
+    "EndTime":  "2025-08-29 15:39:20.985"
+}

@@ -1,0 +1,140 @@
+{
+  "Summary": {
+    "Skipped": 1,
+    "Failed": 0,
+    "Total": 10,
+    "Passed": 9
+  },
+  "EndTime": "2025-08-23T21:52:58.1713414-04:00",
+  "StartTime": "2025-08-23T21:52:55.8232004-04:00",
+  "Environment": {
+    "PowerShellVersion": "7.5.2",
+    "MachineName": "LAPTOP-6JCV7T48",
+    "UserName": "georg",
+    "TestDate": "2025-08-23 21:52:55",
+    "OSVersion": "Microsoft Windows NT 10.0.22631.0"
+  },
+  "TotalDuration": 2.348141,
+  "TestSuite": "HITL Approval Workflows",
+  "Tests": [
+    {
+      "Status": "PASSED",
+      "Timestamp": "2025-08-23 21:52:55",
+      "Name": "Module Import and Structure",
+      "Duration": null,
+      "Details": "All 11 expected functions exported",
+      "Error": "",
+      "Metrics": {
+        "Duration": 0.016917
+      }
+    },
+    {
+      "Status": "PASSED",
+      "Timestamp": "2025-08-23 21:52:55",
+      "Name": "Database Initialization",
+      "Duration": null,
+      "Details": "Database and schema created successfully",
+      "Error": "",
+      "Metrics": {
+        "DatabaseSize": 0,
+        "Duration": 0.044086
+      }
+    },
+    {
+      "Status": "PASSED",
+      "Timestamp": "2025-08-23 21:52:55",
+      "Name": "Token Security",
+      "Duration": null,
+      "Details": "Token generation, validation, and uniqueness verified",
+      "Error": "",
+      "Metrics": {
+        "TokenLength": 164,
+        "Duration": 0.0397511
+      }
+    },
+    {
+      "Status": "PASSED",
+      "Timestamp": "2025-08-23 21:52:55",
+      "Name": "Approval Request Creation",
+      "Duration": null,
+      "Details": "Request created with ID: 1981",
+      "Error": "",
+      "Metrics": {
+        "RequestId": 1981,
+        "Duration": 0.0127292
+      }
+    },
+    {
+      "Status": "PASSED",
+      "Timestamp": "2025-08-23 21:52:56",
+      "Name": "Notification System",
+      "Duration": null,
+      "Details": "Email notifications processed successfully",
+      "Error": "",
+      "Metrics": {
+        "Recipients": 2,
+        "Duration": 0.0129045
+      }
+    },
+    {
+      "Status": "PASSED",
+      "Timestamp": "2025-08-23 21:52:56",
+      "Name": "Configuration Management",
+      "Duration": null,
+      "Details": "Configuration updates processed correctly",
+      "Error": "",
+      "Metrics": {
+        "Duration": 0.005775
+      }
+    },
+    {
+      "Status": "SKIPPED",
+      "Timestamp": "2025-08-23 21:52:58",
+      "Name": "LangGraph Bridge Integration",
+      "Duration": null,
+      "Details": "LangGraph server not available at http://localhost:8000",
+      "Error": "",
+      "Metrics": {}
+    },
+    {
+      "Status": "PASSED",
+      "Timestamp": "2025-08-23 21:52:58",
+      "Name": "End-to-End Workflow",
+      "Duration": null,
+      "Details": "Complete approval workflow executed successfully",
+      "Error": "",
+      "Metrics": {
+        "WorkflowId": "e2e-test-001",
+        "Duration": 0.0060991
+      }
+    },
+    {
+      "Status": "PASSED",
+      "Timestamp": "2025-08-23 21:52:58",
+      "Name": "Performance Testing",
+      "Duration": null,
+      "Details": "Processed 10 requests successfully",
+      "Error": "",
+      "Metrics": {
+        "RequestCount": 10,
+        "TokenGenerationTime": 0.0019387,
+        "Duration": 0.0175404,
+        "AvgRequestTime": 0.0017540400000000001,
+        "TokenValidationTime": 0.0014824
+      }
+    },
+    {
+      "Status": "PASSED",
+      "Timestamp": "2025-08-23 21:52:58",
+      "Name": "Error Handling",
+      "Duration": null,
+      "Details": "Error handling pass rate: 75.0%",
+      "Error": "",
+      "Metrics": {
+        "TestsRun": 4,
+        "PassRate": 75.0,
+        "Duration": 0.0039357
+      }
+    }
+  ]
+}

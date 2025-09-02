@@ -1,0 +1,107 @@
+{
+  "EndTime": "2025-08-23T22:26:16.5349983-04:00",
+  "Summary": {
+    "Skipped": 1,
+    "Passed": 5,
+    "Total": 7,
+    "Failed": 1
+  },
+  "Environment": {
+    "PowerShellVersion": "7.5.2",
+    "OSVersion": "Microsoft Windows NT 10.0.22631.0",
+    "TestDate": "2025-08-23 22:26:15",
+    "UserName": "georg",
+    "MachineName": "LAPTOP-6JCV7T48"
+  },
+  "Tests": [
+    {
+      "Duration": 0.4176929,
+      "Name": "Module Loading and Structure",
+      "Metrics": {},
+      "Timestamp": "2025-08-23 22:26:16",
+      "Details": "Module loading failed",
+      "Error": "Cannot bind parameter because parameter 'Like' is specified more than once. To provide multiple values to parameters that can accept multiple values, use the array syntax. For example, \"-parameter value1,value2,value3\".",
+      "Status": "FAILED"
+    },
+    {
+      "Duration": 0.0031137,
+      "Name": "CODEOWNERS File Creation",
+      "Metrics": {
+        "InvalidRules": 0,
+        "FileSize": 1056,
+        "RuleLines": 12,
+        "TotalLines": 26,
+        "ValidRules": 12
+      },
+      "Timestamp": "2025-08-23 22:26:16",
+      "Details": "CODEOWNERS file exists with 12 rules (12 valid, 0 warnings)",
+      "Error": "",
+      "Status": "PASSED"
+    },
+    {
+      "Duration": 0.0034561,
+      "Name": "Branch Protection Configuration",
+      "Metrics": {
+        "FunctionsAvailable": 3,
+        "ConfigurationProfiles": 3
+      },
+      "Timestamp": "2025-08-23 22:26:16",
+      "Details": "Branch protection functions available and syntax valid",
+      "Error": "",
+      "Status": "PASSED"
+    },
+    {
+      "Duration": 0.0210416,
+      "Name": "HITL Governance Integration",
+      "Metrics": {
+        "IntegrationType": "Full",
+        "AvailableFunctions": 3,
+        "ComplianceParameters": 18
+      },
+      "Timestamp": "2025-08-23 22:26:16",
+      "Details": "All HITL governance integration functions available with correct parameters",
+      "Error": "",
+      "Status": "PASSED"
+    },
+    {
+      "Duration": 0.0064401,
+      "Name": "Governance Configuration Management",
+      "Metrics": {
+        "TotalParameters": 26,
+        "AvailableProfiles": 3,
+        "SupportedProfiles": "Development, Production, Enterprise"
+      },
+      "Timestamp": "2025-08-23 22:26:16",
+      "Details": "Governance configuration management available with 3 profiles",
+      "Error": "",
+      "Status": "PASSED"
+    },
+    {
+      "Duration": null,
+      "Name": "End-to-End Integration Testing",
+      "Metrics": {},
+      "Timestamp": "2025-08-23 22:26:16",
+      "Details": "Test skipped",
+      "Error": "",
+      "Status": "SKIPPED"
+    },
+    {
+      "Duration": 0.0859467,
+      "Name": "Performance and Reliability",
+      "Metrics": {
+        "MemoryDelta": -7.132591247558594,
+        "ModuleLoadTime": 79.1036,
+        "PostTestMemory": 22.094345092773438,
+        "MemoryUsage": 29.22693634033203,
+        "FunctionCallTime": 2.4732
+      },
+      "Timestamp": "2025-08-23 22:26:16",
+      "Details": "Performance metrics collected successfully",
+      "Error": "",
+      "Status": "PASSED"
+    }
+  ],
+  "StartTime": "2025-08-23T22:26:15.975168-04:00",
+  "TestSuite": "GitHub Governance Implementation",
+  "TotalDuration": 0.5598303
+}
