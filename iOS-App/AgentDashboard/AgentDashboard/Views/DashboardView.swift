@@ -278,12 +278,7 @@ struct WidgetContainerView<Content: View>: View {
     }
 }
 
-enum WidgetSize {
-    case small  // 1x1
-    case medium // 2x1
-    case large  // 2x2
-    case wide   // 4x2
-}
+// Note: WidgetSize enum moved to Views/Widgets/WidgetContainerView.swift
 
 // MARK: - Preview
 
