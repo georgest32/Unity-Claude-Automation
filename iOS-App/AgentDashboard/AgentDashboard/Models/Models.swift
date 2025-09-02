@@ -54,31 +54,8 @@ enum UserRole: String, Codable {
     case viewer
 }
 
-// MARK: - System Models
-
-struct SystemStatus: Equatable, Codable {
-    let timestamp: Date
-    let isHealthy: Bool
-    let cpuUsage: Double
-    let memoryUsage: Double
-    let diskUsage: Double
-    let activeAgents: Int
-    let totalModules: Int
-    let uptime: TimeInterval
-    
-    // Debug logging
-    var debugDescription: String {
-        return """
-        [SystemStatus] Timestamp: \(timestamp)
-        [SystemStatus] Healthy: \(isHealthy)
-        [SystemStatus] CPU: \(String(format: "%.1f%%", cpuUsage))
-        [SystemStatus] Memory: \(String(format: "%.1f%%", memoryUsage))
-        [SystemStatus] Disk: \(String(format: "%.1f%%", diskUsage))
-        [SystemStatus] Active Agents: \(activeAgents)
-        [SystemStatus] Total Modules: \(totalModules)
-        """
-    }
-}
+// MARK: - System Models  
+// Note: SystemStatus struct is defined in Models/SystemStatus.swift to avoid duplication
 
 // MARK: - Agent Models
 // Note: Agent struct is defined in Models/Agent.swift to avoid duplication
