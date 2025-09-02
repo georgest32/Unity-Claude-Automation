@@ -41,7 +41,7 @@ workflows:
         script: |
           set -o pipefail
           DEVICE_ID=$(cat $CM_BUILD_DIR/sim_id.txt)
-          # Build with macro/plugin validation skipped for CI
+          # Build with result bundle for better error capture
           xcodebuild \
             -project iOS-App/AgentDashboard/AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
@@ -50,15 +50,36 @@ workflows:
             -configuration Debug \
             -skipMacroValidation \
             -skipPackagePluginValidation \
+            -resultBundlePath "$CM_BUILD_DIR/build.xcresult" \
             | tee $CM_BUILD_DIR/xcodebuild.log
+
+      - name: Extract compiler errors from result bundle
+        script: |
+          echo "=== Extracting Swift compiler errors ==="
+          xcrun xcresulttool get --path "$CM_BUILD_DIR/build.xcresult" --format json \
+            | python3 - <<'PY'
+          import json, sys
+          j=json.load(sys.stdin)
+          def walk(x):
+            if isinstance(x, dict):
+              if x.get('issueType') == 'error':
+                msg = x.get('message',{}).get('text','')
+                doc = x.get('documentLocationInCreatingWorkspace',{}).get('url','') or x.get('documentURL','')
+                print(msg, "\n->", doc, "\n")
+              for v in x.values(): walk(v)
+            elif isinstance(x, list):
+              for v in x: walk(v)
+          walk(j)
+          PY
 
       - name: Dump Swift diagnostics
         script: |
           find ~/Library/Developer/Xcode/DerivedData -name "*.dia" -exec strings {} \; | tee $CM_BUILD_DIR/diagnostics.txt || true
 
-      - name: Grep APIClient errors
+      - name: Grep APIClient errors from log
         script: |
-          grep -n "APIClient.swift" $CM_BUILD_DIR/xcodebuild.log -C5 || true
+          echo "=== APIClient.swift compilation context ==="
+          grep -n "APIClient.swift" $CM_BUILD_DIR/xcodebuild.log -C10 || true
 
       - name: Skip Xcode Macro Fingerprint Validation
         script: |
@@ -111,7 +132,7 @@ workflows:
           DEVICE_ID=$(cat $CM_BUILD_DIR/sim_id.txt)
           echo "Building with simulator ID: $DEVICE_ID"
           pwd
-          # Build with macro/plugin validation skipped for CI
+          # Build with result bundle for error capture
           xcodebuild build \
             -project AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
@@ -121,9 +142,31 @@ workflows:
             -skipMacroValidation \
             -skipPackagePluginValidation \
             -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
+            -resultBundlePath "$CM_BUILD_DIR/main-build.xcresult" \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGNING_ALLOWED=NO || true
+            
+      - name: Extract main build errors
+        script: |
+          if [ -d "$CM_BUILD_DIR/main-build.xcresult" ]; then
+            echo "=== Main build compiler errors ==="
+            xcrun xcresulttool get --path "$CM_BUILD_DIR/main-build.xcresult" --format json \
+              | python3 - <<'PY'
+            import json, sys
+            j=json.load(sys.stdin)
+            def walk(x):
+              if isinstance(x, dict):
+                if x.get('issueType') == 'error':
+                  msg = x.get('message',{}).get('text','')
+                  doc = x.get('documentLocationInCreatingWorkspace',{}).get('url','') or x.get('documentURL','')
+                  print(msg, "\n->", doc, "\n")
+                for v in x.values(): walk(v)
+              elif isinstance(x, list):
+                for v in x: walk(v)
+            walk(j)
+            PY
+          fi
             
       - name: Archive Build Artifacts
         script: |
@@ -143,6 +186,8 @@ workflows:
       - iOS-App/AgentDashboard/build/artifacts/**/*
       - $CM_BUILD_DIR/xcodebuild.log
       - $CM_BUILD_DIR/diagnostics.txt
+      - $CM_BUILD_DIR/build.xcresult
+      - $CM_BUILD_DIR/main-build.xcresult
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
       - /tmp/xcodebuild_logs/*.log
       
