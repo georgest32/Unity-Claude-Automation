@@ -47,6 +47,11 @@ workflows:
             -sdk iphonesimulator \
             -destination "id=$DEVICE_ID" \
             -configuration Debug \
+            -skipMacroValidation \
+            -enablePackageFeature swift-composable-architecture/Macros \
+            -enablePackageFeature swift-case-paths/Macros \
+            -enablePackageFeature swift-dependencies/Macros \
+            -enablePackageFeature swift-perception/Macros \
             | tee $CM_BUILD_DIR/xcodebuild.log
 
       - name: Dump Swift diagnostics
@@ -89,7 +94,11 @@ workflows:
           xcodebuild -skipMacroValidation \
             -resolvePackageDependencies \
             -project AgentDashboard.xcodeproj \
-            -scheme AgentDashboard
+            -scheme AgentDashboard \
+            -enablePackageFeature swift-composable-architecture/Macros \
+            -enablePackageFeature swift-case-paths/Macros \
+            -enablePackageFeature swift-dependencies/Macros \
+            -enablePackageFeature swift-perception/Macros
             
       - name: Build for iOS Simulator (No Code Signing)
         script: |
@@ -107,6 +116,10 @@ workflows:
             -scheme AgentDashboard \
             -destination "id=$DEVICE_ID" \
             -configuration Debug \
+            -enablePackageFeature swift-composable-architecture/Macros \
+            -enablePackageFeature swift-case-paths/Macros \
+            -enablePackageFeature swift-dependencies/Macros \
+            -enablePackageFeature swift-perception/Macros \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
