@@ -35,68 +35,57 @@ workflows:
           
       - name: Select iOS 18.5 simulator matching SDK
         script: |
-          #!/usr/bin/env bash
           set -euo pipefail
           
-          echo "=== Selecting iOS 18.5 simulator using JSON ==="
+          echo "=== Selecting iOS 18.5 simulator ==="
           
-          # Use the CoreSimulator runtime identifier form
-          RUNTIME="iOS-18-5"
-          PREFERRED_NAMES=("iPhone 16 Pro" "iPhone 16 Pro Max" "iPhone 16" "iPhone 16 Plus")
+          # Get devices in JSON format and find iPhone 16 Pro with iOS 18.5
+          # The device list shows it exists with UDID: 04C96020-74CB-4B79-A7FD-AE5B1CBF7188
+          xcrun simctl list devices available -j > devices.json
           
-          # Get devices in JSON format
-          JSON="$(xcrun simctl list devices available -j)"
+          # Create Python script to parse the JSON
+          cat > find_sim.py << 'EOF'
+          import json, sys
+          with open('devices.json') as f:
+              j = json.load(f)
           
-          # Parse JSON to find the best matching device - use python -c to avoid heredoc issues
-          UDID="$(echo "$JSON" | python3 -c "
-import json, sys
-runtime = '$RUNTIME'
-prefs = ['iPhone 16 Pro', 'iPhone 16 Pro Max', 'iPhone 16', 'iPhone 16 Plus']
-j = json.load(sys.stdin)
-
-candidates = []
-for key, group in j.get('devices', {}).items():
-    for d in group:
-        if not d.get('isAvailable', True): 
-            continue
-        # Check if this is an iOS 18.5 device
-        # The key format is like 'com.apple.CoreSimulator.SimRuntime.iOS-18-5'
-        if runtime in key or key.endswith(runtime):
-            if d.get('availabilityError'): 
-                continue
-            candidates.append((d['name'], d['udid']))
-            print(f\"Found candidate: {d['name']} ({d['udid']})\", file=sys.stderr)
-
-# Prefer named devices in order
-for p in prefs:
-    for name, udid in candidates:
-        if name == p:
-            print(f'Selected preferred device: {name}', file=sys.stderr)
-            print(udid)
-            sys.exit(0)
-
-# Else use first available iOS 18.5 device
-if candidates:
-    print(f'Using first available: {candidates[0][0]}', file=sys.stderr)
-    print(candidates[0][1])
-    sys.exit(0)
-
-print('No iOS 18.5 devices found', file=sys.stderr)
-sys.exit(1)
-          ")"
+          runtime = "iOS-18-5"
+          prefs = ["iPhone 16 Pro", "iPhone 16 Pro Max", "iPhone 16", "iPhone 16 Plus"]
           
-          if [[ -z "${UDID:-}" ]]; then
-            echo "ERROR: No iOS 18.5 simulator found!"
-            xcrun simctl list devices
-            exit 1
-          fi
+          candidates = []
+          for key, group in j.get("devices", {}).items():
+              if runtime in key or key.endswith(runtime):
+                  for d in group:
+                      if d.get("isAvailable", True) and not d.get("availabilityError"):
+                          candidates.append((d["name"], d["udid"]))
+          
+          for p in prefs:
+              for name, udid in candidates:
+                  if name == p:
+                      print(udid)
+                      sys.exit(0)
+          
+          if candidates:
+              print(candidates[0][1])
+              sys.exit(0)
+          
+          sys.exit(1)
+          EOF
+          
+          # Run the Python script to get UDID
+          UDID="$(python3 find_sim.py)" || {
+              echo "ERROR: Failed to find iOS 18.5 simulator!"
+              echo "Available simulators:"
+              xcrun simctl list devices
+              exit 1
+          }
           
           echo "Selected simulator UDID: $UDID"
           echo "export SIM_UDID=$UDID" >> "$CM_ENV"
           
-          # Ensure it's ready before building
+          # Boot the simulator
           echo "Booting simulator..."
-          xcrun simctl bootstatus "$UDID" -b || true
+          xcrun simctl boot "$UDID" || true
 
       - name: Build with full diagnostics
         script: |
