@@ -43,6 +43,8 @@ workflows:
           git log --oneline -3
           echo "=== Verifying SystemStatus removal ==="
           grep -n "struct SystemStatus" AgentDashboard/Models/Models.swift || echo "SystemStatus successfully removed from Models.swift"
+          echo "=== Force fresh checkout ==="  
+          git checkout HEAD -- AgentDashboard/Models/Models.swift
           
       - name: Resolve Swift Package Dependencies
         script: |
