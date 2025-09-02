@@ -2,7 +2,7 @@ import Foundation
 
 // MARK: - System Status
 
-public struct SystemStatus: Identifiable, Codable, Equatable {
+public struct SystemStatus: Identifiable, Codable, Equatable, Sendable {
     public let id: String
     public let isOnline: Bool
     public let uptime: String
@@ -47,7 +47,7 @@ public struct SystemStatus: Identifiable, Codable, Equatable {
 
 // MARK: - Module
 
-public struct Module: Identifiable, Codable, Equatable {
+public struct Module: Identifiable, Codable, Equatable, Sendable {
     public let id: String
     public let name: String
     public let version: String
@@ -80,7 +80,7 @@ public struct Module: Identifiable, Codable, Equatable {
         self.exportedFunctions = exportedFunctions
     }
     
-    public enum Status: String, CaseIterable, Codable {
+    public enum Status: String, CaseIterable, Codable, Sendable {
         case active = "active"
         case inactive = "inactive"
         case loading = "loading"
@@ -121,7 +121,7 @@ extension SystemStatus {
         }
     }
     
-    public enum HealthStatus: String, CaseIterable {
+    public enum HealthStatus: String, CaseIterable, Sendable {
         case healthy = "Healthy"
         case moderate = "Moderate"
         case warning = "Warning"

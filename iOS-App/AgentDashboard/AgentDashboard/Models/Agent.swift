@@ -4,7 +4,7 @@ import SwiftUI
 // MARK: - Agent Model
 
 /// Represents a Unity-Claude-Automation PowerShell agent/module
-public struct Agent: Identifiable, Codable, Equatable {
+public struct Agent: Identifiable, Codable, Equatable, Sendable {
     public let id: String
     public let name: String
     public let description: String?
@@ -50,7 +50,7 @@ public struct Agent: Identifiable, Codable, Equatable {
     }
     
     /// Agent execution status
-    public enum Status: String, CaseIterable, Codable {
+    public enum Status: String, CaseIterable, Codable, Sendable {
         case idle = "idle"
         case running = "running"
         case stopped = "stopped"
@@ -85,7 +85,7 @@ public struct Agent: Identifiable, Codable, Equatable {
 // MARK: - Module Info
 
 /// PowerShell module information from .psd1 manifest
-public struct ModuleInfo: Codable, Equatable {
+public struct ModuleInfo: Codable, Equatable, Sendable {
     public let guid: String
     public let author: String
     public let companyName: String
