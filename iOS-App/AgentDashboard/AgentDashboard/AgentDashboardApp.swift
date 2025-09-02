@@ -1,17 +1,10 @@
 import SwiftUI
-import ComposableArchitecture
 
 @main
 struct AgentDashboardApp: App {
-    // Initialize TCA store
-    static let store = Store(initialState: AppFeature.State()) {
-        AppFeature()
-            ._printChanges()
-    }
-    
     var body: some Scene {
         WindowGroup {
-            ContentView(store: Self.store)
+            ContentView()
                 .preferredColorScheme(.dark) // Default to dark mode
                 .onAppear {
                     configureAppearance()

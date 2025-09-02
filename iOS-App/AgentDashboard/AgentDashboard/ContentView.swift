@@ -1,49 +1,61 @@
 import SwiftUI
-import ComposableArchitecture
 
 struct ContentView: View {
-    let store: StoreOf<AppFeature>
+    @State private var selectedTab: Tab = .dashboard
     
     var body: some View {
-        WithViewStore(self.store, observe: { $0 }) { viewStore in
-            TabView(selection: viewStore.binding(
-                get: \.selectedTab,
-                send: AppFeature.Action.tabSelected
-            )) {
-                DashboardView()
-                    .tabItem {
-                        Image(systemName: AppFeature.State.Tab.dashboard.iconName)
-                        Text(AppFeature.State.Tab.dashboard.rawValue)
-                    }
-                    .tag(AppFeature.State.Tab.dashboard)
-                
-                AgentsView()
-                    .tabItem {
-                        Image(systemName: AppFeature.State.Tab.agents.iconName)
-                        Text(AppFeature.State.Tab.agents.rawValue)
-                    }
-                    .tag(AppFeature.State.Tab.agents)
-                
-                TerminalView()
-                    .tabItem {
-                        Image(systemName: AppFeature.State.Tab.terminal.iconName)
-                        Text(AppFeature.State.Tab.terminal.rawValue)
-                    }
-                    .tag(AppFeature.State.Tab.terminal)
-                
-                AnalyticsView()
-                    .tabItem {
-                        Image(systemName: AppFeature.State.Tab.analytics.iconName)
-                        Text(AppFeature.State.Tab.analytics.rawValue)
-                    }
-                    .tag(AppFeature.State.Tab.analytics)
-                
-                SettingsView()
-                    .tabItem {
-                        Image(systemName: AppFeature.State.Tab.settings.iconName)
-                        Text(AppFeature.State.Tab.settings.rawValue)
-                    }
-                    .tag(AppFeature.State.Tab.settings)
+        TabView(selection: $selectedTab) {
+            DashboardView()
+                .tabItem {
+                    Image(systemName: Tab.dashboard.iconName)
+                    Text(Tab.dashboard.rawValue)
+                }
+                .tag(Tab.dashboard)
+            
+            AgentsView()
+                .tabItem {
+                    Image(systemName: Tab.agents.iconName)
+                    Text(Tab.agents.rawValue)
+                }
+                .tag(Tab.agents)
+            
+            TerminalView()
+                .tabItem {
+                    Image(systemName: Tab.terminal.iconName)
+                    Text(Tab.terminal.rawValue)
+                }
+                .tag(Tab.terminal)
+            
+            AnalyticsView()
+                .tabItem {
+                    Image(systemName: Tab.analytics.iconName)
+                    Text(Tab.analytics.rawValue)
+                }
+                .tag(Tab.analytics)
+            
+            SettingsView()
+                .tabItem {
+                    Image(systemName: Tab.settings.iconName)
+                    Text(Tab.settings.rawValue)
+                }
+                .tag(Tab.settings)
+        }
+    }
+    
+    enum Tab: String, CaseIterable {
+        case dashboard = "Dashboard"
+        case agents = "Agents"
+        case terminal = "Terminal"
+        case analytics = "Analytics"
+        case settings = "Settings"
+        
+        var iconName: String {
+            switch self {
+            case .dashboard: return "square.grid.2x2"
+            case .agents: return "person.2"
+            case .terminal: return "terminal"
+            case .analytics: return "chart.line.uptrend.xyaxis"
+            case .settings: return "gear"
             }
         }
     }
@@ -152,8 +164,6 @@ struct SettingsView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(store: Store(initialState: AppFeature.State()) {
-            AppFeature()
-        })
+        ContentView()
     }
 }

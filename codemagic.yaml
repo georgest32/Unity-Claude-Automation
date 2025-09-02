@@ -5,14 +5,14 @@ workflows:
     instance_type: mac_mini_m1
     environment:
       vars:
-        XCODE_WORKSPACE: "iOS-App/AgentDashboard/AgentDashboard.xcworkspace"
+        XCODE_PROJECT: "iOS-App/AgentDashboard/AgentDashboard.xcodeproj"
         XCODE_SCHEME: "AgentDashboard"
       xcode: 16.0
     scripts:
       - name: Build for iOS Simulator (No Code Signing)
         script: |
           cd iOS-App/AgentDashboard
-          xcodebuild -workspace AgentDashboard.xcworkspace \
+          xcodebuild -project AgentDashboard.xcodeproj \
                      -scheme AgentDashboard \
                      -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
                      -configuration Debug \
