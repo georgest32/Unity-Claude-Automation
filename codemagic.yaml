@@ -29,13 +29,20 @@ workflows:
           # Research confirmed this resolves "CasePathsMacros must be enabled" errors
           defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
           
-      - name: Reset Swift Package Manager Caches  
+      - name: Force Complete Cache Reset
         script: |
-          # Clear SPM caches to avoid package resolution conflicts
+          # Comprehensive cache clearing to force fresh build with latest git changes
           rm -rf ~/Library/Caches/org.swift.swiftpm
           rm -rf ~/Library/Developer/Xcode/DerivedData
           rm -rf ~/Library/org.swift.swiftpm  
           rm -rf ~/.swiftpm/xcode/
+          rm -rf ~/Library/Caches/com.apple.dt.Xcode
+          # Verify git changes are present
+          cd iOS-App/AgentDashboard
+          echo "=== Current Git Status ==="
+          git log --oneline -3
+          echo "=== Verifying SystemStatus removal ==="
+          grep -n "struct SystemStatus" AgentDashboard/Models/Models.swift || echo "SystemStatus successfully removed from Models.swift"
           
       - name: Resolve Swift Package Dependencies
         script: |
