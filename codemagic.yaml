@@ -25,19 +25,23 @@ workflows:
           
     scripts:
       - name: Build with full diagnostics
-      script: |
-        set -o pipefail
-        xcodebuild \
-          -project AgentDashboard/AgentDashboard.xcodeproj \
-          -scheme AgentDashboard \
-          -sdk iphonesimulator \
-          -destination 'platform=iOS Simulator,name=iPhone 15' \
-          -configuration Debug \
-          | tee $CM_BUILD_DIR/xcodebuild.log
+        script: |
+          set -o pipefail
+          xcodebuild \
+            -project iOS-App/AgentDashboard/AgentDashboard.xcodeproj \
+            -scheme AgentDashboard \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -configuration Debug \
+            | tee $CM_BUILD_DIR/xcodebuild.log
 
-    - name: Dump Swift diagnostics
-      script: |
-        find ~/Library/Developer/Xcode/DerivedData -name "*.dia" -exec strings {} \; | tee $CM_BUILD_DIR/diagnostics.txt
+      - name: Dump Swift diagnostics
+        script: |
+          find ~/Library/Developer/Xcode/DerivedData -name "*.dia" -exec strings {} \; | tee $CM_BUILD_DIR/diagnostics.txt || true
+
+      - name: Grep APIClient errors
+        script: |
+          grep -n "APIClient.swift" $CM_BUILD_DIR/xcodebuild.log -C5 || true
 
       - name: Skip Xcode Macro Fingerprint Validation
         script: |
@@ -106,6 +110,8 @@ workflows:
           
     artifacts:
       - iOS-App/AgentDashboard/build/artifacts/**/*
+      - $CM_BUILD_DIR/xcodebuild.log
+      - $CM_BUILD_DIR/diagnostics.txt
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
       - /tmp/xcodebuild_logs/*.log
       
