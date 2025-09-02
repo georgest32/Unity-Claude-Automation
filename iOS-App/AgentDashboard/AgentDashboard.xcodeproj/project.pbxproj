@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		4A1234567890ABCD1234567E /* AgentDashboardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD1234567F /* AgentDashboardApp.swift */; };
 		4A1234567890ABCD12345680 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD12345681 /* ContentView.swift */; };
-		4A1234567890ABCD1234568C /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD1234568D /* AppStore.swift */; };
 		4A1234567890ABCD1234568E /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD1234568F /* DashboardView.swift */; };
 		4A1234567890ABCD12345690 /* Agent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD12345691 /* Agent.swift */; };
 		4A1234567890ABCD12345692 /* SystemStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD12345693 /* SystemStatus.swift */; };
+		4A1234567890ABCD12345697 /* DashboardFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCD12345698 /* DashboardFeature.swift */; };
 		4A1234567890ABCD12345694 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 4A1234567890ABCD12345695 /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
@@ -21,10 +21,10 @@
 		4A1234567890ABCD1234567F /* AgentDashboardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentDashboardApp.swift; sourceTree = "<group>"; };
 		4A1234567890ABCD12345681 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4A1234567890ABCD12345682 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4A1234567890ABCD1234568D /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
 		4A1234567890ABCD1234568F /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/DashboardView.swift; sourceTree = "<group>"; };
 		4A1234567890ABCD12345691 /* Agent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/Agent.swift; sourceTree = "<group>"; };
 		4A1234567890ABCD12345693 /* SystemStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/SystemStatus.swift; sourceTree = "<group>"; };
+		4A1234567890ABCD12345698 /* DashboardFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCA/DashboardFeature.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,9 +51,9 @@
 			isa = PBXGroup;
 			children = (
 				4A1234567890ABCD1234567F /* AgentDashboardApp.swift */,
-				4A1234567890ABCD1234568D /* AppStore.swift */,
 				4A1234567890ABCD12345681 /* ContentView.swift */,
 				4A1234567890ABCD1234568F /* DashboardView.swift */,
+				4A1234567890ABCD12345698 /* DashboardFeature.swift */,
 				4A1234567890ABCD12345691 /* Agent.swift */,
 				4A1234567890ABCD12345693 /* SystemStatus.swift */,
 				4A1234567890ABCD12345682 /* Info.plist */,
@@ -134,8 +134,8 @@
 			files = (
 				4A1234567890ABCD12345680 /* ContentView.swift in Sources */,
 				4A1234567890ABCD1234567E /* AgentDashboardApp.swift in Sources */,
-				4A1234567890ABCD1234568C /* AppStore.swift in Sources */,
 				4A1234567890ABCD1234568E /* DashboardView.swift in Sources */,
+				4A1234567890ABCD12345697 /* DashboardFeature.swift in Sources */,
 				4A1234567890ABCD12345690 /* Agent.swift in Sources */,
 				4A1234567890ABCD12345692 /* SystemStatus.swift in Sources */,
 			);
