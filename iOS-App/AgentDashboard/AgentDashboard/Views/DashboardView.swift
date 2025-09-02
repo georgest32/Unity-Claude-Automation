@@ -229,56 +229,7 @@ struct ModuleStatusWidget: View {
     }
 }
 
-// MARK: - Widget Container
-
-struct WidgetContainerView<Content: View>: View {
-    let title: String
-    let icon: String
-    let size: WidgetSize
-    let content: Content
-    
-    init(
-        title: String,
-        icon: String,
-        size: WidgetSize,
-        @ViewBuilder content: () -> Content
-    ) {
-        self.title = title
-        self.icon = icon
-        self.size = size
-        self.content = content()
-    }
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // Header
-            HStack {
-                Image(systemName: icon)
-                    .font(.title3)
-                    .foregroundColor(.accentColor)
-                
-                Text(title)
-                    .font(.headline)
-                    .fontWeight(.medium)
-                
-                Spacer()
-                
-                Image(systemName: "chevron.right")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-            
-            // Content
-            content
-        }
-        .padding(16)
-        .background(Color(UIColor.secondarySystemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
-    }
-}
-
-// Note: WidgetSize enum moved to Views/Widgets/WidgetContainerView.swift
+// Note: WidgetContainerView and WidgetSize moved to Views/Widgets/WidgetContainerView.swift
 
 // MARK: - Preview
 
