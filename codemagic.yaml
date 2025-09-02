@@ -24,14 +24,28 @@ workflows:
           source: true
           
     scripts:
+      - name: Select an available iPhone simulator
+        script: |
+          set -e
+          DEVICE_ID=$(xcrun simctl list devices available | \
+            awk -F '[()]' '/iPhone 1[4-9]|iPhone SE \(3rd generation\)/ {print $2; exit}')
+          if [ -z "$DEVICE_ID" ]; then
+            echo "No suitable iPhone simulator found"
+            exit 70
+          fi
+          echo "Using simulator id: $DEVICE_ID"
+          xcrun simctl bootstatus "$DEVICE_ID" -b
+          echo "$DEVICE_ID" > $CM_BUILD_DIR/sim_id.txt
+
       - name: Build with full diagnostics
         script: |
           set -o pipefail
+          DEVICE_ID=$(cat $CM_BUILD_DIR/sim_id.txt)
           xcodebuild \
             -project iOS-App/AgentDashboard/AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -destination "id=$DEVICE_ID" \
             -configuration Debug \
             | tee $CM_BUILD_DIR/xcodebuild.log
 
@@ -83,12 +97,15 @@ workflows:
           cd $CM_BUILD_DIR/iOS-App/AgentDashboard
           # CRITICAL: Set macOS 13.0 target for TCA macro host compilation
           export MACOSX_DEPLOYMENT_TARGET=13.0
+          # Use the previously selected simulator
+          DEVICE_ID=$(cat $CM_BUILD_DIR/sim_id.txt)
+          echo "Building with simulator ID: $DEVICE_ID"
           pwd
           xcodebuild -skipMacroValidation \
             build \
             -project AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -destination "id=$DEVICE_ID" \
             -configuration Debug \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
