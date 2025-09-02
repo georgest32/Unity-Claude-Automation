@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum WidgetSize {
+enum WidgetSize: Sendable {
     case small, medium, large
     
     var height: CGFloat {
@@ -12,6 +12,7 @@ enum WidgetSize {
     }
 }
 
+@MainActor
 struct WidgetContainerView<Content: View>: View {
     let title: String
     let icon: String
