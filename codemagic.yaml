@@ -183,6 +183,7 @@ workflows:
           echo "=== Ensure packages are resolved ==="
           xcodebuild -resolvePackageDependencies \
             -project "$PROJECT_PATH" \
+            -scheme "$SCHEME" \
             -derivedDataPath "$DD"
           
           echo "=== Build macro targets for macOS host ==="
@@ -217,6 +218,8 @@ workflows:
           echo "=== Host-built macro dylibs ==="
           find "$DD/Build/Products" -maxdepth 3 -type f \( -name "*.dylib" -o -name "*.bundle" \) -print || true
           find "$DD/Build/Products" -maxdepth 3 -type d -name "*Macros*" -print || true
+          echo "=== SwiftPM build folder macros ==="
+          find "$DD/SourcePackages/checkouts" -path "*/.build/*" -type f -name "*Macros*.dylib" -print || true
 
       - name: Sanity - print APIClient.swift head & checksum
         script: |
