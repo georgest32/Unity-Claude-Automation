@@ -68,8 +68,8 @@ public struct APIClient: Sendable {
     if let headers = endpoint.headers {
       headers.forEach { req.addValue($1, forHTTPHeaderField: $0) }
     }
-    if let body = endpoint.body {
-      req.httpBody = try JSONEncoder().encode(AnyEncodable(body))
+    if let bodyData = endpoint.bodyData {
+      req.httpBody = bodyData
       req.addValue("application/json", forHTTPHeaderField: "Content-Type")
     }
     return try await json(req)
@@ -140,18 +140,27 @@ public extension APIClient {
 
 // MARK: - Types
 public struct APIEndpoint: Sendable {
-  public enum Method: String { case get = "GET", post = "POST", put = "PUT", patch = "PATCH", delete = "DELETE" }
+  public enum Method: String, Sendable { case get = "GET", post = "POST", put = "PUT", patch = "PATCH", delete = "DELETE" }
   public var path: String
   public var method: Method
   public var headers: [String:String]?
-  public var body: (any Encodable)?
-  public init(path: String, method: Method = .get, headers: [String:String]? = nil, body: (any Encodable)? = nil) {
-    self.path = path; self.method = method; self.headers = headers; self.body = body
+  public var bodyData: Data?  // Store pre-encoded data instead of closure
+  
+  public init(path: String, method: Method = .get, headers: [String:String]? = nil, bodyData: Data? = nil) {
+    self.path = path
+    self.method = method
+    self.headers = headers
+    self.bodyData = bodyData
   }
-}
-
-private struct AnyEncodable: Encodable {
-  private let encodeFunc: (Encoder) throws -> Void
-  init(_ value: any Encodable) { self.encodeFunc = value.encode }
-  func encode(to encoder: Encoder) throws { try encodeFunc(encoder) }
+  
+  public init<T: Encodable>(path: String, method: Method = .get, headers: [String:String]? = nil, body: T?) {
+    self.path = path
+    self.method = method
+    self.headers = headers
+    if let body = body {
+      self.bodyData = try? JSONEncoder().encode(body)
+    } else {
+      self.bodyData = nil
+    }
+  }
 }

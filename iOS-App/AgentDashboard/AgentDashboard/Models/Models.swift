@@ -625,9 +625,8 @@ struct ExecutionMetrics: Equatable, Codable {
 
 // MARK: - Response Models (Hour 9)
 
-@Model
 class Response {
-    @Attribute(.unique) var id: UUID
+    var id: UUID
     var content: String
     var formattedContent: String?
     var sourceCommandID: UUID
@@ -676,9 +675,8 @@ class Response {
     }
 }
 
-@Model 
 class ResponseMetadata {
-    @Attribute(.unique) var id: UUID
+    var id: UUID
     var responseID: UUID
     var executionTime: TimeInterval
     var promptLength: Int
@@ -821,9 +819,8 @@ private func extractKeyPhrases(_ content: String) -> [String] {
 
 // MARK: - Enhanced Template Models (Hour 9.3)
 
-@Model
 class EnhancedPromptTemplate {
-    @Attribute(.unique) var id: UUID
+    var id: UUID
     var name: String
     var content: String
     var category: String
@@ -892,9 +889,8 @@ class EnhancedPromptTemplate {
     }
 }
 
-@Model
 class TemplateVariable {
-    @Attribute(.unique) var id: UUID
+    var id: UUID
     var name: String
     var type: VariableType
     var description: String
@@ -945,9 +941,8 @@ class TemplateVariable {
     }
 }
 
-@Model
 class TemplateCategory {
-    @Attribute(.unique) var id: UUID
+    var id: UUID
     var name: String
     var description: String
     var icon: String

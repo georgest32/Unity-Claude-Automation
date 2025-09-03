@@ -58,20 +58,33 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
           
-          echo "=== Cleaning DerivedData and caches ==="
+          echo "=== Cleaning DerivedData and SPM caches completely ==="
           rm -rf "$CM_BUILD_DIR/DerivedData" || true
           rm -rf "$HOME/Library/Developer/Xcode/DerivedData" 2>/dev/null || true
+          rm -rf "$HOME/Library/Developer/Xcode/DerivedData/SourcePackages" 2>/dev/null || true
+          rm -rf "$CM_BUILD_DIR/DerivedData/SourcePackages" 2>/dev/null || true
           rm -rf "$CM_BUILD_DIR/SourcePackages" 2>/dev/null || true
+          
+          # Clean SPM cache to prevent stale plugin builds
+          rm -rf ~/Library/Caches/org.swift.swiftpm 2>/dev/null || true
+          rm -rf ~/Library/Developer/Xcode/DerivedData/ModuleCache.noindex 2>/dev/null || true
           
           echo "=== xcodebuild toolchain ==="
           xcodebuild -version
           swift --version || true
           
-          echo "=== Resolve Swift packages ==="
+          # Enable diagnostic output for macro issues
+          export SWIFT_LOADED_PLUGINS_DUMP=1
+          export SWIFT_MACRO_EXPAND_DIAGS=1
+          
+          echo "=== Resolve Swift packages (fresh) ==="
           xcodebuild -resolvePackageDependencies \
             -project "$PROJECT_PATH" \
             -scheme "$SCHEME" \
+            -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
             -clonedSourcePackagesDirPath "$CM_BUILD_DIR/SourcePackages" \
+            -skipPackagePluginValidation \
+            -skipMacroValidation \
             -verbose || true
           
           echo "=== Show build settings (captures SPM locations) ==="
@@ -276,6 +289,10 @@ workflows:
 
           # Macro plugins run on the macOS host; set a modern host target
           export MACOSX_DEPLOYMENT_TARGET=14.0
+          
+          # Enable diagnostic output for macro issues
+          export SWIFT_LOADED_PLUGINS_DUMP=1
+          export SWIFT_MACRO_EXPAND_DIAGS=1
 
           echo "=== Building Debug for simulator id=$SIM_UDID ==="
           
