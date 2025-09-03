@@ -53,7 +53,7 @@ workflows:
           set -euo pipefail
 
           # Help TCA macro host compile
-          export MACOSX_DEPLOYMENT_TARGET=13.0
+          export MACOSX_DEPLOYMENT_TARGET=14.0
 
           echo "=== Selecting iOS 18.x simulator ==="
           # Use self-contained external script
@@ -179,7 +179,7 @@ workflows:
           LOG="$CM_BUILD_DIR/build.log"
 
           # Macro plugins run on the macOS host; set a modern host target
-          export MACOSX_DEPLOYMENT_TARGET=13.0
+          export MACOSX_DEPLOYMENT_TARGET=14.0
 
           echo "=== Building Debug for simulator id=$SIM_UDID ==="
           
@@ -200,8 +200,6 @@ workflows:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
             -showBuildTimingSummary \
-            -skipPackagePluginValidation \
-            -skipMacroValidation \
             build | tee "$LOG" || status=$?
           
           echo "$status" > "$CM_BUILD_DIR/build_status.txt"
