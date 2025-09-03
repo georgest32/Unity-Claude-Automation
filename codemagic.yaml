@@ -1,146 +1,227 @@
 workflows:
   ios-tca-dashboard:
-    name: iOS (TCA) — Build, extract errors, and prepare Preview
+    name: iOS TCA Dashboard
     max_build_duration: 60
+    instance_type: mac_mini_m2
+
     environment:
       xcode: 16.4
-      vars:
-        IOS_VERSION: "18.5"
-        DEVICE_NAME: "iPhone 16 Pro"
-        PROJECT_PATH: "iOS-App/AgentDashboard/AgentDashboard.xcodeproj"
-        PRODUCT_SCHEME: "AgentDashboard"
       cocoapods: default
-    cache:
-      cache_paths:
-        - $HOME/Library/Caches/org.carthage.CarthageKit
-        - $HOME/Library/Developer/Xcode/DerivedData
-        - $HOME/Library/Caches/pip
-        - $HOME/Library/Caches/Homebrew
-        - $HOME/Library/Developer/Xcode/Archives
-        - $CM_BUILD_DIR/DerivedData
-        - $CM_BUILD_DIR/Library/Caches
-        - $HOME/Library/Developer/Xcode/SourcePackages
+      vars:
+        PROJECT_PATH: "iOS-App/AgentDashboard/AgentDashboard.xcodeproj"
+        SCHEME: "AgentDashboard"
 
     scripts:
-      - name: Print Xcode & Swift versions
+      - name: Toolchain info
         script: |
-          set -euo pipefail
+          #!/usr/bin/env bash
+          set -e
           xcodebuild -version
           swift --version
           xcrun simctl list runtimes
-          xcrun simctl list devices
+
+      - name: Resolve Swift Package dependencies (optional)
+        script: |
+          #!/usr/bin/env bash
+          set -e
+          xcodebuild \
+            -resolvePackageDependencies \
+            -project "$PROJECT_PATH" \
+            -scheme "$SCHEME"
 
       - name: Select iOS 18.x simulator, set SIM_UDID for xcodebuild
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
 
-          echo "Selecting iOS ${IOS_VERSION} ${DEVICE_NAME} simulator..."
-          SIM_UDID="$(python3 ci/select_simulator.py "${IOS_VERSION}" "${DEVICE_NAME}")"
+          # Help TCA macro host compile
+          export MACOSX_DEPLOYMENT_TARGET=13.0
 
+          echo "=== Querying available devices (JSON) ==="
+          xcrun simctl list devices --json > "$CM_BUILD_DIR/devices.json"
+
+          # Pick an iOS 18.x device; prefer iPhone 16 Pro, else first available
+          SIM_UDID="$(python3 - <<'PY'
+import json, os, re, sys
+j = json.load(open(os.path.join(os.environ['CM_BUILD_DIR'],'devices.json')))
+udid = None
+for runtime, items in j.get('devices',{}).items():
+    if re.search(r'iOS-18(\\D|$)', runtime):
+        prefer = ['iPhone 16 Pro','iPhone 16 Pro Max','iPhone 16','iPhone 16 Plus','iPhone 16e']
+        # find preferred devices first
+        byname = {d.get('name'): d for d in items}
+        for want in prefer:
+            d = byname.get(want)
+            if d and d.get('udid'):
+                udid = d['udid']; break
+        # otherwise first item
+        if not udid and items:
+            udid = items[0].get('udid')
+        break
+if not udid:
+    sys.exit(2)
+print(udid)
+PY
+)"
           if [[ -z "${SIM_UDID:-}" ]]; then
-            echo "ERROR: Could not find an iOS ${IOS_VERSION} simulator"
-            echo "Available devices:"
-            xcrun simctl list devices
+            echo "ERROR: Could not find an iOS 18.x simulator UDID" >&2
+            echo "== Devices =="; xcrun simctl list devices
             exit 1
           fi
 
-          echo "✅ Using simulator UDID: $SIM_UDID"
-          echo "export SIM_UDID=${SIM_UDID}" >> "$CM_ENV"
+          echo "Selected simulator UDID: $SIM_UDID"
+          echo "export SIM_UDID=$SIM_UDID" >> "$CM_ENV"
 
       - name: Build for iOS Simulator (arm64, single device, with result bundle)
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
-          source "$CM_ENV"
-
-          # IMPORTANT: macros must build for macOS host, not the simulator
-          unset SDKROOT
-          export MACOSX_DEPLOYMENT_TARGET=13.0
+          source "$CM_ENV" || true
 
           DERIVED="$CM_BUILD_DIR/DerivedData"
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
           LOG="$CM_BUILD_DIR/xcodebuild.log"
 
+          echo "=== Building Debug for simulator id=$SIM_UDID ==="
           xcodebuild \
             -project "$PROJECT_PATH" \
-            -scheme "$PRODUCT_SCHEME" \
+            -scheme "$SCHEME" \
             -sdk iphonesimulator \
             -configuration Debug \
-            -destination "id=$SIM_UDID" \
+            -destination "platform=iOS Simulator,id=$SIM_UDID" \
             -derivedDataPath "$DERIVED" \
             -resultBundlePath "$BUNDLE" \
-            -skipMacroValidation \
-            -skipPackagePluginValidation \
+            EXCLUDED_ARCHS="i386 x86_64" \
             ONLY_ACTIVE_ARCH=YES \
-            "EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386 x86_64" \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
-            -showBuildTimingSummary \
+            CODE_SIGN_IDENTITY="" \
             build | tee "$LOG"
 
-      - name: Stop early if no .app produced
+      # ---------- Diagnostics: richer error reporting ----------
+      - name: Extract Swift errors from xcresult (always)
         script: |
           #!/usr/bin/env bash
-          set -euo pipefail
-          APP_DIR="$(find "$CM_BUILD_DIR/DerivedData/Build/Products/Debug-iphonesimulator" -maxdepth 1 -type d -name '*.app' -print -quit || true)"
-          if [[ -z "${APP_DIR:-}" ]]; then
-            echo "❌ No .app produced. See build logs above."
-            exit 1
+          set +e
+          BUNDLE="$CM_BUILD_DIR/build.xcresult"
+          if [[ -d "$BUNDLE" ]]; then
+            echo "=== Swift errors (xcresult) ==="
+            xcrun xcresulttool get object --path "$BUNDLE" --format json > "$CM_BUILD_DIR/xcresult.json" 2>/dev/null
+            python3 - <<'PY'
+import json, os, sys
+p = os.path.join(os.environ['CM_BUILD_DIR'], 'xcresult.json')
+try:
+    j = json.load(open(p))
+except Exception as e:
+    print("Failed to read xcresult JSON:", e)
+    sys.exit(0)
+
+errors = []
+def walk(x):
+    if isinstance(x, dict):
+        if x.get('issueType') == 'error':
+            m = x.get('message', {}).get('text', '')
+            loc = x.get('documentLocationInCreatingWorkspace', {})
+            errors.append((m, loc.get('url',''), loc.get('line')))
+        for v in x.values(): walk(v)
+    elif isinstance(x, list):
+        for v in x: walk(v)
+walk(j)
+
+if not errors:
+    print("No error issues found in xcresult.")
+for i,(m,u,l) in enumerate(errors,1):
+    print(f"\n[{i}] ✖︎ {m}")
+    if u: print("    file:", u)
+    if l: print("    line:", l)
+PY
+          else
+            echo "No build.xcresult present."
           fi
-          echo "export APP_DIR=\"$APP_DIR\"" >> "$CM_ENV"
+          true
 
-      - name: Show .app contents summary
+      - name: Show failing source context (best effort)
+        script: |
+          #!/usr/bin/env bash
+          set +e
+          J="$CM_BUILD_DIR/xcresult.json"
+          [[ -f "$J" ]] || { echo "No xcresult.json to read"; exit 0; }
+          python3 - <<'PY'
+import json, os, sys
+j = json.load(open(os.path.join(os.environ['CM_BUILD_DIR'], 'xcresult.json')))
+def show(path, line):
+    if not (path and path.startswith('file://')): return
+    path = path[7:]
+    if not (os.path.exists(path) and isinstance(line,int)): return
+    start = max(1, line-15); end = line+15
+    print(f"\n--- {path}:{line} ---")
+    with open(path) as f:
+        for i, ln in enumerate(f, 1):
+            if i < start: continue
+            if i > end: break
+            mark = ">>" if i == line else "  "
+            print(f"{mark} {i:5d}: {ln.rstrip()}")
+
+def walk(x):
+    if isinstance(x, dict):
+        if x.get('issueType') == 'error':
+            loc = x.get('documentLocationInCreatingWorkspace', {})
+            show(loc.get('url'), loc.get('line'))
+        for v in x.values(): walk(v)
+    elif isinstance(x, list):
+        for v in x: walk(v)
+walk(j)
+PY
+          true
+
+      - name: Publish diagnostics & build settings
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
-          source "$CM_ENV"
-          echo "App path: $APP_DIR"
-          echo "Size: $(du -sh "$APP_DIR" | cut -f1)"
-          find "$APP_DIR" -maxdepth 2 -type f | head -n 50
+          DERIVED="$CM_BUILD_DIR/DerivedData"
+          mkdir -p "$CM_ARTIFACTS"
+          [[ -f "$CM_BUILD_DIR/xcodebuild.log" ]] && cp "$CM_BUILD_DIR/xcodebuild.log" "$CM_ARTIFACTS/"
+          [[ -f "$CM_BUILD_DIR/xcresult.json"   ]] && cp "$CM_BUILD_DIR/xcresult.json"   "$CM_ARTIFACTS/"
+          if [[ -d "$DERIVED" ]]; then
+            (cd "$DERIVED" && zip -qry "$CM_ARTIFACTS/deriveddata-logs.zip" Logs Build/Intermediates.noindex || true)
+            xcodebuild -project "$PROJECT_PATH" -scheme "$SCHEME" -showBuildSettings > "$CM_ARTIFACTS/build-settings.txt" || true
+          fi
+          echo "Artifacts:"
+          ls -lah "$CM_ARTIFACTS"
 
-      - name: Extract Swift compiler errors  
+      # ---------- Package a Preview artifact, only if the .app is real ----------
+      - name: Validate and package app for Codemagic Preview (conditional)
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
-          python3 ci/xcresult_errors.py "$CM_BUILD_DIR/build.xcresult" || true
+          DERIVED="$CM_BUILD_DIR/DerivedData/Build/Products/Debug-iphonesimulator"
+          APP_DIR="$(find "$DERIVED" -maxdepth 1 -type d -name '*.app' -print -quit || true)"
 
-      - name: Package simulator app for Preview (validate first)
-        script: |
-          #!/usr/bin/env bash
-          set -euo pipefail
-          source "$CM_ENV"
+          if [[ -z "${APP_DIR:-}" ]]; then
+            echo "❌ No .app produced (build failed). Skipping preview packaging."
+            exit 0
+          fi
 
           PLIST="$APP_DIR/Info.plist"
-          [[ -f "$PLIST" ]] || { echo "❌ $APP_DIR has no Info.plist — invalid app."; exit 1; }
+          if [[ ! -f "$PLIST" ]]; then
+            echo "❌ $APP_DIR has no Info.plist — invalid app. Skipping."
+            exit 0
+          fi
 
           EXEC=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$PLIST" 2>/dev/null || true)
-          [[ -n "${EXEC:-}" && -f "$APP_DIR/$EXEC" ]] || { echo "❌ Missing main executable — app wasn’t linked."; exit 1; }
+          if [[ -z "${EXEC:-}" || ! -f "$APP_DIR/$EXEC" ]]; then
+            echo "❌ Missing main executable — app wasn’t linked. Skipping."
+            exit 0
+          fi
 
           mkdir -p "$CM_ARTIFACTS"
           ZIP="$CM_ARTIFACTS/app-preview.zip"
-          (
-            cd "$(dirname "$APP_DIR")"
-            /usr/bin/zip -qry "$ZIP" "$(basename "$APP_DIR")"
-          )
-          echo "✅ Preview artifact: $ZIP"
-          echo "export CM_PREVIEW_IOS_ARTIFACT=$ZIP" >> "$CM_ENV"
+          ( cd "$(dirname "$APP_DIR")" && /usr/bin/zip -qry "$ZIP" "$(basename "$APP_DIR")" )
+          cp -R "$APP_DIR" "$CM_ARTIFACTS/"
 
-      - name: Archive build artifacts
-        script: |
-          #!/usr/bin/env bash
-          set -euo pipefail
-          source "$CM_ENV"
-          mkdir -p artifacts Payload
-          cp -R "$APP_DIR" artifacts/
-          cp -R "$APP_DIR" Payload/
-          (cd Payload && /usr/bin/zip -qry "$CM_ARTIFACTS/AgentDashboard.ipa" .)
-          /usr/bin/zip -qry "$CM_ARTIFACTS/AgentDashboard.app.zip" "$APP_DIR"
-          /usr/bin/zip -qry "$CM_ARTIFACTS/app-preview.zip" "$APP_DIR"
-          echo "Artifacts in $CM_ARTIFACTS:"
+          echo "✅ Preview artifact: $ZIP"
+          du -sh "$APP_DIR" || true
           ls -lah "$CM_ARTIFACTS"
 
     artifacts:
-      - $CM_ARTIFACTS/AgentDashboard.ipa
-      - $CM_ARTIFACTS/AgentDashboard.app.zip
-      - $CM_ARTIFACTS/app-preview.zip
+      - $CM_ARTIFACTS/**
