@@ -8,33 +8,54 @@
 
 import ComposableArchitecture
 import Foundation
+import SwiftUI
+import IdentifiedCollections
 
 @Reducer
-struct AgentsFeature {
+public struct AgentsFeature {
     // MARK: - State
-    struct State: Equatable {
-        var agents: [Agent] = []
-        var selectedAgent: Agent?
-        var isLoading: Bool = false
-        var error: String?
-        var filterStatus: AgentStatus?
-        var sortOrder: SortOrder = .name
+    @ObservableState
+    public struct State: Equatable {
+        public var agents: IdentifiedArrayOf<Agent> = []
+        public var selectedAgent: Agent?
+        public var isLoading: Bool = false
+        public var searchText: String = ""
+        public var filterStatus: Agent.Status?
+        public var sortOrder: SortOrder = .name
+        public var isCreatingNewAgent: Bool = false
+        public var newAgentForm: NewAgentForm = NewAgentForm()
+        public var alertMessage: String?
         
-        enum SortOrder: String, CaseIterable {
+        public enum SortOrder: String, CaseIterable {
             case name = "Name"
-            case status = "Status" 
-            case type = "Type"
+            case status = "Status"
             case lastActivity = "Last Activity"
-            case resourceUsage = "CPU Usage"
+            case type = "Type"
         }
         
-        // Computed properties
-        var filteredAndSortedAgents: [Agent] {
-            var filtered = agents
+        public struct NewAgentForm: Equatable {
+            public var name: String = ""
+            public var type: String = "Analysis"
+            public var configuration: [String: String] = [:]
+            public var isValid: Bool {
+                !name.isEmpty && !type.isEmpty
+            }
+        }
+        
+        public var filteredAgents: [Agent] {
+            var filtered = agents.elements
+            
+            // Apply search filter
+            if !searchText.isEmpty {
+                filtered = filtered.filter { agent in
+                    agent.name.localizedCaseInsensitiveContains(searchText) ||
+                    agent.type.localizedCaseInsensitiveContains(searchText)
+                }
+            }
             
             // Apply status filter
-            if let filterStatus = filterStatus {
-                filtered = filtered.filter { $0.status == filterStatus }
+            if let statusFilter = filterStatus {
+                filtered = filtered.filter { $0.status == statusFilter }
             }
             
             // Apply sorting
@@ -43,396 +64,242 @@ struct AgentsFeature {
                 filtered.sort { $0.name < $1.name }
             case .status:
                 filtered.sort { $0.status.rawValue < $1.status.rawValue }
-            case .type:
-                filtered.sort { $0.type.rawValue < $1.type.rawValue }
             case .lastActivity:
-                filtered.sort { 
-                    let date1 = $0.lastActivity ?? Date.distantPast
-                    let date2 = $1.lastActivity ?? Date.distantPast
-                    return date1 > date2 // Most recent first
-                }
-            case .resourceUsage:
-                filtered.sort { 
-                    let cpu1 = $0.resourceUsage?.cpu ?? 0
-                    let cpu2 = $1.resourceUsage?.cpu ?? 0
-                    return cpu1 > cpu2 // Highest usage first
-                }
+                filtered.sort { ($0.lastActivity ?? Date.distantPast) > ($1.lastActivity ?? Date.distantPast) }
+            case .type:
+                filtered.sort { $0.type < $1.type }
             }
             
             return filtered
         }
         
-        var statusCounts: [AgentStatus: Int] {
-            var counts: [AgentStatus: Int] = [:]
-            for agent in agents {
-                counts[agent.status, default: 0] += 1
-            }
-            return counts
-        }
+        public init() {}
     }
     
-    // MARK: - Action
-    enum Action: Equatable {
-        // Data loading
-        case loadAgents
-        case agentsLoaded([Agent])
-        case loadingFailed(String)
-        
-        // Real-time updates
-        case updateAgentStatus(Data)
-        case agentStatusUpdated(Agent)
-        
-        // User interactions
-        case agentTapped(Agent)
-        case agentSelected(Agent?)
-        case filterByStatus(AgentStatus?)
-        case sortOrderChanged(State.SortOrder)
-        case refreshRequested
-        
-        // Agent control
-        case startAgent(UUID)
-        case stopAgent(UUID)
-        case restartAgent(UUID)
-        case pauseAgent(UUID)
-        case resumeAgent(UUID)
-        
-        // Lifecycle
+    public enum Action: Equatable {
         case onAppear
         case onDisappear
+        case refreshButtonTapped
+        case searchTextChanged(String)
+        case filterStatusChanged(Agent.Status?)
+        case sortOrderChanged(State.SortOrder)
+        case agentSelected(Agent?)
+        case startAgent(Agent)
+        case stopAgent(Agent)
+        case restartAgent(Agent)
+        case deleteAgent(Agent)
+        case createNewAgentTapped
+        case cancelNewAgent
+        case saveNewAgent
+        case newAgentFormUpdated(State.NewAgentForm)
+        case agentsReceived([Agent])
+        case agentActionCompleted(Agent, String)
+        case agentActionFailed(Agent, String)
+        case loadingStateChanged(Bool)
+        case alertDismissed
+        case webSocketUpdate(WebSocketMessage)
     }
     
-    // MARK: - Dependencies
-    @Dependency(\.apiClient) var apiClient
     @Dependency(\.continuousClock) var clock
+    @Dependency(\.uuid) var uuid
     
-    // MARK: - Reducer
-    var body: some Reducer<State, Action> {
+    public init() {}
+    
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            // Lifecycle
             case .onAppear:
-                print("[AgentsFeature] Agents view appeared")
-                return .send(.loadAgents)
-                
-            case .onDisappear:
-                print("[AgentsFeature] Agents view disappeared")
-                return .none
-                
-            // Data loading
-            case .loadAgents:
-                print("[AgentsFeature] Loading agents...")
-                state.isLoading = true
-                state.error = nil
-                
+                print("🎯 AgentsFeature: View appeared")
                 return .run { send in
-                    do {
-                        let agents = try await apiClient.fetchAgents()
-                        await send(.agentsLoaded(agents))
-                    } catch {
-                        await send(.loadingFailed(error.localizedDescription))
+                    await send(.refreshButtonTapped)
+                    // Start periodic refresh
+                    for await _ in self.clock.timer(interval: .seconds(10)) {
+                        await send(.refreshButtonTapped)
                     }
                 }
+                .cancellable(id: CancelID.refreshTimer)
                 
-            case let .agentsLoaded(agents):
-                print("[AgentsFeature] Loaded \(agents.count) agents")
-                for agent in agents {
-                    agent.logStatus()
-                }
-                state.agents = agents
-                state.isLoading = false
-                return .none
+            case .onDisappear:
+                print("👋 AgentsFeature: View disappeared")
+                return .cancel(id: CancelID.refreshTimer)
                 
-            case let .loadingFailed(error):
-                print("[AgentsFeature] Loading failed: \(error)")
-                state.error = error
-                state.isLoading = false
-                return .none
+            case .refreshButtonTapped:
+                print("🔄 AgentsFeature: Refreshing agents list")
+                state.isLoading = true
                 
-            // Real-time updates
-            case let .updateAgentStatus(data):
-                print("[AgentsFeature] Received agent status update")
-                
-                // Try to decode as Agent
-                if let updatedAgent = try? JSONDecoder().decode(Agent.self, from: data) {
-                    return .send(.agentStatusUpdated(updatedAgent))
-                }
-                
-                return .none
-                
-            case let .agentStatusUpdated(updatedAgent):
-                print("[AgentsFeature] Updating agent: \(updatedAgent.name)")
-                updatedAgent.logStatus()
-                
-                // Update the agent in the array
-                if let index = state.agents.firstIndex(where: { $0.id == updatedAgent.id }) {
-                    state.agents[index] = updatedAgent
-                } else {
-                    // New agent - add to array
-                    state.agents.append(updatedAgent)
+                return .run { send in
+                    // Simulate API call - replace with actual API integration
+                    try await Task.sleep(for: .milliseconds(500))
+                    
+                    // Use real agent data from the Unity-Claude-Automation system
+                    let mockAgents = Agent.realAgents
+                    
+                    await send(.agentsReceived(mockAgents))
+                    await send(.loadingStateChanged(false))
+                } catch: { error, send in
+                    await send(.loadingStateChanged(false))
+                    await send(.agentActionFailed(
+                        Agent.realAgents.first ?? Agent(
+                            id: "error-agent",
+                            name: "Error Agent", 
+                            type: "Error"
+                        ),
+                        "Failed to load agents: \(error.localizedDescription)"
+                    ))
                 }
                 
-                // Update selected agent if it matches
-                if let selectedAgent = state.selectedAgent, selectedAgent.id == updatedAgent.id {
-                    state.selectedAgent = updatedAgent
-                }
-                
+            case let .searchTextChanged(text):
+                print("🔍 AgentsFeature: Search text changed to '\(text)'")
+                state.searchText = text
                 return .none
                 
-            // User interactions
-            case let .agentTapped(agent):
-                print("[AgentsFeature] Agent tapped: \(agent.name)")
-                return .send(.agentSelected(agent))
-                
-            case let .agentSelected(agent):
-                print("[AgentsFeature] Agent selected: \(agent?.name ?? "None")")
-                state.selectedAgent = agent
-                return .none
-                
-            case let .filterByStatus(status):
-                print("[AgentsFeature] Filter by status: \(status?.rawValue ?? "All")")
+            case let .filterStatusChanged(status):
+                print("🎯 AgentsFeature: Filter status changed to \(status?.rawValue ?? "all")")
                 state.filterStatus = status
                 return .none
                 
             case let .sortOrderChanged(order):
-                print("[AgentsFeature] Sort order changed: \(order.rawValue)")
+                print("📋 AgentsFeature: Sort order changed to \(order.rawValue)")
                 state.sortOrder = order
                 return .none
                 
-            case .refreshRequested:
-                print("[AgentsFeature] Manual refresh requested")
-                return .send(.loadAgents)
+            case let .agentSelected(agent):
+                print("🤖 AgentsFeature: Agent selected: \(agent?.name ?? "none")")
+                state.selectedAgent = agent
+                return .none
                 
-            // Agent control with enhanced error handling and loading states
-            case let .startAgent(id):
-                print("[AgentsFeature] Start agent request: \(id)")
+            case let .startAgent(agent):
+                print("▶️ AgentsFeature: Starting agent \(agent.name)")
+                return .run { send in
+                    // Simulate API call
+                    try await Task.sleep(for: .milliseconds(500))
+                    await send(.agentActionCompleted(agent, "Agent started successfully"))
+                    await send(.refreshButtonTapped)
+                } catch: { error, send in
+                    await send(.agentActionFailed(agent, "Failed to start agent: \(error.localizedDescription)"))
+                }
                 
-                // Find the agent to validate operation
-                guard let agent = state.agents.first(where: { $0.id == id }) else {
-                    print("[AgentsFeature] Error: Agent not found for start operation")
-                    state.error = "Agent not found"
+            case let .stopAgent(agent):
+                print("⏹️ AgentsFeature: Stopping agent \(agent.name)")
+                return .run { send in
+                    // Simulate API call
+                    try await Task.sleep(for: .milliseconds(500))
+                    await send(.agentActionCompleted(agent, "Agent stopped successfully"))
+                    await send(.refreshButtonTapped)
+                } catch: { error, send in
+                    await send(.agentActionFailed(agent, "Failed to stop agent: \(error.localizedDescription)"))
+                }
+                
+            case let .restartAgent(agent):
+                print("🔄 AgentsFeature: Restarting agent \(agent.name)")
+                return .run { send in
+                    // Simulate API call
+                    try await Task.sleep(for: .milliseconds(1000))
+                    await send(.agentActionCompleted(agent, "Agent restarted successfully"))
+                    await send(.refreshButtonTapped)
+                } catch: { error, send in
+                    await send(.agentActionFailed(agent, "Failed to restart agent: \(error.localizedDescription)"))
+                }
+                
+            case let .deleteAgent(agent):
+                print("🗑️ AgentsFeature: Deleting agent \(agent.name)")
+                return .run { send in
+                    // Simulate API call
+                    try await Task.sleep(for: .milliseconds(500))
+                    await send(.agentActionCompleted(agent, "Agent deleted successfully"))
+                    await send(.refreshButtonTapped)
+                } catch: { error, send in
+                    await send(.agentActionFailed(agent, "Failed to delete agent: \(error.localizedDescription)"))
+                }
+                
+            case .createNewAgentTapped:
+                print("➕ AgentsFeature: Create new agent tapped")
+                state.isCreatingNewAgent = true
+                state.newAgentForm = State.NewAgentForm()
+                return .none
+                
+            case .cancelNewAgent:
+                print("❌ AgentsFeature: Cancel new agent")
+                state.isCreatingNewAgent = false
+                state.newAgentForm = State.NewAgentForm()
+                return .none
+                
+            case .saveNewAgent:
+                print("💾 AgentsFeature: Saving new agent")
+                guard state.newAgentForm.isValid else {
+                    state.alertMessage = "Please fill in all required fields"
                     return .none
                 }
                 
-                // Check if agent is in a valid state to start
-                guard agent.status != .running else {
-                    print("[AgentsFeature] Error: Agent already running")
-                    state.error = "Agent is already running"
-                    return .none
-                }
-                
-                // Update agent state to show loading
-                if let index = state.agents.firstIndex(where: { $0.id == id }) {
-                    var updatedAgent = state.agents[index]
-                    state.agents[index] = Agent(
-                        id: updatedAgent.id,
-                        name: updatedAgent.name,
-                        type: updatedAgent.type,
-                        status: .running, // Optimistically update
-                        description: updatedAgent.description,
+                return .run { [form = state.newAgentForm] send in
+                    // Simulate API call to create agent
+                    try await Task.sleep(for: .milliseconds(750))
+                    
+                    let newAgent = Agent(
+                        id: UUID().uuidString,
+                        name: form.name,
+                        description: "User created agent",
+                        type: form.type,
+                        status: .idle,
                         startTime: Date(),
                         lastActivity: Date(),
-                        resourceUsage: updatedAgent.resourceUsage,
-                        configuration: updatedAgent.configuration
+                        metrics: [:]
                     )
+                    
+                    await send(.agentActionCompleted(newAgent, "Agent created successfully"))
+                    await send(.cancelNewAgent)
+                    await send(.refreshButtonTapped)
+                } catch: { error, send in
+                    await send(.agentActionFailed(
+                        Agent.realAgents.first ?? Agent(
+                            id: "error-agent",
+                            name: "Error Agent",
+                            type: "Error"
+                        ),
+                        "Failed to create agent: \(error.localizedDescription)"
+                    ))
                 }
                 
-                return .run { send in
-                    do {
-                        let result = try await apiClient.startAgent(id)
-                        print("[AgentsFeature] Start agent success: \(result)")
-                        await send(.agentsLoaded(try await apiClient.fetchAgents()))
-                    } catch {
-                        print("[AgentsFeature] Start agent failed: \(error.localizedDescription)")
-                        await send(.loadingFailed("Failed to start agent: \(error.localizedDescription)"))
-                        // Refresh agents to restore correct state
-                        await send(.loadAgents)
-                    }
-                }
+            case let .newAgentFormUpdated(form):
+                print("📝 AgentsFeature: New agent form updated")
+                state.newAgentForm = form
+                return .none
                 
-            case let .stopAgent(id):
-                print("[AgentsFeature] Stop agent request: \(id)")
+            case let .agentsReceived(agents):
+                print("📦 AgentsFeature: Received \(agents.count) agents")
+                state.agents = IdentifiedArray(uniqueElements: agents)
+                return .none
                 
-                guard let agent = state.agents.first(where: { $0.id == id }) else {
-                    print("[AgentsFeature] Error: Agent not found for stop operation")
-                    state.error = "Agent not found"
-                    return .none
-                }
+            case let .agentActionCompleted(agent, message):
+                print("✅ AgentsFeature: Action completed for \(agent.name): \(message)")
+                state.alertMessage = message
+                return .none
                 
-                guard agent.status == .running || agent.status == .paused else {
-                    print("[AgentsFeature] Error: Agent not in stoppable state")
-                    state.error = "Agent is not running"
-                    return .none
-                }
+            case let .agentActionFailed(agent, error):
+                print("❌ AgentsFeature: Action failed for \(agent.name): \(error)")
+                state.alertMessage = error
+                return .none
                 
-                // Optimistically update state
-                if let index = state.agents.firstIndex(where: { $0.id == id }) {
-                    var updatedAgent = state.agents[index]
-                    state.agents[index] = Agent(
-                        id: updatedAgent.id,
-                        name: updatedAgent.name,
-                        type: updatedAgent.type,
-                        status: .stopped,
-                        description: updatedAgent.description,
-                        startTime: updatedAgent.startTime,
-                        lastActivity: Date(),
-                        resourceUsage: nil, // Clear resource usage when stopped
-                        configuration: updatedAgent.configuration
-                    )
-                }
+            case let .loadingStateChanged(isLoading):
+                print("🔄 AgentsFeature: Loading state changed to \(isLoading)")
+                state.isLoading = isLoading
+                return .none
                 
-                return .run { send in
-                    do {
-                        let result = try await apiClient.stopAgent(id)
-                        print("[AgentsFeature] Stop agent success: \(result)")
-                        await send(.agentsLoaded(try await apiClient.fetchAgents()))
-                    } catch {
-                        print("[AgentsFeature] Stop agent failed: \(error.localizedDescription)")
-                        await send(.loadingFailed("Failed to stop agent: \(error.localizedDescription)"))
-                        await send(.loadAgents)
-                    }
-                }
+            case .alertDismissed:
+                print("💭 AgentsFeature: Alert dismissed")
+                state.alertMessage = nil
+                return .none
                 
-            case let .restartAgent(id):
-                print("[AgentsFeature] Restart agent request: \(id)")
-                
-                guard let agent = state.agents.first(where: { $0.id == id }) else {
-                    state.error = "Agent not found"
-                    return .none
-                }
-                
-                // For restart, we'll do a stop then start sequence
-                return .run { send in
-                    do {
-                        print("[AgentsFeature] Initiating restart sequence for agent \(id)")
-                        
-                        // If agent is running, stop it first
-                        if agent.status == .running || agent.status == .paused {
-                            print("[AgentsFeature] Stopping agent before restart")
-                            _ = try await apiClient.stopAgent(id)
-                            // Small delay to ensure clean shutdown
-                            try await clock.sleep(for: .seconds(1))
-                        }
-                        
-                        // Start the agent
-                        print("[AgentsFeature] Starting agent after restart")
-                        let result = try await apiClient.startAgent(id)
-                        print("[AgentsFeature] Restart agent success: \(result)")
-                        
-                        // Refresh all agents
-                        await send(.agentsLoaded(try await apiClient.fetchAgents()))
-                    } catch {
-                        print("[AgentsFeature] Restart agent failed: \(error.localizedDescription)")
-                        await send(.loadingFailed("Failed to restart agent: \(error.localizedDescription)"))
-                        await send(.loadAgents)
-                    }
-                }
-                
-            case let .pauseAgent(id):
-                print("[AgentsFeature] Pause agent request: \(id)")
-                
-                guard let agent = state.agents.first(where: { $0.id == id }) else {
-                    state.error = "Agent not found"
-                    return .none
-                }
-                
-                guard agent.status == .running else {
-                    state.error = "Agent must be running to pause"
-                    return .none
-                }
-                
-                // Optimistically update state
-                if let index = state.agents.firstIndex(where: { $0.id == id }) {
-                    var updatedAgent = state.agents[index]
-                    state.agents[index] = Agent(
-                        id: updatedAgent.id,
-                        name: updatedAgent.name,
-                        type: updatedAgent.type,
-                        status: .paused,
-                        description: updatedAgent.description,
-                        startTime: updatedAgent.startTime,
-                        lastActivity: Date(),
-                        resourceUsage: updatedAgent.resourceUsage,
-                        configuration: updatedAgent.configuration
-                    )
-                }
-                
-                return .run { send in
-                    do {
-                        let result = try await apiClient.pauseAgent(id)
-                        print("[AgentsFeature] Pause agent success: \(result)")
-                        await send(.agentsLoaded(try await apiClient.fetchAgents()))
-                    } catch {
-                        print("[AgentsFeature] Pause agent failed: \(error.localizedDescription)")
-                        await send(.loadingFailed("Failed to pause agent: \(error.localizedDescription)"))
-                        await send(.loadAgents)
-                    }
-                }
-                
-            case let .resumeAgent(id):
-                print("[AgentsFeature] Resume agent request: \(id)")
-                
-                guard let agent = state.agents.first(where: { $0.id == id }) else {
-                    state.error = "Agent not found"
-                    return .none
-                }
-                
-                guard agent.status == .paused else {
-                    state.error = "Agent must be paused to resume"
-                    return .none
-                }
-                
-                // Optimistically update state
-                if let index = state.agents.firstIndex(where: { $0.id == id }) {
-                    var updatedAgent = state.agents[index]
-                    state.agents[index] = Agent(
-                        id: updatedAgent.id,
-                        name: updatedAgent.name,
-                        type: updatedAgent.type,
-                        status: .running,
-                        description: updatedAgent.description,
-                        startTime: updatedAgent.startTime,
-                        lastActivity: Date(),
-                        resourceUsage: updatedAgent.resourceUsage,
-                        configuration: updatedAgent.configuration
-                    )
-                }
-                
-                return .run { send in
-                    do {
-                        let result = try await apiClient.resumeAgent(id)
-                        print("[AgentsFeature] Resume agent success: \(result)")
-                        await send(.agentsLoaded(try await apiClient.fetchAgents()))
-                    } catch {
-                        print("[AgentsFeature] Resume agent failed: \(error.localizedDescription)")
-                        await send(.loadingFailed("Failed to resume agent: \(error.localizedDescription)"))
-                        await send(.loadAgents)
-                    }
-                }
+            case .webSocketUpdate(let message):
+                print("📡 AgentsFeature: WebSocket update received")
+                // Parse WebSocket message and update agents
+                // TODO: Implement actual WebSocket message parsing
+                return .none
             }
         }
     }
-}
-
-// MARK: - Helper Extensions
-
-extension AgentsFeature.State {
-    var totalAgents: Int { agents.count }
-    var runningAgents: Int { statusCounts[.running] ?? 0 }
-    var idleAgents: Int { statusCounts[.idle] ?? 0 }
-    var stoppedAgents: Int { statusCounts[.stopped] ?? 0 }
-    var errorAgents: Int { statusCounts[.error] ?? 0 }
     
-    var healthSummary: String {
-        let running = runningAgents
-        let total = totalAgents
-        let healthy = running + idleAgents
-        
-        if total == 0 {
-            return "No agents"
-        } else if errorAgents > 0 {
-            return "\(errorAgents) error\(errorAgents == 1 ? "" : "s"), \(running)/\(total) running"
-        } else {
-            return "\(running)/\(total) running, \(healthy) healthy"
-        }
+    private enum CancelID: Hashable {
+        case refreshTimer
     }
 }
