@@ -1,0 +1,138 @@
+# Complete Codemagic sanity checks to add before the build step
+# Add these to your codemagic.yaml in the scripts section before xcodebuild
+
+- name: Sanity - verify Swift files are in target membership
+  script: |
+    set -euo pipefail
+    PROJ="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
+    
+    echo "=== Checking critical files in Xcode project ==="
+    
+    must_have=(
+      "AgentDashboardApp.swift"
+      "ContentView.swift"
+      "DashboardView.swift"
+      "AgentsView.swift"
+      "TerminalView.swift"
+      "AnalyticsView.swift"
+      "AppFeature.swift"
+      "DashboardFeature.swift"
+      "AgentsFeature.swift"
+      "TerminalFeature.swift"
+      "AnalyticsFeature.swift"
+      "SettingsFeature.swift"
+      "APIClient.swift"
+      "Agent.swift"
+    )
+    
+    missing_files=()
+    for f in "${must_have[@]}"; do
+      if ! grep -q "$f" "$PROJ"; then
+        echo "❌ Not in project: $f"
+        missing_files+=("$f")
+      else
+        echo "✅ Found: $f"
+      fi
+    done
+    
+    if [ ${#missing_files[@]} -gt 0 ]; then
+      echo
+      echo "⚠️  CRITICAL: The following files exist in git but are NOT in the Xcode project:"
+      for f in "${missing_files[@]}"; do
+        echo "  - $f"
+      done
+      echo
+      echo "These files must be added to the Xcode project's target membership."
+      echo "Since you're on PC, the build will fail until someone with Xcode adds them."
+      echo
+      echo "Temporary workaround: Remove references to these views from ContentView.swift"
+      exit 1
+    fi
+    
+    echo "✅ All critical files are in target membership"
+
+- name: Sanity - ensure single @main App
+  script: |
+    set -euo pipefail
+    hits=$(rg -n --no-heading -g 'iOS-App/**/*.swift' '@main\s+struct\s+[A-Za-z_][A-Za-z0-9_]*\s*:\s*App' | wc -l | tr -d ' ')
+    echo "@main App count: $hits"
+    if [ "$hits" -gt 1 ]; then
+      echo "❌ Multiple @main apps:"
+      rg -n --no-heading -g 'iOS-App/**/*.swift' '@main\s+struct\s+[A-Za-z_][A-Za-z0-9_]*\s*:\s*App'
+      exit 1
+    fi
+    echo "✅ Single @main App"
+
+- name: Sanity - duplicate top-level type names
+  script: |
+    set -euo pipefail
+    python3 - <<'PY'
+    import os,re,collections
+    root="iOS-App"; pat=re.compile(r'^\s*(struct|class|enum)\s+([A-Za-z_][A-Za-z0-9_]*)\b')
+    names=collections.defaultdict(list)
+    for dp,_,fs in os.walk(root):
+      for f in fs:
+        if not f.endswith(".swift"): continue
+        p=os.path.join(dp,f)
+        try: txt=open(p,encoding="utf-8",errors="ignore").read()
+        except: continue
+        for i,line in enumerate(txt.splitlines(),1):
+          m=pat.match(line)
+          if m: names[m.group(2)].append(f"{p}:{i}")
+    dupes={k:v for k,v in names.items() if len(v)>1}
+    if dupes:
+      print("❌ Duplicate type names:")
+      for k,v in dupes.items():
+        print(" ",k); [print("   -",loc) for loc in v]
+      raise SystemExit(1)
+    print("✅ No duplicate type names")
+    PY
+
+# Your existing build step stays the same:
+# - name: Build for iOS Simulator (arm64, single device, with result bundle)
+#   script: |
+#     set -euxo pipefail
+#     xcodebuild \
+#       -scheme AgentDashboard \
+#       -configuration Debug \
+#       -destination "id=$SIM_UDID" \
+#       -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
+#       -resultBundlePath "$CM_BUILD_DIR/build.xcresult" \
+#       build
+
+# Add this AFTER the build step for diagnostics:
+- name: Extract ALL Swift diagnostics
+  script: |
+    set -euo pipefail
+    BUNDLE="$CM_BUILD_DIR/build.xcresult"
+    [[ -d "$BUNDLE" ]] || exit 0
+    echo "=== High-level issues ==="
+    xcrun xcresulttool get --format json --path "$BUNDLE" | python3 - <<'PY'
+    import json,sys
+    j=json.load(sys.stdin)
+    def walk(x,out):
+      if isinstance(x,dict):
+        if x.get('issueType') in ('error','warning'):
+          msg=x.get('message',{}).get('text','')
+          loc=x.get('documentLocationInCreatingWorkspace',{}) or {}
+          url=loc.get('url',''); line=loc.get('line')
+          out.append((x.get('issueType'), msg, url, line))
+        for v in x.values(): walk(v,out)
+      elif isinstance(x,list):
+        for v in x: walk(v,out)
+    out=[]; walk(j,out)
+    for kind,msg,url,line in out:
+      print(('✖' if kind=='error' else '⚠'),msg)
+      if url:  print('   file:',url)
+      if line: print('   line:',line)
+      print()
+    PY
+    
+    echo "=== Swift serialized diagnostics (if any) ==="
+    swiftdiags=$(find "$BUNDLE" -type f -name "*.dia" -o -name "*.diagnostics" || true)
+    if [[ -n "${swiftdiags}" ]]; then
+      while IFS= read -r d; do
+        echo "--- DIAG: $d ---"
+        xcrun swift-diagnostics tool parse "$d" 2>/dev/null || true
+      done <<< "$swiftdiags"
+    fi
