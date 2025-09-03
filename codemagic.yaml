@@ -67,6 +67,54 @@ workflows:
           echo "Selected simulator UDID: $SIM_UDID"
           echo "export SIM_UDID=$SIM_UDID" >> "$CM_ENV"
 
+      - name: Sanity - ensure single @main App
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          
+          echo "=== Checking for single @main App ==="
+          if command -v rg &> /dev/null; then
+            hits=$(rg -n --no-heading -g 'iOS-App/**/*.swift' '@main\s+struct\s+[A-Za-z_][A-Za-z0-9_]*\s*:\s*App' | wc -l | tr -d ' ')
+          else
+            hits=$(grep -r "@main.*struct.*App" iOS-App --include="*.swift" | wc -l | tr -d ' ')
+          fi
+          
+          echo "@main App count: $hits"
+          if [ "$hits" -gt 1 ]; then
+            echo "❌ Multiple @main apps found"
+            exit 1
+          fi
+          echo "✅ Single @main App"
+
+      - name: Sanity - verify key files are in Xcode project
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          PROJ="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
+          
+          echo "=== Checking target membership ==="
+          
+          # Critical files that MUST be in project
+          critical=( ContentView.swift DashboardView.swift )
+          for f in "${critical[@]}"; do
+            if ! grep -q "$f" "$PROJ"; then
+              echo "❌ CRITICAL: Not in project: $f"
+              exit 1
+            else
+              echo "✅ Found: $f"
+            fi
+          done
+          
+          # Optional files (okay if missing due to temp wrappers)
+          optional=( AgentsView.swift TerminalView.swift AnalyticsView.swift SettingsView.swift )
+          for f in "${optional[@]}"; do
+            if ! grep -q "$f" "$PROJ"; then
+              echo "⚠️  Not in project: $f (using temp wrapper)"
+            else
+              echo "✅ Found: $f"
+            fi
+          done
+
       - name: Project integrity check
         script: |
           #!/usr/bin/env bash
@@ -122,18 +170,79 @@ workflows:
             build | tee "$LOG"
 
       # ---------- Diagnostics: richer error reporting -----------
-      - name: Extract Swift errors from xcresult (always)
+      - name: Extract ALL Swift diagnostics (file + line)
         script: |
           #!/usr/bin/env bash
-          set +e
+          set -euo pipefail
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
-          if [[ -d "$BUNDLE" ]]; then
-            echo "=== Swift errors (xcresult) ==="
-            python3 ci/extract_build_errors.py "$BUNDLE"
-          else
-            echo "No build.xcresult present."
+          
+          if [[ ! -d "$BUNDLE" ]]; then
+            echo "No xcresult bundle at: $BUNDLE"
+            exit 0
           fi
-          true
+          
+          echo "========================================="
+          echo "=== EXTRACTING REAL SWIFT ERRORS ==="
+          echo "========================================="
+          echo
+          
+          echo "=== High-level issues (xcresult JSON) ==="
+          xcrun xcresulttool get --format json --path "$BUNDLE" | python3 - <<'PY'
+import json,sys
+j=json.load(sys.stdin)
+
+def walk(x,out):
+  if isinstance(x,dict):
+    if x.get('issueType') in ('error','warning'):
+      msg=x.get('message',{}).get('text','')
+      loc=x.get('documentLocationInCreatingWorkspace',{}) or {}
+      url=loc.get('url',''); line=loc.get('line')
+      out.append((x.get('issueType'), msg, url, line))
+    for v in x.values(): walk(v,out)
+  elif isinstance(x,list):
+    for v in x: walk(v,out)
+
+out=[]; walk(j,out)
+errors = [x for x in out if x[0] == 'error']
+
+if errors:
+  print(f"\n🔴 FOUND {len(errors)} ERRORS:\n")
+  for i,(kind,msg,url,line) in enumerate(errors[:20],1):
+    print(f"ERROR #{i}:")
+    print(f"  ✖ {msg}")
+    if url:  print(f"  📁 file: {url}")
+    if line: print(f"  📍 line: {line}")
+    print()
+else:
+  print("✅ No errors in xcresult")
+PY
+          
+          echo
+          echo "=== Swift serialized diagnostics (if present) ==="
+          # Some errors only show up in .dia files
+          mapfile -t swiftdiags < <(find "$BUNDLE" -type f \( -name "*.dia" -o -name "*.diagnostics" \) 2>/dev/null || true)
+          
+          if (( ${#swiftdiags[@]} )); then
+            echo "Found ${#swiftdiags[@]} diagnostic files"
+            for d in "${swiftdiags[@]}"; do
+              echo "--- DIAG: $(basename "$d") ---"
+              xcrun swift-diagnostics tool parse "$d" 2>/dev/null || echo "(could not parse)"
+              echo
+            done
+          else
+            echo "(no serialized diagnostics found)"
+          fi
+          
+          echo
+          echo "========================================="
+          
+          # Also try the original script if it exists
+          if [[ -f "ci/extract_build_errors.py" ]]; then
+            echo "=== Using ci/extract_build_errors.py ==="
+            python3 ci/extract_build_errors.py "$BUNDLE" || true
+          fi
+          
+          exit 0
 
       - name: Show failing source context (best effort)
         script: |
