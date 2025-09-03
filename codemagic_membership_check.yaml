@@ -1,0 +1,44 @@
+# Add this to codemagic.yaml BEFORE the xcodebuild step
+# This will catch missing project references early and save build time
+
+- name: Sanity - verify Swift files are in target membership
+  script: |
+    set -euo pipefail
+    PROJ="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
+    
+    required=(
+      "ContentView.swift"
+      "DashboardView.swift"
+      "AgentsView.swift"
+      "TerminalView.swift"
+      "AnalyticsView.swift"
+    )
+    
+    echo "=== Checking critical view files in Xcode project ==="
+    missing=0
+    
+    for f in "${required[@]}"; do
+      if ! rg -n --no-heading -F "$f" "$PROJ" >/dev/null; then
+        echo "❌ Not referenced in project: $f"
+        missing=1
+      else
+        echo "✅ Found: $f"
+      fi
+    done
+    
+    if [ "$missing" -ne 0 ]; then
+      echo ""
+      echo "ERROR: Files exist in git but are missing from Xcode project!"
+      echo "This causes 'SwiftDriver Requirements' build failures."
+      echo ""
+      echo "Fix: Someone with Xcode must:"
+      echo "  1. Open AgentDashboard.xcodeproj"
+      echo "  2. Add the missing files to the AgentDashboard target"
+      echo "  3. Commit the updated project.pbxproj"
+      echo ""
+      echo "See iOS_FIX_REQUIRED.md for detailed instructions."
+      exit 1
+    fi
+    
+    echo ""
+    echo "✅ All required view files are in target membership"
