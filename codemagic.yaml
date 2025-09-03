@@ -203,6 +203,25 @@ workflows:
           
           echo "✅ Project file is valid"
 
+      - name: Verify no macro products linked
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          
+          echo "=== Check that macro products are NOT linked in project ==="
+          PBX="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
+          
+          if grep -qE 'ComposableArchitectureMacros|CasePathsMacros|PerceptionMacros|DependenciesMacros' "$PBX"; then
+            echo "❌ ERROR: Macro products are referenced in the pbxproj!"
+            echo "Macro products should NOT be linked in Link Binary With Libraries or Target Dependencies."
+            echo "Remove these references from the Xcode project:"
+            grep -nE 'ComposableArchitectureMacros|CasePathsMacros|PerceptionMacros|DependenciesMacros' "$PBX" | head -10
+            exit 1
+          else
+            echo "✅ No macro products linked in pbxproj - this is correct!"
+            echo "Xcode will automatically handle macro building for the host platform."
+          fi
+
       - name: Clean and resolve packages
         script: |
           #!/usr/bin/env bash
