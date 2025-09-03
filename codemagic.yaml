@@ -203,52 +203,26 @@ workflows:
           
           echo "✅ Project file is valid"
 
-      - name: Prebuild Swift macros for host (macOS)
+      - name: Skip macro prebuild - let Xcode handle it
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
-          export DEVELOPER_DIR="/Applications/Xcode-16.4.app"
           
-          # DerivedData paths Codemagic is already using
+          # Since macros are being built for simulator correctly,
+          # we'll just ensure packages are resolved and let Xcode
+          # build them as part of the normal build process
+          
           DD="$CM_BUILD_DIR/DerivedData"
-          PKG="$DD/SourcePackages/checkouts"
           
           echo "=== Ensure packages are resolved ==="
           xcodebuild -resolvePackageDependencies \
             -project "$PROJECT_PATH" \
             -scheme "$SCHEME" \
-            -derivedDataPath "$DD"
+            -derivedDataPath "$DD" \
+            -skipPackagePluginValidation \
+            -skipMacroValidation
           
-          echo "=== Build host (macOS) macro plugins via SwiftPM ==="
-          
-          # Build all macro targets
-          echo "Building ComposableArchitectureMacros..."
-          swift build -c debug --package-path "$PKG/swift-composable-architecture" --target ComposableArchitectureMacros || true
-          
-          echo "Building CasePathsMacros..."
-          swift build -c debug --package-path "$PKG/swift-case-paths" --target CasePathsMacros || true
-          
-          echo "Building DependenciesMacros..."
-          swift build -c debug --package-path "$PKG/swift-dependencies" --target DependenciesMacros || true
-          
-          echo "Building PerceptionMacros..."
-          swift build -c debug --package-path "$PKG/swift-perception" --target PerceptionMacros || true
-          
-          echo "=== Collect host macro dylibs ==="
-          mkdir -p "$DD/Build/Products/Debug/host"
-          
-          # Find and copy macro binaries from SwiftPM builds
-          find "$PKG" -path "*/.build/*/debug" -type f \( -name "*Macros*.dylib" -o -name "*Macros*.bundle" \) -print0 | \
-            xargs -0 -I{} cp -f "{}" "$DD/Build/Products/Debug/host/" || true
-          
-          echo "=== Host macro binaries in DerivedData/Build/Products/Debug/host ==="
-          ls -la "$DD/Build/Products/Debug/host" || true
-          
-          echo "=== Host macro binaries in DerivedData/Build/Products/Debug ==="
-          ls -la "$DD/Build/Products/Debug/" 2>/dev/null || echo "No Debug folder"
-          
-          echo "=== Set DYLD_LIBRARY_PATH for macro loading ==="
-          echo "export DYLD_LIBRARY_PATH=\"$DD/Build/Products/Debug/host:\${DYLD_LIBRARY_PATH:-}\"" >> "$CM_ENV"
+          echo "=== Packages resolved, macros will be built during main build ==="
 
       - name: Sanity - print APIClient.swift head & checksum
         script: |
@@ -327,48 +301,30 @@ workflows:
           exit 0
 
       # ---------- Diagnostics: richer error reporting -----------
-      - name: Extract APIClient.swift specific errors
+      - name: Extract build errors from xcresult
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
+          LOG="$CM_BUILD_DIR/build.log"
           
-          echo "=== Extract Swift diagnostics for APIClient.swift ==="
-          if [ -d "$BUNDLE" ]; then
+          echo "=== Extract Swift diagnostics (no heredoc) ==="
+          if [ -d "$BUNDLE" ] && command -v jq >/dev/null 2>&1; then
+            echo "Using xcresulttool + jq to extract errors..."
             xcrun xcresulttool get --legacy --format json --path "$BUNDLE" 2>/dev/null | \
-            python3 - <<'PY' || true
-            import json, sys
-            try:
-                j = json.load(sys.stdin)
-            except:
-                print("Could not parse JSON")
-                sys.exit(0)
-            
-            def walk(o, indent=0):
-                if isinstance(o, dict):
-                    for k, v in o.items():
-                        if k == "message" and isinstance(v, dict):
-                            text = v.get("text", "")
-                            if "APIClient" in text or "json" in text.lower():
-                                print(f"{'  '*indent}ERROR: {text}")
-                        elif k == "filePath" and isinstance(v, str) and "APIClient.swift" in v:
-                            print(f"{'  '*indent}FILE: {v}")
-                        elif k == "startingLineNumber":
-                            print(f"{'  '*indent}LINE: {v}")
-                        walk(v, indent+1)
-                elif isinstance(o, list):
-                    for item in o:
-                        walk(item, indent)
-            
-            walk(j)
-            PY
-          else
-            echo "No xcresult found"
+            jq -r '
+              .. | objects
+              | select(.fileName?)
+              | select(.fileName|tostring|test("(APIClient|AgentsFeature)\\.swift$"))
+              | "\(.fileName):\(.lineNumber // .startingLineNumber // "?"): \(.message // .summary // "")"
+            ' 2>/dev/null || echo "jq parsing failed, trying fallback"
           fi
           
-          echo ""
-          echo "=== Grep build.log for APIClient errors ==="
-          grep -n "APIClient.swift" "$CM_BUILD_DIR/build.log" | grep -E "error:|warning:" | head -20 || echo "No APIClient errors found in log"
+          if [ -f "$LOG" ]; then
+            echo ""
+            echo "=== Grep build.log for compilation errors ==="
+            grep -E "(APIClient|AgentsFeature)\.swift:[0-9]+:.*error:" "$LOG" | head -20 || echo "No errors found for these files"
+          fi
       
       - name: Extract ALL Swift diagnostics (file + line) v2
         script: |
