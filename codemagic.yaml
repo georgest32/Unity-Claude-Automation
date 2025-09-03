@@ -37,32 +37,9 @@ workflows:
           # Help TCA macro host compile
           export MACOSX_DEPLOYMENT_TARGET=13.0
 
-          echo "=== Querying available devices (JSON) ==="
-          xcrun simctl list devices --json > "$CM_BUILD_DIR/devices.json"
-
-          # Pick an iOS 18.x device; prefer iPhone 16 Pro, else first available
-          SIM_UDID="$(python3 - <<'PY'
-import json, os, re, sys
-j = json.load(open(os.path.join(os.environ['CM_BUILD_DIR'],'devices.json')))
-udid = None
-for runtime, items in j.get('devices',{}).items():
-    if re.search(r'iOS-18(\\D|$)', runtime):
-        prefer = ['iPhone 16 Pro','iPhone 16 Pro Max','iPhone 16','iPhone 16 Plus','iPhone 16e']
-        # find preferred devices first
-        byname = {d.get('name'): d for d in items}
-        for want in prefer:
-            d = byname.get(want)
-            if d and d.get('udid'):
-                udid = d['udid']; break
-        # otherwise first item
-        if not udid and items:
-            udid = items[0].get('udid')
-        break
-if not udid:
-    sys.exit(2)
-print(udid)
-PY
-)"
+          echo "=== Selecting iOS 18.x simulator ==="
+          # Use external script to avoid YAML heredoc conflicts completely
+          SIM_UDID="$(python3 ci/select_simulator.py "18.5" "iPhone 16 Pro")"
           if [[ -z "${SIM_UDID:-}" ]]; then
             echo "ERROR: Could not find an iOS 18.x simulator UDID" >&2
             echo "== Devices =="; xcrun simctl list devices
