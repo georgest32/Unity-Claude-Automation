@@ -12,6 +12,26 @@ workflows:
         SCHEME: "AgentDashboard"
 
     scripts:
+      - name: Checkout correct branch
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          
+          echo "=== Git branch setup ==="
+          echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
+          echo "Current commit: $(git rev-parse --short HEAD)"
+          
+          # Fetch latest from all branches
+          git fetch --all --prune
+          
+          # Checkout the branch with our fixes
+          git checkout agent/docs-accuracy-setup
+          git pull --ff-only
+          
+          echo "=== After checkout ==="
+          echo "Now on branch: $(git rev-parse --abbrev-ref HEAD)"
+          echo "Latest commit: $(git rev-parse --short HEAD)"
+          
       - name: Toolchain info
         script: |
           #!/usr/bin/env bash
@@ -227,6 +247,9 @@ workflows:
           echo ""
           echo "=== APIClient.swift sha256 ==="
           shasum -a 256 "$F" || true
+          echo ""
+          echo "=== APIClient.swift helper methods check ==="
+          grep -nE 'func (fetchAgents|startAgent|stopAgent|pauseAgent|resumeAgent|request)\(' "$F" || true
 
       - name: Debug - commit & branch
         script: |
