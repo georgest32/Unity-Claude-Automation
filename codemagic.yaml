@@ -1,74 +1,83 @@
 workflows:
-  ios-master:
-    name: AgentDashboard - iOS Build & Preview
-    max_build_duration: 120
+  ios-tca-dashboard:
+    name: iOS TCA Dashboard
     instance_type: mac_mini_m2
-    
+    max_build_duration: 60
+
     environment:
-      xcode: latest
+      xcode: 16.4
       vars:
-        XCODE_PROJECT: "iOS-App/AgentDashboard/AgentDashboard.xcodeproj"
-        XCODE_SCHEME: "AgentDashboard"
-        BUNDLE_ID: "com.unity.claude.automation.dashboard"
-        DERIVED_DATA: "$CM_BUILD_DIR/DerivedData"
+        DEVELOPER_DIR: /Applications/Xcode-16.4.app/Contents/Developer
         MACOSX_DEPLOYMENT_TARGET: "13.0"
-      
-    triggering:
-      events:
-        - push
-        - tag
-        - pull_request
-      branch_patterns:
-        - pattern: 'main'
-          include: true
-          source: true
-          
+
     scripts:
       - name: Set environment for simulator builds
         script: |
-          export DEVELOPER_DIR=/Applications/Xcode.app
-          export SDKROOT=$(xcrun --sdk iphonesimulator --show-sdk-path)
-          export DYLD_ROOT_PATH="$SDKROOT"
-          echo "DEVELOPER_DIR=$DEVELOPER_DIR" >> $CM_ENV
-          echo "SDKROOT=$SDKROOT" >> $CM_ENV
-          echo "DYLD_ROOT_PATH=$DYLD_ROOT_PATH" >> $CM_ENV
-          
-      - name: Clean DerivedData
+          #!/usr/bin/env bash
+          set -euo pipefail
+          xcodebuild -version
+          xcrun simctl list runtimes
+          xcrun simctl list devices
+
+      - name: Select iOS 18.5 simulator matching SDK
         script: |
-          rm -rf "$CM_BUILD_DIR/DerivedData" || true
-          rm -rf "$HOME/Library/Developer/Xcode/DerivedData" || true
-          
-      - name: Skip Xcode Macro Fingerprint Validation
+          #!/usr/bin/env bash
+          set -euo pipefail
+          xcrun simctl list devices --json > "$CM_BUILD_DIR/sim.json"
+
+          # Choose iPhone 16 Pro on iOS 18.5 if available, else any iPhone on 18.5
+          python3 - <<'PY' >> "$CM_ENV"
+import json, os, sys
+path = os.path.join(os.environ['CM_BUILD_DIR'], 'sim.json')
+data = json.load(open(path))
+pool = data.get('devices', {}).get('com.apple.CoreSimulator.SimRuntime.iOS-18-5', [])
+udid = ''
+for d in pool:
+    if d.get('isAvailable') and d.get('name') == 'iPhone 16 Pro':
+        udid = d['udid']; break
+if not udid:
+    for d in pool:
+        if d.get('isAvailable') and 'iPhone' in d.get('name', ''):
+            udid = d['udid']; break
+if not udid:
+    print("echo 'ERROR: No iOS 18.5 simulator found!' >&2", flush=True)
+    print("exit 1", flush=True)
+    sys.exit(0)
+print(f"export SIMULATOR_UDID={udid}")
+PY
+
+          # Apply any exports from the Python snippet and boot the device
+          source "$CM_ENV"
+          [[ -n "${SIMULATOR_UDID:-}" ]] || { echo "No SIMULATOR_UDID set"; exit 1; }
+          xcrun simctl bootstatus "$SIMULATOR_UDID" -b || xcrun simctl boot "$SIMULATOR_UDID"
+
+      - name: Resolve Swift Package Dependencies (allow macros/plugins)
         script: |
-          defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
-          
-      - name: Resolve Swift Package Dependencies
-        script: |
-          cd $CM_BUILD_DIR/iOS-App/AgentDashboard  
+          #!/usr/bin/env bash
+          set -euo pipefail
           xcodebuild -resolvePackageDependencies \
-            -project AgentDashboard.xcodeproj \
-            -scheme AgentDashboard \
+            -project iOS-App/AgentDashboard/AgentDashboard.xcodeproj \
+            -clonedSourcePackagesDirPath "$CM_BUILD_DIR/SourcePackages" \
             -skipMacroValidation \
             -skipPackagePluginValidation
-            
+
       - name: Build for iOS Simulator (arm64 only)
         script: |
+          #!/usr/bin/env bash
           set -euo pipefail
-          
-          cd $CM_BUILD_DIR/iOS-App/AgentDashboard
-          export MACOSX_DEPLOYMENT_TARGET=13.0
-          
+          cd iOS-App/AgentDashboard
+
           DERIVED="$CM_BUILD_DIR/DerivedData"
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
           LOG="$CM_BUILD_DIR/xcodebuild.log"
-          
-          echo "Building iOS Simulator app (arm64 only)..."
+
+          echo "Building iOS Simulator app (arm64 only)…"
           xcodebuild \
             -project AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
             -sdk iphonesimulator \
             -configuration Debug \
-            -destination "platform=iOS Simulator,arch=arm64" \
+            -destination "id=$SIMULATOR_UDID,platform=iOS Simulator,arch=arm64" \
             -arch arm64 \
             -derivedDataPath "$DERIVED" \
             -resultBundlePath "$BUNDLE" \
@@ -81,31 +90,33 @@ workflows:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             build | tee "$LOG"
-            
+
       - name: Extract Swift compiler errors
         script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
-          
+
           if [[ -e "$BUNDLE" ]]; then
             echo "=== Swift compiler errors ==="
-            if xcrun xcresulttool get object --legacy --path "$BUNDLE" --format json > errors.json 2>/dev/null; then
-              python3 -c "
-import json
-with open('errors.json') as f: j = json.load(f)
+            if out=$(xcrun xcresulttool get object --legacy --path "$BUNDLE" --format json 2>/dev/null); then
+              echo "$out" | python3 - <<'PY'
+import json, sys
+j = json.loads(sys.stdin.read())
 def walk(x):
   if isinstance(x, dict):
     if x.get('issueType') == 'error':
       m = x.get('message',{}).get('text','')
       loc = x.get('documentLocationInCreatingWorkspace',{})
-      print('✖︎', m)
-      if loc.get('url'): print('    file:', loc['url'])
-      if loc.get('line'): print('    line:', loc['line'])
+      print("✖︎", m)
+      if loc.get('url'):  print("    file:", loc['url'])
+      if loc.get('line'): print("    line:", loc['line'])
       print()
     for v in x.values(): walk(v)
   elif isinstance(x, list):
     for v in x: walk(v)
 walk(j)
-              "
+PY
             else
               echo "xcresulttool failed; dumping xcodebuild.log fallback"
               grep -nE " error: " "$CM_BUILD_DIR/xcodebuild.log" || true
@@ -113,55 +124,39 @@ walk(j)
           else
             echo "No result bundle at $BUNDLE"
           fi
-          
+
       - name: Create preview artifacts (with validation)
         script: |
+          #!/usr/bin/env bash
           set -euo pipefail
-          
+
           DERIVED="$CM_BUILD_DIR/DerivedData/Build/Products/Debug-iphonesimulator"
           APP_DIR="$(find "$DERIVED" -maxdepth 1 -type d -name '*.app' -print -quit || true)"
-          
+
           [[ -n "${APP_DIR:-}" ]] || { echo "❌ No .app produced (build failed)."; exit 1; }
-          
+
           PLIST="$APP_DIR/Info.plist"
           [[ -f "$PLIST" ]] || { echo "❌ $APP_DIR has no Info.plist — invalid app."; exit 1; }
-          
+
           EXEC=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$PLIST" 2>/dev/null || true)
-          [[ -n "${EXEC:-}" && -f "$APP_DIR/$EXEC" ]] || { echo "❌ Missing main executable — app wasn't linked."; exit 1; }
-          
-          echo "✅ Valid app found: $APP_DIR"
-          echo "   Executable: $EXEC"
-          echo "   Size: $(du -sh "$APP_DIR" | cut -f1)"
-          
-          # Create artifacts directory
-          mkdir -p artifacts
-          
-          # Package for Codemagic Preview
-          ZIP="artifacts/app-preview.zip"
-          (
-            cd "$(dirname "$APP_DIR")"
-            /usr/bin/zip -qry "$ZIP" "$(basename "$APP_DIR")"
-          )
-          
-          # Also copy the .app directly
-          cp -r "$APP_DIR" artifacts/
-          
-          echo "✅ Preview artifact: $ZIP"
-          ls -lah artifacts/
-            
+          [[ -n "${EXEC:-}" && -f "$APP_DIR/$EXEC" ]] || { echo "❌ Missing main executable — app wasn’t linked."; exit 1; }
+
+          # Package for Codemagic Preview (zipped .app)
+          /usr/bin/zip -qry "$CM_ARTIFACTS/app-preview.zip" -j -- " " 2>/dev/null || true
+          ( cd "$(dirname "$APP_DIR")" && /usr/bin/zip -qry "$CM_ARTIFACTS/app-preview.zip" "$(basename "$APP_DIR")" )
+
+          # Also publish the .app directory
+          cp -R "$APP_DIR" "$CM_ARTIFACTS/AgentDashboard.app"
+
+          echo "export CM_PREVIEW_IOS_ARTIFACT=$CM_ARTIFACTS/app-preview.zip" >> "$CM_ENV"
+          echo "✅ Preview artifact: $CM_ARTIFACTS/app-preview.zip"
+
     artifacts:
-      - artifacts/*.ipa
-      - artifacts/*.app
-      - artifacts/*.zip
-      - artifacts/**/*
-      - $CM_BUILD_DIR/build.xcresult
-      - $CM_BUILD_DIR/diagnostics.txt
-      - $CM_BUILD_DIR/DerivedData/**/Build/**/*.dSYM
-      
+      - $CM_ARTIFACTS/app-preview.zip
+      - $CM_ARTIFACTS/AgentDashboard.app
+
     publishing:
-      email:
-        recipients:
-          - developer@unity-claude-automation.com
-        notify:
-          success: true
-          failure: true
+      scripts:
+        - name: Preview hint
+          script: |
+            echo "If Codemagic App Preview is enabled for your org, a Preview button will appear on this build page."
