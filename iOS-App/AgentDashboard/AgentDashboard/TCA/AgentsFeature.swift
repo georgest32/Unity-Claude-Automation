@@ -93,11 +93,11 @@ public struct AgentsFeature {
         case saveNewAgent
         case newAgentFormUpdated(State.NewAgentForm)
         case agentsReceived([Agent])
-        case agentActionCompleted(Agent, String)
-        case agentActionFailed(Agent, String)
+        case agentActionCompleted(String)
+        case agentActionFailed(String)
         case loadingStateChanged(Bool)
         case alertDismissed
-        case webSocketUpdate(WebSocketMessage)
+        case webSocketUpdate
     }
     
     @Dependency(\.continuousClock) var clock
@@ -129,7 +129,7 @@ public struct AgentsFeature {
                 
                 return .run { send in
                     // Simulate API call - replace with actual API integration
-                    try await Task.sleep(for: .milliseconds(500))
+                    try await clock.sleep(for: .milliseconds(500))
                     
                     // Use real agent data from the Unity-Claude-Automation system
                     let mockAgents = Agent.realAgents
@@ -138,14 +138,7 @@ public struct AgentsFeature {
                     await send(.loadingStateChanged(false))
                 } catch: { error, send in
                     await send(.loadingStateChanged(false))
-                    await send(.agentActionFailed(
-                        Agent.realAgents.first ?? Agent(
-                            id: "error-agent",
-                            name: "Error Agent", 
-                            type: "Error"
-                        ),
-                        "Failed to load agents: \(error.localizedDescription)"
-                    ))
+                    await send(.agentActionFailed("Failed to load agents: \(error.localizedDescription)"))
                 }
                 
             case let .searchTextChanged(text):
@@ -172,44 +165,44 @@ public struct AgentsFeature {
                 print("▶️ AgentsFeature: Starting agent \(agent.name)")
                 return .run { send in
                     // Simulate API call
-                    try await Task.sleep(for: .milliseconds(500))
-                    await send(.agentActionCompleted(agent, "Agent started successfully"))
+                    try await clock.sleep(for: .milliseconds(500))
+                    await send(.agentActionCompleted("Agent \(agent.name) started successfully"))
                     await send(.refreshButtonTapped)
                 } catch: { error, send in
-                    await send(.agentActionFailed(agent, "Failed to start agent: \(error.localizedDescription)"))
+                    await send(.agentActionFailed("Failed to start agent: \(error.localizedDescription)"))
                 }
                 
             case let .stopAgent(agent):
                 print("⏹️ AgentsFeature: Stopping agent \(agent.name)")
                 return .run { send in
                     // Simulate API call
-                    try await Task.sleep(for: .milliseconds(500))
-                    await send(.agentActionCompleted(agent, "Agent stopped successfully"))
+                    try await clock.sleep(for: .milliseconds(500))
+                    await send(.agentActionCompleted("Agent \(agent.name) stopped successfully"))
                     await send(.refreshButtonTapped)
                 } catch: { error, send in
-                    await send(.agentActionFailed(agent, "Failed to stop agent: \(error.localizedDescription)"))
+                    await send(.agentActionFailed("Failed to stop agent: \(error.localizedDescription)"))
                 }
                 
             case let .restartAgent(agent):
                 print("🔄 AgentsFeature: Restarting agent \(agent.name)")
                 return .run { send in
                     // Simulate API call
-                    try await Task.sleep(for: .milliseconds(1000))
-                    await send(.agentActionCompleted(agent, "Agent restarted successfully"))
+                    try await clock.sleep(for: .milliseconds(1000))
+                    await send(.agentActionCompleted("Agent \(agent.name) restarted successfully"))
                     await send(.refreshButtonTapped)
                 } catch: { error, send in
-                    await send(.agentActionFailed(agent, "Failed to restart agent: \(error.localizedDescription)"))
+                    await send(.agentActionFailed("Failed to restart agent: \(error.localizedDescription)"))
                 }
                 
             case let .deleteAgent(agent):
                 print("🗑️ AgentsFeature: Deleting agent \(agent.name)")
                 return .run { send in
                     // Simulate API call
-                    try await Task.sleep(for: .milliseconds(500))
-                    await send(.agentActionCompleted(agent, "Agent deleted successfully"))
+                    try await clock.sleep(for: .milliseconds(500))
+                    await send(.agentActionCompleted("Agent \(agent.name) deleted successfully"))
                     await send(.refreshButtonTapped)
                 } catch: { error, send in
-                    await send(.agentActionFailed(agent, "Failed to delete agent: \(error.localizedDescription)"))
+                    await send(.agentActionFailed("Failed to delete agent: \(error.localizedDescription)"))
                 }
                 
             case .createNewAgentTapped:
@@ -233,7 +226,7 @@ public struct AgentsFeature {
                 
                 return .run { [form = state.newAgentForm] send in
                     // Simulate API call to create agent
-                    try await Task.sleep(for: .milliseconds(750))
+                    try await clock.sleep(for: .milliseconds(750))
                     
                     let newAgent = Agent(
                         id: UUID().uuidString,
@@ -246,18 +239,11 @@ public struct AgentsFeature {
                         metrics: [:]
                     )
                     
-                    await send(.agentActionCompleted(newAgent, "Agent created successfully"))
+                    await send(.agentActionCompleted("Agent \(newAgent.name) created successfully"))
                     await send(.cancelNewAgent)
                     await send(.refreshButtonTapped)
                 } catch: { error, send in
-                    await send(.agentActionFailed(
-                        Agent.realAgents.first ?? Agent(
-                            id: "error-agent",
-                            name: "Error Agent",
-                            type: "Error"
-                        ),
-                        "Failed to create agent: \(error.localizedDescription)"
-                    ))
+                    await send(.agentActionFailed("Failed to create agent: \(error.localizedDescription)"))
                 }
                 
             case let .newAgentFormUpdated(form):
@@ -270,13 +256,13 @@ public struct AgentsFeature {
                 state.agents = IdentifiedArray(uniqueElements: agents)
                 return .none
                 
-            case let .agentActionCompleted(agent, message):
-                print("✅ AgentsFeature: Action completed for \(agent.name): \(message)")
+            case let .agentActionCompleted(message):
+                print("✅ AgentsFeature: Action completed: \(message)")
                 state.alertMessage = message
                 return .none
                 
-            case let .agentActionFailed(agent, error):
-                print("❌ AgentsFeature: Action failed for \(agent.name): \(error)")
+            case let .agentActionFailed(error):
+                print("❌ AgentsFeature: Action failed: \(error)")
                 state.alertMessage = error
                 return .none
                 
@@ -290,10 +276,10 @@ public struct AgentsFeature {
                 state.alertMessage = nil
                 return .none
                 
-            case .webSocketUpdate(let message):
+            case .webSocketUpdate:
                 print("📡 AgentsFeature: WebSocket update received")
                 // Parse WebSocket message and update agents
-                // TODO: Implement actual WebSocket message parsing
+                // TODO: Implement actual WebSocket message parsing  
                 return .none
             }
         }
