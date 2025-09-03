@@ -11,6 +11,21 @@ This document serves as an index to our comprehensive learning repository. All l
 
 ### [🔧 Critical Fixes and Urgent Issues](docs/learnings/critical-fixes.md)
 **Latest critical fixes, urgent issues, and immediate solutions**
+- Learning #272: Swift 6 Actor Isolation APIClient Compilation Fix (2025-09-03)
+  - **Context**: iOS AgentDashboard build failing on Codemagic with Swift 6 strict concurrency errors
+  - **Issue**: "SwiftCompile normal arm64" failures in APIClient.swift with TCA 1.22.2 and Xcode 16.2
+  - **Root Cause Analysis**: 3 specific Swift 6 actor isolation problems:
+    1. HTTPSession actor initialization modifying URLSessionConfiguration causing isolation violation
+    2. encodeBody async method capturing non-Sendable closure in @Sendable context
+    3. AnyEncodable struct lacking proper Sendable conformance with closure isolation
+  - **Research Foundation**: 5 web search queries revealing TCA + Swift 6 migration challenges, 80% Sendable marking requirement
+  - **Solution Implementation**:
+    1. HTTPSession Fix: Create mutable copy before modifying URLSessionConfiguration to avoid actor isolation
+    2. Async Context Fix: Use Task.detached with @Sendable closure for proper isolation in encodeBody
+    3. Sendable Conformance: Mark AnyEncodable as Sendable with @Sendable closure annotation
+  - **Debug Strategy**: Added comprehensive logging at all critical points for runtime issue tracing
+  - **Testing Protocol**: Applied fixes systematically based on research-validated Swift 6 migration patterns
+  - **Critical**: Swift 6 + TCA requires explicit Sendable marking, actor isolation fixes, and proper async context handling
 - Learning #271: Xcode 16.0 TCA Compatibility Bug Resolution (2025-09-02)
   - **Context**: TCA (The Composable Architecture) build failures on Codemagic with Xcode 16.0
   - **Issue**: XCSwiftPackageProductDependency _setOwner unrecognized selector causing Status Code 74 failures
