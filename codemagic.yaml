@@ -176,7 +176,7 @@ workflows:
 
           DERIVED="$CM_BUILD_DIR/DerivedData"
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
-          LOG="$CM_BUILD_DIR/xcodebuild.log"
+          LOG="$CM_BUILD_DIR/build.log"
 
           # Macro plugins run on the macOS host; set a modern host target
           export MACOSX_DEPLOYMENT_TARGET=13.0
@@ -216,7 +216,7 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
-          RAWLOG="$CM_BUILD_DIR/build.log"
+          LOG="$CM_BUILD_DIR/build.log"
 
           if [[ ! -d "$BUNDLE" ]]; then
             echo "No xcresult bundle at: $BUNDLE"
@@ -342,10 +342,10 @@ workflows:
 
           echo
           echo "=== C) Fallback: tail build log ==="
-          if [[ -f "$RAWLOG" ]]; then
-            tail -n 500 "$RAWLOG" | sed -n '/error:/,$p' | head -n 400 || true
+          if [[ -f "$LOG" ]]; then
+            tail -n 500 "$LOG" | sed -n '/error:/,$p' | head -n 400 || true
           else
-            echo "(no $RAWLOG)"
+            echo "(no $LOG)"
           fi
 
           # Never fail this step so the final status gate can re-emit the build code
@@ -363,7 +363,7 @@ workflows:
         script: |
           #!/usr/bin/env bash
           set +e
-          python3 ci/detect_dependency_errors.py "$CM_BUILD_DIR/xcodebuild.log"
+          python3 ci/detect_dependency_errors.py "$CM_BUILD_DIR/build.log"
           true
 
       - name: Publish diagnostics & build settings
@@ -371,17 +371,16 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
           DERIVED="$CM_BUILD_DIR/DerivedData"
-          # Define CM_ARTIFACTS if not already set
-          export CM_ARTIFACTS="${CM_ARTIFACTS:-$CM_BUILD_DIR/artifacts}"
-          mkdir -p "$CM_ARTIFACTS"
-          [[ -f "$CM_BUILD_DIR/xcodebuild.log" ]] && cp "$CM_BUILD_DIR/xcodebuild.log" "$CM_ARTIFACTS/"
-          [[ -f "$CM_BUILD_DIR/xcresult.json"   ]] && cp "$CM_BUILD_DIR/xcresult.json"   "$CM_ARTIFACTS/"
+          mkdir -p "$CM_EXPORT_DIR"
+          [[ -f "$CM_BUILD_DIR/build.log" ]] && cp "$CM_BUILD_DIR/build.log" "$CM_EXPORT_DIR/"
+          [[ -f "$CM_BUILD_DIR/xc.json"   ]] && cp "$CM_BUILD_DIR/xc.json" "$CM_EXPORT_DIR/xcresult.json"
+          [[ -d "$CM_BUILD_DIR/build.xcresult" ]] && cp -R "$CM_BUILD_DIR/build.xcresult" "$CM_EXPORT_DIR/"
           if [[ -d "$DERIVED" ]]; then
-            (cd "$DERIVED" && zip -qry "$CM_ARTIFACTS/deriveddata-logs.zip" Logs Build/Intermediates.noindex || true)
-            xcodebuild -project "$PROJECT_PATH" -scheme "$SCHEME" -showBuildSettings > "$CM_ARTIFACTS/build-settings.txt" || true
+            (cd "$DERIVED" && zip -qry "$CM_EXPORT_DIR/deriveddata-logs.zip" Logs Build/Intermediates.noindex || true)
+            xcodebuild -project "$PROJECT_PATH" -scheme "$SCHEME" -showBuildSettings > "$CM_EXPORT_DIR/build-settings.txt" || true
           fi
           echo "Artifacts:"
-          ls -lah "$CM_ARTIFACTS"
+          ls -lah "$CM_EXPORT_DIR"
 
       - name: Fail pipeline if build failed
         script: |
@@ -419,14 +418,14 @@ workflows:
             exit 0
           fi
 
-          mkdir -p "$CM_ARTIFACTS"
-          ZIP="$CM_ARTIFACTS/app-preview.zip"
+          mkdir -p "$CM_EXPORT_DIR"
+          ZIP="$CM_EXPORT_DIR/app-preview.zip"
           ( cd "$(dirname "$APP_DIR")" && /usr/bin/zip -qry "$ZIP" "$(basename "$APP_DIR")" )
-          cp -R "$APP_DIR" "$CM_ARTIFACTS/"
+          cp -R "$APP_DIR" "$CM_EXPORT_DIR/"
 
           echo "✅ Preview artifact: $ZIP"
           du -sh "$APP_DIR" || true
-          ls -lah "$CM_ARTIFACTS"
+          ls -lah "$CM_EXPORT_DIR"
 
     artifacts:
       - $CM_ARTIFACTS/**
