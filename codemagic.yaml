@@ -25,8 +25,10 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
           
-          echo "=== Cleaning DerivedData ==="
+          echo "=== Cleaning DerivedData and caches ==="
           rm -rf "$CM_BUILD_DIR/DerivedData" || true
+          rm -rf "$HOME/Library/Developer/Xcode/DerivedData" 2>/dev/null || true
+          rm -rf "$CM_BUILD_DIR/SourcePackages" 2>/dev/null || true
           
           echo "=== xcodebuild toolchain ==="
           xcodebuild -version
@@ -197,7 +199,6 @@ workflows:
             -skipPackagePluginValidation \
             ONLY_ACTIVE_ARCH=YES \
             EXCLUDED_ARCHS="i386 x86_64" \
-            SWIFT_MACRO_PLUGIN_ENABLE=YES \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
@@ -206,6 +207,9 @@ workflows:
           
           echo "$status" > "$CM_BUILD_DIR/build_status.txt"
           echo "Build exited with status: $status"
+          
+          echo "=== Where did the macro bundles land? ==="
+          find "$DERIVED/Build/Products" -maxdepth 3 -type d -name "*Macros*" -print || true
           
           # Always succeed this step so diagnostics can run
           exit 0
