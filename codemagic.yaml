@@ -67,24 +67,56 @@ workflows:
           echo "Selected simulator UDID: $SIM_UDID"
           echo "export SIM_UDID=$SIM_UDID" >> "$CM_ENV"
 
-      - name: Sanity - ensure single @main App
+      - name: Debug - list all @main App matches
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
-          
-          echo "=== Checking for single @main App ==="
+          echo "=== Finding all @main declarations ==="
           if command -v rg &> /dev/null; then
-            hits=$(rg -n --no-heading -g 'iOS-App/**/*.swift' '@main\s+struct\s+[A-Za-z_][A-Za-z0-9_]*\s*:\s*App' | wc -l | tr -d ' ')
+            echo "Using ripgrep:"
+            rg -n -g 'iOS-App/**/*.swift' '@main' || echo "No matches found"
           else
-            hits=$(grep -r "@main.*struct.*App" iOS-App --include="*.swift" | wc -l | tr -d ' ')
+            echo "Using grep:"
+            grep -r -n "@main" iOS-App --include="*.swift" || echo "No matches found"
           fi
+          echo ""
+          echo "=== Checking which files are in Xcode project ==="
+          PROJ="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
+          echo "AgentDashboardApp.swift in project: $(grep -c "AgentDashboardApp.swift" "$PROJ" || echo 0)"
+
+      - name: Sanity - ensure single @main App (project files only)
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          PROJ="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
           
-          echo "@main App count: $hits"
-          if [ "$hits" -gt 1 ]; then
-            echo "❌ Multiple @main apps found"
+          echo "=== Checking for @main App in project files ==="
+          
+          # Simple approach: just check if AgentDashboardApp.swift exists and has @main
+          mainfile="iOS-App/AgentDashboard/AgentDashboard/AgentDashboardApp.swift"
+          
+          if [[ -f "$mainfile" ]]; then
+            if grep -q "@main" "$mainfile"; then
+              echo "✅ Found @main in AgentDashboardApp.swift"
+            else
+              echo "❌ AgentDashboardApp.swift missing @main"
+              exit 1
+            fi
+          else
+            echo "❌ AgentDashboardApp.swift not found"
             exit 1
           fi
-          echo "✅ Single @main App"
+          
+          # Check for any other @main declarations
+          otherMains=$(find iOS-App -name "*.swift" -not -name "AgentDashboardApp.swift" -exec grep -l "@main" {} \; | wc -l)
+          
+          if [ "$otherMains" -gt 0 ]; then
+            echo "❌ Found @main in other files:"
+            find iOS-App -name "*.swift" -not -name "AgentDashboardApp.swift" -exec grep -l "@main" {} \;
+            exit 1
+          fi
+          
+          echo "✅ Single @main App verified"
 
       - name: Sanity - verify key files are in Xcode project
         script: |
