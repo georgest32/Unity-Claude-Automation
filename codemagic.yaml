@@ -188,34 +188,40 @@ workflows:
           
           echo "=== High-level issues (xcresult JSON) ==="
           xcrun xcresulttool get --format json --path "$BUNDLE" | python3 - <<'PY'
-import json,sys
-j=json.load(sys.stdin)
-
-def walk(x,out):
-  if isinstance(x,dict):
-    if x.get('issueType') in ('error','warning'):
-      msg=x.get('message',{}).get('text','')
-      loc=x.get('documentLocationInCreatingWorkspace',{}) or {}
-      url=loc.get('url',''); line=loc.get('line')
-      out.append((x.get('issueType'), msg, url, line))
-    for v in x.values(): walk(v,out)
-  elif isinstance(x,list):
-    for v in x: walk(v,out)
-
-out=[]; walk(j,out)
-errors = [x for x in out if x[0] == 'error']
-
-if errors:
-  print(f"\n🔴 FOUND {len(errors)} ERRORS:\n")
-  for i,(kind,msg,url,line) in enumerate(errors[:20],1):
-    print(f"ERROR #{i}:")
-    print(f"  ✖ {msg}")
-    if url:  print(f"  📁 file: {url}")
-    if line: print(f"  📍 line: {line}")
-    print()
-else:
-  print("✅ No errors in xcresult")
-PY
+          import json, sys
+          j = json.load(sys.stdin)
+          
+          def walk(x, out):
+              if isinstance(x, dict):
+                  if x.get('issueType') in ('error', 'warning'):
+                      msg = x.get('message', {}).get('text', '')
+                      loc = x.get('documentLocationInCreatingWorkspace', {}) or {}
+                      url = loc.get('url', '')
+                      line = loc.get('line')
+                      out.append((x.get('issueType'), msg, url, line))
+                  for v in x.values():
+                      walk(v, out)
+              elif isinstance(x, list):
+                  for v in x:
+                      walk(v, out)
+          
+          out = []
+          walk(j, out)
+          errors = [x for x in out if x[0] == 'error']
+          
+          if errors:
+              print(f"\n🔴 FOUND {len(errors)} ERRORS:\n")
+              for i, (kind, msg, url, line) in enumerate(errors[:20], 1):
+                  print(f"ERROR #{i}:")
+                  print(f"  ✖ {msg}")
+                  if url:
+                      print(f"  📁 file: {url}")
+                  if line:
+                      print(f"  📍 line: {line}")
+                  print()
+          else:
+              print("✅ No errors in xcresult")
+          PY
           
           echo
           echo "=== Swift serialized diagnostics (if present) ==="
