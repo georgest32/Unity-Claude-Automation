@@ -12,25 +12,38 @@ workflows:
         SCHEME: "AgentDashboard"
 
     scripts:
-      - name: Checkout correct branch
+      - name: Verify repository and code
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
           
-          echo "=== Git branch setup ==="
+          echo "=== Repository info ==="
+          echo "PWD: $(pwd)"
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
           echo "Current commit: $(git rev-parse --short HEAD)"
+          echo "Remote URL: $(git remote get-url origin)"
           
-          # Fetch latest from all branches
-          git fetch --all --prune
+          echo "=== Verify iOS-App exists ==="
+          if [ -d "iOS-App/AgentDashboard" ]; then
+            echo "✅ iOS-App/AgentDashboard directory found"
+            ls -la iOS-App/AgentDashboard/ | head -5
+          else
+            echo "❌ ERROR: iOS-App/AgentDashboard directory not found!"
+            exit 1
+          fi
           
-          # Checkout the branch with our fixes
-          git checkout agent/docs-accuracy-setup
-          git pull --ff-only
-          
-          echo "=== After checkout ==="
-          echo "Now on branch: $(git rev-parse --abbrev-ref HEAD)"
-          echo "Latest commit: $(git rev-parse --short HEAD)"
+          echo "=== Verify APIClient has required methods ==="
+          F="iOS-App/AgentDashboard/AgentDashboard/Network/APIClient.swift"
+          if [ -f "$F" ]; then
+            echo "✅ APIClient.swift found"
+            echo "Checking for required methods:"
+            grep -E "func fetchAgents\(" "$F" && echo "✅ fetchAgents found" || echo "❌ fetchAgents missing"
+            grep -E "func startAgent\(" "$F" && echo "✅ startAgent found" || echo "❌ startAgent missing"
+            grep -E "func stopAgent\(" "$F" && echo "✅ stopAgent found" || echo "❌ stopAgent missing"
+          else
+            echo "❌ ERROR: APIClient.swift not found at $F"
+            exit 1
+          fi
           
       - name: Toolchain info
         script: |
