@@ -52,6 +52,20 @@
 		};
 /* End PBXFrameworksBuildPhase section */
 
+/* Begin PBXSwiftMacroExpansionBuildPhase section */
+		4A75E6471A4043BDB33982935C /* Swift Macro Expansion */ = {
+			isa = PBXSwiftMacroExpansionBuildPhase;
+			buildActionMask = 2147483647;
+			macroPackages = (
+				4A75E6471A4043BDB33982935D /* ComposableArchitectureMacros */,
+				4A75E6471A4043BDB33982935E /* CasePathsMacros */,
+				4A75E6471A4043BDB33982935F /* DependenciesMacrosPlugin */,
+				4A75E6471A4043BDB339829360 /* PerceptionMacros */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSwiftMacroExpansionBuildPhase section */
+
 /* Begin PBXGroup section */
 		4A1234567890ABCD12345676 = {
 			isa = PBXGroup;
@@ -99,6 +113,7 @@
 			buildPhases = (
 				4A1234567890ABCD1234567A /* Sources */,
 				4A1234567890ABCD12345679 /* Frameworks */,
+				4A75E6471A4043BDB33982935C /* Swift Macro Expansion */,
 			);
 			buildRules = (
 			);
@@ -107,6 +122,10 @@
 			name = AgentDashboard;
 			packageProductDependencies = (
 				4A1234567890ABCD12345695 /* ComposableArchitecture */,
+				4A75E6471A4043BDB33982935D /* ComposableArchitectureMacros */,
+				4A75E6471A4043BDB33982935E /* CasePathsMacros */,
+				4A75E6471A4043BDB33982935F /* DependenciesMacrosPlugin */,
+				4A75E6471A4043BDB339829360 /* PerceptionMacros */,
 			);
 			productName = AgentDashboard;
 			productReference = 4A1234567890ABCD1234567C /* AgentDashboard.app */;
@@ -383,6 +402,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4A1234567890ABCD12345696 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
+		};
+		4A75E6471A4043BDB33982935D /* ComposableArchitectureMacros */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A1234567890ABCD12345696 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitectureMacros;
+		};
+		4A75E6471A4043BDB33982935E /* CasePathsMacros */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A1234567890ABCD12345696 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = CasePathsMacros;
+		};
+		4A75E6471A4043BDB33982935F /* DependenciesMacrosPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A1234567890ABCD12345696 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = DependenciesMacrosPlugin;
+		};
+		4A75E6471A4043BDB339829360 /* PerceptionMacros */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A1234567890ABCD12345696 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = PerceptionMacros;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
