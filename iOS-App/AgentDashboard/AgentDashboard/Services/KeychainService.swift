@@ -8,7 +8,7 @@
 
 import Foundation
 import Security
-import Dependencies
+import ComposableArchitecture
 
 // MARK: - Keychain Service Protocol
 

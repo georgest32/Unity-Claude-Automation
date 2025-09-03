@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Dependencies
+import ComposableArchitecture
 
 // MARK: - Enhanced WebSocket Client Protocol
 

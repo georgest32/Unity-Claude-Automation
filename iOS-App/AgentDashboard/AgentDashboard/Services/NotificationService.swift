@@ -9,7 +9,7 @@
 import Foundation
 import UserNotifications
 import SwiftUI
-import Dependencies
+import ComposableArchitecture
 
 // MARK: - Notification Service Protocol
 

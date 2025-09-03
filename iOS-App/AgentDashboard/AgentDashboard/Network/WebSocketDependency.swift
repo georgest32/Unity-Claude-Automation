@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Dependencies
+import ComposableArchitecture
 
 // MARK: - WebSocket Dependency Key
 

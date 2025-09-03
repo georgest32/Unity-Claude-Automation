@@ -9,7 +9,7 @@
 import Foundation
 import CoreHaptics
 import SwiftUI
-import Dependencies
+import ComposableArchitecture
 
 // MARK: - Haptic Feedback Service Protocol
 

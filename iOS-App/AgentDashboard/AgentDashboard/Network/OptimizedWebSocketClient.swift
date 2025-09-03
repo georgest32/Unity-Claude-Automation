@@ -8,7 +8,7 @@
 
 import Foundation
 import Network
-import Dependencies
+import ComposableArchitecture
 
 // MARK: - Optimized WebSocket Client Protocol
 

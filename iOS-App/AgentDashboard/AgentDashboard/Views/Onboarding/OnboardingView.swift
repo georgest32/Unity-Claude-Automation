@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import Dependencies
+import ComposableArchitecture
 
 // MARK: - Onboarding Models
 

@@ -3,13 +3,24 @@ import ComposableArchitecture
 
 @main
 struct AgentDashboardApp: App {
-    let store = StoreOf<DashboardFeature>(initialState: .init()) {
-        DashboardFeature()
+    // Use the comprehensive AppFeature that includes all features
+    let store = Store(initialState: AppFeature.State()) {
+        AppFeature()
     }
 
     var body: some Scene {
         WindowGroup {
-            DashboardView(store: store)
+            ContentView(store: store)
+                .onAppear {
+                    print("🚀 [AgentDashboardApp] App launched with comprehensive AppFeature")
+                    store.send(.applicationDidBecomeActive)
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+                    store.send(.applicationDidBecomeActive)
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)) { _ in
+                    store.send(.enterBackground)
+                }
         }
     }
 }

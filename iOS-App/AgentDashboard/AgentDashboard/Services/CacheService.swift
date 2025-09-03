@@ -8,7 +8,7 @@
 
 import Foundation
 import SwiftUI
-import Dependencies
+import ComposableArchitecture
 
 // MARK: - Cache Service Protocol
 

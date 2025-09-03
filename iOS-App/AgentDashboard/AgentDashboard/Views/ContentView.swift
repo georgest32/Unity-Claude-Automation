@@ -8,6 +8,7 @@
 
 import SwiftUI
 import ComposableArchitecture
+import UIKit
 
 struct ContentView: View {
     let store: StoreOf<AppFeature>
@@ -136,44 +137,7 @@ struct ConnectionStatusBar: View {
     }
 }
 
-// MARK: - Placeholder Views
-
-struct DashboardView: View {
-    let store: StoreOf<DashboardFeature>
-    
-    var body: some View {
-        WithPerceptionTracking {
-            NavigationView {
-                VStack(spacing: 20) {
-                    // System Status Card
-                    if let systemStatus = store.state.systemStatus {
-                        SystemStatusCard(systemStatus: systemStatus)
-                    } else if store.state.isRefreshing {
-                        ProgressView("Loading system status...")
-                            .frame(maxWidth: .infinity, minHeight: 120)
-                    }
-                    
-                    // Agents Summary
-                    AgentsSummaryCard(
-                        activeCount: store.state.activeAgents.filter { $0.isActive }.count,
-                        totalCount: store.state.activeAgents.count
-                    )
-                    
-                    Spacer()
-                }
-                .padding()
-                .navigationTitle("Dashboard")
-                .refreshable {
-                    store.send(.refreshButtonTapped)
-                }
-            }
-            .onAppear {
-                print("📊 [DashboardView] Dashboard appeared - loading system status")
-                store.send(.onAppear)
-            }
-        }
-    }
-}
+// MARK: - Note: DashboardView implementation moved to Views/DashboardView.swift
 
 struct SystemStatusCard: View {
     let systemStatus: SystemStatus
@@ -294,55 +258,11 @@ struct RecentAlertsCard: View {
     }
 }
 
-// MARK: - Other Placeholder Views
-
-struct AgentsView: View {
-    let store: StoreOf<AgentsFeature>
-    
-    var body: some View {
-        WithPerceptionTracking {
-            NavigationView {
-                Text("Agents View - Coming Soon")
-                    .navigationTitle("Agents")
-            }
-            .onAppear {
-                store.send(.onAppear)
-            }
-        }
-    }
-}
-
-struct TerminalView: View {
-    let store: StoreOf<TerminalFeature>
-    
-    var body: some View {
-        TerminalInterfaceView(store: store)
-    }
-}
-
-struct AnalyticsView: View {
-    let store: StoreOf<AnalyticsFeature>
-    
-    var body: some View {
-        EnhancedAnalyticsView(store: store)
-    }
-}
-
-struct SettingsView: View {
-    let store: StoreOf<SettingsFeature>
-    
-    var body: some View {
-        WithPerceptionTracking {
-            NavigationView {
-                Text("Settings View - Coming Soon")
-                    .navigationTitle("Settings")
-            }
-            .onAppear {
-                store.send(.onAppear)
-            }
-        }
-    }
-}
+// MARK: - Note: View implementations moved to separate files:
+// - AgentsView: Implemented in AgentsListView in AgentDashboardApp.swift
+// - TerminalView: Implemented in Views/Terminal/TerminalInterfaceView.swift  
+// - AnalyticsView: Implemented in Views/Charts/EnhancedAnalyticsView.swift
+// - SettingsView: Implemented in Views/Settings/SettingsView.swift
 
 // MARK: - Preview
 

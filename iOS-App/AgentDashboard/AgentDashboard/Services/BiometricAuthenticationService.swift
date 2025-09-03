@@ -9,7 +9,7 @@
 import Foundation
 import LocalAuthentication
 import SwiftUI
-import Dependencies
+import ComposableArchitecture
 
 // MARK: - Biometric Authentication Service Protocol
 

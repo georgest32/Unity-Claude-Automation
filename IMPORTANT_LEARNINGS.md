@@ -11,6 +11,23 @@ This document serves as an index to our comprehensive learning repository. All l
 
 ### [🔧 Critical Fixes and Urgent Issues](docs/learnings/critical-fixes.md)
 **Latest critical fixes, urgent issues, and immediate solutions**
+- Learning #274: SwiftDriver Compilation Failure - Comprehensive Duplicate Type Resolution (2025-09-03)
+  - **Context**: iOS AgentDashboard SwiftDriver compilation failures after ContentView fixes - metadata conflicts  
+  - **Issue**: Multiple duplicate file pairs causing SwiftDriver metadata conflicts and compilation failures
+  - **Root Cause Analysis**:
+    1. Duplicate AppFeature files: Simple auth-only vs comprehensive feature-rich implementations
+    2. Duplicate DashboardView files: Old @EnvironmentObject vs modern TCA @Bindable patterns
+    3. Project-wide import Dependencies incompatibility with TCA 1.22.2
+    4. Improper app entry point using DashboardFeature instead of comprehensive AppFeature
+  - **Research Foundation**: ChatGPT external analysis + systematic duplicate detection + TCA migration patterns
+  - **Solution Implementation**:
+    1. File Deduplication: Removed AppFeature.swift (kept TCA/AppFeature.swift), removed DashboardView.swift (kept Views/DashboardView.swift)
+    2. Import Standardization: Systematic replacement of "import Dependencies" with "import ComposableArchitecture" across 17+ files
+    3. App Entry Fix: Updated AgentDashboardApp.swift to use comprehensive AppFeature with ContentView
+    4. Validation Scripts: Created pre-build validation, error extraction, and duplicate detection scripts
+  - **Debug Strategy**: Enhanced codemagic.yaml with comprehensive build validation and error extraction
+  - **Key Insight**: SwiftDriver fails with duplicate type metadata - systematic duplicate detection and resolution critical
+  - **Critical**: Always verify single type definitions per target, use comprehensive AppFeature for multi-feature apps
 - Learning #273: TCA ContentView Duplication and WithViewStore Migration Fix (2025-09-03)
   - **Context**: iOS AgentDashboard build still failing after Swift 6 actor fixes - cascading compilation errors
   - **Issue**: Two ContentView.swift files causing target membership conflicts and deprecated WithViewStore usage
