@@ -215,11 +215,20 @@ workflows:
               --target PerceptionMacros || echo "Failed to build Perception macros"
           fi
           
-          echo "=== Host-built macro dylibs ==="
-          find "$DD/Build/Products" -maxdepth 3 -type f \( -name "*.dylib" -o -name "*.bundle" \) -print || true
-          find "$DD/Build/Products" -maxdepth 3 -type d -name "*Macros*" -print || true
+          echo "=== Copy macro dylibs to DerivedData ==="
+          mkdir -p "$DD/Build/Products/Debug"
+          
+          # Find and copy all macro dylibs from SwiftPM builds to DerivedData
+          for dylib in $(find "$PKG" -path "*/.build/*/debug/*Macros*" -type f \( -name "*.dylib" -o -name "*.bundle" -o -perm +111 \) 2>/dev/null); do
+            echo "Copying: $(basename $dylib)"
+            cp "$dylib" "$DD/Build/Products/Debug/" || true
+          done
+          
+          echo "=== Host-built macro dylibs in DerivedData ==="
+          ls -la "$DD/Build/Products/Debug/" 2>/dev/null || echo "No Debug folder yet"
+          
           echo "=== SwiftPM build folder macros ==="
-          find "$DD/SourcePackages/checkouts" -path "*/.build/*" -type f -name "*Macros*.dylib" -print || true
+          find "$PKG" -path "*/.build/*" -type f -name "*Macros*" 2>/dev/null | head -10 || true
 
       - name: Sanity - print APIClient.swift head & checksum
         script: |
