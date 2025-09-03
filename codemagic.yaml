@@ -182,6 +182,9 @@ workflows:
           export MACOSX_DEPLOYMENT_TARGET=13.0
 
           echo "=== Building Debug for simulator id=$SIM_UDID ==="
+          
+          # Capture build exit code but don't fail the step
+          status=0
           xcodebuild \
             -project "$PROJECT_PATH" \
             -scheme "$SCHEME" \
@@ -199,88 +202,148 @@ workflows:
             -showBuildTimingSummary \
             -skipPackagePluginValidation \
             -skipMacroValidation \
-            build | tee "$LOG"
+            build | tee "$LOG" || status=$?
+          
+          echo "$status" > "$CM_BUILD_DIR/build_status.txt"
+          echo "Build exited with status: $status"
+          
+          # Always succeed this step so diagnostics can run
+          exit 0
 
       # ---------- Diagnostics: richer error reporting -----------
-      - name: Extract ALL Swift diagnostics (file + line)
+      - name: Extract ALL Swift diagnostics (file + line) v2
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
-          
+          RAWLOG="$CM_BUILD_DIR/build.log"
+
           if [[ ! -d "$BUNDLE" ]]; then
             echo "No xcresult bundle at: $BUNDLE"
             exit 0
           fi
-          
-          echo "========================================="
-          echo "=== EXTRACTING REAL SWIFT ERRORS ==="
-          echo "========================================="
+
+          xcrun xcresulttool get --format json --path "$BUNDLE" > "$CM_BUILD_DIR/xc.json"
+
+          echo "=== A) Issues from actionResult.issues.errorSummaries / warningSummaries ==="
+          python3 - <<'PY'
+import json, sys, os
+p = os.path.join(os.environ.get("CM_BUILD_DIR","."), "xc.json")
+with open(p, "r", encoding="utf-8") as f:
+    root = json.load(f)
+
+def deref(obj):
+    """xcresulttool stores lots of references; this yields dicts uniformly."""
+    if isinstance(obj, dict) and 'type' in obj and obj.get('_id'):
+        return obj  # already an object
+    return obj
+
+def walk_issues(node, out):
+    if isinstance(node, dict):
+        if node.get('_type', {}).get('_name') == 'ActionRecord':
+            issues = node.get('issues', {})
+            for k in ('errorSummaries', 'warningSummaries'):
+                arr = issues.get(k, {}).get('_values', []) if isinstance(issues.get(k), dict) else []
+                for it in arr:
+                    text = it.get('message', {}).get('text', '')
+                    doc = it.get('documentLocationInCreatingWorkspace', {}) or {}
+                    url = doc.get('url', '')
+                    line = doc.get('line')
+                    out.append((k[:-9], text, url, line))
+        for v in node.values():
+            walk_issues(v, out)
+    elif isinstance(node, list):
+        for v in node:
+            walk_issues(v, out)
+
+out=[]
+walk_issues(root, out)
+if out:
+    print(f"Found {len(out)} summarized issues\n")
+    for i,(kind,msg,url,line) in enumerate(out[:50],1):
+        print(f"{'✖' if kind=='error' else '⚠'} {msg}")
+        if url:  print(f"   file: {url}")
+        if line: print(f"   line: {line}")
+        print()
+else:
+    print("(no summarized issues in actionResult)")
+PY
+
           echo
-          
-          echo "=== High-level issues (xcresult JSON) ==="
-          xcrun xcresulttool get --format json --path "$BUNDLE" | python3 - <<'PY'
-          import json, sys
-          j = json.load(sys.stdin)
-          
-          def walk(x, out):
-              if isinstance(x, dict):
-                  if x.get('issueType') in ('error', 'warning'):
-                      msg = x.get('message', {}).get('text', '')
-                      loc = x.get('documentLocationInCreatingWorkspace', {}) or {}
-                      url = loc.get('url', '')
-                      line = loc.get('line')
-                      out.append((x.get('issueType'), msg, url, line))
-                  for v in x.values():
-                      walk(v, out)
-              elif isinstance(x, list):
-                  for v in x:
-                      walk(v, out)
-          
-          out = []
-          walk(j, out)
-          errors = [x for x in out if x[0] == 'error']
-          
-          if errors:
-              print(f"\n🔴 FOUND {len(errors)} ERRORS:\n")
-              for i, (kind, msg, url, line) in enumerate(errors[:20], 1):
-                  print(f"ERROR #{i}:")
-                  print(f"  ✖ {msg}")
-                  if url:
-                      print(f"  📁 file: {url}")
-                  if line:
-                      print(f"  📍 line: {line}")
-                  print()
-          else:
-              print("✅ No errors in xcresult")
-          PY
-          
+          echo "=== B) Follow logRef(s) and print error lines ==="
+          # Gather all logRef IDs then fetch & grep them
+          python3 - <<'PY'
+import json, sys, os, subprocess, tempfile, re
+
+bundle = os.environ["CM_BUILD_DIR"] + "/build.xcresult"
+with open(os.environ["CM_BUILD_DIR"] + "/xc.json","r",encoding="utf-8") as f:
+    root = json.load(f)
+
+ids=set()
+def walk(node):
+    if isinstance(node, dict):
+        # ActionRecord.logRef or ActionResult.logRef or BuildOperationDiagnostics
+        logref = node.get('logRef') or node.get('consoleLogRef') or {}
+        if isinstance(logref, dict):
+            _id = logref.get('_id')
+            if _id: ids.add(_id)
+        for v in node.values():
+            walk(v)
+    elif isinstance(node, list):
+        for v in node: walk(v)
+walk(root)
+
+if not ids:
+    print("(no logRef ids found)")
+    sys.exit(0)
+
+def get_id_text(_id):
+    try:
+        out = subprocess.check_output(["xcrun","xcresulttool","get","--format","json","--path", bundle, "--id", _id], text=True)
+    except subprocess.CalledProcessError:
+        return None
+    try:
+        j = json.loads(out)
+        # Logs can be nested. Most text sits under 'text' keys in fragments.
+        def collect(n, acc):
+            if isinstance(n, dict):
+                if 'text' in n and isinstance(n['text'], str):
+                    acc.append(n['text'])
+                for v in n.values(): collect(v, acc)
+            elif isinstance(n, list):
+                for v in n: collect(v, acc)
+        acc=[]
+        collect(j, acc)
+        return "".join(acc)
+    except Exception:
+        return out
+
+hit_any=False
+for _id in ids:
+    txt = get_id_text(_id)
+    if not txt: continue
+    # Print only the interesting lines (Swift compile errors)
+    lines = [l for l in txt.splitlines() if "error:" in l or " Swift" in l or "compile" in l.lower()]
+    if lines:
+        hit_any=True
+        print(f"--- LOG ID {_id} (filtered) ---")
+        print("\n".join(lines[:200]))
+        print()
+if not hit_any:
+    print("(no error-like lines found in logRef text)")
+PY
+
           echo
-          echo "=== Swift serialized diagnostics (if present) ==="
-          # Some errors only show up in .dia files
-          mapfile -t swiftdiags < <(find "$BUNDLE" -type f \( -name "*.dia" -o -name "*.diagnostics" \) 2>/dev/null || true)
-          
-          if (( ${#swiftdiags[@]} )); then
-            echo "Found ${#swiftdiags[@]} diagnostic files"
-            for d in "${swiftdiags[@]}"; do
-              echo "--- DIAG: $(basename "$d") ---"
-              xcrun swift-diagnostics tool parse "$d" 2>/dev/null || echo "(could not parse)"
-              echo
-            done
+          echo "=== C) Fallback: tail raw xcodebuild log ==="
+          if [[ -f "$RAWLOG" ]]; then
+            echo "--- tail -n 500 $RAWLOG ---"
+            tail -n 500 "$RAWLOG" | sed -n '/error:/,$p' | head -n 400 || true
           else
-            echo "(no serialized diagnostics found)"
+            echo "(no $RAWLOG available)"
           fi
-          
+
           echo
           echo "========================================="
-          
-          # Also try the original script if it exists
-          if [[ -f "ci/extract_build_errors.py" ]]; then
-            echo "=== Using ci/extract_build_errors.py ==="
-            python3 ci/extract_build_errors.py "$BUNDLE" || true
-          fi
-          
-          exit 0
 
       - name: Show failing source context (best effort)
         script: |
@@ -310,6 +373,17 @@ workflows:
           fi
           echo "Artifacts:"
           ls -lah "$CM_ARTIFACTS"
+
+      - name: Fail pipeline if build failed
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          status=$(cat "$CM_BUILD_DIR/build_status.txt" 2>/dev/null || echo 0)
+          if [[ "$status" -ne 0 ]]; then
+            echo "❌ xcodebuild exited with status $status"
+            exit "$status"
+          fi
+          echo "✅ Build succeeded"
 
       # ---------- Package a Preview artifact, only if the .app is real ----------
       - name: Validate and package app for Codemagic Preview (conditional)
