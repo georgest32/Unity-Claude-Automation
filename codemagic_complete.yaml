@@ -1,0 +1,217 @@
+# Complete Codemagic Configuration with Error Extraction
+# Copy these script steps into your existing codemagic.yaml
+
+workflows:
+  ios-workflow:
+    name: iOS Build
+    instance_type: mac_pro_m2
+    max_build_duration: 60
+    integrations:
+      app_store_connect: YOUR_ASC_KEY_NAME
+    environment:
+      ios_signing:
+        distribution_type: development
+        bundle_identifier: com.yourcompany.agentdashboard
+      vars:
+        XCODE_WORKSPACE: "iOS-App/AgentDashboard" 
+        XCODE_SCHEME: "AgentDashboard"
+      xcode: 16.0
+      cocoapods: default
+
+    scripts:
+      # ============ PRE-BUILD SANITY CHECKS ============
+      
+      - name: Sanity - ensure single @main App
+        script: |
+          set -euo pipefail
+          hits=$(rg -n --no-heading -g 'iOS-App/**/*.swift' '@main\s+struct\s+[A-Za-z_][A-Za-z0-9_]*\s*:\s*App' | wc -l | tr -d ' ')
+          echo "@main App count: $hits"
+          if [ "$hits" -gt 1 ]; then
+            echo "❌ Multiple @main apps found:"
+            rg -n --no-heading -g 'iOS-App/**/*.swift' '@main\s+struct\s+[A-Za-z_][A-Za-z0-9_]*\s*:\s*App'
+            exit 1
+          fi
+          echo "✅ Single @main App"
+
+      - name: Sanity - verify key files are in Xcode project (target membership)
+        script: |
+          set -euo pipefail
+          PROJ="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
+          
+          # Critical files that MUST be in project
+          critical=( ContentView.swift DashboardView.swift )
+          for f in "${critical[@]}"; do
+            if ! rg -n --no-heading -F "$f" "$PROJ" >/dev/null; then
+              echo "❌ CRITICAL: Not in project: $f"
+              exit 1
+            else
+              echo "✅ Found: $f"
+            fi
+          done
+          
+          # Optional files (okay if missing due to temp wrappers)
+          optional=( AgentsView.swift TerminalView.swift AnalyticsView.swift SettingsView.swift )
+          for f in "${optional[@]}"; do
+            if ! rg -n --no-heading -F "$f" "$PROJ" >/dev/null; then
+              echo "⚠️  Not in project: $f (using temp wrapper)"
+            else
+              echo "✅ Found: $f"
+            fi
+          done
+
+      - name: Sanity - check for duplicate type names
+        script: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os,re,collections
+          root="iOS-App"
+          pat=re.compile(r'^\s*(struct|class|enum)\s+([A-Za-z_][A-Za-z0-9_]*)\b')
+          names=collections.defaultdict(list)
+          for dp,_,fs in os.walk(root):
+            for f in fs:
+              if f.endswith(".swift"):
+                p=os.path.join(dp,f)
+                try: txt=open(p,encoding="utf-8",errors="ignore").read()
+                except: continue
+                for i,line in enumerate(txt.splitlines(),1):
+                  m=pat.match(line)
+                  if m: names[m.group(2)].append(f"{p}:{i}")
+          dupes={k:v for k,v in names.items() if len(v)>1}
+          if dupes:
+            print("❌ Duplicate type names:")
+            for k,v in dupes.items():
+              print(f"  {k}")
+              for loc in v: print(f"    - {loc}")
+            raise SystemExit(1)
+          print("✅ No duplicate type names")
+          PY
+
+      # ============ PACKAGE RESOLUTION ============
+      
+      - name: Resolve Swift Package Manager dependencies
+        script: |
+          cd iOS-App/AgentDashboard
+          xcodebuild -resolvePackageDependencies -scheme "$XCODE_SCHEME"
+
+      # ============ MAIN BUILD STEP ============
+      
+      - name: Set up simulator
+        script: |
+          DEVICE_MODEL="iPhone 15"
+          RUNTIME="17.5"
+          SIM_NAME="${DEVICE_MODEL} (${RUNTIME})"
+          
+          # Create simulator if it doesn't exist
+          if ! xcrun simctl list devices | grep -q "$SIM_NAME"; then
+            xcrun simctl create "$SIM_NAME" "com.apple.CoreSimulator.SimDeviceType.${DEVICE_MODEL// /-}" "com.apple.CoreSimulator.SimRuntime.iOS-${RUNTIME//./-}"
+          fi
+          
+          # Get the UDID
+          SIM_UDID=$(xcrun simctl list devices | grep "$SIM_NAME" | grep -E -o '[0-9A-F-]{36}' | head -1)
+          echo "SIM_UDID=$SIM_UDID" >> $CM_ENV
+
+      - name: Build for iOS Simulator (arm64, single device, with result bundle)
+        script: |
+          set -euxo pipefail
+          cd iOS-App/AgentDashboard
+          
+          xcodebuild \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Debug \
+            -destination "id=$SIM_UDID" \
+            -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
+            -resultBundlePath "$CM_BUILD_DIR/build.xcresult" \
+            clean build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      # ============ POST-BUILD ERROR EXTRACTION ============
+      
+      - name: Extract ALL Swift diagnostics (file + line)
+        script: |
+          set -euo pipefail
+          BUNDLE="$CM_BUILD_DIR/build.xcresult"
+          
+          if [[ ! -d "$BUNDLE" ]]; then
+            echo "No xcresult bundle at: $BUNDLE"
+            exit 0
+          fi
+          
+          echo "========================================="
+          echo "=== EXTRACTING REAL SWIFT ERRORS ==="
+          echo "========================================="
+          echo
+          
+          echo "=== High-level issues (xcresult JSON) ==="
+          xcrun xcresulttool get --format json --path "$BUNDLE" | python3 - <<'PY'
+          import json,sys
+          j=json.load(sys.stdin)
+          
+          def walk(x,out):
+            if isinstance(x,dict):
+              if x.get('issueType') in ('error','warning'):
+                msg=x.get('message',{}).get('text','')
+                loc=x.get('documentLocationInCreatingWorkspace',{}) or {}
+                url=loc.get('url',''); line=loc.get('line')
+                out.append((x.get('issueType'), msg, url, line))
+              for v in x.values(): walk(v,out)
+            elif isinstance(x,list):
+              for v in x: walk(v,out)
+          
+          out=[]; walk(j,out)
+          errors = [x for x in out if x[0] == 'error']
+          warnings = [x for x in out if x[0] == 'warning']
+          
+          if errors:
+            print(f"\n🔴 FOUND {len(errors)} ERRORS:\n")
+            for i,(kind,msg,url,line) in enumerate(errors[:20],1):
+              print(f"ERROR #{i}:")
+              print(f"  ✖ {msg}")
+              if url:  print(f"  📁 file: {url}")
+              if line: print(f"  📍 line: {line}")
+              print()
+          else:
+            print("✅ No errors in xcresult")
+          
+          if warnings and len(warnings) <= 5:
+            print(f"\n⚠️  Found {len(warnings)} warnings (showing first 5)")
+            for kind,msg,url,line in warnings[:5]:
+              print(f"  ⚠️  {msg[:80]}...")
+          PY
+          
+          echo
+          echo "=== Swift serialized diagnostics (if present) ==="
+          
+          # Some errors only show up in .dia files
+          mapfile -t swiftdiags < <(find "$BUNDLE" -type f \( -name "*.dia" -o -name "*.diagnostics" \) 2>/dev/null || true)
+          
+          if (( ${#swiftdiags[@]} )); then
+            echo "Found ${#swiftdiags[@]} diagnostic files"
+            for d in "${swiftdiags[@]}"; do
+              echo "--- DIAG: $(basename "$d") ---"
+              xcrun swift-diagnostics tool parse "$d" 2>/dev/null || echo "(could not parse)"
+              echo
+            done
+          else
+            echo "(no serialized diagnostics found)"
+          fi
+          
+          echo
+          echo "========================================="
+          echo "If errors were found above, copy them and"
+          echo "we can fix them line by line!"
+          echo "========================================="
+
+    artifacts:
+      - $CM_BUILD_DIR/build.xcresult
+      - $CM_BUILD_DIR/DerivedData/Logs/**/*
+      - iOS-App/AgentDashboard/build/Build/**/*.app
+    
+    publishing:
+      email:
+        recipients:
+          - your-email@example.com
+        notify:
+          success: false
+          failure: true

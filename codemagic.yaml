@@ -223,127 +223,127 @@ workflows:
             exit 0
           fi
 
-          xcrun xcresulttool get --format json --path "$BUNDLE" > "$CM_BUILD_DIR/xc.json"
+          # Xcode 16.4 requires --legacy for the old 'get' form.
+          # If Apple changes this again, we can switch to `get object ...` flow later.
+          xcrun xcresulttool get --legacy --format json --path "$BUNDLE" > "$CM_BUILD_DIR/xc.json" || {
+            echo "xcresulttool failed; printing basic info and falling back to raw log."
+            ls -al "$BUNDLE" || true
+          }
 
           echo "=== A) Issues from actionResult.issues.errorSummaries / warningSummaries ==="
           python3 - <<'PY'
-          import json, sys, os
-          p = os.path.join(os.environ.get("CM_BUILD_DIR","."), "xc.json")
+      import json, os, sys
+      p = os.path.join(os.environ.get("CM_BUILD_DIR","."), "xc.json")
+      try:
           with open(p, "r", encoding="utf-8") as f:
               root = json.load(f)
-          
-          def deref(obj):
-              """xcresulttool stores lots of references; this yields dicts uniformly."""
-              if isinstance(obj, dict) and 'type' in obj and obj.get('_id'):
-                  return obj  # already an object
-              return obj
-          
-          def walk_issues(node, out):
-              if isinstance(node, dict):
-                  if node.get('_type', {}).get('_name') == 'ActionRecord':
-                      issues = node.get('issues', {})
-                      for k in ('errorSummaries', 'warningSummaries'):
-                          arr = issues.get(k, {}).get('_values', []) if isinstance(issues.get(k), dict) else []
-                          for it in arr:
-                              text = it.get('message', {}).get('text', '')
-                              doc = it.get('documentLocationInCreatingWorkspace', {}) or {}
-                              url = doc.get('url', '')
-                              line = doc.get('line')
-                              out.append((k[:-9], text, url, line))
-                  for v in node.values():
-                      walk_issues(v, out)
-              elif isinstance(node, list):
-                  for v in node:
-                      walk_issues(v, out)
-          
-          out=[]
-          walk_issues(root, out)
-          if out:
-              print(f"Found {len(out)} summarized issues\n")
-              for i,(kind,msg,url,line) in enumerate(out[:50],1):
-                  print(f"{'✖' if kind=='error' else '⚠'} {msg}")
-                  if url:  print(f"   file: {url}")
-                  if line: print(f"   line: {line}")
-                  print()
-          else:
-              print("(no summarized issues in actionResult)")
-          PY
+      except Exception as e:
+          print(f"(could not open {p}: {e})")
+          sys.exit(0)
+
+      out=[]
+      def walk(node):
+          if isinstance(node, dict):
+              if node.get('_type', {}).get('_name') == 'ActionRecord':
+                  issues = node.get('issues', {})
+                  for key in ('errorSummaries','warningSummaries'):
+                      v = issues.get(key, {})
+                      vals = v.get('_values', []) if isinstance(v, dict) else []
+                      for it in vals:
+                          msg = (it.get('message') or {}).get('text','')
+                          loc = it.get('documentLocationInCreatingWorkspace') or {}
+                          url = loc.get('url',''); line = loc.get('line')
+                          out.append((key, msg, url, line))
+              for val in node.values(): walk(val)
+          elif isinstance(node, list):
+              for val in node: walk(val)
+
+      walk(root)
+      if out:
+          print(f"Found {len(out)} summarized issues\n")
+          for kind,msg,url,line in out[:50]:
+              print(('✖' if kind=='errorSummaries' else '⚠'), msg)
+              if url:  print('   file:', url)
+              if line: print('   line:', line)
+              print()
+      else:
+          print("(no summarized issues in actionResult)")
+      PY
 
           echo
           echo "=== B) Follow logRef(s) and print error lines ==="
-          # Gather all logRef IDs then fetch & grep them
           python3 - <<'PY'
-          import json, sys, os, subprocess, tempfile, re
-          
-          bundle = os.environ["CM_BUILD_DIR"] + "/build.xcresult"
-          with open(os.environ["CM_BUILD_DIR"] + "/xc.json","r",encoding="utf-8") as f:
-              root = json.load(f)
-          
-          ids=set()
-          def walk(node):
-              if isinstance(node, dict):
-                  # ActionRecord.logRef or ActionResult.logRef or BuildOperationDiagnostics
-                  logref = node.get('logRef') or node.get('consoleLogRef') or {}
-                  if isinstance(logref, dict):
-                      _id = logref.get('_id')
-                      if _id: ids.add(_id)
-                  for v in node.values():
-                      walk(v)
-              elif isinstance(node, list):
-                  for v in node: walk(v)
-          walk(root)
-          
-          if not ids:
-              print("(no logRef ids found)")
-              sys.exit(0)
-          
-          def get_id_text(_id):
-              try:
-                  out = subprocess.check_output(["xcrun","xcresulttool","get","--format","json","--path", bundle, "--id", _id], text=True)
-              except subprocess.CalledProcessError:
-                  return None
-              try:
-                  j = json.loads(out)
-                  # Logs can be nested. Most text sits under 'text' keys in fragments.
-                  def collect(n, acc):
-                      if isinstance(n, dict):
-                          if 'text' in n and isinstance(n['text'], str):
-                              acc.append(n['text'])
-                          for v in n.values(): collect(v, acc)
-                      elif isinstance(n, list):
-                          for v in n: collect(v, acc)
-                  acc=[]
-                  collect(j, acc)
-                  return "".join(acc)
-              except Exception:
-                  return out
-          
-          hit_any=False
-          for _id in ids:
-              txt = get_id_text(_id)
-              if not txt: continue
-              # Print only the interesting lines (Swift compile errors)
-              lines = [l for l in txt.splitlines() if "error:" in l or " Swift" in l or "compile" in l.lower()]
-              if lines:
-                  hit_any=True
-                  print(f"--- LOG ID {_id} (filtered) ---")
-                  print("\n".join(lines[:200]))
-                  print()
-          if not hit_any:
-              print("(no error-like lines found in logRef text)")
-          PY
+      import json, os, subprocess, sys
+
+      cm = os.environ.get("CM_BUILD_DIR",".")
+      bundle = os.path.join(cm, "build.xcresult")
+      xcjson = os.path.join(cm, "xc.json")
+
+      try:
+          root = json.load(open(xcjson, "r", encoding="utf-8"))
+      except Exception as e:
+          print(f"(no xc.json to parse: {e})")
+          sys.exit(0)
+
+      ids=set()
+      def walk(n):
+          if isinstance(n, dict):
+              for k in ("logRef","consoleLogRef"):
+                  ref = n.get(k)
+                  if isinstance(ref, dict) and ref.get('_id'):
+                      ids.add(ref['_id'])
+              for v in n.values(): walk(v)
+          elif isinstance(n, list):
+              for v in n: walk(v)
+      walk(root)
+
+      def get_text(_id):
+          try:
+              out = subprocess.check_output(
+                  ["xcrun","xcresulttool","get","--legacy","--format","json","--path", bundle, "--id", _id],
+                  text=True
+              )
+          except subprocess.CalledProcessError:
+              return ""
+          try:
+              j = json.loads(out)
+          except Exception:
+              return out
+          acc=[]
+          def collect(n):
+              if isinstance(n, dict):
+                  t = n.get('text')
+                  if isinstance(t, str): acc.append(t)
+                  for v in n.values(): collect(v)
+              elif isinstance(n, list):
+                  for v in n: collect(v)
+          collect(j)
+          return "".join(acc)
+
+      hit=False
+      for _id in ids:
+          txt = get_text(_id)
+          if not txt: continue
+          lines = [l for l in txt.splitlines() if " error:" in l or l.strip().startswith("error:")]
+          if lines:
+              hit=True
+              print(f"--- LOG ID {_id} (filtered) ---")
+              print("\n".join(lines[:200]))
+              print()
+      if not hit:
+          print("(no error-like lines found in logRef text)")
+      PY
 
           echo
-          echo "=== C) Fallback: tail raw xcodebuild log ==="
+          echo "=== C) Fallback: tail build log ==="
           if [[ -f "$RAWLOG" ]]; then
-            echo "--- tail -n 500 $RAWLOG ---"
             tail -n 500 "$RAWLOG" | sed -n '/error:/,$p' | head -n 400 || true
           else
-            echo "(no $RAWLOG available)"
+            echo "(no $RAWLOG)"
           fi
 
-          echo
-          echo "========================================="
+          # Never fail this step so the final status gate can re-emit the build code
+          exit 0
 
       - name: Show failing source context (best effort)
         script: |
