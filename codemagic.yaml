@@ -109,23 +109,7 @@ PY
           if [[ $XC_STATUS -ne 0 ]]; then
             echo "❌ xcodebuild failed (exit $XC_STATUS). Extracting compiler errors…"
             if [[ -e "$BUNDLE" ]] && xcrun xcresulttool get object --legacy --path "$BUNDLE" --format json >/tmp/xc.json 2>/dev/null; then
-              python3 - <<'PY'
-import json, sys
-j=json.load(open("/tmp/xc.json"))
-def walk(x):
-    if isinstance(x, dict):
-        if x.get('issueType') == 'error':
-            msg=x.get('message',{}).get('text','')
-            loc=x.get('documentLocationInCreatingWorkspace',{})
-            print("✖︎", msg)
-            if loc.get('url'):  print("    file:", loc['url'])
-            if loc.get('line'): print("    line:", loc['line'])
-            print()
-        for v in x.values(): walk(v)
-    elif isinstance(x, list):
-        for v in x: walk(v)
-walk(j)
-PY
+              python3 -c 'import json; j=json.load(open("/tmp/xc.json")); [print("✖︎", x.get("message",{}).get("text","")) for x in j.get("issues",[])] if hasattr(j, "get") else None'
             else
               echo "xcresulttool unavailable; grepping build log:"
               grep -nE " error: " "$LOG" || true
