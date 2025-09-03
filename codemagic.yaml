@@ -67,6 +67,38 @@ workflows:
           echo "Selected simulator UDID: $SIM_UDID"
           echo "export SIM_UDID=$SIM_UDID" >> "$CM_ENV"
 
+      - name: Verify Swift macro plugins are enabled
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          PBX="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
+
+          echo "Checking Swift Macro Expansion configuration…"
+          if ! grep -q "Swift Macro Expansion" "$PBX"; then
+            echo "❌ Missing 'Swift Macro Expansion' build phase in AgentDashboard target."
+            echo "Please open the project in Xcode and add: Build Phases → + → New Swift Macro Expansion Phase"
+            exit 1
+          fi
+
+          missing=0
+          for M in ComposableArchitectureMacros CasePathsMacros DependenciesMacrosPlugin PerceptionMacros; do
+            if ! grep -q "$M" "$PBX"; then
+              echo "❌ Macro plugin not referenced: $M"
+              missing=1
+            else
+              echo "✅ Found: $M"
+            fi
+          done
+
+          if [[ $missing -ne 0 ]]; then
+            echo ""
+            echo "To fix: Open AgentDashboard.xcodeproj → AgentDashboard target → Build Phases → Swift Macro Expansion"
+            echo "Add the missing macro plugins from your SPM dependencies"
+            exit 1
+          fi
+          
+          echo "✅ All required macro plugins are configured"
+
       - name: Build for iOS Simulator (arm64, single device, with result bundle)
         script: |
           #!/usr/bin/env bash
