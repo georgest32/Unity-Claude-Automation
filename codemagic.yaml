@@ -2,10 +2,10 @@ workflows:
   ios-master:
     name: AgentDashboard - iOS Build & Preview
     max_build_duration: 120
-    instance_type: mac_mini_m2  # Required for Xcode 16.x
+    instance_type: mac_mini_m2
     
     environment:
-      xcode: latest  # Uses latest Xcode (16.4+)
+      xcode: latest
       vars:
         XCODE_PROJECT: "iOS-App/AgentDashboard/AgentDashboard.xcodeproj"
         XCODE_SCHEME: "AgentDashboard"
@@ -33,35 +33,18 @@ workflows:
           echo "SDKROOT=$SDKROOT" >> $CM_ENV
           echo "DYLD_ROOT_PATH=$DYLD_ROOT_PATH" >> $CM_ENV
           
-      - name: Clean DerivedData (hygiene)
+      - name: Clean DerivedData
         script: |
-          echo "Cleaning DerivedData to ensure fresh build..."
-          rm -rf "$DERIVED_DATA" || true
+          rm -rf "$CM_BUILD_DIR/DerivedData" || true
           rm -rf "$HOME/Library/Developer/Xcode/DerivedData" || true
           
       - name: Skip Xcode Macro Fingerprint Validation
         script: |
-          # Required for TCA macros to work in CI/CD environment 
           defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
           
-      - name: Force Complete Cache Reset
-        script: |
-          # Comprehensive cache clearing to force fresh build with latest git changes
-          rm -rf ~/Library/Caches/org.swift.swiftpm
-          rm -rf ~/Library/org.swift.swiftpm  
-          rm -rf ~/.swiftpm/xcode/
-          rm -rf ~/Library/Caches/com.apple.dt.Xcode
-          # Verify git changes are present
-          cd iOS-App/AgentDashboard
-          echo "=== Current Git Status ==="
-          git log --oneline -3
-          
-      - name: Resolve Swift Package Dependencies (allow macros/plugins)
+      - name: Resolve Swift Package Dependencies
         script: |
           cd $CM_BUILD_DIR/iOS-App/AgentDashboard  
-          pwd
-          ls -la AgentDashboard.xcodeproj
-          # Resolve packages with macro/plugin validation skipped for CI
           xcodebuild -resolvePackageDependencies \
             -project AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
@@ -70,7 +53,6 @@ workflows:
             
       - name: Build for iOS Simulator (arm64 only)
         script: |
-          #!/usr/bin/env bash
           set -euo pipefail
           
           cd $CM_BUILD_DIR/iOS-App/AgentDashboard
@@ -100,113 +82,6 @@ workflows:
             CODE_SIGNING_ALLOWED=NO \
             build | tee "$LOG"
             
-      - name: Extract compiler errors if build failed
-        script: |
-          RESULT="${CM_BUILD_DIR:-$PWD}/build.xcresult"
-          
-          if [ -d "$RESULT" ] || [ -f "$RESULT" ]; then
-            echo "=== Extracting compilation errors ==="
-            # Xcode 16.4+ uses 'get object' with --legacy flag
-            xcrun xcresulttool get object --legacy --path "$RESULT" --format json 2>/dev/null | python3 -c "
-          import json, sys, urllib.parse
-          try:
-              j = json.load(sys.stdin)
-          except:
-              print('No JSON data received from xcresulttool')
-              sys.exit(0)
-          
-          errors = []
-          def walk(x):
-              if isinstance(x, dict):
-                  # Check for error in multiple possible formats
-                  issue_type = x.get('issueType', '')
-                  type_name = str(x.get('_type', ''))
-                  
-                  if (issue_type == 'error' or 
-                      (type_name and 'IssueSummary' in type_name and issue_type == 'error')):
-                      msg = x.get('message', {}).get('text', '') if isinstance(x.get('message'), dict) else str(x.get('message', ''))
-                      loc = x.get('documentLocationInCreatingWorkspace', {}) or {}
-                      url = loc.get('url') or x.get('documentURL', '')
-                      if isinstance(url, str) and url.startswith('file://'):
-                          url = urllib.parse.unquote(url[7:])
-                      line = loc.get('line') or loc.get('startingLineNumber') or ''
-                      if msg and msg.strip():
-                          errors.append((msg.strip(), str(url) if url else '', str(line) if line else ''))
-                  for v in x.values():
-                      if v is not None:
-                          walk(v)
-              elif isinstance(x, list):
-                  for v in x:
-                      if v is not None:
-                          walk(v)
-          
-          walk(j)
-          if not errors:
-              print('No compilation errors found in result bundle')
-          else:
-              print('=== Compilation Errors ===')
-              for i, (msg, url, line) in enumerate(errors, 1):
-                  print(f'{i}) {msg}')
-                  if url:  print(f'    File: {url}')
-                  if line: print(f'    Line: {line}')
-                  print()
-          " || true
-          else
-            echo "No result bundle found at $RESULT"
-          fi
-          
-      - name: Debug and locate the .app file
-        script: |
-          echo "=== Debugging .app location ==="
-          echo "DERIVED_DATA: $DERIVED_DATA"
-          
-          # Show the full DerivedData structure
-          echo "DerivedData contents:"
-          ls -la "$DERIVED_DATA" || echo "DerivedData directory not found"
-          
-          echo "Build directory contents:"
-          find "$DERIVED_DATA" -type d -name "Build" 2>/dev/null | head -5
-          
-          echo "Looking for all .app files in DerivedData:"
-          find "$DERIVED_DATA" -name "*.app" -type d 2>/dev/null | while read app; do
-            echo "Found: $app ($(du -sh "$app" | cut -f1))"
-          done
-          
-          # Try different common locations
-          POSSIBLE_PATHS=(
-            "$DERIVED_DATA/Build/Products/Debug-iphonesimulator"
-            "$DERIVED_DATA/Build/Products/Debug"
-            "$DERIVED_DATA/Build/Intermediates.noindex"
-          )
-          
-          APP_PATH=""
-          for path in "${POSSIBLE_PATHS[@]}"; do
-            if [ -d "$path" ]; then
-              echo "Checking: $path"
-              ls -la "$path" 2>/dev/null || echo "  (not accessible)"
-              found_app=$(find "$path" -name "*.app" -type d -print -quit 2>/dev/null)
-              if [ -n "$found_app" ]; then
-                APP_PATH="$found_app"
-                echo "✅ Found app at: $APP_PATH"
-                break
-              fi
-            fi
-          done
-          
-          if [[ -z "${APP_PATH:-}" ]]; then
-            echo "❌ No .app found anywhere in DerivedData"
-            echo "Full search results:"
-            find "$DERIVED_DATA" -name "*.app" -type d 2>/dev/null || echo "No .app files found"
-            exit 1
-          fi
-          
-          echo "App size: $(du -sh "$APP_PATH" | cut -f1)"
-          echo "App contents:"
-          ls -la "$APP_PATH" | head -10
-          
-          # Export for next step
-          echo "export APP_PATH='$APP_PATH'" >> $CM_ENV
-          
       - name: Extract Swift compiler errors
         script: |
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
@@ -214,7 +89,6 @@ workflows:
           if [[ -e "$BUNDLE" ]]; then
             echo "=== Swift compiler errors ==="
             if out=$(xcrun xcresulttool get object --legacy --path "$BUNDLE" --format json 2>/dev/null); then
-              # Write JSON to file and parse with Python script
               echo "$out" > errors.json
               cat > parse_errors.py << 'EOF'
 import json
@@ -247,7 +121,6 @@ EOF
           
       - name: Create preview artifacts (with validation)
         script: |
-          #!/usr/bin/env bash
           set -euo pipefail
           
           DERIVED="$CM_BUILD_DIR/DerivedData/Build/Products/Debug-iphonesimulator"
@@ -280,10 +153,6 @@ EOF
           
           echo "✅ Preview artifact: $ZIP"
           ls -lah artifacts/
-          
-      - name: Dump Swift diagnostics (optional)
-        script: |
-          find ~/Library/Developer/Xcode/DerivedData -name "*.dia" -exec strings {} \; | tee $CM_BUILD_DIR/diagnostics.txt || true
             
     artifacts:
       - artifacts/*.ipa
