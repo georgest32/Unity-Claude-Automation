@@ -203,16 +203,13 @@ workflows:
           
           echo "✅ Project file is valid"
 
-      - name: Skip macro prebuild - let Xcode handle it
+      - name: Build macros for host platform using SwiftPM
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
           
-          # Since macros are being built for simulator correctly,
-          # we'll just ensure packages are resolved and let Xcode
-          # build them as part of the normal build process
-          
           DD="$CM_BUILD_DIR/DerivedData"
+          PKG="$DD/SourcePackages/checkouts"
           
           echo "=== Ensure packages are resolved ==="
           xcodebuild -resolvePackageDependencies \
@@ -222,7 +219,61 @@ workflows:
             -skipPackagePluginValidation \
             -skipMacroValidation
           
-          echo "=== Packages resolved, macros will be built during main build ==="
+          echo "=== Build TCA macros for host using swift build ==="
+          
+          # Build ComposableArchitectureMacros for host
+          if [ -d "$PKG/swift-composable-architecture" ]; then
+            echo "Building ComposableArchitectureMacros..."
+            cd "$PKG/swift-composable-architecture"
+            swift build --product ComposableArchitectureMacros -c debug
+            MACRO_PATH="$PKG/swift-composable-architecture/.build/debug/ComposableArchitectureMacros"
+            if [ -f "$MACRO_PATH" ]; then
+              echo "Found macro at: $MACRO_PATH"
+              cp -f "$MACRO_PATH" "$DD/Build/Products/Debug-iphonesimulator/"
+            fi
+          fi
+          
+          # Build CasePathsMacros for host
+          if [ -d "$PKG/swift-case-paths" ]; then
+            echo "Building CasePathsMacros..."
+            cd "$PKG/swift-case-paths"
+            swift build --product CasePathsMacros -c debug
+            MACRO_PATH="$PKG/swift-case-paths/.build/debug/CasePathsMacros"
+            if [ -f "$MACRO_PATH" ]; then
+              echo "Found macro at: $MACRO_PATH"
+              cp -f "$MACRO_PATH" "$DD/Build/Products/Debug-iphonesimulator/"
+            fi
+          fi
+          
+          # Build DependenciesMacrosPlugin for host
+          if [ -d "$PKG/swift-dependencies" ]; then
+            echo "Building DependenciesMacrosPlugin..."
+            cd "$PKG/swift-dependencies"
+            swift build --product DependenciesMacrosPlugin -c debug
+            MACRO_PATH="$PKG/swift-dependencies/.build/debug/DependenciesMacrosPlugin"
+            if [ -f "$MACRO_PATH" ]; then
+              echo "Found macro at: $MACRO_PATH"
+              cp -f "$MACRO_PATH" "$DD/Build/Products/Debug-iphonesimulator/"
+            fi
+          fi
+          
+          # Build PerceptionMacros for host
+          if [ -d "$PKG/swift-perception" ]; then
+            echo "Building PerceptionMacros..."
+            cd "$PKG/swift-perception"
+            swift build --product PerceptionMacros -c debug
+            MACRO_PATH="$PKG/swift-perception/.build/debug/PerceptionMacros"
+            if [ -f "$MACRO_PATH" ]; then
+              echo "Found macro at: $MACRO_PATH"
+              cp -f "$MACRO_PATH" "$DD/Build/Products/Debug-iphonesimulator/"
+            fi
+          fi
+          
+          echo "=== Verify macro executables ==="
+          ls -la "$DD/Build/Products/Debug-iphonesimulator/"*Macros 2>/dev/null || echo "No macro executables found yet"
+          
+          echo "=== Make macros executable ==="
+          chmod +x "$DD/Build/Products/Debug-iphonesimulator/"*Macros* 2>/dev/null || true
 
       - name: Sanity - print APIClient.swift head & checksum
         script: |
