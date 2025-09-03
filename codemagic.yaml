@@ -223,6 +223,14 @@ workflows:
             exit 0
           fi
 
+          # First try the diagnostics command which gives the best output
+          echo "=== Extracting diagnostics from xcresult ==="
+          xcrun xcresulttool diagnostics --path "$BUNDLE" 2>&1 || true
+          
+          echo ""
+          echo "=== Extracting formatted results ==="
+          xcrun xcresulttool formatDescription --path "$BUNDLE" 2>&1 || true
+          
           # Xcode 16.4: legacy mode required for 'get'
           xcrun xcresulttool get --legacy --format json --path "$BUNDLE" > "$CM_BUILD_DIR/xc.json" || {
             echo "xcresulttool failed; printing basic info and falling back to raw log."
@@ -363,6 +371,8 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
           DERIVED="$CM_BUILD_DIR/DerivedData"
+          # Define CM_ARTIFACTS if not already set
+          export CM_ARTIFACTS="${CM_ARTIFACTS:-$CM_BUILD_DIR/artifacts}"
           mkdir -p "$CM_ARTIFACTS"
           [[ -f "$CM_BUILD_DIR/xcodebuild.log" ]] && cp "$CM_BUILD_DIR/xcodebuild.log" "$CM_ARTIFACTS/"
           [[ -f "$CM_BUILD_DIR/xcresult.json"   ]] && cp "$CM_BUILD_DIR/xcresult.json"   "$CM_ARTIFACTS/"
