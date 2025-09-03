@@ -1,0 +1,188 @@
+# Add these steps to your codemagic.yaml to extract real errors
+# Place these in your scripts section in this order:
+
+# ========== BEFORE BUILD STEPS ==========
+
+- name: Sanity - ensure single @main App
+  script: |
+    set -euo pipefail
+    hits=$(rg -n --no-heading -g 'iOS-App/**/*.swift' '@main\s+struct\s+[A-Za-z_][A-Za-z0-9_]*\s*:\s*App' | wc -l | tr -d ' ')
+    echo "@main App count: $hits"
+    if [ "$hits" -gt 1 ]; then
+      echo "❌ Multiple @main apps found:"
+      rg -n --no-heading -g 'iOS-App/**/*.swift' '@main\s+struct\s+[A-Za-z_][A-Za-z0-9_]*\s*:\s*App'
+      exit 1
+    fi
+    echo "✅ Single @main App"
+
+- name: Sanity - verify critical files in Xcode project
+  script: |
+    set -euo pipefail
+    PROJ="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
+    echo "=== Checking which view files are in Xcode project ==="
+    
+    # Check ContentView and DashboardView (must exist)
+    critical=( ContentView.swift DashboardView.swift )
+    for f in "${critical[@]}"; do
+      if ! rg -n --no-heading -F "$f" "$PROJ" >/dev/null; then
+        echo "❌ CRITICAL: Not in project: $f"
+        exit 1
+      else
+        echo "✅ Found: $f"
+      fi
+    done
+    
+    # Check wrapper views (okay if missing due to temp wrappers)
+    optional=( AgentsView.swift TerminalView.swift AnalyticsView.swift SettingsView.swift )
+    for f in "${optional[@]}"; do
+      if ! rg -n --no-heading -F "$f" "$PROJ" >/dev/null; then
+        echo "⚠️  Not in project: $f (using temp wrapper in ContentView.swift)"
+      else
+        echo "✅ Found: $f"
+      fi
+    done
+
+- name: Sanity - check for duplicate types
+  script: |
+    set -euo pipefail
+    python3 - <<'PY'
+    import os,re,collections
+    root="iOS-App"
+    pat=re.compile(r'^\s*(struct|class|enum)\s+([A-Za-z_][A-Za-z0-9_]*)\b')
+    names=collections.defaultdict(list)
+    for dp,_,fs in os.walk(root):
+      for f in fs:
+        if f.endswith(".swift"):
+          p=os.path.join(dp,f)
+          try: 
+            txt=open(p,encoding="utf-8",errors="ignore").read()
+          except: 
+            continue
+          for i,line in enumerate(txt.splitlines(),1):
+            m=pat.match(line)
+            if m: 
+              names[m.group(2)].append(f"{p}:{i}")
+    dupes={k:v for k,v in names.items() if len(v)>1}
+    if dupes:
+      print("❌ Duplicate type names found:")
+      for k,v in dupes.items():
+        print(f"  {k}")
+        for loc in v:
+          print(f"    - {loc}")
+      raise SystemExit(1)
+    print("✅ No duplicate type names")
+    PY
+
+# ========== YOUR EXISTING BUILD STEP ==========
+# Keep your existing build step as-is:
+#
+# - name: Build for iOS Simulator (arm64, single device, with result bundle)
+#   script: |
+#     set -euxo pipefail
+#     xcodebuild \
+#       -scheme AgentDashboard \
+#       -configuration Debug \
+#       -destination "id=$SIM_UDID" \
+#       -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
+#       -resultBundlePath "$CM_BUILD_DIR/build.xcresult" \
+#       build
+
+# ========== AFTER BUILD STEPS (CRITICAL!) ==========
+# Add this IMMEDIATELY after your build step:
+
+- name: Extract ALL Swift diagnostics (file + line + error)
+  script: |
+    set -euo pipefail
+    BUNDLE="$CM_BUILD_DIR/build.xcresult"
+    
+    if [[ ! -d "$BUNDLE" ]]; then
+      echo "No xcresult bundle found at: $BUNDLE"
+      exit 0
+    fi
+    
+    echo "========================================="
+    echo "=== EXTRACTING REAL SWIFT ERRORS ==="
+    echo "========================================="
+    echo
+    
+    # Extract from xcresult JSON
+    echo "=== Errors from xcresult (with file + line) ==="
+    xcrun xcresulttool get --format json --path "$BUNDLE" | python3 - <<'PY'
+    import json,sys
+    
+    data = json.load(sys.stdin)
+    
+    def walk(obj, results):
+        if isinstance(obj, dict):
+            if obj.get('issueType') in ('error', 'warning'):
+                msg = obj.get('message', {}).get('text', '')
+                loc = obj.get('documentLocationInCreatingWorkspace', {}) or {}
+                url = loc.get('url', '')
+                line = loc.get('line')
+                results.append({
+                    'type': obj.get('issueType'),
+                    'message': msg,
+                    'file': url,
+                    'line': line
+                })
+            for value in obj.values():
+                walk(value, results)
+        elif isinstance(obj, list):
+            for item in obj:
+                walk(item, results)
+    
+    results = []
+    walk(data, results)
+    
+    # Separate errors from warnings
+    errors = [r for r in results if r['type'] == 'error']
+    warnings = [r for r in results if r['type'] == 'warning']
+    
+    if errors:
+        print(f"\n🔴 FOUND {len(errors)} ERRORS:\n")
+        for i, r in enumerate(errors[:15], 1):  # Show first 15 errors
+            print(f"ERROR #{i}:")
+            print(f"  ✖ {r['message']}")
+            if r['file']:
+                print(f"  📁 file: {r['file']}")
+            if r['line']:
+                print(f"  📍 line: {r['line']}")
+            print()
+    else:
+        print("✅ No errors found in xcresult")
+    
+    if warnings and len(warnings) <= 10:
+        print(f"\n⚠️  Found {len(warnings)} warnings:")
+        for r in warnings[:5]:
+            print(f"  ⚠️  {r['message'][:100]}...")
+    PY
+    
+    echo
+    echo "=== Swift serialized diagnostics (deep dive) ==="
+    
+    # Some errors only appear in .dia files
+    mapfile -t swiftdiags < <(find "$BUNDLE" -type f \( -name "*.dia" -o -name "*.diagnostics" \) 2>/dev/null || true)
+    
+    if (( ${#swiftdiags[@]} )); then
+      echo "Found ${#swiftdiags[@]} diagnostic files"
+      for d in "${swiftdiags[@]}"; do
+        echo "--- Parsing: $(basename "$d") ---"
+        xcrun swift-diagnostics tool parse "$d" 2>/dev/null || echo "(could not parse)"
+        echo
+      done
+    else
+      echo "No serialized diagnostic files found"
+    fi
+    
+    echo
+    echo "========================================="
+    echo "=== END OF DIAGNOSTIC EXTRACTION ==="
+    echo "========================================="
+    
+    # Don't fail this step - we want to see the errors
+    exit 0
+
+# Optional: Add artifacts to download locally
+#   artifacts:
+#     - $CM_BUILD_DIR/build.xcresult
+#     - $CM_BUILD_DIR/DerivedData/Logs/**/*
