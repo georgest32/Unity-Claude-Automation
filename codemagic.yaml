@@ -170,6 +170,75 @@ workflows:
           
           echo "✅ Project file is valid"
 
+      - name: Prebuild Swift macros for host (macOS)
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          export DEVELOPER_DIR="/Applications/Xcode-16.4.app"
+          
+          # DerivedData paths Codemagic is already using
+          DD="$CM_BUILD_DIR/DerivedData"
+          PKG="$DD/SourcePackages/checkouts"
+          
+          echo "=== Ensure packages are resolved ==="
+          xcodebuild -resolvePackageDependencies \
+            -project "$PROJECT_PATH" \
+            -derivedDataPath "$DD"
+          
+          echo "=== Build macro targets for macOS host ==="
+          # TCA
+          if [ -d "$PKG/swift-composable-architecture" ]; then
+            echo "Building ComposableArchitectureMacros..."
+            swift build -c debug --package-path "$PKG/swift-composable-architecture" \
+              --target ComposableArchitectureMacros || echo "Failed to build TCA macros"
+          fi
+          
+          # CasePaths
+          if [ -d "$PKG/swift-case-paths" ]; then
+            echo "Building CasePathsMacros..."
+            swift build -c debug --package-path "$PKG/swift-case-paths" \
+              --target CasePathsMacros || echo "Failed to build CasePaths macros"
+          fi
+          
+          # Dependencies
+          if [ -d "$PKG/swift-dependencies" ]; then
+            echo "Building DependenciesMacrosPlugin..."
+            swift build -c debug --package-path "$PKG/swift-dependencies" \
+              --target DependenciesMacrosPlugin || echo "Failed to build Dependencies macros"
+          fi
+          
+          # Perception
+          if [ -d "$PKG/swift-perception" ]; then
+            echo "Building PerceptionMacros..."
+            swift build -c debug --package-path "$PKG/swift-perception" \
+              --target PerceptionMacros || echo "Failed to build Perception macros"
+          fi
+          
+          echo "=== Host-built macro dylibs ==="
+          find "$DD/Build/Products" -maxdepth 3 -type f \( -name "*.dylib" -o -name "*.bundle" \) -print || true
+          find "$DD/Build/Products" -maxdepth 3 -type d -name "*Macros*" -print || true
+
+      - name: Sanity - print APIClient.swift head & checksum
+        script: |
+          #!/usr/bin/env bash
+          set -e
+          F="iOS-App/AgentDashboard/AgentDashboard/Network/APIClient.swift"
+          echo "=== APIClient.swift HEAD (first 120 lines) ==="
+          sed -n '1,120p' "$F" || true
+          echo ""
+          echo "=== APIClient.swift sha256 ==="
+          shasum -a 256 "$F" || true
+
+      - name: Debug - commit & branch
+        script: |
+          #!/usr/bin/env bash
+          echo "=== Git info ==="
+          echo "CM_BRANCH=${CM_BRANCH:-unset}"
+          echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
+          echo "Current commit: $(git rev-parse HEAD)"
+          echo "Last 5 commits:"
+          git log --oneline -5
+
       - name: Build for iOS Simulator (arm64, single device, with result bundle)
         script: |
           #!/usr/bin/env bash
@@ -209,7 +278,14 @@ workflows:
           echo "Build exited with status: $status"
           
           echo "=== Where did the macro bundles land? ==="
-          find "$DERIVED/Build/Products" -maxdepth 3 -type d -name "*Macros*" -print || true
+          echo "Host (Debug) macros:"
+          find "$DERIVED/Build/Products/Debug" -type f \( -name "*.dylib" -o -name "*.bundle" \) 2>/dev/null || echo "No host macros found"
+          echo ""
+          echo "Simulator (Debug-iphonesimulator) macros:"
+          find "$DERIVED/Build/Products/Debug-iphonesimulator" -type d -name "*Macros*" 2>/dev/null || echo "No simulator macros found"
+          echo ""
+          echo "All macro-related files:"
+          find "$DERIVED/Build/Products" -maxdepth 3 -name "*Macros*" -print || true
           
           # Always succeed this step so diagnostics can run
           exit 0
