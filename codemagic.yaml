@@ -83,35 +83,7 @@ workflows:
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
           if [[ -d "$BUNDLE" ]]; then
             echo "=== Swift errors (xcresult) ==="
-            xcrun xcresulttool get object --path "$BUNDLE" --format json > "$CM_BUILD_DIR/xcresult.json" 2>/dev/null
-            python3 - <<'PY'
-import json, os, sys
-p = os.path.join(os.environ['CM_BUILD_DIR'], 'xcresult.json')
-try:
-    j = json.load(open(p))
-except Exception as e:
-    print("Failed to read xcresult JSON:", e)
-    sys.exit(0)
-
-errors = []
-def walk(x):
-    if isinstance(x, dict):
-        if x.get('issueType') == 'error':
-            m = x.get('message', {}).get('text', '')
-            loc = x.get('documentLocationInCreatingWorkspace', {})
-            errors.append((m, loc.get('url',''), loc.get('line')))
-        for v in x.values(): walk(v)
-    elif isinstance(x, list):
-        for v in x: walk(v)
-walk(j)
-
-if not errors:
-    print("No error issues found in xcresult.")
-for i,(m,u,l) in enumerate(errors,1):
-    print(f"\n[{i}] ✖︎ {m}")
-    if u: print("    file:", u)
-    if l: print("    line:", l)
-PY
+            python3 ci/extract_build_errors.py "$BUNDLE"
           else
             echo "No build.xcresult present."
           fi
@@ -121,34 +93,7 @@ PY
         script: |
           #!/usr/bin/env bash
           set +e
-          J="$CM_BUILD_DIR/xcresult.json"
-          [[ -f "$J" ]] || { echo "No xcresult.json to read"; exit 0; }
-          python3 - <<'PY'
-import json, os, sys
-j = json.load(open(os.path.join(os.environ['CM_BUILD_DIR'], 'xcresult.json')))
-def show(path, line):
-    if not (path and path.startswith('file://')): return
-    path = path[7:]
-    if not (os.path.exists(path) and isinstance(line,int)): return
-    start = max(1, line-15); end = line+15
-    print(f"\n--- {path}:{line} ---")
-    with open(path) as f:
-        for i, ln in enumerate(f, 1):
-            if i < start: continue
-            if i > end: break
-            mark = ">>" if i == line else "  "
-            print(f"{mark} {i:5d}: {ln.rstrip()}")
-
-def walk(x):
-    if isinstance(x, dict):
-        if x.get('issueType') == 'error':
-            loc = x.get('documentLocationInCreatingWorkspace', {})
-            show(loc.get('url'), loc.get('line'))
-        for v in x.values(): walk(v)
-    elif isinstance(x, list):
-        for v in x: walk(v)
-walk(j)
-PY
+          python3 ci/show_source_context.py
           true
 
       - name: Publish diagnostics & build settings
