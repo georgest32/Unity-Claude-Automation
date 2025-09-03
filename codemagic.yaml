@@ -20,14 +20,32 @@ workflows:
           swift --version
           xcrun simctl list runtimes
 
-      - name: Resolve Swift Package dependencies (optional)
+      - name: Clean DerivedData & resolve packages (with logs)
         script: |
           #!/usr/bin/env bash
-          set -e
-          xcodebuild \
-            -resolvePackageDependencies \
+          set -euo pipefail
+          
+          echo "=== Cleaning DerivedData ==="
+          rm -rf "$CM_BUILD_DIR/DerivedData" || true
+          
+          echo "=== xcodebuild toolchain ==="
+          xcodebuild -version
+          swift --version || true
+          
+          echo "=== Resolve Swift packages ==="
+          xcodebuild -resolvePackageDependencies \
             -project "$PROJECT_PATH" \
-            -scheme "$SCHEME"
+            -scheme "$SCHEME" \
+            -clonedSourcePackagesDirPath "$CM_BUILD_DIR/SourcePackages" \
+            -verbose || true
+          
+          echo "=== Show build settings (captures SPM locations) ==="
+          xcodebuild -showBuildSettings \
+            -project "$PROJECT_PATH" \
+            -scheme "$SCHEME" | tee "$CM_BUILD_DIR/build-settings.txt"
+          
+          echo "=== Find Package.resolved files ==="
+          find iOS-App -name Package.resolved -print -exec cat {} \; || true
 
       - name: Select iOS 18.x simulator, set SIM_UDID for xcodebuild
         script: |
@@ -68,11 +86,14 @@ workflows:
             -destination "platform=iOS Simulator,id=$SIM_UDID" \
             -derivedDataPath "$DERIVED" \
             -resultBundlePath "$BUNDLE" \
-            EXCLUDED_ARCHS="i386 x86_64" \
+            -showBuildTimingSummary \
+            -skipMacroValidation \
+            -skipPackagePluginValidation \
             ONLY_ACTIVE_ARCH=YES \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
+            "EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386 x86_64" \
             CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
             build | tee "$LOG"
 
       # ---------- Diagnostics: richer error reporting ----------
@@ -94,6 +115,13 @@ workflows:
           #!/usr/bin/env bash
           set +e
           python3 ci/show_source_context.py
+          true
+          
+      - name: Detect dependency graph issues
+        script: |
+          #!/usr/bin/env bash
+          set +e
+          python3 ci/detect_dependency_errors.py "$CM_BUILD_DIR/xcodebuild.log"
           true
 
       - name: Publish diagnostics & build settings
