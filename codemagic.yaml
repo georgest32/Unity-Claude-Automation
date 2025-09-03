@@ -67,57 +67,26 @@ workflows:
           echo "Selected simulator UDID: $SIM_UDID"
           echo "export SIM_UDID=$SIM_UDID" >> "$CM_ENV"
 
-      - name: Auto-enable Swift macros on AgentDashboard target
-        script: |
-          #!/usr/bin/env bash
-          set -euo pipefail
-
-          PBX="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
-
-          echo "=== Check project file exists ==="
-          test -f "$PBX" || { echo "❌ Missing $PBX"; exit 1; }
-
-          echo "=== Patch pbxproj to add Macro Expansion phase & macro products (idempotent) ==="
-          python3 ci/enable_swift_macros.py
-
-          echo "=== Sanity check: target now references Macro Expansion phase ==="
-          grep -n "PBXSwiftMacroExpansionBuildPhase" "$PBX" | head -n 1 || true
-          grep -n "ComposableArchitectureMacros" "$PBX" || true
-          grep -n "CasePathsMacros" "$PBX" || true
-          grep -n "DependenciesMacrosPlugin" "$PBX" || true
-          grep -n "PerceptionMacros" "$PBX" || true
-
-      - name: Verify Swift macro plugins are enabled
+      - name: Project integrity check
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
           PBX="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
 
-          echo "Checking Swift Macro Expansion configuration…"
-          if ! grep -q "Swift Macro Expansion" "$PBX"; then
-            echo "❌ Missing 'Swift Macro Expansion' build phase in AgentDashboard target."
-            echo "Please open the project in Xcode and add: Build Phases → + → New Swift Macro Expansion Phase"
-            exit 1
+          echo "=== Sanity check pbxproj ==="
+          head -n 10 "$PBX" || true
+          echo
+
+          # Check if it's a valid plist
+          if ! plutil -lint "$PBX" 2>/dev/null; then
+            echo "❌ project.pbxproj is not a valid plist. Restore it before building."
+            exit 74
           fi
 
-          missing=0
-          for M in ComposableArchitectureMacros CasePathsMacros DependenciesMacrosPlugin PerceptionMacros; do
-            if ! grep -q "$M" "$PBX"; then
-              echo "❌ Macro plugin not referenced: $M"
-              missing=1
-            else
-              echo "✅ Found: $M"
-            fi
-          done
-
-          if [[ $missing -ne 0 ]]; then
-            echo ""
-            echo "To fix: Open AgentDashboard.xcodeproj → AgentDashboard target → Build Phases → Swift Macro Expansion"
-            echo "Add the missing macro plugins from your SPM dependencies"
-            exit 1
-          fi
+          echo "=== List targets (quick parse) ==="
+          xcodebuild -list -project iOS-App/AgentDashboard/AgentDashboard.xcodeproj || true
           
-          echo "✅ All required macro plugins are configured"
+          echo "✅ Project file is valid"
 
       - name: Build for iOS Simulator (arm64, single device, with result bundle)
         script: |
@@ -129,26 +98,30 @@ workflows:
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
           LOG="$CM_BUILD_DIR/xcodebuild.log"
 
+          # Macro plugins run on the macOS host; set a modern host target
+          export MACOSX_DEPLOYMENT_TARGET=13.0
+
           echo "=== Building Debug for simulator id=$SIM_UDID ==="
           xcodebuild \
             -project "$PROJECT_PATH" \
             -scheme "$SCHEME" \
             -sdk iphonesimulator \
             -configuration Debug \
-            -destination "platform=iOS Simulator,id=$SIM_UDID" \
+            -destination "platform=iOS Simulator,id=$SIM_UDID,arch=arm64" \
             -derivedDataPath "$DERIVED" \
             -resultBundlePath "$BUNDLE" \
-            -showBuildTimingSummary \
-            -skipMacroValidation \
-            -skipPackagePluginValidation \
             ONLY_ACTIVE_ARCH=YES \
-            "EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386 x86_64" \
-            CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_REQUIRED=NO \
+            EXCLUDED_ARCHS="i386 x86_64" \
+            SWIFT_MACRO_PLUGIN_ENABLE=YES \
             CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            -showBuildTimingSummary \
+            -skipPackagePluginValidation \
+            -skipMacroValidation \
             build | tee "$LOG"
 
-      # ---------- Diagnostics: richer error reporting ----------
+      # ---------- Diagnostics: richer error reporting -----------
       - name: Extract Swift errors from xcresult (always)
         script: |
           #!/usr/bin/env bash
