@@ -124,60 +124,11 @@ workflows:
           echo "Size: $(du -sh "$APP_DIR" | cut -f1)"
           find "$APP_DIR" -maxdepth 2 -type f | head -n 50
 
-      - name: Extract errors from .xcresult (grouped by file)
+      - name: Extract Swift compiler errors  
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
-          BUNDLE="$CM_BUILD_DIR/build.xcresult"
-          [[ -d "$BUNDLE" ]] || BUNDLE="$CM_BUILD_DIR/build-diagnostic.xcresult"
-
-          if [[ -e "$BUNDLE" ]]; then
-            echo "=== Extracting Swift compiler errors from: $BUNDLE ==="
-            # Pass bundle path as argv[1] to Python (don’t rely on env)
-            python3 - "$BUNDLE" <<'PY'
-import json, sys, subprocess, os
-p = sys.argv[1] if len(sys.argv)>1 else ""
-if not p or not os.path.exists(p):
-    print("No xcresult bundle to parse")
-    sys.exit(0)
-
-try:
-    out = subprocess.check_output(["xcrun","xcresulttool","get","object","--legacy","--format","json","--path",p])
-    j = json.loads(out)
-except Exception as e:
-    print("xcresulttool failed:", e)
-    sys.exit(0)
-
-files = {}
-def walk(x):
-    if isinstance(x, dict):
-        if x.get('issueType') == 'error':
-            msg = x.get('message',{}).get('text','(no message)')
-            loc = x.get('documentLocationInCreatingWorkspace',{})
-            url = loc.get('url') or ""
-            line = loc.get('line')
-            files.setdefault(url, []).append((line, msg))
-        for v in x.values():
-            walk(v)
-    elif isinstance(x, list):
-        for v in x:
-            walk(v)
-
-walk(j)
-if not files:
-    print("No compiler errors found in xcresult.")
-    sys.exit(0)
-
-print("\n=== Compiler errors by file ===")
-for url, errs in files.items():
-    print(f"\nFILE: {url or '(unknown)'}")
-    for ln, msg in sorted(errs, key=lambda t: (t[0] or 0, t[1])):
-        where = f"line {ln}" if ln else "line ?"
-        print(f"  • {where}: {msg}")
-PY
-          else
-            echo "No result bundle found."
-          fi
+          python3 ci/xcresult_errors.py "$CM_BUILD_DIR/build.xcresult" || true
 
       - name: Package simulator app for Preview (validate first)
         script: |
