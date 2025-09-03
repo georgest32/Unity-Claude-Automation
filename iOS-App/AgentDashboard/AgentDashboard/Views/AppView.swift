@@ -66,20 +66,24 @@ struct MainTabView: View {
                 .tag(AppFeature.State.Tab.terminal)
                 
                 // Analytics Tab
-                AnalyticsView()
-                    .tabItem {
-                        Image(systemName: AppFeature.State.Tab.analytics.iconName)
-                        Text(AppFeature.State.Tab.analytics.rawValue)
-                    }
-                    .tag(AppFeature.State.Tab.analytics)
+                AnalyticsView(
+                    store: store.scope(state: \.analytics, action: \.analytics)
+                )
+                .tabItem {
+                    Image(systemName: AppFeature.State.Tab.analytics.iconName)
+                    Text(AppFeature.State.Tab.analytics.rawValue)
+                }
+                .tag(AppFeature.State.Tab.analytics)
                 
                 // Settings Tab
-                SettingsView(store: store)
-                    .tabItem {
-                        Image(systemName: AppFeature.State.Tab.settings.iconName)
-                        Text(AppFeature.State.Tab.settings.rawValue)
-                    }
-                    .tag(AppFeature.State.Tab.settings)
+                SettingsView(
+                    store: store.scope(state: \.settings, action: \.settings)
+                )
+                .tabItem {
+                    Image(systemName: AppFeature.State.Tab.settings.iconName)
+                    Text(AppFeature.State.Tab.settings.rawValue)
+                }
+                .tag(AppFeature.State.Tab.settings)
             }
         }
     }
@@ -131,94 +135,7 @@ struct AuthenticationView: View {
     }
 }
 
-// MARK: - Placeholder Views
-
-struct AnalyticsView: View {
-    var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                Image(systemName: "chart.line.uptrend.xyaxis")
-                    .font(.system(size: 60))
-                    .foregroundColor(.accentColor)
-                
-                Text("Analytics")
-                    .font(.title)
-                    .fontWeight(.semibold)
-                
-                Text("Performance metrics and insights coming soon")
-                    .font(.body)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-            }
-            .padding()
-            .navigationTitle("Analytics")
-        }
-    }
-}
-
-struct SettingsView: View {
-    @Bindable var store: StoreOf<AppFeature>
-    
-    var body: some View {
-        NavigationView {
-            List {
-                Section {
-                    if let user = store.user {
-                        HStack {
-                            Image(systemName: "person.circle.fill")
-                                .font(.title2)
-                                .foregroundColor(.accentColor)
-                            
-                            VStack(alignment: .leading) {
-                                Text(user.username)
-                                    .font(.headline)
-                                Text(user.email)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                        .padding(.vertical, 8)
-                    }
-                } header: {
-                    Text("Account")
-                }
-                
-                Section {
-                    HStack {
-                        Image(systemName: "info.circle")
-                        Text("Version")
-                        Spacer()
-                        Text(store.appVersion)
-                            .foregroundColor(.secondary)
-                    }
-                    
-                    HStack {
-                        Image(systemName: "number.circle")
-                        Text("Build")
-                        Spacer()
-                        Text(store.buildNumber)
-                            .foregroundColor(.secondary)
-                    }
-                } header: {
-                    Text("App Information")
-                }
-                
-                Section {
-                    Button {
-                        store.send(.logout)
-                    } label: {
-                        HStack {
-                            Image(systemName: "arrow.right.square")
-                            Text("Sign Out")
-                        }
-                        .foregroundColor(.red)
-                    }
-                }
-            }
-            .navigationTitle("Settings")
-        }
-    }
-}
+// MARK: - Placeholder Views removed - using real implementations from separate files
 
 // MARK: - Preview
 
