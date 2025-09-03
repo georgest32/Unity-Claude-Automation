@@ -43,18 +43,21 @@ workflows:
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
-          export MACOSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET:-13.0}
+
+          DERIVED="$CM_BUILD_DIR/DerivedData"
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
           LOG="$CM_BUILD_DIR/xcodebuild.log"
 
+          # SIM_UDID should be exported by your "Select iOS 18.5 simulator" step, e.g.:
+          # echo "export SIM_UDID=$CHOSEN_UDID" >> "$CM_ENV"
+
           xcodebuild \
-            -project "$XCODE_PROJECT" \
-            -scheme "$XCODE_SCHEME" \
+            -project iOS-App/AgentDashboard/AgentDashboard.xcodeproj \
+            -scheme AgentDashboard \
             -sdk iphonesimulator \
             -configuration Debug \
-            -destination "platform=iOS Simulator,OS=18.5,name=iPhone 16 Pro" \
-            -arch arm64 \
-            -derivedDataPath "$DERIVED_DATA" \
+            -destination "id=${SIM_UDID}" \
+            -derivedDataPath "$DERIVED" \
             -resultBundlePath "$BUNDLE" \
             -skipMacroValidation \
             -skipPackagePluginValidation \
