@@ -188,50 +188,34 @@ workflows:
           
           echo "=== Build host (macOS) macro plugins via SwiftPM ==="
           
-          # List macro targets explicitly
-          HOST_MACRO_TARGETS=(
-            "swift-composable-architecture:ComposableArchitectureMacros"
-            "swift-case-paths:CasePathsMacros"
-            "swift-dependencies:DependenciesMacrosPlugin"
-            "swift-perception:PerceptionMacros"
-          )
+          # Build all macro targets
+          echo "Building ComposableArchitectureMacros..."
+          swift build -c debug --package-path "$PKG/swift-composable-architecture" --target ComposableArchitectureMacros || true
           
-          for entry in "${HOST_MACRO_TARGETS[@]}"; do
-            IFS=':' read -r pkg target <<< "$entry"
-            if [ -d "$PKG/$pkg" ]; then
-              echo "Building host macro: $target from $pkg"
-              cd "$PKG/$pkg"
-              swift build -c debug --target "$target" || echo "Warning: Failed to build $target"
-            else
-              echo "Package not found: $pkg"
-            fi
-          done
+          echo "Building CasePathsMacros..."
+          swift build -c debug --package-path "$PKG/swift-case-paths" --target CasePathsMacros || true
+          
+          echo "Building DependenciesMacros..."
+          swift build -c debug --package-path "$PKG/swift-dependencies" --target DependenciesMacros || true
+          
+          echo "Building PerceptionMacros..."
+          swift build -c debug --package-path "$PKG/swift-perception" --target PerceptionMacros || true
           
           echo "=== Collect host macro dylibs ==="
-          mkdir -p "$DD/Build/Products/Debug"
+          mkdir -p "$DD/Build/Products/Debug/host"
           
-          # Find all macro executables/dylibs built by SwiftPM
-          echo "Looking for macro binaries..."
-          find "$PKG" -path "*/.build/*/debug" -type f \( -name "*Macros" -o -name "*Macros.dylib" -o -name "*Macros.bundle" \) ! -name "*.o" ! -name "*.swiftmodule" -print | while read -r file; do
-            if file "$file" | grep -q "Mach-O"; then
-              echo "Found macro binary: $(basename "$file")"
-              cp -f "$file" "$DD/Build/Products/Debug/" || true
-            fi
-          done
+          # Find and copy macro binaries from SwiftPM builds
+          find "$PKG" -path "*/.build/*/debug" -type f \( -name "*Macros*.dylib" -o -name "*Macros*.bundle" \) -print0 | \
+            xargs -0 -I{} cp -f "{}" "$DD/Build/Products/Debug/host/" || true
           
-          # Also try executable macros without extension
-          find "$PKG" -path "*/.build/*/debug" -type f -perm +111 -name "*Macro*" ! -name "*.o" ! -name "*.swiftmodule" -print | while read -r file; do
-            if file "$file" | grep -q "Mach-O"; then
-              echo "Found executable: $(basename "$file")"
-              cp -f "$file" "$DD/Build/Products/Debug/" || true
-            fi
-          done
+          echo "=== Host macro binaries in DerivedData/Build/Products/Debug/host ==="
+          ls -la "$DD/Build/Products/Debug/host" || true
           
           echo "=== Host macro binaries in DerivedData/Build/Products/Debug ==="
           ls -la "$DD/Build/Products/Debug/" 2>/dev/null || echo "No Debug folder"
           
           echo "=== Set DYLD_LIBRARY_PATH for macro loading ==="
-          echo "export DYLD_LIBRARY_PATH=\"$DD/Build/Products/Debug:\$DYLD_LIBRARY_PATH\"" >> "$CM_ENV"
+          echo "export DYLD_LIBRARY_PATH=\"$DD/Build/Products/Debug/host:\${DYLD_LIBRARY_PATH:-}\"" >> "$CM_ENV"
 
       - name: Sanity - print APIClient.swift head & checksum
         script: |
