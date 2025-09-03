@@ -21,31 +21,31 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
           python3 - <<'PY'
-import json, os, subprocess, sys
-data = json.loads(subprocess.check_output(["xcrun","simctl","list","devices","--json"]))
-udid = None
-# Prefer iOS 18.5 iPhones
-for runtime, devices in data.get("devices", {}).items():
-    if "iOS-18-5" in runtime:
-        for d in devices:
-            if d.get("isAvailable") and d.get("name","").startswith("iPhone"):
-                udid = d["udid"]; break
-    if udid: break
-# Fallback: any available iOS iPhone
-if not udid:
-    for runtime, devices in data.get("devices", {}).items():
-        if "iOS" in runtime:
-            for d in devices:
-                if d.get("isAvailable") and d.get("name","").startswith("iPhone"):
-                    udid = d["udid"]; break
-        if udid: break
-if not udid:
-    print("ERROR: No bootable iOS simulator found", file=sys.stderr)
-    sys.exit(1)
-with open(os.environ["CM_ENV"], "a") as f:
-    f.write(f"export SIM_UDID={udid}\n")
-print(f"Selected simulator: {udid}")
-PY
+          import json, os, subprocess, sys
+          data = json.loads(subprocess.check_output(["xcrun","simctl","list","devices","--json"]))
+          udid = None
+          # Prefer iOS 18.5 iPhones
+          for runtime, devices in data.get("devices", {}).items():
+              if "iOS-18-5" in runtime:
+                  for d in devices:
+                      if d.get("isAvailable") and d.get("name","").startswith("iPhone"):
+                          udid = d["udid"]; break
+              if udid: break
+          # Fallback: any available iOS iPhone
+          if not udid:
+              for runtime, devices in data.get("devices", {}).items():
+                  if "iOS" in runtime:
+                      for d in devices:
+                          if d.get("isAvailable") and d.get("name","").startswith("iPhone"):
+                              udid = d["udid"]; break
+                  if udid: break
+          if not udid:
+              print("ERROR: No bootable iOS simulator found", file=sys.stderr)
+              sys.exit(1)
+          with open(os.environ["CM_ENV"], "a") as f:
+              f.write(f"export SIM_UDID={udid}\n")
+          print(f"Selected simulator: {udid}")
+          PY
 
       - name: Build for iOS Simulator (arm64, single device, with result bundle)
         script: |
@@ -53,7 +53,7 @@ PY
           set -euo pipefail
           source "$CM_ENV"
 
-          # IMPORTANT: ensure macros build for macOS host, not the simulator
+          # IMPORTANT: macros must build for macOS host, not the simulator
           unset SDKROOT
           export MACOSX_DEPLOYMENT_TARGET=13.0
 
@@ -72,6 +72,7 @@ PY
             -skipMacroValidation \
             -skipPackagePluginValidation \
             ONLY_ACTIVE_ARCH=YES \
+            "EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386 x86_64" \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             build | tee "$LOG"
@@ -87,7 +88,7 @@ PY
           PLIST="$APP_DIR/Info.plist"
           [[ -f "$PLIST" ]] || { echo "❌ $APP_DIR has no Info.plist"; exit 1; }
           EXEC=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$PLIST" 2>/dev/null || true)
-          [[ -n "${EXEC:-}" && -f "$APP_DIR/$EXEC" ]] || { echo "❌ Missing main executable — app wasn't linked"; exit 1; }
+          [[ -n "${EXEC:-}" && -f "$APP_DIR/$EXEC" ]] || { echo "❌ Missing main executable — app wasn’t linked"; exit 1; }
 
           mkdir -p artifacts
           (cd "$(dirname "$APP_DIR")" && /usr/bin/zip -qry "$CM_BUILD_DIR/artifacts/app-preview.zip" "$(basename "$APP_DIR")")
