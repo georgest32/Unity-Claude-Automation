@@ -35,43 +35,64 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
 
-          WANT_OS="$IOS_VERSION"
-          WANT_NAME="$DEVICE_NAME"
+          WANT_OS="${IOS_VERSION:-18.5}"
+          WANT_NAME="${DEVICE_NAME:-iPhone 16 Pro}"
 
-          echo "=== Finding $WANT_NAME with iOS $WANT_OS ==="
+          echo "Listing available simulators (json)…"
+          JSON="$(xcrun simctl list devices available --json)"
 
-          # Prefer exact device name on the requested OS
-          if SIM_UDID=$(xcrun simctl list devices "iOS $WANT_OS" | \
-              awk -v n="$WANT_NAME" '
-                $0 ~ n" " && $0 ~ /\(Shutdown\)|\(Booted\)/ {
-                  if (match($0, /\(([A-F0-9-]{36})\)/, m)) { print m[1]; exit }
-                }'); then
-            :
-          fi
+          # Pick a matching UDID using Python (avoids fragile awk/grep)
+          SIM_UDID="$(python3 - <<'PY' "$JSON" "$WANT_OS" "$WANT_NAME"
+import json, sys
+data=json.loads(sys.argv[1])
+want_os=sys.argv[2]            # e.g. "18.5"
+want_name=sys.argv[3]          # e.g. "iPhone 16 Pro"
 
-          # Fallback to any iPhone 16 on that OS
+def udid_from(devs, name=None):
+    if not devs: return None
+    if name:
+        for d in devs:
+            if d.get('isAvailable') and d.get('name')==name:
+                return d['udid']
+    # fallback: first available iPhone
+    for d in devs:
+        if d.get('isAvailable') and 'iPhone' in d.get('name',''):
+            return d['udid']
+    # fallback: any available
+    for d in devs:
+        if d.get('isAvailable'):
+            return d['udid']
+    return None
+
+devices = data.get('devices', {})
+candidates = None
+needle = want_os.replace('.', '-')
+for runtime, devs in devices.items():
+    # runtime looks like: com.apple.CoreSimulator.SimRuntime.iOS-18-5
+    if 'iOS' in runtime and needle in runtime:
+        candidates = devs
+        break
+
+udid = udid_from(candidates, want_name)
+if not udid:
+    # final fallback: any iOS device any OS
+    for runtime, devs in devices.items():
+        if 'iOS' in runtime:
+            udid = udid_from(devs)
+            if udid: break
+
+print(udid or '')
+PY
+          )"
+
           if [[ -z "${SIM_UDID:-}" ]]; then
-            echo "$WANT_NAME ($WANT_OS) not found, using any iPhone 16 with $WANT_OS"
-            SIM_UDID=$(xcrun simctl list devices "iOS $WANT_OS" | \
-              awk '/iPhone 16/ && /\(Shutdown\)|\(Booted\)/ { if (match($0, /\(([A-F0-9-]{36})\)/, m)) { print m[1]; exit }}' || true)
-          fi
-
-          # Fallback to first device on that OS
-          if [[ -z "${SIM_UDID:-}" ]]; then
-            echo "No iPhone 16 found, using first available iOS $WANT_OS device"
-            SIM_UDID=$(xcrun simctl list devices "iOS $WANT_OS" | \
-              awk '/\(Shutdown\)|\(Booted\)/ { if (match($0, /\(([A-F0-9-]{36})\)/, m)) { print m[1]; exit }}' || true)
-          fi
-
-          if [[ -z "${SIM_UDID:-}" ]]; then
-            echo "ERROR: No iOS $WANT_OS simulator found!"
-            echo "== Devices =="
+            echo "ERROR: Could not find an iOS ${WANT_OS} simulator (printing simctl list for debugging)…"
             xcrun simctl list devices
             exit 1
           fi
 
-          echo "Selected simulator UDID: $SIM_UDID"
-          echo "export SIM_UDID=$SIM_UDID" >> "$CM_ENV"
+          echo "✅ Using simulator UDID: $SIM_UDID (wanted iOS ${WANT_OS}, name ${WANT_NAME})"
+          echo "export SIM_UDID=${SIM_UDID}" >> "$CM_ENV"
 
       - name: Build for iOS Simulator (arm64, single device, with result bundle)
         script: |
