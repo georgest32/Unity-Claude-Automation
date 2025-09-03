@@ -301,30 +301,49 @@ workflows:
           exit 0
 
       # ---------- Diagnostics: richer error reporting -----------
-      - name: Extract build errors from xcresult
+      - name: Extract build errors comprehensively
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
           LOG="$CM_BUILD_DIR/build.log"
           
-          echo "=== Extract Swift diagnostics (no heredoc) ==="
+          echo "=== Swift diagnostics from xcresult (files + summaries) ==="
           if [ -d "$BUNDLE" ] && command -v jq >/dev/null 2>&1; then
-            echo "Using xcresulttool + jq to extract errors..."
-            xcrun xcresulttool get --legacy --format json --path "$BUNDLE" 2>/dev/null | \
-            jq -r '
-              .. | objects
-              | select(.fileName?)
-              | select(.fileName|tostring|test("(APIClient|AgentsFeature)\\.swift$"))
-              | "\(.fileName):\(.lineNumber // .startingLineNumber // "?"): \(.message // .summary // "")"
-            ' 2>/dev/null || echo "jq parsing failed, trying fallback"
+            xcrun xcresulttool get --format json --path "$BUNDLE" \
+            | jq -r '
+                .. | objects? // empty
+                | .[]?
+                | select(.diagnosticType? or .issueType? or .type? or .title?)
+                | [
+                    (.documentLocationInCreatingWorkspace?.filePath? // .fileName? // ""),
+                    ( .documentLocationInCreatingWorkspace?.startingLineNumber?
+                      // .lineNumber?
+                      // .startingLineNumber?
+                      // "" ),
+                    ( .message? // .summary? // .title? // .type? // "" )
+                  ]
+                | @tsv
+              ' || true
           fi
           
-          if [ -f "$LOG" ]; then
-            echo ""
-            echo "=== Grep build.log for compilation errors ==="
-            grep -E "(APIClient|AgentsFeature)\.swift:[0-9]+:.*error:" "$LOG" | head -20 || echo "No errors found for these files"
-          fi
+          echo ""
+          echo "=== Grep fallback (common swiftc format) ==="
+          grep -nE '/AgentDashboard/.*\.swift:[0-9]+:[0-9]+: (error|warning):' "$LOG" || true
+          
+          echo ""
+          echo "=== Any swift-frontend/swift-driver crashes? ==="
+          grep -nE 'swift-(frontend|driver).* (error|crash|segmentation|fatal)' "$LOG" || true
+          
+          echo ""
+          echo "=== PBXProj has correct source entries? ==="
+          PBX=iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj
+          grep -n 'APIClient.swift' "$PBX" && echo "✅ APIClient.swift in pbxproj" || echo "❌ APIClient.swift not in pbxproj"
+          grep -n 'AgentsFeature.swift' "$PBX" && echo "✅ AgentsFeature.swift in pbxproj" || echo "❌ AgentsFeature.swift not in pbxproj"
+          
+          echo ""
+          echo "=== Unique files on disk ==="
+          find iOS-App -name 'APIClient.swift' -o -name 'AgentsFeature.swift' -print
       
       - name: Extract ALL Swift diagnostics (file + line) v2
         script: |
