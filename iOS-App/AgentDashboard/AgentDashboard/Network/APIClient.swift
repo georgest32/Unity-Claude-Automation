@@ -47,14 +47,14 @@ public struct APIClient: Sendable {
   public var data: @Sendable (_ request: URLRequest) async throws -> (Data, URLResponse)
   public var json: @Sendable <T: Decodable>(
     _ request: URLRequest,
-    _ configureDecoder: @Sendable ((inout JSONDecoder) -> Void)?
+    _ configureDecoder: ((inout JSONDecoder) -> Void)?
   ) async throws -> T
 
   public init(
     data: @escaping @Sendable (_ request: URLRequest) async throws -> (Data, URLResponse),
     json: @escaping @Sendable <T: Decodable>(
       _ request: URLRequest,
-      _ configureDecoder: @Sendable ((inout JSONDecoder) -> Void)?
+      _ configureDecoder: ((inout JSONDecoder) -> Void)?
     ) async throws -> T
   ) {
     self.data = data
@@ -119,6 +119,48 @@ extension APIClient: DependencyKey {
   }
 
   public static var previewValue: APIClient { .testValue }
+}
+
+// MARK: - Convenience API Methods for AgentsFeature
+
+extension APIClient {
+  /// Fetch all agents from the API
+  public func fetchAgents() async throws -> [Agent] {
+    let request = URLRequest(url: URL(string: "http://localhost:5000/api/agents")!)
+    return try await json(request, nil)
+  }
+  
+  /// Start an agent
+  public func startAgent(_ id: String) async throws -> String {
+    var request = URLRequest(url: URL(string: "http://localhost:5000/api/agents/\(id)/start")!)
+    request.httpMethod = "POST"
+    let response: [String: String] = try await json(request, nil)
+    return response["message"] ?? "Agent started"
+  }
+  
+  /// Stop an agent  
+  public func stopAgent(_ id: String) async throws -> String {
+    var request = URLRequest(url: URL(string: "http://localhost:5000/api/agents/\(id)/stop")!)
+    request.httpMethod = "POST"
+    let response: [String: String] = try await json(request, nil)
+    return response["message"] ?? "Agent stopped"
+  }
+  
+  /// Pause an agent
+  public func pauseAgent(_ id: String) async throws -> String {
+    var request = URLRequest(url: URL(string: "http://localhost:5000/api/agents/\(id)/pause")!)
+    request.httpMethod = "POST"
+    let response: [String: String] = try await json(request, nil)
+    return response["message"] ?? "Agent paused"
+  }
+  
+  /// Resume an agent
+  public func resumeAgent(_ id: String) async throws -> String {
+    var request = URLRequest(url: URL(string: "http://localhost:5000/api/agents/\(id)/resume")!)
+    request.httpMethod = "POST"
+    let response: [String: String] = try await json(request, nil)
+    return response["message"] ?? "Agent resumed"
+  }
 }
 
 // MARK: - Dependency Accessor

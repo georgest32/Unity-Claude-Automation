@@ -102,6 +102,7 @@ public struct AgentsFeature {
     
     @Dependency(\.continuousClock) var clock
     @Dependency(\.uuid) var uuid
+    @Dependency(\.apiClient) var apiClient
     
     public init() {}
     
@@ -128,17 +129,18 @@ public struct AgentsFeature {
                 state.isLoading = true
                 
                 return .run { send in
-                    // Simulate API call - replace with actual API integration
-                    try await clock.sleep(for: .milliseconds(500))
-                    
-                    // Use real agent data from the Unity-Claude-Automation system
-                    let mockAgents = Agent.realAgents
-                    
-                    await send(.agentsReceived(mockAgents))
-                    await send(.loadingStateChanged(false))
-                } catch: { error, send in
-                    await send(.loadingStateChanged(false))
-                    await send(.agentActionFailed("Failed to load agents: \(error.localizedDescription)"))
+                    do {
+                        // Try real API call first
+                        let agents = try await apiClient.fetchAgents()
+                        await send(.agentsReceived(agents))
+                        await send(.loadingStateChanged(false))
+                    } catch {
+                        // Fallback to realAgents if API fails
+                        print("API failed, using realAgents fallback: \(error)")
+                        let fallbackAgents = Agent.realAgents
+                        await send(.agentsReceived(fallbackAgents))
+                        await send(.loadingStateChanged(false))
+                    }
                 }
                 
             case let .searchTextChanged(text):
@@ -164,34 +166,40 @@ public struct AgentsFeature {
             case let .startAgent(agent):
                 print("▶️ AgentsFeature: Starting agent \(agent.name)")
                 return .run { send in
-                    // Simulate API call
-                    try await clock.sleep(for: .milliseconds(500))
-                    await send(.agentActionCompleted("Agent \(agent.name) started successfully"))
-                    await send(.refreshButtonTapped)
-                } catch: { error, send in
-                    await send(.agentActionFailed("Failed to start agent: \(error.localizedDescription)"))
+                    do {
+                        let result = try await apiClient.startAgent(agent.id)
+                        await send(.agentActionCompleted(result))
+                        await send(.refreshButtonTapped)
+                    } catch {
+                        await send(.agentActionFailed("Failed to start agent: \(error.localizedDescription)"))
+                    }
                 }
                 
             case let .stopAgent(agent):
                 print("⏹️ AgentsFeature: Stopping agent \(agent.name)")
                 return .run { send in
-                    // Simulate API call
-                    try await clock.sleep(for: .milliseconds(500))
-                    await send(.agentActionCompleted("Agent \(agent.name) stopped successfully"))
-                    await send(.refreshButtonTapped)
-                } catch: { error, send in
-                    await send(.agentActionFailed("Failed to stop agent: \(error.localizedDescription)"))
+                    do {
+                        let result = try await apiClient.stopAgent(agent.id)
+                        await send(.agentActionCompleted(result))
+                        await send(.refreshButtonTapped)
+                    } catch {
+                        await send(.agentActionFailed("Failed to stop agent: \(error.localizedDescription)"))
+                    }
                 }
                 
             case let .restartAgent(agent):
                 print("🔄 AgentsFeature: Restarting agent \(agent.name)")
                 return .run { send in
-                    // Simulate API call
-                    try await clock.sleep(for: .milliseconds(1000))
-                    await send(.agentActionCompleted("Agent \(agent.name) restarted successfully"))
-                    await send(.refreshButtonTapped)
-                } catch: { error, send in
-                    await send(.agentActionFailed("Failed to restart agent: \(error.localizedDescription)"))
+                    do {
+                        // Stop then start for restart
+                        _ = try await apiClient.stopAgent(agent.id)
+                        try await clock.sleep(for: .seconds(1))
+                        let result = try await apiClient.startAgent(agent.id)
+                        await send(.agentActionCompleted("Agent \(agent.name) restarted: \(result)"))
+                        await send(.refreshButtonTapped)
+                    } catch {
+                        await send(.agentActionFailed("Failed to restart agent: \(error.localizedDescription)"))
+                    }
                 }
                 
             case let .deleteAgent(agent):
