@@ -18,45 +18,29 @@ workflows:
           xcodebuild -version
           xcodebuild -showsdks
 
-      - name: Select iOS simulator (18.5 preferred — iPhone 16 Pro)
+      - name: Select iOS 18.5 simulator (prefer iPhone 16 Pro)
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
 
-          pick_sim() {
-            xcrun simctl list devices --json | python3 - <<'PY'
-import json, sys
-data=json.load(sys.stdin)
-
-def choose(runtime_filter, name_pred):
-    for runtime, devices in data.get('devices', {}).items():
-        if runtime_filter not in runtime:
-            continue
-        for d in devices:
-            if d.get('isAvailable') and name_pred(d.get('name','')):
-                print(d['udid']); print(d['name']); print('18.5')
-                return True
-    return False
-
-if choose('iOS-18-5', lambda n: n=='iPhone 16 Pro'): sys.exit(0)
-if choose('iOS-18-5', lambda n: n.startswith('iPhone 16')): sys.exit(0)
-if choose('iOS-18-5', lambda n: True): sys.exit(0)
-sys.exit(1)
-PY
-          }
-
-          if out=$(pick_sim 2>/dev/null); then
-            IFS=$'\n' read -r SIM_UDID SIM_NAME SIM_OS <<<"$out"
-            echo "✅ Using $SIM_NAME (iOS $SIM_OS) — $SIM_UDID"
-            {
-              echo "export SIM_UDID=$SIM_UDID"
-              echo "export SIM_NAME=$SIM_NAME"
-              echo "export SIM_OS=$SIM_OS"
-            } >> "$CM_ENV"
-          else
-            echo "⚠️ No iOS 18.5 simulator found; falling back to generic simulator."
-            echo "export SIM_UDID=" >> "$CM_ENV"
+          # Try exact 18.5 iPhone 16 Pro, then any iPhone 16 on 18.5, then any iOS 18.5 device.
+          SIM_UDID="$(xcrun simctl list devices 'iOS 18.5' 2>/dev/null | awk -F'[()]' '/iPhone 16 Pro/{print $2; exit}' || true)"
+          if [[ -z "${SIM_UDID:-}" ]]; then
+            SIM_UDID="$(xcrun simctl list devices 'iOS 18.5' 2>/dev/null | awk -F'[()]' '/iPhone 16 /{print $2; exit}' || true)"
           fi
+          if [[ -z "${SIM_UDID:-}" ]]; then
+            SIM_UDID="$(xcrun simctl list devices 2>/dev/null | awk -F'[()]' '/iOS 18\.5/ {print $2; exit}' || true)"
+          fi
+
+          if [[ -n "${SIM_UDID:-}" ]]; then
+            echo "✅ Using simulator $SIM_UDID"
+          else
+            echo "⚠️  No iOS 18.5 simulator found; will use generic destination."
+          fi
+
+          {
+            echo "export SIM_UDID=${SIM_UDID:-}"
+          } >> "$CM_ENV"
 
       - name: Resolve Swift Package Dependencies (allow macros/plugins)
         script: |
@@ -79,10 +63,10 @@ PY
           LOG="$CM_BUILD_DIR/xcodebuild.log"
 
           if [[ -n "${SIM_UDID:-}" ]]; then
-            DESTINATION_OPT=(-destination "id=${SIM_UDID}")
+            DEST=(-destination "id=$SIM_UDID")                                   # NO -arch here
             ARCH_OPTS=(ARCHS=arm64 EXCLUDED_ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=YES)
           else
-            DESTINATION_OPT=(-destination "generic/platform=iOS Simulator")
+            DEST=(-destination "generic/platform=iOS Simulator")
             ARCH_OPTS=(-arch arm64 ARCHS=arm64 EXCLUDED_ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=YES)
           fi
 
@@ -93,7 +77,7 @@ PY
             -scheme "$XCODE_SCHEME" \
             -sdk iphonesimulator \
             -configuration Debug \
-            "${DESTINATION_OPT[@]}" \
+            "${DEST[@]}" \
             -derivedDataPath "$DERIVED" \
             -resultBundlePath "$BUNDLE" \
             -skipMacroValidation \
@@ -107,13 +91,8 @@ PY
           set -e
 
           if [[ $XC_STATUS -ne 0 ]]; then
-            echo "❌ xcodebuild failed (exit $XC_STATUS). Extracting compiler errors…"
-            if [[ -e "$BUNDLE" ]] && xcrun xcresulttool get object --legacy --path "$BUNDLE" --format json >/tmp/xc.json 2>/dev/null; then
-              python3 -c 'import json; j=json.load(open("/tmp/xc.json")); [print("✖︎", x.get("message",{}).get("text","")) for x in j.get("issues",[])] if hasattr(j, "get") else None'
-            else
-              echo "xcresulttool unavailable; grepping build log:"
-              grep -nE " error: " "$LOG" || true
-            fi
+            echo "❌ xcodebuild failed (exit $XC_STATUS). Showing compiler errors from log:"
+            grep -nE " error: " "$LOG" || true
             exit $XC_STATUS
           fi
 
@@ -124,7 +103,6 @@ PY
 
           DERIVED="$CM_BUILD_DIR/DerivedData/Build/Products/Debug-iphonesimulator"
           APP_DIR="$(find "$DERIVED" -maxdepth 1 -type d -name '*.app' -print -quit || true)"
-
           [[ -n "${APP_DIR:-}" ]] || { echo "❌ No .app produced (build failed)."; exit 1; }
 
           PLIST="$APP_DIR/Info.plist"
@@ -140,10 +118,7 @@ PY
           mkdir -p artifacts
 
           APP_ZIP="artifacts/AgentDashboard.app.zip"
-          (
-            cd "$(dirname "$APP_DIR")"
-            /usr/bin/zip -qry "$APP_ZIP" "$(basename "$APP_DIR")"
-          )
+          ( cd "$(dirname "$APP_DIR")" && /usr/bin/zip -qry "$APP_ZIP" "$(basename "$APP_DIR")" )
 
           PREVIEW_ZIP="artifacts/app-preview.zip"
           cp "$APP_ZIP" "$PREVIEW_ZIP"
@@ -157,14 +132,5 @@ PY
       - artifacts/app-preview.zip
       - artifacts/AgentDashboard.app.zip
       - artifacts/AgentDashboard.app
-      - $CM_BUILD_DIR/build.xcresult
-      - $CM_BUILD_DIR/xcodebuild.log
-      - $CM_BUILD_DIR/DerivedData/Logs/**/*
-      
-    publishing:
-      email:
-        recipients:
-          - developer@unity-claude-automation.com
-        notify:
-          success: true
-          failure: true
+      - build.xcresult
+      - DerivedData/Logs/**/*
