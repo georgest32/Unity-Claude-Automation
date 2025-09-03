@@ -102,29 +102,39 @@ public extension DependencyValues {
 }
 
 // MARK: - Agent helpers used by AgentsFeature
+private struct MessageResponse: Decodable { let message: String }
+
 public extension APIClient {
   func fetchAgents() async throws -> [Agent] {
     try await json(URLRequest(url: URL(string: "http://localhost:5000/api/agents")!))
   }
+  
   func startAgent(_ id: String) async throws -> String {
     var r = URLRequest(url: URL(string: "http://localhost:5000/api/agents/\(id)/start")!)
     r.httpMethod = "POST"
-    return try await json(r)
+    let res: MessageResponse = try await json(r)
+    return res.message
   }
+  
   func stopAgent(_ id: String) async throws -> String {
     var r = URLRequest(url: URL(string: "http://localhost:5000/api/agents/\(id)/stop")!)
     r.httpMethod = "POST"
-    return try await json(r)
+    let res: MessageResponse = try await json(r)
+    return res.message
   }
+  
   func pauseAgent(_ id: String) async throws -> String {
     var r = URLRequest(url: URL(string: "http://localhost:5000/api/agents/\(id)/pause")!)
     r.httpMethod = "POST"
-    return try await json(r)
+    let res: MessageResponse = try await json(r)
+    return res.message
   }
+  
   func resumeAgent(_ id: String) async throws -> String {
     var r = URLRequest(url: URL(string: "http://localhost:5000/api/agents/\(id)/resume")!)
     r.httpMethod = "POST"
-    return try await json(r)
+    let res: MessageResponse = try await json(r)
+    return res.message
   }
 }
 
