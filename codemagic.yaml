@@ -317,31 +317,31 @@ workflows:
           if [ -d "$BUNDLE" ]; then
             xcrun xcresulttool get --legacy --format json --path "$BUNDLE" 2>/dev/null | \
             python3 - <<'PY' || true
-import json, sys
-try:
-    j = json.load(sys.stdin)
-except:
-    print("Could not parse JSON")
-    sys.exit(0)
-
-def walk(o, indent=0):
-    if isinstance(o, dict):
-        for k, v in o.items():
-            if k == "message" and isinstance(v, dict):
-                text = v.get("text", "")
-                if "APIClient" in text or "json" in text.lower():
-                    print(f"{'  '*indent}ERROR: {text}")
-            elif k == "filePath" and isinstance(v, str) and "APIClient.swift" in v:
-                print(f"{'  '*indent}FILE: {v}")
-            elif k == "startingLineNumber":
-                print(f"{'  '*indent}LINE: {v}")
-            walk(v, indent+1)
-    elif isinstance(o, list):
-        for item in o:
-            walk(item, indent)
-
-walk(j)
-PY
+            import json, sys
+            try:
+                j = json.load(sys.stdin)
+            except:
+                print("Could not parse JSON")
+                sys.exit(0)
+            
+            def walk(o, indent=0):
+                if isinstance(o, dict):
+                    for k, v in o.items():
+                        if k == "message" and isinstance(v, dict):
+                            text = v.get("text", "")
+                            if "APIClient" in text or "json" in text.lower():
+                                print(f"{'  '*indent}ERROR: {text}")
+                        elif k == "filePath" and isinstance(v, str) and "APIClient.swift" in v:
+                            print(f"{'  '*indent}FILE: {v}")
+                        elif k == "startingLineNumber":
+                            print(f"{'  '*indent}LINE: {v}")
+                        walk(v, indent+1)
+                elif isinstance(o, list):
+                    for item in o:
+                        walk(item, indent)
+            
+            walk(j)
+            PY
           else
             echo "No xcresult found"
           fi
