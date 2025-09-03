@@ -1,108 +1,79 @@
 workflows:
   ios-tca-dashboard:
     name: iOS TCA Dashboard
-    instance_type: mac_mini_m2
-    max_build_duration: 60
     environment:
       xcode: 16.4
       vars:
-        XCODE_PROJECT: iOS-App/AgentDashboard/AgentDashboard.xcodeproj
-        XCODE_SCHEME: AgentDashboard
-        MACOSX_DEPLOYMENT_TARGET: "13.0"
+        APP_PROJECT: "iOS-App/AgentDashboard/AgentDashboard.xcodeproj"
+        APP_SCHEME: "AgentDashboard"
 
     scripts:
-      - name: Show Xcode & SDK
+      - name: Prepare build machine
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
-          xcodebuild -version
-          xcodebuild -showsdks
-
-      - name: Select iOS 18.5 simulator (prefer iPhone 16 Pro)
-        script: |
-          #!/usr/bin/env bash
-          set -euo pipefail
-
-          # Try exact 18.5 iPhone 16 Pro, then any iPhone 16 on 18.5, then any iOS 18.5 device.
-          SIM_UDID="$(xcrun simctl list devices 'iOS 18.5' 2>/dev/null | awk -F'[()]' '/iPhone 16 Pro/{print $2; exit}' || true)"
-          if [[ -z "${SIM_UDID:-}" ]]; then
-            SIM_UDID="$(xcrun simctl list devices 'iOS 18.5' 2>/dev/null | awk -F'[()]' '/iPhone 16 /{print $2; exit}' || true)"
-          fi
-          if [[ -z "${SIM_UDID:-}" ]]; then
-            SIM_UDID="$(xcrun simctl list devices 2>/dev/null | awk -F'[()]' '/iOS 18\.5/ {print $2; exit}' || true)"
-          fi
-
-          if [[ -n "${SIM_UDID:-}" ]]; then
-            echo "✅ Using simulator $SIM_UDID"
-          else
-            echo "⚠️  No iOS 18.5 simulator found; will use generic destination."
-          fi
-
-          {
-            echo "export SIM_UDID=${SIM_UDID:-}"
-          } >> "$CM_ENV"
+          echo "Xcode: $(xcodebuild -version)"
+          swift --version
 
       - name: Resolve Swift Package Dependencies (allow macros/plugins)
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
-          xcodebuild \
-            -resolvePackageDependencies \
-            -project "$XCODE_PROJECT" \
+          cd "$CM_BUILD_DIR/iOS-App/AgentDashboard"
+          xcodebuild -resolvePackageDependencies \
+            -project AgentDashboard.xcodeproj \
             -skipMacroValidation \
             -skipPackagePluginValidation
 
-      - name: Build for iOS Simulator (arm64 only, with result bundle)
+      - name: Clean DerivedData (fresh build)
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
-          source "$CM_ENV" || true
+          rm -rf "$CM_BUILD_DIR/DerivedData"
+
+      - name: Build for iOS Simulator (arm64, no global ARCH overrides)
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          export MACOSX_DEPLOYMENT_TARGET=13.0
 
           DERIVED="$CM_BUILD_DIR/DerivedData"
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
           LOG="$CM_BUILD_DIR/xcodebuild.log"
 
-          if [[ -n "${SIM_UDID:-}" ]]; then
-            DEST=(-destination "id=$SIM_UDID")                                   # NO -arch here
-            ARCH_OPTS=(ARCHS=arm64 EXCLUDED_ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=YES)
-          else
-            DEST=(-destination "generic/platform=iOS Simulator")
-            ARCH_OPTS=(-arch arm64 ARCHS=arm64 EXCLUDED_ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=YES)
-          fi
-
-          echo "🛠️  Building $XCODE_SCHEME from $XCODE_PROJECT"
-          set +e
           xcodebuild \
-            -project "$XCODE_PROJECT" \
-            -scheme "$XCODE_SCHEME" \
+            -project "$APP_PROJECT" \
+            -scheme "$APP_SCHEME" \
             -sdk iphonesimulator \
             -configuration Debug \
-            "${DEST[@]}" \
+            -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath "$DERIVED" \
             -resultBundlePath "$BUNDLE" \
             -skipMacroValidation \
             -skipPackagePluginValidation \
-            "${ARCH_OPTS[@]}" \
-            CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO \
+            ONLY_ACTIVE_ARCH=YES \
+            ENABLE_USER_SCRIPT_SANDBOXING=NO \
             build | tee "$LOG"
-          XC_STATUS=${PIPESTATUS[0]}
-          set -e
 
-          if [[ $XC_STATUS -ne 0 ]]; then
-            echo "❌ xcodebuild failed (exit $XC_STATUS). Showing compiler errors from log:"
-            grep -nE " error: " "$LOG" || true
-            exit $XC_STATUS
+      - name: Extract compiler errors (if any)
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          if [[ -f "$CM_BUILD_DIR/xcodebuild.log" ]]; then
+            echo "=== Errors from xcodebuild.log ==="
+            grep -nE " error: |could not be found for macro|malformed response" "$CM_BUILD_DIR/xcodebuild.log" || true
+          else
+            echo "No xcodebuild.log found"
           fi
 
-      - name: Create preview artifacts (validated)
+      - name: Create preview artifacts (validate app)
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
 
           DERIVED="$CM_BUILD_DIR/DerivedData/Build/Products/Debug-iphonesimulator"
           APP_DIR="$(find "$DERIVED" -maxdepth 1 -type d -name '*.app' -print -quit || true)"
+
           [[ -n "${APP_DIR:-}" ]] || { echo "❌ No .app produced (build failed)."; exit 1; }
 
           PLIST="$APP_DIR/Info.plist"
@@ -111,26 +82,18 @@ workflows:
           EXEC=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$PLIST" 2>/dev/null || true)
           [[ -n "${EXEC:-}" && -f "$APP_DIR/$EXEC" ]] || { echo "❌ Missing main executable — app wasn’t linked."; exit 1; }
 
-          echo "✅ Valid app found: $APP_DIR"
-          echo "   Executable: $EXEC"
-          echo "   Size: $(du -sh "$APP_DIR" | cut -f1)"
+          mkdir -p "$CM_ARTIFACTS"
 
-          mkdir -p artifacts
+          (cd "$(dirname "$APP_DIR")" && /usr/bin/zip -qry "$CM_ARTIFACTS/app-preview.zip" "$(basename "$APP_DIR")")
+          cp -R "$APP_DIR" "$CM_ARTIFACTS/AgentDashboard.app"
 
-          APP_ZIP="artifacts/AgentDashboard.app.zip"
-          ( cd "$(dirname "$APP_DIR")" && /usr/bin/zip -qry "$APP_ZIP" "$(basename "$APP_DIR")" )
-
-          PREVIEW_ZIP="artifacts/app-preview.zip"
-          cp "$APP_ZIP" "$PREVIEW_ZIP"
-          cp -R "$APP_DIR" artifacts/
-
-          echo "✅ Preview artifact: $PREVIEW_ZIP"
-          echo "export CM_PREVIEW_IOS_ARTIFACT=$PREVIEW_ZIP" >> "$CM_ENV"
-          ls -lah artifacts/
+          echo "✅ Preview artifact: $CM_ARTIFACTS/app-preview.zip"
+          ls -lah "$CM_ARTIFACTS"
 
     artifacts:
-      - artifacts/app-preview.zip
-      - artifacts/AgentDashboard.app.zip
-      - artifacts/AgentDashboard.app
-      - build.xcresult
-      - DerivedData/Logs/**/*
+      - $CM_ARTIFACTS/app-preview.zip
+      - $CM_ARTIFACTS/AgentDashboard.app
+
+    publishing:
+      publish:
+        app_preview: true
