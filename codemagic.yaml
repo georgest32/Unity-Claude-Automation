@@ -1,40 +1,60 @@
 workflows:
   ios-tca-dashboard:
-    name: iOS TCA Dashboard
+    name: iOS TCA Dashboard (Preview)
+    max_build_duration: 60
     environment:
       xcode: 16.4
       vars:
-        APP_PROJECT: "iOS-App/AgentDashboard/AgentDashboard.xcodeproj"
-        APP_SCHEME: "AgentDashboard"
+        PRODUCT_SCHEME: AgentDashboard
+        PROJECT_PATH: iOS-App/AgentDashboard/AgentDashboard.xcodeproj
 
     scripts:
       - name: Prepare build machine
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
-          echo "Xcode: $(xcodebuild -version)"
+          xcodebuild -version
           swift --version
 
-      - name: Resolve Swift Package Dependencies (allow macros/plugins)
+      - name: Pick an iOS 18.5 simulator (export SIM_UDID)
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
-          cd "$CM_BUILD_DIR/iOS-App/AgentDashboard"
-          xcodebuild -resolvePackageDependencies \
-            -project AgentDashboard.xcodeproj \
-            -skipMacroValidation \
-            -skipPackagePluginValidation
+          python3 - <<'PY'
+import json, os, subprocess, sys
+data = json.loads(subprocess.check_output(["xcrun","simctl","list","devices","--json"]))
+udid = None
+# Prefer iOS 18.5 iPhones
+for runtime, devices in data.get("devices", {}).items():
+    if "iOS-18-5" in runtime:
+        for d in devices:
+            if d.get("isAvailable") and d.get("name","").startswith("iPhone"):
+                udid = d["udid"]; break
+    if udid: break
+# Fallback: any available iOS iPhone
+if not udid:
+    for runtime, devices in data.get("devices", {}).items():
+        if "iOS" in runtime:
+            for d in devices:
+                if d.get("isAvailable") and d.get("name","").startswith("iPhone"):
+                    udid = d["udid"]; break
+        if udid: break
+if not udid:
+    print("ERROR: No bootable iOS simulator found", file=sys.stderr)
+    sys.exit(1)
+with open(os.environ["CM_ENV"], "a") as f:
+    f.write(f"export SIM_UDID={udid}\n")
+print(f"Selected simulator: {udid}")
+PY
 
-      - name: Clean DerivedData (fresh build)
+      - name: Build for iOS Simulator (arm64, single device, with result bundle)
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
-          rm -rf "$CM_BUILD_DIR/DerivedData"
+          source "$CM_ENV"
 
-      - name: Build for iOS Simulator (arm64, no global ARCH overrides)
-        script: |
-          #!/usr/bin/env bash
-          set -euo pipefail
+          # IMPORTANT: ensure macros build for macOS host, not the simulator
+          unset SDKROOT
           export MACOSX_DEPLOYMENT_TARGET=13.0
 
           DERIVED="$CM_BUILD_DIR/DerivedData"
@@ -42,54 +62,39 @@ workflows:
           LOG="$CM_BUILD_DIR/xcodebuild.log"
 
           xcodebuild \
-            -project "$APP_PROJECT" \
-            -scheme "$APP_SCHEME" \
+            -project "$PROJECT_PATH" \
+            -scheme "$PRODUCT_SCHEME" \
             -sdk iphonesimulator \
             -configuration Debug \
-            -destination 'generic/platform=iOS Simulator' \
+            -destination "id=$SIM_UDID" \
             -derivedDataPath "$DERIVED" \
             -resultBundlePath "$BUNDLE" \
             -skipMacroValidation \
             -skipPackagePluginValidation \
             ONLY_ACTIVE_ARCH=YES \
-            ENABLE_USER_SCRIPT_SANDBOXING=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
             build | tee "$LOG"
 
-      - name: Extract compiler errors (if any)
+      - name: Create preview artifact (validate .app)
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
-          if [[ -f "$CM_BUILD_DIR/xcodebuild.log" ]]; then
-            echo "=== Errors from xcodebuild.log ==="
-            grep -nE " error: |could not be found for macro|malformed response" "$CM_BUILD_DIR/xcodebuild.log" || true
-          else
-            echo "No xcodebuild.log found"
+          APP_DIR="$(find "$CM_BUILD_DIR/DerivedData/Build/Products/Debug-iphonesimulator" -maxdepth 1 -type d -name '*.app' -print -quit || true)"
+          if [[ -z "${APP_DIR:-}" ]]; then
+            echo "❌ No .app produced (build likely failed)"; exit 1
           fi
-
-      - name: Create preview artifacts (validate app)
-        script: |
-          #!/usr/bin/env bash
-          set -euo pipefail
-
-          DERIVED="$CM_BUILD_DIR/DerivedData/Build/Products/Debug-iphonesimulator"
-          APP_DIR="$(find "$DERIVED" -maxdepth 1 -type d -name '*.app' -print -quit || true)"
-
-          [[ -n "${APP_DIR:-}" ]] || { echo "❌ No .app produced (build failed)."; exit 1; }
-
           PLIST="$APP_DIR/Info.plist"
-          [[ -f "$PLIST" ]] || { echo "❌ $APP_DIR has no Info.plist — invalid app."; exit 1; }
-
+          [[ -f "$PLIST" ]] || { echo "❌ $APP_DIR has no Info.plist"; exit 1; }
           EXEC=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$PLIST" 2>/dev/null || true)
-          [[ -n "${EXEC:-}" && -f "$APP_DIR/$EXEC" ]] || { echo "❌ Missing main executable — app wasn’t linked."; exit 1; }
+          [[ -n "${EXEC:-}" && -f "$APP_DIR/$EXEC" ]] || { echo "❌ Missing main executable — app wasn't linked"; exit 1; }
 
-          mkdir -p "$CM_ARTIFACTS"
-
-          (cd "$(dirname "$APP_DIR")" && /usr/bin/zip -qry "$CM_ARTIFACTS/app-preview.zip" "$(basename "$APP_DIR")")
-          cp -R "$APP_DIR" "$CM_ARTIFACTS/AgentDashboard.app"
-
-          echo "✅ Preview artifact: $CM_ARTIFACTS/app-preview.zip"
-          ls -lah "$CM_ARTIFACTS"
+          mkdir -p artifacts
+          (cd "$(dirname "$APP_DIR")" && /usr/bin/zip -qry "$CM_BUILD_DIR/artifacts/app-preview.zip" "$(basename "$APP_DIR")")
+          cp -R "$APP_DIR" "$CM_BUILD_DIR/artifacts/"
+          echo "✅ Wrote artifacts/app-preview.zip and $(basename "$APP_DIR")"
+          du -sh "$APP_DIR" "$CM_BUILD_DIR/artifacts/app-preview.zip" || true
 
     artifacts:
-      - $CM_ARTIFACTS/app-preview.zip
-      - $CM_ARTIFACTS/AgentDashboard.app
+      - artifacts/app-preview.zip
+      - DerivedData/Build/Products/Debug-iphonesimulator/*.app
