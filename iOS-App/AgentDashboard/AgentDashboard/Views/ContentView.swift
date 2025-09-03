@@ -276,3 +276,70 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 #endif
+
+// === TEMP WRAPPERS: compile-time shims until files are added to the Xcode project ===
+// TODO: Remove these once the actual files are added to project.pbxproj
+
+struct AgentsView: View {
+    let store: StoreOf<AgentsFeature>
+    
+    var body: some View {
+        WithPerceptionTracking {
+            NavigationView {
+                Text("Agents")
+                    .font(.largeTitle)
+                    .navigationTitle("Agents")
+                    .onAppear { store.send(.onAppear) }
+            }
+        }
+    }
+}
+
+struct TerminalView: View {
+    let store: StoreOf<TerminalFeature>
+    
+    var body: some View {
+        // Use the existing TerminalInterfaceView if it's in the project
+        TerminalInterfaceView(store: store)
+    }
+}
+
+struct AnalyticsView: View {
+    let store: StoreOf<AnalyticsFeature>
+    
+    var body: some View {
+        // Use EnhancedAnalyticsView if it exists and is in target membership
+        EnhancedAnalyticsView(store: store)
+    }
+}
+
+struct SettingsView: View {
+    let store: StoreOf<SettingsFeature>
+    
+    var body: some View {
+        WithPerceptionTracking {
+            NavigationView {
+                List {
+                    Section("App") {
+                        HStack {
+                            Text("Version")
+                            Spacer()
+                            Text("1.0.0")
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    
+                    Section {
+                        Button("Sign Out") {
+                            store.send(.logout)
+                        }
+                        .foregroundColor(.red)
+                    }
+                }
+                .navigationTitle("Settings")
+                .onAppear { store.send(.onAppear) }
+            }
+        }
+    }
+}
+// === END TEMP WRAPPERS ===
