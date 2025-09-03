@@ -68,27 +68,37 @@ workflows:
             -skipMacroValidation \
             -skipPackagePluginValidation
             
-      - name: Build for iOS Simulator (No Code Signing)
+      - name: Build for iOS Simulator (arm64 only)
         script: |
-          set -x
+          #!/usr/bin/env bash
+          set -euo pipefail
+          
           cd $CM_BUILD_DIR/iOS-App/AgentDashboard
-          # CRITICAL: Set macOS 13.0 target for TCA macro host compilation
           export MACOSX_DEPLOYMENT_TARGET=13.0
           
-          echo "Building iOS Simulator app..."
-          xcodebuild build \
+          DERIVED="$CM_BUILD_DIR/DerivedData"
+          BUNDLE="$CM_BUILD_DIR/build.xcresult"
+          LOG="$CM_BUILD_DIR/xcodebuild.log"
+          
+          echo "Building iOS Simulator app (arm64 only)..."
+          xcodebuild \
             -project AgentDashboard.xcodeproj \
             -scheme AgentDashboard \
             -sdk iphonesimulator \
             -configuration Debug \
-            -destination 'generic/platform=iOS Simulator' \
-            -derivedDataPath "$DERIVED_DATA" \
+            -destination "platform=iOS Simulator,arch=arm64" \
+            -arch arm64 \
+            -derivedDataPath "$DERIVED" \
+            -resultBundlePath "$BUNDLE" \
             -skipMacroValidation \
             -skipPackagePluginValidation \
-            -resultBundlePath "$CM_BUILD_DIR/build.xcresult" \
+            ARCHS=arm64 \
+            EXCLUDED_ARCHS="i386 x86_64" \
+            ONLY_ACTIVE_ARCH=YES \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO || true
+            CODE_SIGNING_ALLOWED=NO \
+            build | tee "$LOG"
             
       - name: Extract compiler errors if build failed
         script: |
@@ -197,50 +207,75 @@ workflows:
           # Export for next step
           echo "export APP_PATH='$APP_PATH'" >> $CM_ENV
           
-      - name: Create preview artifacts
+      - name: Extract Swift compiler errors
         script: |
-          # Load the app path from previous step
-          source $CM_ENV
+          #!/usr/bin/env bash
+          set -euo pipefail
+          BUNDLE="$CM_BUILD_DIR/build.xcresult"
           
-          if [[ -z "${APP_PATH:-}" ]]; then
-            echo "❌ APP_PATH not set from previous step"
-            exit 1
+          if [[ -e "$BUNDLE" ]]; then
+            echo "=== Swift compiler errors ==="
+            if out=$(xcrun xcresulttool get object --legacy --path "$BUNDLE" --format json 2>/dev/null); then
+              echo "$out" | python3 - <<'PY'
+import json, sys
+j=json.load(sys.stdin)
+def walk(x):
+  if isinstance(x, dict):
+    if x.get('issueType') == 'error':
+      m=x.get('message',{}).get('text','')
+      loc=x.get('documentLocationInCreatingWorkspace',{})
+      print("✖︎", m)
+      if loc.get('url'):  print("    file:", loc['url'])
+      if loc.get('line'): print("    line:", loc['line'])
+      print()
+    for v in x.values(): walk(v)
+  elif isinstance(x, list):
+    for v in x: walk(v)
+walk(j)
+PY
+            else
+              echo "xcresulttool failed; dumping xcodebuild.log fallback"
+              grep -nE " error: " "$CM_BUILD_DIR/xcodebuild.log" || true
+            fi
+          else
+            echo "No result bundle at $BUNDLE"
           fi
           
-          echo "Creating artifacts for: $APP_PATH"
-          APP_NAME=$(basename "$APP_PATH")
+      - name: Create preview artifacts (with validation)
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          
+          DERIVED="$CM_BUILD_DIR/DerivedData/Build/Products/Debug-iphonesimulator"
+          APP_DIR="$(find "$DERIVED" -maxdepth 1 -type d -name '*.app' -print -quit || true)"
+          
+          [[ -n "${APP_DIR:-}" ]] || { echo "❌ No .app produced (build failed)."; exit 1; }
+          
+          PLIST="$APP_DIR/Info.plist"
+          [[ -f "$PLIST" ]] || { echo "❌ $APP_DIR has no Info.plist — invalid app."; exit 1; }
+          
+          EXEC=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$PLIST" 2>/dev/null || true)
+          [[ -n "${EXEC:-}" && -f "$APP_DIR/$EXEC" ]] || { echo "❌ Missing main executable — app wasn't linked."; exit 1; }
+          
+          echo "✅ Valid app found: $APP_DIR"
+          echo "   Executable: $EXEC"
+          echo "   Size: $(du -sh "$APP_DIR" | cut -f1)"
           
           # Create artifacts directory
           mkdir -p artifacts
           
-          # Copy the .app directly
-          cp -r "$APP_PATH" artifacts/
-          echo "Copied .app: $(du -sh "artifacts/$APP_NAME" | cut -f1)"
+          # Package for Codemagic Preview
+          ZIP="artifacts/app-preview.zip"
+          (
+            cd "$(dirname "$APP_DIR")"
+            /usr/bin/zip -qry "$ZIP" "$(basename "$APP_DIR")"
+          )
           
-          # Create IPA structure
-          mkdir -p Payload
-          cp -r "$APP_PATH" Payload/
+          # Also copy the .app directly
+          cp -r "$APP_DIR" artifacts/
           
-          # Create IPA
-          zip -r "AgentDashboard.ipa" Payload
-          mv AgentDashboard.ipa artifacts/
-          
-          # Create additional zip
-          zip -r "app-preview.zip" Payload  
-          mv app-preview.zip artifacts/
-          
-          echo "📱 Final artifacts:"
+          echo "✅ Preview artifact: $ZIP"
           ls -lah artifacts/
-          
-          # Verify non-empty files
-          for file in artifacts/*; do
-            size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null)
-            if [ "$size" -lt 1000 ]; then
-              echo "⚠️  Warning: $file is only $size bytes"
-            else
-              echo "✅ $file: $size bytes"
-            fi
-          done
           
       - name: Dump Swift diagnostics (optional)
         script: |
