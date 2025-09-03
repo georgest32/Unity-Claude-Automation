@@ -1,6 +1,12 @@
+// IMPORTANT: This file is NOT in target membership
+// The app uses ContentView as the root tab shell (see AgentDashboardApp.swift)
+// Keep this file for reference but remove from target membership in Xcode
+
 import SwiftUI
 import ComposableArchitecture
+import UIKit
 
+/// Alternative app view with authentication - NOT CURRENTLY USED
 /// Main app view using TCA (The Composable Architecture)
 struct AppView: View {
     @Bindable var store: StoreOf<AppFeature>

@@ -1,5 +1,6 @@
 import SwiftUI
 import ComposableArchitecture
+import UIKit
 
 @main
 struct AgentDashboardApp: App {
