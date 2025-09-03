@@ -3,13 +3,13 @@ import ComposableArchitecture
 
 @main
 struct AgentDashboardApp: App {
+    let store = StoreOf<DashboardFeature>(initialState: .init()) {
+        DashboardFeature()
+    }
+
     var body: some Scene {
         WindowGroup {
-            DashboardView(
-                store: Store(initialState: DashboardFeature.State()) {
-                    DashboardFeature()
-                }
-            )
+            DashboardView(store: store)
         }
     }
 }
