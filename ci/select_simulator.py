@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import json, sys, os
+import json, sys, subprocess
 
 if len(sys.argv) < 3:
     print("Usage: python3 select_simulator.py <want_os> <want_name>")
@@ -8,13 +8,12 @@ if len(sys.argv) < 3:
 want_os = sys.argv[1]      # e.g. "18.5"
 want_name = sys.argv[2]    # e.g. "iPhone 16 Pro"
 
-# Read from pre-saved devices.json file
-devices_json = os.path.join(os.environ.get('CM_BUILD_DIR', '.'), 'devices.json')
+# Get simulator data directly from simctl
 try:
-    with open(devices_json, 'r') as f:
-        data = json.load(f)
+    output = subprocess.check_output(["xcrun", "simctl", "list", "devices", "available", "--json"])
+    data = json.loads(output)
 except Exception as e:
-    print(f"Failed to read {devices_json}: {e}", file=sys.stderr)
+    print(f"Failed to get simulator list: {e}", file=sys.stderr)
     sys.exit(1)
 
 def udid_from(devs, name=None):

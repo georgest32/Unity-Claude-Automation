@@ -38,7 +38,7 @@ workflows:
           export MACOSX_DEPLOYMENT_TARGET=13.0
 
           echo "=== Selecting iOS 18.x simulator ==="
-          # Use external script to avoid YAML heredoc conflicts completely
+          # Use self-contained external script
           SIM_UDID="$(python3 ci/select_simulator.py "18.5" "iPhone 16 Pro")"
           if [[ -z "${SIM_UDID:-}" ]]; then
             echo "ERROR: Could not find an iOS 18.x simulator UDID" >&2
