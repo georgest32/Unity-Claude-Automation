@@ -209,30 +209,34 @@ workflows:
           
       - name: Extract Swift compiler errors
         script: |
-          #!/usr/bin/env bash
-          set -euo pipefail
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
           
           if [[ -e "$BUNDLE" ]]; then
             echo "=== Swift compiler errors ==="
             if out=$(xcrun xcresulttool get object --legacy --path "$BUNDLE" --format json 2>/dev/null); then
-              echo "$out" | python3 - <<'PY'
-import json, sys
-j=json.load(sys.stdin)
+              # Write JSON to file and parse with Python script
+              echo "$out" > errors.json
+              cat > parse_errors.py << 'EOF'
+import json
+with open('errors.json') as f:
+    j = json.load(f)
 def walk(x):
-  if isinstance(x, dict):
-    if x.get('issueType') == 'error':
-      m=x.get('message',{}).get('text','')
-      loc=x.get('documentLocationInCreatingWorkspace',{})
-      print("✖︎", m)
-      if loc.get('url'):  print("    file:", loc['url'])
-      if loc.get('line'): print("    line:", loc['line'])
-      print()
-    for v in x.values(): walk(v)
-  elif isinstance(x, list):
-    for v in x: walk(v)
+    if isinstance(x, dict):
+        if x.get('issueType') == 'error':
+            m = x.get('message',{}).get('text','')
+            loc = x.get('documentLocationInCreatingWorkspace',{})
+            print("✖︎", m)
+            if loc.get('url'):  print("    file:", loc['url'])
+            if loc.get('line'): print("    line:", loc['line'])
+            print()
+        for v in x.values(): 
+            walk(v)
+    elif isinstance(x, list):
+        for v in x: 
+            walk(v)
 walk(j)
-PY
+EOF
+              python3 parse_errors.py
             else
               echo "xcresulttool failed; dumping xcodebuild.log fallback"
               grep -nE " error: " "$CM_BUILD_DIR/xcodebuild.log" || true
