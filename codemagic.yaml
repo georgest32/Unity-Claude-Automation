@@ -186,49 +186,52 @@ workflows:
             -scheme "$SCHEME" \
             -derivedDataPath "$DD"
           
-          echo "=== Build macro targets for macOS host ==="
-          # TCA
-          if [ -d "$PKG/swift-composable-architecture" ]; then
-            echo "Building ComposableArchitectureMacros..."
-            swift build -c debug --package-path "$PKG/swift-composable-architecture" \
-              --target ComposableArchitectureMacros || echo "Failed to build TCA macros"
-          fi
+          echo "=== Build host (macOS) macro plugins via SwiftPM ==="
           
-          # CasePaths
-          if [ -d "$PKG/swift-case-paths" ]; then
-            echo "Building CasePathsMacros..."
-            swift build -c debug --package-path "$PKG/swift-case-paths" \
-              --target CasePathsMacros || echo "Failed to build CasePaths macros"
-          fi
+          # List macro targets explicitly
+          HOST_MACRO_TARGETS=(
+            "swift-composable-architecture:ComposableArchitectureMacros"
+            "swift-case-paths:CasePathsMacros"
+            "swift-dependencies:DependenciesMacrosPlugin"
+            "swift-perception:PerceptionMacros"
+          )
           
-          # Dependencies
-          if [ -d "$PKG/swift-dependencies" ]; then
-            echo "Building DependenciesMacrosPlugin..."
-            swift build -c debug --package-path "$PKG/swift-dependencies" \
-              --target DependenciesMacrosPlugin || echo "Failed to build Dependencies macros"
-          fi
-          
-          # Perception
-          if [ -d "$PKG/swift-perception" ]; then
-            echo "Building PerceptionMacros..."
-            swift build -c debug --package-path "$PKG/swift-perception" \
-              --target PerceptionMacros || echo "Failed to build Perception macros"
-          fi
-          
-          echo "=== Copy macro dylibs to DerivedData ==="
-          mkdir -p "$DD/Build/Products/Debug"
-          
-          # Find and copy all macro dylibs from SwiftPM builds to DerivedData
-          for dylib in $(find "$PKG" -path "*/.build/*/debug/*Macros*" -type f \( -name "*.dylib" -o -name "*.bundle" -o -perm +111 \) 2>/dev/null); do
-            echo "Copying: $(basename $dylib)"
-            cp "$dylib" "$DD/Build/Products/Debug/" || true
+          for entry in "${HOST_MACRO_TARGETS[@]}"; do
+            IFS=':' read -r pkg target <<< "$entry"
+            if [ -d "$PKG/$pkg" ]; then
+              echo "Building host macro: $target from $pkg"
+              cd "$PKG/$pkg"
+              swift build -c debug --target "$target" || echo "Warning: Failed to build $target"
+            else
+              echo "Package not found: $pkg"
+            fi
           done
           
-          echo "=== Host-built macro dylibs in DerivedData ==="
-          ls -la "$DD/Build/Products/Debug/" 2>/dev/null || echo "No Debug folder yet"
+          echo "=== Collect host macro dylibs ==="
+          mkdir -p "$DD/Build/Products/Debug"
           
-          echo "=== SwiftPM build folder macros ==="
-          find "$PKG" -path "*/.build/*" -type f -name "*Macros*" 2>/dev/null | head -10 || true
+          # Find all macro executables/dylibs built by SwiftPM
+          echo "Looking for macro binaries..."
+          find "$PKG" -path "*/.build/*/debug" -type f \( -name "*Macros" -o -name "*Macros.dylib" -o -name "*Macros.bundle" \) ! -name "*.o" ! -name "*.swiftmodule" -print | while read -r file; do
+            if file "$file" | grep -q "Mach-O"; then
+              echo "Found macro binary: $(basename "$file")"
+              cp -f "$file" "$DD/Build/Products/Debug/" || true
+            fi
+          done
+          
+          # Also try executable macros without extension
+          find "$PKG" -path "*/.build/*/debug" -type f -perm +111 -name "*Macro*" ! -name "*.o" ! -name "*.swiftmodule" -print | while read -r file; do
+            if file "$file" | grep -q "Mach-O"; then
+              echo "Found executable: $(basename "$file")"
+              cp -f "$file" "$DD/Build/Products/Debug/" || true
+            fi
+          done
+          
+          echo "=== Host macro binaries in DerivedData/Build/Products/Debug ==="
+          ls -la "$DD/Build/Products/Debug/" 2>/dev/null || echo "No Debug folder"
+          
+          echo "=== Set DYLD_LIBRARY_PATH for macro loading ==="
+          echo "export DYLD_LIBRARY_PATH=\"$DD/Build/Products/Debug:\$DYLD_LIBRARY_PATH\"" >> "$CM_ENV"
 
       - name: Sanity - print APIClient.swift head & checksum
         script: |
@@ -280,6 +283,7 @@ workflows:
             -skipPackagePluginValidation \
             ONLY_ACTIVE_ARCH=YES \
             EXCLUDED_ARCHS="i386 x86_64" \
+            SWIFT_MACRO_PLUGIN_ENABLE=YES \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
@@ -303,6 +307,49 @@ workflows:
           exit 0
 
       # ---------- Diagnostics: richer error reporting -----------
+      - name: Extract APIClient.swift specific errors
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          BUNDLE="$CM_BUILD_DIR/build.xcresult"
+          
+          echo "=== Extract Swift diagnostics for APIClient.swift ==="
+          if [ -d "$BUNDLE" ]; then
+            xcrun xcresulttool get --legacy --format json --path "$BUNDLE" 2>/dev/null | \
+            python3 - <<'PY' || true
+import json, sys
+try:
+    j = json.load(sys.stdin)
+except:
+    print("Could not parse JSON")
+    sys.exit(0)
+
+def walk(o, indent=0):
+    if isinstance(o, dict):
+        for k, v in o.items():
+            if k == "message" and isinstance(v, dict):
+                text = v.get("text", "")
+                if "APIClient" in text or "json" in text.lower():
+                    print(f"{'  '*indent}ERROR: {text}")
+            elif k == "filePath" and isinstance(v, str) and "APIClient.swift" in v:
+                print(f"{'  '*indent}FILE: {v}")
+            elif k == "startingLineNumber":
+                print(f"{'  '*indent}LINE: {v}")
+            walk(v, indent+1)
+    elif isinstance(o, list):
+        for item in o:
+            walk(item, indent)
+
+walk(j)
+PY
+          else
+            echo "No xcresult found"
+          fi
+          
+          echo ""
+          echo "=== Grep build.log for APIClient errors ==="
+          grep -n "APIClient.swift" "$CM_BUILD_DIR/build.log" | grep -E "error:|warning:" | head -20 || echo "No APIClient errors found in log"
+      
       - name: Extract ALL Swift diagnostics (file + line) v2
         script: |
           #!/usr/bin/env bash
