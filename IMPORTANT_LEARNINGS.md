@@ -11,6 +11,23 @@ This document serves as an index to our comprehensive learning repository. All l
 
 ### [🔧 Critical Fixes and Urgent Issues](docs/learnings/critical-fixes.md)
 **Latest critical fixes, urgent issues, and immediate solutions**
+- Learning #273: TCA ContentView Duplication and WithViewStore Migration Fix (2025-09-03)
+  - **Context**: iOS AgentDashboard build still failing after Swift 6 actor fixes - cascading compilation errors
+  - **Issue**: Two ContentView.swift files causing target membership conflicts and deprecated WithViewStore usage
+  - **Root Cause Analysis**: 
+    1. Duplicate ContentView files: One with old TCA patterns (WithViewStore), one with new patterns (WithPerceptionTracking)
+    2. Deprecated WithViewStore usage in TCA 1.7+ causing compilation failures
+    3. Missing public + Sendable conformance on SettingsFeature and AnalyticsFeature
+    4. APIClient failures were cascading errors, not inherent APIClient issues
+  - **Research Foundation**: 5 web search queries revealing TCA 1.7+ WithViewStore deprecation and Swift 6 migration requirements
+  - **Solution Implementation**:
+    1. Content Resolution: Removed duplicate ContentView.swift file with deprecated patterns
+    2. TCA Migration: Replaced ALL WithViewStore usage with WithPerceptionTracking + direct store access
+    3. Swift 6 Compliance: Added Sendable + public conformance to AppFeature, SettingsFeature, AnalyticsFeature
+    4. Public API: Made Action enums public and added public init() methods for cross-module access
+  - **Debug Strategy**: Enhanced logging with emoji-based structured debugging throughout features
+  - **Key Insight**: TCA 1.7+ requires @ObservableState pattern, WithViewStore is fully deprecated
+  - **Critical**: Always check for duplicate files when builds fail, TCA migration requires systematic WithViewStore replacement
 - Learning #272: Swift 6 Actor Isolation APIClient Compilation Fix (2025-09-03)
   - **Context**: iOS AgentDashboard build failing on Codemagic with Swift 6 strict concurrency errors
   - **Issue**: "SwiftCompile normal arm64" failures in APIClient.swift with TCA 1.22.2 and Xcode 16.2

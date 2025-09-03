@@ -10,9 +10,9 @@ import ComposableArchitecture
 import Foundation
 
 @Reducer
-struct AppFeature {
+public struct AppFeature: Sendable {
     // MARK: - State
-    struct State: Equatable {
+    public struct State: Equatable, Sendable {
         // Navigation
         var selectedTab: Tab = .dashboard
         
@@ -52,7 +52,7 @@ struct AppFeature {
     }
     
     // MARK: - Action
-    enum Action: Equatable {
+    public enum Action: Equatable {
         // Navigation
         case tabSelected(State.Tab)
         
@@ -90,7 +90,9 @@ struct AppFeature {
     @Dependency(\.continuousClock) var clock
     
     // MARK: - Reducer
-    var body: some Reducer<State, Action> {
+    public init() {}
+    
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             // Navigation

@@ -10,9 +10,9 @@ import ComposableArchitecture
 import Foundation
 
 @Reducer
-struct SettingsFeature {
+public struct SettingsFeature: Sendable {
     // MARK: - State
-    struct State: Equatable {
+    public struct State: Equatable, Sendable {
         // Connection settings
         var serverURL: String = "ws://localhost:8080/ws"
         var apiURL: String = "http://localhost:8080"
@@ -73,7 +73,7 @@ struct SettingsFeature {
     }
     
     // MARK: - Action
-    enum Action: Equatable {
+    public enum Action: Equatable {
         // Connection settings
         case serverURLChanged(String)
         case apiURLChanged(String)
@@ -125,7 +125,9 @@ struct SettingsFeature {
     @Dependency(\.continuousClock) var clock
     
     // MARK: - Reducer
-    var body: some Reducer<State, Action> {
+    public init() {}
+    
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             // Lifecycle

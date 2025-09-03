@@ -13,16 +13,16 @@ struct ContentView: View {
     let store: StoreOf<AppFeature>
     
     var body: some View {
-        WithViewStore(self.store, observe: { $0 }) { viewStore in
-            TabView(selection: viewStore.binding(
-                get: \.selectedTab,
-                send: AppFeature.Action.tabSelected
+        WithPerceptionTracking {
+            TabView(selection: .init(
+                get: { store.state.selectedTab },
+                set: { store.send(.tabSelected($0)) }
             )) {
                 // Dashboard Tab
                 DashboardView(
                     store: store.scope(
                         state: \.dashboard,
-                        action: AppFeature.Action.dashboard
+                        action: \.dashboard
                     )
                 )
                 .tabItem {
@@ -35,7 +35,7 @@ struct ContentView: View {
                 AgentsView(
                     store: store.scope(
                         state: \.agents,
-                        action: AppFeature.Action.agents
+                        action: \.agents
                     )
                 )
                 .tabItem {
@@ -48,7 +48,7 @@ struct ContentView: View {
                 TerminalView(
                     store: store.scope(
                         state: \.terminal,
-                        action: AppFeature.Action.terminal
+                        action: \.terminal
                     )
                 )
                 .tabItem {
@@ -61,7 +61,7 @@ struct ContentView: View {
                 AnalyticsView(
                     store: store.scope(
                         state: \.analytics,
-                        action: AppFeature.Action.analytics
+                        action: \.analytics
                     )
                 )
                 .tabItem {
@@ -74,7 +74,7 @@ struct ContentView: View {
                 SettingsView(
                     store: store.scope(
                         state: \.settings,
-                        action: AppFeature.Action.settings
+                        action: \.settings
                     )
                 )
                 .tabItem {
@@ -83,32 +83,25 @@ struct ContentView: View {
                 }
                 .tag(AppFeature.State.Tab.settings)
             }
-            .overlay(alignment: .top) {
-                // Connection status indicator
-                ConnectionStatusBar(
-                    connectionStatus: viewStore.connectionStatus,
-                    isConnected: viewStore.isConnected
-                )
-            }
             .onAppear {
-                print("[ContentView] App appeared")
-                viewStore.send(.onAppear)
+                print("🚀 [ContentView] App appeared - initializing features")
+                store.send(.onAppear)
             }
             .onDisappear {
                 print("[ContentView] App disappeared")
-                viewStore.send(.onDisappear)
+                store.send(.onDisappear)
             }
             .onReceive(
                 NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
             ) { _ in
                 print("[ContentView] App entering foreground")
-                viewStore.send(.enterForeground)
+                store.send(.enterForeground)
             }
             .onReceive(
                 NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)
             ) { _ in
                 print("[ContentView] App entering background")
-                viewStore.send(.enterBackground)
+                store.send(.enterBackground)
             }
         }
     }
@@ -149,38 +142,34 @@ struct DashboardView: View {
     let store: StoreOf<DashboardFeature>
     
     var body: some View {
-        WithViewStore(self.store, observe: { $0 }) { viewStore in
+        WithPerceptionTracking {
             NavigationView {
                 VStack(spacing: 20) {
                     // System Status Card
-                    if let systemStatus = viewStore.systemStatus {
+                    if let systemStatus = store.state.systemStatus {
                         SystemStatusCard(systemStatus: systemStatus)
-                    } else if viewStore.isLoading {
+                    } else if store.state.isRefreshing {
                         ProgressView("Loading system status...")
                             .frame(maxWidth: .infinity, minHeight: 120)
                     }
                     
                     // Agents Summary
                     AgentsSummaryCard(
-                        activeCount: viewStore.activeAgentCount,
-                        totalCount: viewStore.agents.count
+                        activeCount: store.state.activeAgents.filter { $0.isActive }.count,
+                        totalCount: store.state.activeAgents.count
                     )
-                    
-                    // Recent Alerts
-                    if !viewStore.alerts.isEmpty {
-                        RecentAlertsCard(alerts: Array(viewStore.alerts.prefix(3)))
-                    }
                     
                     Spacer()
                 }
                 .padding()
                 .navigationTitle("Dashboard")
                 .refreshable {
-                    viewStore.send(.refreshRequested)
+                    store.send(.refreshButtonTapped)
                 }
             }
             .onAppear {
-                viewStore.send(.onAppear)
+                print("📊 [DashboardView] Dashboard appeared - loading system status")
+                store.send(.onAppear)
             }
         }
     }
@@ -311,13 +300,13 @@ struct AgentsView: View {
     let store: StoreOf<AgentsFeature>
     
     var body: some View {
-        WithViewStore(self.store, observe: { $0 }) { viewStore in
+        WithPerceptionTracking {
             NavigationView {
                 Text("Agents View - Coming Soon")
                     .navigationTitle("Agents")
             }
             .onAppear {
-                viewStore.send(.onAppear)
+                store.send(.onAppear)
             }
         }
     }
@@ -343,13 +332,13 @@ struct SettingsView: View {
     let store: StoreOf<SettingsFeature>
     
     var body: some View {
-        WithViewStore(self.store, observe: { $0 }) { viewStore in
+        WithPerceptionTracking {
             NavigationView {
                 Text("Settings View - Coming Soon")
                     .navigationTitle("Settings")
             }
             .onAppear {
-                viewStore.send(.onAppear)
+                store.send(.onAppear)
             }
         }
     }

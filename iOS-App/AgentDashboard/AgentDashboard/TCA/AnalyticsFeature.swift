@@ -10,9 +10,9 @@ import ComposableArchitecture
 import Foundation
 
 @Reducer
-struct AnalyticsFeature {
+public struct AnalyticsFeature: Sendable {
     // MARK: - State
-    struct State: Equatable {
+    public struct State: Equatable, Sendable {
         var charts: [ChartData] = []
         var isLoading: Bool = false
         var error: String?
@@ -109,7 +109,7 @@ struct AnalyticsFeature {
     }
     
     // MARK: - Action  
-    enum Action: Equatable {
+    public enum Action: Equatable {
         // Data loading
         case loadAnalytics
         case analyticsLoaded([ChartData])
@@ -141,7 +141,9 @@ struct AnalyticsFeature {
     @Dependency(\.continuousClock) var clock
     
     // MARK: - Reducer
-    var body: some Reducer<State, Action> {
+    public init() {}
+    
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             // Lifecycle
