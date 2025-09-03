@@ -67,6 +67,26 @@ workflows:
           echo "Selected simulator UDID: $SIM_UDID"
           echo "export SIM_UDID=$SIM_UDID" >> "$CM_ENV"
 
+      - name: Auto-enable Swift macros on AgentDashboard target
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+
+          PBX="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
+
+          echo "=== Check project file exists ==="
+          test -f "$PBX" || { echo "❌ Missing $PBX"; exit 1; }
+
+          echo "=== Patch pbxproj to add Macro Expansion phase & macro products (idempotent) ==="
+          python3 ci/enable_swift_macros.py
+
+          echo "=== Sanity check: target now references Macro Expansion phase ==="
+          grep -n "PBXSwiftMacroExpansionBuildPhase" "$PBX" | head -n 1 || true
+          grep -n "ComposableArchitectureMacros" "$PBX" || true
+          grep -n "CasePathsMacros" "$PBX" || true
+          grep -n "DependenciesMacrosPlugin" "$PBX" || true
+          grep -n "PerceptionMacros" "$PBX" || true
+
       - name: Verify Swift macro plugins are enabled
         script: |
           #!/usr/bin/env bash
