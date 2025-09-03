@@ -273,6 +273,7 @@ workflows:
             -destination "platform=iOS Simulator,id=$SIM_UDID,arch=arm64" \
             -derivedDataPath "$DERIVED" \
             -resultBundlePath "$BUNDLE" \
+            -resultBundleVersion 3 \
             -skipMacroValidation \
             -skipPackagePluginValidation \
             ONLY_ACTIVE_ARCH=YES \

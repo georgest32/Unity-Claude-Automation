@@ -1,6 +1,6 @@
 // APIClient.swift
 import Foundation
-import ComposableArchitecture
+import Dependencies
 
 // MARK: - Errors
 

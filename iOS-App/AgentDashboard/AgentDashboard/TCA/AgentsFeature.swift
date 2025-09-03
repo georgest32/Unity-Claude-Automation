@@ -193,7 +193,7 @@ public struct AgentsFeature {
                     do {
                         // Stop then start for restart
                         _ = try await apiClient.stopAgent(agent.id)
-                        try await clock.sleep(for: .seconds(1))
+                        try await self.clock.sleep(for: .seconds(1))
                         let result = try await apiClient.startAgent(agent.id)
                         await send(.agentActionCompleted("Agent \(agent.name) restarted: \(result)"))
                         await send(.refreshButtonTapped)
@@ -206,7 +206,7 @@ public struct AgentsFeature {
                 print("🗑️ AgentsFeature: Deleting agent \(agent.name)")
                 return .run { send in
                     // Simulate API call
-                    try await clock.sleep(for: .milliseconds(500))
+                    try await self.clock.sleep(for: .milliseconds(500))
                     await send(.agentActionCompleted("Agent \(agent.name) deleted successfully"))
                     await send(.refreshButtonTapped)
                 } catch: { error, send in
@@ -234,7 +234,7 @@ public struct AgentsFeature {
                 
                 return .run { [form = state.newAgentForm] send in
                     // Simulate API call to create agent
-                    try await clock.sleep(for: .milliseconds(750))
+                    try await self.clock.sleep(for: .milliseconds(750))
                     
                     let newAgent = Agent(
                         id: UUID().uuidString,
