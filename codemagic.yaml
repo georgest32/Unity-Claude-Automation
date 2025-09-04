@@ -240,8 +240,14 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
           
-          echo "=== Clean DerivedData for fresh build ==="
+          echo "=== Clean everything for fresh build ==="
           rm -rf "$CM_BUILD_DIR/DerivedData"
+          rm -rf ~/Library/Caches/org.swift.swiftpm
+          rm -rf ~/Library/org.swift.swiftpm
+          
+          # Trust macros by default for CI
+          defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
+          defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
           
           echo "=== Resolve packages (Xcode will build macros automatically) ==="
           xcodebuild -resolvePackageDependencies \
@@ -249,7 +255,9 @@ workflows:
             -scheme "$SCHEME" \
             -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
             -skipPackagePluginValidation \
-            -skipMacroValidation
+            -skipMacroValidation \
+            -disableAutomaticPackageResolution \
+            -onlyUsePackageVersionsFromResolvedFile
           
           echo "=== Packages resolved. Xcode will handle macro building during main build ==="
 
@@ -293,6 +301,9 @@ workflows:
           # Enable diagnostic output for macro issues
           export SWIFT_LOADED_PLUGINS_DUMP=1
           export SWIFT_MACRO_EXPAND_DIAGS=1
+          
+          # Force clean module cache to prevent stale macro builds
+          rm -rf "$DERIVED/ModuleCache.noindex"
 
           echo "=== Building Debug for simulator id=$SIM_UDID ==="
           

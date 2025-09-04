@@ -40,7 +40,7 @@ public struct APIClient: Sendable {
       throw APIError.http(http.statusCode, body: bytes)
     }
 
-    var decoder = JSONDecoder()
+    let decoder = JSONDecoder()
     decoder.dateDecodingStrategy = .iso8601
     if let configureDecoder {
       var d = decoder
