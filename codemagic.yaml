@@ -5,7 +5,7 @@ workflows:
     instance_type: mac_mini_m2
 
     environment:
-      xcode: 16.2
+      xcode: 16.4
       cocoapods: default
       vars:
         PROJECT_PATH: "iOS-App/AgentDashboard/AgentDashboard.xcodeproj"
@@ -108,16 +108,16 @@ workflows:
             cp "$RESOLVED_SRC" "$RESOLVED_OUT"
             echo "Saved Package.resolved to artifacts"
             
-            echo "=== Verify swift-syntax resolves to 600.x on Xcode 16.2 ==="
+            echo "=== Verify swift-syntax resolves to 601.x on Xcode 16.4 ==="
             if command -v jq >/dev/null 2>&1; then
               SYNTAX_VER=$(jq -r '.pins[] | select(.identity=="swift-syntax") | .state.version // "n/a"' "$RESOLVED_OUT" 2>/dev/null || echo "n/a")
               echo "swift-syntax resolved to: $SYNTAX_VER"
               if [[ "$SYNTAX_VER" == 601.* ]]; then
-                echo "❌ ERROR: Xcode 16.2 requires swift-syntax 600.x, but got $SYNTAX_VER"
+                echo "❌ ERROR: Xcode 16.4 requires swift-syntax 601.x, but got $SYNTAX_VER"
                 echo "Need to downgrade TCA or other packages further"
                 exit 2
-              elif [[ "$SYNTAX_VER" == 600.* ]]; then
-                echo "✅ SUCCESS: swift-syntax $SYNTAX_VER is compatible with Xcode 16.2!"
+              elif [[ "$SYNTAX_VER" == 601.* ]]; then
+                echo "✅ SUCCESS: swift-syntax $SYNTAX_VER is compatible with Xcode 16.4!"
               fi
             else
               echo "jq not available, skipping version check"
@@ -136,7 +136,7 @@ workflows:
 
           echo "=== Selecting iOS 18.x simulator ==="
           # Use self-contained external script
-          SIM_UDID="$(python3 ci/select_simulator.py "18.2" "iPhone 16 Pro")"
+          SIM_UDID="$(python3 ci/select_simulator.py "18.5" "iPhone 16 Pro")"
           if [[ -z "${SIM_UDID:-}" ]]; then
             echo "ERROR: Could not find an iOS 18.x simulator UDID" >&2
             echo "== Devices =="; xcrun simctl list devices
@@ -269,6 +269,11 @@ workflows:
       - name: Clean and resolve packages
         script: |
           #!/usr/bin/env bash
+          # Force Xcode 16.4 for entire build chain
+          export DEVELOPER_DIR="/Applications/Xcode-16.4.app/Contents/Developer"
+          export PATH="$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/bin:$DEVELOPER_DIR/usr/bin:$PATH"
+          export SWIFT_DRIVER_SWIFT_PLUGIN_SERVER="$DEVELOPER_DIR/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server"
+          
           set -euo pipefail
           
           echo "=== Clean everything for fresh build ==="
@@ -287,7 +292,7 @@ workflows:
           rm -rf ~/Library/Developer/Xcode/DerivedData/AgentDashboard-*/SourcePackages
           rm -rf AgentDashboard.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
           
-          echo "=== Resolve packages fresh (this will get Xcode 16.2 compatible versions) ==="
+          echo "=== Resolve packages fresh (this will get Xcode 16.4 compatible versions) ==="
           xcodebuild -resolvePackageDependencies \
             -project "AgentDashboard.xcodeproj" \
             -scheme "$SCHEME" \
@@ -301,18 +306,18 @@ workflows:
           
           echo "=== Packages resolved with updated versions ==="
           
-          echo "=== Verify we got Xcode 16.2 compatible packages ==="
+          echo "=== Verify we got Xcode 16.4 compatible packages ==="
           # Check the build log for resolved versions
           if [ -f "$CM_BUILD_DIR/build.log" ]; then
             RESOLVED_SYNTAX=$(grep -o "swift-syntax.*@ [0-9.]*" "$CM_BUILD_DIR/build.log" || echo "not found in build.log")
             echo "Resolved swift-syntax: $RESOLVED_SYNTAX"
             
             if echo "$RESOLVED_SYNTAX" | grep -q "601\."; then
-              echo "❌ ERROR: Xcode 16.2 needs swift-syntax 600.x, but got 601.x"
-              echo "The TCA version is too new. Need to downgrade further."
+              echo "❌ ERROR: Xcode 16.4 needs swift-syntax 601.x, but got 600.x"
+              echo "The TCA version is too old. Need to upgrade."
               # Don't exit yet, let's see if it works anyway
-            elif echo "$RESOLVED_SYNTAX" | grep -q "600\."; then
-              echo "✅ Got swift-syntax 600.x - compatible with Xcode 16.2!"
+            elif echo "$RESOLVED_SYNTAX" | grep -q "601\."; then
+              echo "✅ Got swift-syntax 601.x - compatible with Xcode 16.4!"
             fi
           fi
 
@@ -343,6 +348,11 @@ workflows:
       - name: Build for iOS Simulator (arm64, single device, with result bundle)
         script: |
           #!/usr/bin/env bash
+          # Force Xcode 16.4 for build
+          export DEVELOPER_DIR="/Applications/Xcode-16.4.app/Contents/Developer"
+          export PATH="$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/bin:$DEVELOPER_DIR/usr/bin:$PATH"
+          export SWIFT_DRIVER_SWIFT_PLUGIN_SERVER="$DEVELOPER_DIR/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server"
+          
           set -euo pipefail
           source "$CM_ENV" || true
 
