@@ -387,9 +387,37 @@ workflows:
               echo "jq not available, cannot verify package versions"
             fi
             
-            # Copy for debugging (Xcode still reads the one in the workspace)
+            # Copy for debugging
             cp "$RESOLVED_PATH" "$CM_BUILD_DIR/Package.resolved"
             echo "Package.resolved copied to build directory"
+            
+            echo ""
+            echo "=== Swift tools version in key packages ==="
+            for P in swift-composable-architecture swift-perception swift-case-paths swift-dependencies swift-identified-collections; do
+              PKG_DIR="$CM_BUILD_DIR/SourcePackages/checkouts/$P"
+              if [ -f "$PKG_DIR/Package.swift" ]; then
+                echo -n "$P tools: "
+                head -n1 "$PKG_DIR/Package.swift"
+              else
+                echo "$P: not found in checkouts"
+              fi
+            done
+            echo ""
+            echo "NOTE: Expecting swift-tools-version: 5.9 or lower (NOT 6.0)"
+            
+            # Verify none are using Swift 6.0
+            for P in swift-composable-architecture swift-perception swift-case-paths; do
+              PKG_DIR="$CM_BUILD_DIR/SourcePackages/checkouts/$P"
+              if [ -f "$PKG_DIR/Package.swift" ]; then
+                if head -n1 "$PKG_DIR/Package.swift" | grep -q "6.0"; then
+                  echo "❌ ERROR: $P is using Swift 6.0 tools version!"
+                  echo "This will cause Swift 6 concurrency errors."
+                  echo "Need to pin to an earlier version."
+                  exit 1
+                fi
+              fi
+            done
+            echo "✅ No packages using Swift 6.0 tools version"
           else
             echo "❌ ERROR: Package.resolved not found for $PROJECT_PATH"
             echo "Searched in:"
@@ -427,6 +455,19 @@ workflows:
           # Force Xcode 16.2 for build
           export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
           /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
+          
+          # CRITICAL: Ensure Package.resolved is in the correct location for Xcode
+          WORKSPACE_RESOLVED="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+          if [ -f "$CM_BUILD_DIR/Package.resolved" ]; then
+            echo "=== Copying Package.resolved to workspace location ==="
+            mkdir -p "$(dirname "$WORKSPACE_RESOLVED")"
+            cp "$CM_BUILD_DIR/Package.resolved" "$WORKSPACE_RESOLVED"
+            echo "✅ Package.resolved copied to: $WORKSPACE_RESOLVED"
+            echo "This ensures build uses our locked versions (TCA 1.13.0, etc.)"
+          elif [ ! -f "$WORKSPACE_RESOLVED" ]; then
+            echo "⚠️  WARNING: Package.resolved not found at workspace location"
+            echo "Build may not use locked package versions!"
+          fi
           
           # CRITICAL: Point plugin server to macOS, not iOS (must be env var, not build setting!)
           export SWIFT_DRIVER_SWIFT_PLUGIN_SERVER="$DEVELOPER_DIR/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server"
