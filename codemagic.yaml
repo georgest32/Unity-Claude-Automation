@@ -49,14 +49,24 @@ workflows:
         script: |
           #!/usr/bin/env bash
           set -e
-          xcodebuild -version
-          swift --version
+          # Force Xcode 16.2
+          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
+          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
+          which xcodebuild; xcodebuild -version
+          which swift; swift --version || true
           xcrun simctl list runtimes
 
       - name: Clean DerivedData & resolve packages (with logs)
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
+          
+          # Force Xcode 16.2 for this entire step
+          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
+          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
+          export SWIFT_DRIVER_SWIFT_PLUGIN_SERVER="/Applications/Xcode-16.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server"
+          which xcodebuild; xcodebuild -version
+          which swift; swift --version || true
           
           echo "=== Cleaning DerivedData and SPM caches completely ==="
           rm -rf "$CM_BUILD_DIR/DerivedData" || true
@@ -130,7 +140,11 @@ workflows:
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
-
+          
+          # Force Xcode 16.2
+          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
+          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
+          
           # Help TCA macro host compile
           export MACOSX_DEPLOYMENT_TARGET=14.0
 
@@ -150,6 +164,10 @@ workflows:
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
+          
+          # Force Xcode 16.2
+          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
+          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
           echo "=== Finding all @main declarations ==="
           if command -v rg &> /dev/null; then
             echo "Using ripgrep:"
@@ -167,6 +185,10 @@ workflows:
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
+          
+          # Force Xcode 16.2
+          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
+          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
           PROJ="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
           
           echo "=== Checking for @main App in project files ==="
@@ -201,6 +223,10 @@ workflows:
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
+          
+          # Force Xcode 16.2
+          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
+          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
           PROJ="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
           
           echo "=== Checking target membership ==="
@@ -230,6 +256,10 @@ workflows:
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
+          
+          # Force Xcode 16.2
+          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
+          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
           PBX="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
 
           echo "=== Sanity check pbxproj ==="
@@ -251,6 +281,10 @@ workflows:
         script: |
           #!/usr/bin/env bash
           set -euo pipefail
+          
+          # Force Xcode 16.2
+          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
+          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
           
           echo "=== Check that macro products are NOT linked in project ==="
           PBX="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
@@ -307,19 +341,41 @@ workflows:
           
           echo "=== Packages resolved with updated versions ==="
           
-          echo "=== Verify we got Xcode 16.2 compatible packages ==="
-          # Check the build log for resolved versions
-          if [ -f "$CM_BUILD_DIR/build.log" ]; then
-            RESOLVED_SYNTAX=$(grep -o "swift-syntax.*@ [0-9.]*" "$CM_BUILD_DIR/build.log" || echo "not found in build.log")
-            echo "Resolved swift-syntax: $RESOLVED_SYNTAX"
-            
-            if echo "$RESOLVED_SYNTAX" | grep -q "601\."; then
-              echo "❌ ERROR: Xcode 16.2 needs swift-syntax 600.x, but got 601.x"
-              echo "The TCA version is too new. Need to downgrade."
-              # Don't exit yet, let's see if it works anyway
-            elif echo "$RESOLVED_SYNTAX" | grep -q "600\."; then
-              echo "✅ Got swift-syntax 600.x - compatible with Xcode 16.2!"
+          # Save and verify Package.resolved
+          RESOLVED_PATH="AgentDashboard.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+          if [ -f "$RESOLVED_PATH" ]; then
+            echo "=== Package.resolved found, verifying versions ==="
+            if command -v jq >/dev/null 2>&1; then
+              SYNTAX_VER=$(jq -r '.pins[] | select(.identity=="swift-syntax") | .state.version' "$RESOLVED_PATH" 2>/dev/null || echo "n/a")
+              TCA_VER=$(jq -r '.pins[] | select(.identity=="swift-composable-architecture") | .state.version' "$RESOLVED_PATH" 2>/dev/null || echo "n/a")
+              echo "swift-syntax: $SYNTAX_VER"
+              echo "TCA: $TCA_VER"
+              
+              if [[ "$SYNTAX_VER" == 601.* ]]; then
+                echo "❌ ERROR: Xcode 16.2 needs swift-syntax 600.x, but got $SYNTAX_VER"
+                exit 1
+              elif [[ "$SYNTAX_VER" == 600.* ]]; then
+                echo "✅ SUCCESS: swift-syntax $SYNTAX_VER is compatible with Xcode 16.2!"
+              else
+                echo "⚠️  WARNING: Could not determine swift-syntax version"
+              fi
+              
+              if [[ "$TCA_VER" != "1.15.0" ]]; then
+                echo "⚠️  WARNING: TCA version is $TCA_VER, expected 1.15.0"
+              else
+                echo "✅ SUCCESS: TCA $TCA_VER is correct!"
+              fi
+            else
+              echo "jq not available, cannot verify package versions"
             fi
+            
+            # Copy to build dir for use in build step
+            cp "$RESOLVED_PATH" "$CM_BUILD_DIR/Package.resolved"
+            echo "Package.resolved copied to build directory"
+          else
+            echo "❌ ERROR: Package.resolved not created after resolution!"
+            find . -name "Package.resolved" -print
+            exit 1
           fi
 
       - name: Sanity - print APIClient.swift head & checksum
@@ -352,8 +408,10 @@ workflows:
           # Force Xcode 16.2 for build
           export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
           /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
-          xcodebuild -version
-          swift --version || true
+          # Point plugin server to macOS, not iOS
+          export SWIFT_DRIVER_SWIFT_PLUGIN_SERVER="/Applications/Xcode-16.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server"
+          which xcodebuild; xcodebuild -version
+          which swift; swift --version || true
           
           set -euo pipefail
           source "$CM_ENV" || true
@@ -372,7 +430,7 @@ workflows:
           # Force clean module cache to prevent stale macro builds
           rm -rf "$DERIVED/ModuleCache.noindex"
 
-          echo "=== Building Debug for simulator id=$SIM_UDID ==="
+          echo "=== Building Debug for simulator (using locked Package.resolved) ==="
           
           # Capture build exit code but don't fail the step
           status=0
@@ -387,6 +445,8 @@ workflows:
             -resultBundleVersion 3 \
             -skipMacroValidation \
             -skipPackagePluginValidation \
+            -disableAutomaticPackageResolution \
+            -onlyUsePackageVersionsFromResolvedFile \
             ONLY_ACTIVE_ARCH=YES \
             EXCLUDED_ARCHS="i386 x86_64" \
             CODE_SIGNING_ALLOWED=NO \
