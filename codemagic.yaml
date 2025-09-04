@@ -289,12 +289,15 @@ workflows:
           
           echo "=== Resolve packages fresh (this will get Xcode 16.2 compatible versions) ==="
           xcodebuild -resolvePackageDependencies \
-            -project "$PROJECT_PATH" \
+            -project "AgentDashboard.xcodeproj" \
             -scheme "$SCHEME" \
             -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
             -skipPackagePluginValidation \
             -skipMacroValidation \
             -clonedSourcePackagesDirPath "$CM_BUILD_DIR/SourcePackages"
+          
+          # Return to original directory
+          cd "$CM_BUILD_DIR"
           
           echo "=== Packages resolved with updated versions ==="
           
