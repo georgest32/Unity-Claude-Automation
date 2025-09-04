@@ -378,8 +378,8 @@ workflows:
                 echo "⚠️  WARNING: Could not determine swift-syntax version"
               fi
               
-              if [[ "$TCA_VER" != "1.13.0" ]]; then
-                echo "⚠️  WARNING: TCA version is $TCA_VER, expected 1.13.0"
+              if [[ "$TCA_VER" != "1.10.0" ]]; then
+                echo "⚠️  WARNING: TCA version is $TCA_VER, expected 1.10.0"
               else
                 echo "✅ SUCCESS: TCA $TCA_VER is correct!"
               fi
@@ -392,32 +392,32 @@ workflows:
             echo "Package.resolved copied to build directory"
             
             echo ""
-            echo "=== Swift tools version in key packages ==="
-            for P in swift-composable-architecture swift-perception swift-case-paths swift-dependencies swift-identified-collections; do
-              PKG_DIR="$CM_BUILD_DIR/SourcePackages/checkouts/$P"
-              if [ -f "$PKG_DIR/Package.swift" ]; then
+            echo "=== Swift tools version in ALL Point-Free packages ==="
+            for P in \
+              swift-composable-architecture \
+              swift-perception \
+              swift-case-paths \
+              swift-dependencies \
+              swift-identified-collections \
+              swift-custom-dump \
+              swift-clocks \
+              swift-navigation
+            do
+              PKG="$CM_BUILD_DIR/SourcePackages/checkouts/$P/Package.swift"
+              if [ -f "$PKG" ]; then
                 echo -n "$P tools: "
-                head -n1 "$PKG_DIR/Package.swift"
+                head -n1 "$PKG"
+                if head -n1 "$PKG" | grep -q "swift-tools-version: 6.0"; then
+                  echo "❌ ERROR: $P uses Swift 6 tools; it will compile in Swift-6 mode and fail under 16.2."
+                  echo "Pin $P to the last tag with // swift-tools-version: 5.9 (or earlier) and re-resolve."
+                  exit 1
+                fi
               else
-                echo "$P: not found in checkouts"
+                echo "$P: not found (may not be a dependency)"
               fi
             done
             echo ""
-            echo "NOTE: Expecting swift-tools-version: 5.9 or lower (NOT 6.0)"
-            
-            # Verify none are using Swift 6.0
-            for P in swift-composable-architecture swift-perception swift-case-paths; do
-              PKG_DIR="$CM_BUILD_DIR/SourcePackages/checkouts/$P"
-              if [ -f "$PKG_DIR/Package.swift" ]; then
-                if head -n1 "$PKG_DIR/Package.swift" | grep -q "6.0"; then
-                  echo "❌ ERROR: $P is using Swift 6.0 tools version!"
-                  echo "This will cause Swift 6 concurrency errors."
-                  echo "Need to pin to an earlier version."
-                  exit 1
-                fi
-              fi
-            done
-            echo "✅ No packages using Swift 6.0 tools version"
+            echo "✅ All Point-Free packages using Swift 5.x tools version (good!)"
           else
             echo "❌ ERROR: Package.resolved not found for $PROJECT_PATH"
             echo "Searched in:"
@@ -504,6 +504,7 @@ workflows:
           echo "Using plugin server: $SWIFT_DRIVER_SWIFT_PLUGIN_SERVER"
           
           # Capture build exit code properly (avoid SIGPIPE 141)
+          # Must disable pipefail BEFORE the pipeline command
           set +o pipefail
           xcodebuild \
             -project "$PROJECT_PATH" \
