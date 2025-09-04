@@ -341,13 +341,31 @@ workflows:
           
           echo "=== Packages resolved with updated versions ==="
           
-          # Save and verify Package.resolved
-          RESOLVED_PATH="AgentDashboard.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+          # Locate the Package.resolved generated for THIS project
+          RESOLVED_PATH="$PROJECT_PATH/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+          
+          if [ ! -f "$RESOLVED_PATH" ]; then
+            echo "Primary Package.resolved not at $RESOLVED_PATH; searching..."
+            RESOLVED_PATH="$(find "$(dirname "$PROJECT_PATH")" \
+              -maxdepth 4 -path "*/AgentDashboard.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" \
+              | head -n1 || true)"
+          fi
+          
           if [ -f "$RESOLVED_PATH" ]; then
-            echo "=== Package.resolved found, verifying versions ==="
+            echo "✅ Found Package.resolved at: $RESOLVED_PATH"
+            echo "=== Verifying package versions ==="
+            
             if command -v jq >/dev/null 2>&1; then
+              # Display all resolved packages
+              echo "Resolved packages:"
+              jq -r '.pins[] | "\(.identity) @ \(.state.version // .state.revision)"' "$RESOLVED_PATH"
+              
+              # Check specific versions
               SYNTAX_VER=$(jq -r '.pins[] | select(.identity=="swift-syntax") | .state.version' "$RESOLVED_PATH" 2>/dev/null || echo "n/a")
               TCA_VER=$(jq -r '.pins[] | select(.identity=="swift-composable-architecture") | .state.version' "$RESOLVED_PATH" 2>/dev/null || echo "n/a")
+              
+              echo ""
+              echo "=== Version checks ==="
               echo "swift-syntax: $SYNTAX_VER"
               echo "TCA: $TCA_VER"
               
@@ -369,11 +387,12 @@ workflows:
               echo "jq not available, cannot verify package versions"
             fi
             
-            # Copy to build dir for use in build step
+            # Copy for debugging (Xcode still reads the one in the workspace)
             cp "$RESOLVED_PATH" "$CM_BUILD_DIR/Package.resolved"
             echo "Package.resolved copied to build directory"
           else
-            echo "❌ ERROR: Package.resolved not created after resolution!"
+            echo "❌ ERROR: Package.resolved not found for $PROJECT_PATH"
+            echo "Searched in:"
             find . -name "Package.resolved" -print
             exit 1
           fi
