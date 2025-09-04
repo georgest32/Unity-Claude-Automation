@@ -381,17 +381,15 @@ workflows:
               if [ -f "$PKG" ]; then
                 echo -n "$P tools: "
                 head -n1 "$PKG"
-                if head -n1 "$PKG" | grep -q "swift-tools-version: 6.0"; then
-                  echo "❌ ERROR: $P uses Swift 6 tools; it will compile in Swift-6 mode and fail under 16.2."
-                  echo "Pin $P to the last tag with // swift-tools-version: 5.9 (or earlier) and re-resolve."
-                  exit 1
+                if head -n1 "$PKG" | grep -q "swift-tools-version: 6\.0"; then
+                  echo "✅ $P uses Swift 6 tools — OK on Xcode 16.4"
                 fi
               else
                 echo "$P: not found (may not be a dependency)"
               fi
             done
             echo ""
-            echo "✅ All Point-Free packages using Swift 5.x tools version (good!)"
+            echo "✅ Package tools versions checked (Swift 6.0 tools are OK on Xcode 16.4)"
           else
             echo "❌ ERROR: Package.resolved not found for $PROJECT_PATH"
             echo "Searched in:"
