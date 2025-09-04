@@ -283,6 +283,21 @@ workflows:
             -disableAutomaticPackageResolution NO
           
           echo "=== Packages resolved with updated versions ==="
+          
+          echo "=== Verify we got Xcode 16.2 compatible packages ==="
+          # Check the build log for resolved versions
+          if [ -f "$CM_BUILD_DIR/build.log" ]; then
+            RESOLVED_SYNTAX=$(grep -o "swift-syntax.*@ [0-9.]*" "$CM_BUILD_DIR/build.log" || echo "not found in build.log")
+            echo "Resolved swift-syntax: $RESOLVED_SYNTAX"
+            
+            if echo "$RESOLVED_SYNTAX" | grep -q "601\."; then
+              echo "❌ ERROR: Xcode 16.2 needs swift-syntax 600.x, but got 601.x"
+              echo "The TCA version is too new. Need to downgrade further."
+              # Don't exit yet, let's see if it works anyway
+            elif echo "$RESOLVED_SYNTAX" | grep -q "600\."; then
+              echo "✅ Got swift-syntax 600.x - compatible with Xcode 16.2!"
+            fi
+          fi
 
       - name: Sanity - print APIClient.swift head & checksum
         script: |
