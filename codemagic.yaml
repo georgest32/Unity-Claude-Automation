@@ -427,10 +427,14 @@ workflows:
           # Force Xcode 16.2 for build
           export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
           /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
-          # Point plugin server to macOS, not iOS
-          export SWIFT_DRIVER_SWIFT_PLUGIN_SERVER="/Applications/Xcode-16.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server"
+          
+          # CRITICAL: Point plugin server to macOS, not iOS (must be env var, not build setting!)
+          export SWIFT_DRIVER_SWIFT_PLUGIN_SERVER="$DEVELOPER_DIR/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server"
+          
+          # Verify toolchain and plugin server
           which xcodebuild; xcodebuild -version
           which swift; swift --version || true
+          echo "SWIFT_DRIVER_SWIFT_PLUGIN_SERVER=$SWIFT_DRIVER_SWIFT_PLUGIN_SERVER"
           
           set -euo pipefail
           source "$CM_ENV" || true
@@ -456,6 +460,7 @@ workflows:
           find "$DERIVED" -name "*Macros*" -type f 2>/dev/null | head -5 || echo "No macro products found (good!)"
 
           echo "=== Building Debug for simulator (using locked Package.resolved) ==="
+          echo "Using plugin server: $SWIFT_DRIVER_SWIFT_PLUGIN_SERVER"
           
           # Capture build exit code but don't fail the step
           status=0
@@ -478,13 +483,26 @@ workflows:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
             COMPILER_INDEX_STORE_ENABLE=NO \
-            SWIFT_DRIVER_SWIFT_PLUGIN_SERVER="/Applications/Xcode-16.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server" \
             -showBuildTimingSummary \
             build | tee "$LOG" || status=$?
           
           echo "$status" > "$CM_BUILD_DIR/build_status.txt"
           echo "Build exited with status: $status"
           
+          echo "=== Verify plugin server path used ==="
+          echo "Checking build log for plugin server paths..."
+          if grep -q "external-plugin-path.*MacOSX.platform" "$LOG"; then
+            echo "✅ SUCCESS: MacOSX.platform plugin server was used"
+            grep -o "external-plugin-path.*swift-plugin-server" "$LOG" | head -2
+          elif grep -q "external-plugin-path.*iPhoneOS.platform" "$LOG"; then
+            echo "❌ ERROR: iPhoneOS.platform plugin server was used instead of MacOSX!"
+            echo "The environment variable was not respected. Check the build log."
+            grep -o "external-plugin-path.*swift-plugin-server" "$LOG" | head -2
+          else
+            echo "⚠️  WARNING: Could not determine which plugin server was used"
+          fi
+          
+          echo ""
           echo "=== Where did the macro bundles land? ==="
           echo "Host (Debug) macros:"
           find "$DERIVED/Build/Products/Debug" -type f \( -name "*.dylib" -o -name "*.bundle" \) 2>/dev/null || echo "No host macros found"
