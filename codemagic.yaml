@@ -107,6 +107,21 @@ workflows:
           if [ -f "$RESOLVED_SRC" ]; then
             cp "$RESOLVED_SRC" "$RESOLVED_OUT"
             echo "Saved Package.resolved to artifacts"
+            
+            echo "=== Verify swift-syntax resolves to 600.x on Xcode 16.2 ==="
+            if command -v jq >/dev/null 2>&1; then
+              SYNTAX_VER=$(jq -r '.pins[] | select(.identity=="swift-syntax") | .state.version // "n/a"' "$RESOLVED_OUT" 2>/dev/null || echo "n/a")
+              echo "swift-syntax resolved to: $SYNTAX_VER"
+              if [[ "$SYNTAX_VER" == 601.* ]]; then
+                echo "❌ ERROR: Xcode 16.2 requires swift-syntax 600.x, but got $SYNTAX_VER"
+                echo "Need to downgrade TCA or other packages further"
+                exit 2
+              elif [[ "$SYNTAX_VER" == 600.* ]]; then
+                echo "✅ SUCCESS: swift-syntax $SYNTAX_VER is compatible with Xcode 16.2!"
+              fi
+            else
+              echo "jq not available, skipping version check"
+            fi
           else
             echo "No Package.resolved at $RESOLVED_SRC"
           fi
@@ -441,15 +456,15 @@ workflows:
 
           # First try the diagnostics command which gives the best output
           echo "=== Extracting diagnostics from xcresult ==="
-          xcrun xcresulttool diagnostics --path "$BUNDLE" 2>&1 || true
+          (xcrun xcresulttool diagnostics --path "$BUNDLE" 2>&1 || echo "diagnostics command not available") | head -200 || true
           
           echo ""
           echo "=== Extracting formatted results ==="
-          xcrun xcresulttool formatDescription --path "$BUNDLE" 2>&1 || true
+          (xcrun xcresulttool formatDescription --path "$BUNDLE" 2>&1 || echo "formatDescription command not available") | head -200 || true
           
-          # Get JSON output for detailed parsing
-          xcrun xcresulttool get --format json --path "$BUNDLE" > "$CM_BUILD_DIR/xc.json" || {
-            echo "xcresulttool failed; printing basic info and falling back to raw log."
+          # Get JSON output for detailed parsing (try with and without --legacy for compatibility)
+          (xcrun xcresulttool get --format json --path "$BUNDLE" > "$CM_BUILD_DIR/xc.json" 2>/dev/null) || {
+            echo "xcresulttool get failed; trying basic info..."
             ls -al "$BUNDLE" || true
           }
 
