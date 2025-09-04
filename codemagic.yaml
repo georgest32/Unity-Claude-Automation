@@ -79,7 +79,7 @@ workflows:
           
           echo "=== Resolve Swift packages (fresh) ==="
           defaults write com.apple.dt.Xcode IDEPackageEnablePrebuilts YES || true
-xcodebuild -resolvePackageDependencies \
+          xcodebuild -resolvePackageDependencies \
             -project "$PROJECT_PATH" \
             -scheme "$SCHEME" \
             -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
@@ -95,18 +95,17 @@ xcodebuild -resolvePackageDependencies \
           
           echo "=== Find Package.resolved files ==="
           find iOS-App -name Package.resolved -print -exec cat {} \; || true
-
-
-              echo "=== Capture Package.resolved ==="
-              RESOLVED_SRC="$CM_BUILD_DIR/DerivedData/SourcePackages/Package.resolved"
-              RESOLVED_OUT="$CM_BUILD_DIR/Artifacts/Package.resolved"
-              mkdir -p "$CM_BUILD_DIR/Artifacts"
-              if [ -f "$RESOLVED_SRC" ]; then
-                cp "$RESOLVED_SRC" "$RESOLVED_OUT"
-                echo "Saved: $RESOLVED_OUT"
-              else
-                echo "No Package.resolved at $RESOLVED_SRC"
-              fi
+          
+          echo "=== Capture Package.resolved ==="
+          RESOLVED_SRC="$CM_BUILD_DIR/DerivedData/SourcePackages/Package.resolved"
+          RESOLVED_OUT="$CM_BUILD_DIR/Artifacts/Package.resolved"
+          mkdir -p "$CM_BUILD_DIR/Artifacts"
+          if [ -f "$RESOLVED_SRC" ]; then
+            cp "$RESOLVED_SRC" "$RESOLVED_OUT"
+            echo "Saved Package.resolved to artifacts"
+          else
+            echo "No Package.resolved at $RESOLVED_SRC"
+          fi
 
       - name: Select iOS 18.x simulator, set SIM_UDID for xcodebuild
         script: |
@@ -327,7 +326,7 @@ xcodebuild -resolvePackageDependencies \
             -scheme "$SCHEME" \
             -sdk iphonesimulator \
             -configuration Debug \
-      -destination 'generic/platform=iOS Simulator' \
+            -destination "platform=iOS Simulator,id=$SIM_UDID,arch=arm64" \
             -derivedDataPath "$DERIVED" \
             -resultBundlePath "$BUNDLE" \
             -resultBundleVersion 3 \
@@ -621,3 +620,4 @@ xcodebuild -resolvePackageDependencies \
 
     artifacts:
       - $CM_ARTIFACTS/**
+      - $CM_BUILD_DIR/Artifacts/Package.resolved
