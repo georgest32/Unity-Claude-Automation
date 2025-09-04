@@ -69,6 +69,10 @@ workflows:
           rm -rf ~/Library/Caches/org.swift.swiftpm 2>/dev/null || true
           rm -rf ~/Library/Developer/Xcode/DerivedData/ModuleCache.noindex 2>/dev/null || true
           
+          # CRITICAL: Clear the global SPM cache to force re-download
+          rm -rf ~/Library/Developer/Xcode/DerivedData/AgentDashboard-*/SourcePackages 2>/dev/null || true
+          rm -rf ~/Library/Caches/org.swift.swiftpm/repositories 2>/dev/null || true
+          
           echo "=== xcodebuild toolchain ==="
           xcodebuild -version
           swift --version || true
@@ -261,17 +265,24 @@ workflows:
           defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
           defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
           
-          echo "=== Resolve packages (Xcode will build macros automatically) ==="
+          echo "=== Force package update to get compatible versions ==="
+          cd iOS-App/AgentDashboard
+          
+          # Remove any cached package state to force fresh resolution
+          rm -rf ~/Library/Developer/Xcode/DerivedData/AgentDashboard-*/SourcePackages
+          rm -rf AgentDashboard.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+          
+          echo "=== Resolve packages fresh (this will get Xcode 16.2 compatible versions) ==="
           xcodebuild -resolvePackageDependencies \
             -project "$PROJECT_PATH" \
             -scheme "$SCHEME" \
             -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
             -skipPackagePluginValidation \
             -skipMacroValidation \
-            -disableAutomaticPackageResolution \
-            -onlyUsePackageVersionsFromResolvedFile
+            -clonedSourcePackagesDirPath "$CM_BUILD_DIR/SourcePackages" \
+            -disableAutomaticPackageResolution NO
           
-          echo "=== Packages resolved. Xcode will handle macro building during main build ==="
+          echo "=== Packages resolved with updated versions ==="
 
       - name: Sanity - print APIClient.swift head & checksum
         script: |
