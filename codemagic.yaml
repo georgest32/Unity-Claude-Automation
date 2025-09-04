@@ -117,7 +117,7 @@ workflows:
 
           echo "=== Selecting iOS 18.x simulator ==="
           # Use self-contained external script
-          SIM_UDID="$(python3 ci/select_simulator.py "18.5" "iPhone 16 Pro")"
+          SIM_UDID="$(python3 ci/select_simulator.py "18.2" "iPhone 16 Pro")"
           if [[ -z "${SIM_UDID:-}" ]]; then
             echo "ERROR: Could not find an iOS 18.x simulator UDID" >&2
             echo "== Devices =="; xcrun simctl list devices
@@ -326,7 +326,7 @@ workflows:
             -scheme "$SCHEME" \
             -sdk iphonesimulator \
             -configuration Debug \
-            -destination "platform=iOS Simulator,id=$SIM_UDID,arch=arm64" \
+            -destination "platform=iOS Simulator,id=$SIM_UDID" \
             -derivedDataPath "$DERIVED" \
             -resultBundlePath "$BUNDLE" \
             -resultBundleVersion 3 \
@@ -367,7 +367,7 @@ workflows:
           
           echo "=== Swift diagnostics from xcresult (files + summaries) ==="
           if [ -d "$BUNDLE" ] && command -v jq >/dev/null 2>&1; then
-            xcrun xcresulttool --legacy get --format json --path "$BUNDLE" \
+            xcrun xcresulttool get --format json --path "$BUNDLE" \
             | jq -r '
                 .. | objects? // empty
                 | .[]?
@@ -416,15 +416,15 @@ workflows:
 
           # First try the diagnostics command which gives the best output
           echo "=== Extracting diagnostics from xcresult ==="
-          xcrun xcresulttool --legacy diagnostics --path "$BUNDLE" 2>&1 || true
+          xcrun xcresulttool diagnostics --path "$BUNDLE" 2>&1 || true
           
           echo ""
           echo "=== Extracting formatted results ==="
-          xcrun xcresulttool --legacy formatDescription --path "$BUNDLE" 2>&1 || true
+          xcrun xcresulttool formatDescription --path "$BUNDLE" 2>&1 || true
           
-          # Xcode 16.4: legacy mode required for 'get'
-          xcrun xcresulttool get --legacy --format json --path "$BUNDLE" > "$CM_BUILD_DIR/xc.json" || {
-            echo "xcresulttool --legacy failed; printing basic info and falling back to raw log."
+          # Get JSON output for detailed parsing
+          xcrun xcresulttool get --format json --path "$BUNDLE" > "$CM_BUILD_DIR/xc.json" || {
+            echo "xcresulttool failed; printing basic info and falling back to raw log."
             ls -al "$BUNDLE" || true
           }
 
@@ -497,7 +497,7 @@ workflows:
             'def get_text(_id):' \
             '    try:' \
             '        out = subprocess.check_output([' \
-            '            "xcrun","xcresulttool","get","--legacy","--format","json","--path", bundle, "--id", _id' \
+            '            "xcrun","xcresulttool","get","--format","json","--path", bundle, "--id", _id' \
             '        ], text=True)' \
             '    except subprocess.CalledProcessError:' \
             '        return ""' \
