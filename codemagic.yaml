@@ -5,7 +5,7 @@ workflows:
     instance_type: mac_mini_m2
 
     environment:
-      xcode: 16.2
+      xcode: 16.4
       cocoapods: default
       vars:
         PROJECT_PATH: "iOS-App/AgentDashboard/AgentDashboard.xcodeproj"
@@ -49,9 +49,6 @@ workflows:
         script: |
           #!/usr/bin/env bash
           set -e
-          # Force Xcode 16.2
-          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
-          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
           which xcodebuild; xcodebuild -version
           which swift; swift --version || true
           xcrun simctl list runtimes
@@ -61,10 +58,7 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
           
-          # Force Xcode 16.2 for this entire step
-          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
-          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
-          export SWIFT_DRIVER_SWIFT_PLUGIN_SERVER="/Applications/Xcode-16.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server"
+          export SWIFT_DRIVER_SWIFT_PLUGIN_SERVER="/Applications/Xcode-16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server"
           which xcodebuild; xcodebuild -version
           which swift; swift --version || true
           
@@ -141,9 +135,6 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
           
-          # Force Xcode 16.2
-          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
-          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
           
           # Help TCA macro host compile
           export MACOSX_DEPLOYMENT_TARGET=14.0
@@ -165,9 +156,6 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
           
-          # Force Xcode 16.2
-          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
-          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
           echo "=== Finding all @main declarations ==="
           if command -v rg &> /dev/null; then
             echo "Using ripgrep:"
@@ -186,9 +174,6 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
           
-          # Force Xcode 16.2
-          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
-          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
           PROJ="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
           
           echo "=== Checking for @main App in project files ==="
@@ -224,9 +209,6 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
           
-          # Force Xcode 16.2
-          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
-          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
           PROJ="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
           
           echo "=== Checking target membership ==="
@@ -257,9 +239,6 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
           
-          # Force Xcode 16.2
-          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
-          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
           PBX="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
 
           echo "=== Sanity check pbxproj ==="
@@ -282,9 +261,6 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
           
-          # Force Xcode 16.2
-          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
-          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
           
           echo "=== Check that macro products are NOT linked in project ==="
           PBX="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.pbxproj"
@@ -303,9 +279,6 @@ workflows:
       - name: Clean and resolve packages
         script: |
           #!/usr/bin/env bash
-          # Force Xcode 16.2 for entire build chain
-          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
-          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
           xcodebuild -version
           swift --version || true
           
@@ -370,18 +343,19 @@ workflows:
               echo "TCA: $TCA_VER"
               
               if [[ "$SYNTAX_VER" == 601.* ]]; then
-                echo "❌ ERROR: Xcode 16.2 needs swift-syntax 600.x, but got $SYNTAX_VER"
-                exit 1
+                echo "✅ SUCCESS: swift-syntax $SYNTAX_VER is compatible with Xcode 16.4!"
               elif [[ "$SYNTAX_VER" == 600.* ]]; then
-                echo "✅ SUCCESS: swift-syntax $SYNTAX_VER is compatible with Xcode 16.2!"
+                echo "❌ ERROR: Xcode 16.4 needs swift-syntax 601.x, but got $SYNTAX_VER"
+                exit 1
               else
                 echo "⚠️  WARNING: Could not determine swift-syntax version"
               fi
               
-              if [[ "$TCA_VER" != "1.10.0" ]]; then
-                echo "⚠️  WARNING: TCA version is $TCA_VER, expected 1.10.0"
+              # TCA 1.22.x or higher expected
+              if [[ "$TCA_VER" == 1.2[2-9].* ]] || [[ "$TCA_VER" == 1.[3-9][0-9].* ]]; then
+                echo "✅ SUCCESS: TCA $TCA_VER is compatible with Xcode 16.4!"
               else
-                echo "✅ SUCCESS: TCA $TCA_VER is correct!"
+                echo "⚠️  WARNING: TCA version is $TCA_VER, expected 1.22.0 or higher"
               fi
             else
               echo "jq not available, cannot verify package versions"
@@ -452,73 +426,32 @@ workflows:
       - name: Build for iOS Simulator (arm64, single device, with result bundle)
         script: |
           #!/usr/bin/env bash
-          # Force Xcode 16.2 for build
-          export DEVELOPER_DIR="/Applications/Xcode-16.2.app/Contents/Developer"
-          /usr/bin/xcode-select -s "$DEVELOPER_DIR" || true
-          
-          # CRITICAL: Ensure Package.resolved is in the correct location for Xcode
-          WORKSPACE_RESOLVED="iOS-App/AgentDashboard/AgentDashboard.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
-          if [ -f "$CM_BUILD_DIR/Package.resolved" ]; then
-            echo "=== Copying Package.resolved to workspace location ==="
-            mkdir -p "$(dirname "$WORKSPACE_RESOLVED")"
-            cp "$CM_BUILD_DIR/Package.resolved" "$WORKSPACE_RESOLVED"
-            echo "✅ Package.resolved copied to: $WORKSPACE_RESOLVED"
-            echo "This ensures build uses our locked versions (TCA 1.13.0, etc.)"
-          elif [ ! -f "$WORKSPACE_RESOLVED" ]; then
-            echo "⚠️  WARNING: Package.resolved not found at workspace location"
-            echo "Build may not use locked package versions!"
-          fi
-          
-          # CRITICAL: Point plugin server to macOS, not iOS (must be env var, not build setting!)
-          export SWIFT_DRIVER_SWIFT_PLUGIN_SERVER="$DEVELOPER_DIR/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server"
-          
-          # Verify toolchain and plugin server
+          # Show versions
           which xcodebuild; xcodebuild -version
           which swift; swift --version || true
-          echo "SWIFT_DRIVER_SWIFT_PLUGIN_SERVER=$SWIFT_DRIVER_SWIFT_PLUGIN_SERVER"
           
           set -euo pipefail
           source "$CM_ENV" || true
 
+          LOG="$CM_BUILD_DIR/build.log"
           DERIVED="$CM_BUILD_DIR/DerivedData"
           BUNDLE="$CM_BUILD_DIR/build.xcresult"
-          LOG="$CM_BUILD_DIR/build.log"
 
-          # Macro plugins run on the macOS host; set a modern host target
-          export MACOSX_DEPLOYMENT_TARGET=14.0
+          echo "=== Building Debug for simulator ==="
           
-          # Enable diagnostic output for macro issues
-          export SWIFT_LOADED_PLUGINS_DUMP=1
-          export SWIFT_MACRO_EXPAND_DIAGS=1
-          
-          # Force clean module cache and macro builds to prevent stale builds
-          rm -rf "$DERIVED/ModuleCache.noindex"
-          rm -rf "$DERIVED/Build/Products/Debug-iphonesimulator/*Macros*"
-          rm -rf "$DERIVED/Build/Intermediates.noindex/*Macros*"
-          
-          echo "=== Verify clean macro state ==="
-          echo "Checking for stale macro products..."
-          find "$DERIVED" -name "*Macros*" -type f 2>/dev/null | head -5 || echo "No macro products found (good!)"
-
-          echo "=== Building Debug for simulator (using locked Package.resolved) ==="
-          echo "Using plugin server: $SWIFT_DRIVER_SWIFT_PLUGIN_SERVER"
-          
-          # Capture build exit code properly (avoid SIGPIPE 141)
-          # Must disable pipefail BEFORE the pipeline command
+          # critical: avoid SIGPIPE and capture the xcodebuild status, not tee's
           set +o pipefail
           xcodebuild \
             -project "$PROJECT_PATH" \
             -scheme "$SCHEME" \
             -sdk iphonesimulator \
             -configuration Debug \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
             -derivedDataPath "$DERIVED" \
             -resultBundlePath "$BUNDLE" \
             -resultBundleVersion 3 \
             -skipMacroValidation \
             -skipPackagePluginValidation \
-            -disableAutomaticPackageResolution \
-            -onlyUsePackageVersionsFromResolvedFile \
             ONLY_ACTIVE_ARCH=YES \
             EXCLUDED_ARCHS="i386 x86_64" \
             CODE_SIGNING_ALLOWED=NO \
@@ -527,20 +460,19 @@ workflows:
             COMPILER_INDEX_STORE_ENABLE=NO \
             -showBuildTimingSummary \
             build | tee "$LOG"
-          
-          # Get the actual xcodebuild exit status (not tee's)
           xc_status=${PIPESTATUS[0]}
           set -o pipefail
           
-          # If build failed, show actual Swift errors before exiting
           if [ "$xc_status" -ne 0 ]; then
             echo ""
             echo "=== Top Swift errors from build log ==="
+            # print the actual errors so you can see WHY it failed
             grep -nE " error: | swift-frontend | swift-driver " "$LOG" | head -200 || true
           fi
           
           echo "$xc_status" > "$CM_BUILD_DIR/build_status.txt"
           echo "Build exited with status: $xc_status"
+          exit "$xc_status"
           
           echo "=== Verify plugin server path used ==="
           echo "Checking build log for plugin server paths..."
