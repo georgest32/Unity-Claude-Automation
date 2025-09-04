@@ -446,8 +446,14 @@ workflows:
           export SWIFT_LOADED_PLUGINS_DUMP=1
           export SWIFT_MACRO_EXPAND_DIAGS=1
           
-          # Force clean module cache to prevent stale macro builds
+          # Force clean module cache and macro builds to prevent stale builds
           rm -rf "$DERIVED/ModuleCache.noindex"
+          rm -rf "$DERIVED/Build/Products/Debug-iphonesimulator/*Macros*"
+          rm -rf "$DERIVED/Build/Intermediates.noindex/*Macros*"
+          
+          echo "=== Verify clean macro state ==="
+          echo "Checking for stale macro products..."
+          find "$DERIVED" -name "*Macros*" -type f 2>/dev/null | head -5 || echo "No macro products found (good!)"
 
           echo "=== Building Debug for simulator (using locked Package.resolved) ==="
           
@@ -472,6 +478,7 @@ workflows:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
             COMPILER_INDEX_STORE_ENABLE=NO \
+            SWIFT_DRIVER_SWIFT_PLUGIN_SERVER="/Applications/Xcode-16.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server" \
             -showBuildTimingSummary \
             build | tee "$LOG" || status=$?
           
