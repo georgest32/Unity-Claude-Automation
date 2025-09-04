@@ -279,8 +279,7 @@ workflows:
             -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
             -skipPackagePluginValidation \
             -skipMacroValidation \
-            -clonedSourcePackagesDirPath "$CM_BUILD_DIR/SourcePackages" \
-            -disableAutomaticPackageResolution NO
+            -clonedSourcePackagesDirPath "$CM_BUILD_DIR/SourcePackages"
           
           echo "=== Packages resolved with updated versions ==="
           
