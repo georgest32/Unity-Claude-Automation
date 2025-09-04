@@ -378,8 +378,8 @@ workflows:
                 echo "⚠️  WARNING: Could not determine swift-syntax version"
               fi
               
-              if [[ "$TCA_VER" != "1.15.0" ]]; then
-                echo "⚠️  WARNING: TCA version is $TCA_VER, expected 1.15.0"
+              if [[ "$TCA_VER" != "1.13.0" ]]; then
+                echo "⚠️  WARNING: TCA version is $TCA_VER, expected 1.13.0"
               else
                 echo "✅ SUCCESS: TCA $TCA_VER is correct!"
               fi
@@ -490,6 +490,13 @@ workflows:
           xc_status=${PIPESTATUS[0]}
           set -o pipefail
           
+          # If build failed, show actual Swift errors before exiting
+          if [ "$xc_status" -ne 0 ]; then
+            echo ""
+            echo "=== Top Swift errors from build log ==="
+            grep -nE " error: | swift-frontend | swift-driver " "$LOG" | head -200 || true
+          fi
+          
           echo "$xc_status" > "$CM_BUILD_DIR/build_status.txt"
           echo "Build exited with status: $xc_status"
           
@@ -517,8 +524,8 @@ workflows:
           echo "All macro-related files:"
           find "$DERIVED/Build/Products" -maxdepth 3 -name "*Macros*" -print || true
           
-          # Always succeed this step so diagnostics can run
-          exit 0
+          # Exit with real build status
+          exit "$xc_status"
 
       # ---------- Diagnostics: richer error reporting -----------
       - name: Extract build errors comprehensively
