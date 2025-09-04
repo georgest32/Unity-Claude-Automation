@@ -78,7 +78,8 @@ workflows:
           export SWIFT_MACRO_EXPAND_DIAGS=1
           
           echo "=== Resolve Swift packages (fresh) ==="
-          xcodebuild -resolvePackageDependencies \
+          defaults write com.apple.dt.Xcode IDEPackageEnablePrebuilts YES || true
+xcodebuild -resolvePackageDependencies \
             -project "$PROJECT_PATH" \
             -scheme "$SCHEME" \
             -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
@@ -94,6 +95,18 @@ workflows:
           
           echo "=== Find Package.resolved files ==="
           find iOS-App -name Package.resolved -print -exec cat {} \; || true
+
+
+              echo "=== Capture Package.resolved ==="
+              RESOLVED_SRC="$CM_BUILD_DIR/DerivedData/SourcePackages/Package.resolved"
+              RESOLVED_OUT="$CM_BUILD_DIR/Artifacts/Package.resolved"
+              mkdir -p "$CM_BUILD_DIR/Artifacts"
+              if [ -f "$RESOLVED_SRC" ]; then
+                cp "$RESOLVED_SRC" "$RESOLVED_OUT"
+                echo "Saved: $RESOLVED_OUT"
+              else
+                echo "No Package.resolved at $RESOLVED_SRC"
+              fi
 
       - name: Select iOS 18.x simulator, set SIM_UDID for xcodebuild
         script: |
@@ -314,7 +327,7 @@ workflows:
             -scheme "$SCHEME" \
             -sdk iphonesimulator \
             -configuration Debug \
-            -destination "platform=iOS Simulator,id=$SIM_UDID,arch=arm64" \
+      -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath "$DERIVED" \
             -resultBundlePath "$BUNDLE" \
             -resultBundleVersion 3 \
@@ -355,7 +368,7 @@ workflows:
           
           echo "=== Swift diagnostics from xcresult (files + summaries) ==="
           if [ -d "$BUNDLE" ] && command -v jq >/dev/null 2>&1; then
-            xcrun xcresulttool get --format json --path "$BUNDLE" \
+            xcrun xcresulttool --legacy get --format json --path "$BUNDLE" \
             | jq -r '
                 .. | objects? // empty
                 | .[]?
@@ -404,15 +417,15 @@ workflows:
 
           # First try the diagnostics command which gives the best output
           echo "=== Extracting diagnostics from xcresult ==="
-          xcrun xcresulttool diagnostics --path "$BUNDLE" 2>&1 || true
+          xcrun xcresulttool --legacy diagnostics --path "$BUNDLE" 2>&1 || true
           
           echo ""
           echo "=== Extracting formatted results ==="
-          xcrun xcresulttool formatDescription --path "$BUNDLE" 2>&1 || true
+          xcrun xcresulttool --legacy formatDescription --path "$BUNDLE" 2>&1 || true
           
           # Xcode 16.4: legacy mode required for 'get'
           xcrun xcresulttool get --legacy --format json --path "$BUNDLE" > "$CM_BUILD_DIR/xc.json" || {
-            echo "xcresulttool failed; printing basic info and falling back to raw log."
+            echo "xcresulttool --legacy failed; printing basic info and falling back to raw log."
             ls -al "$BUNDLE" || true
           }
 
